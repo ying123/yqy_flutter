@@ -1,39 +1,50 @@
-
 import 'package:yqy_flutter/utils/string_utils.dart';
 class UserInfo{
 
-  List<UserInfo> children;
-  int courseId;
-  int id;
-  String name;
-  int order;
-  int parentChapterId;
-  bool userControlSetTop;
-  int visible;
+  int userId;
+
+  String nickname;
+
+  String account;
+
+  String intro;
+
+  String token;
+
+  int expireTime;
+
+  int userRole;
+
+  String avatar;
+
+  UserInfo(this.userId, this.nickname, this.account, this.intro, this.token,
+      this.expireTime, this.userRole, this.avatar);
+
 
   UserInfo.fromJsonMap(Map<String, dynamic> map)
-      : children =
-      List<UserInfo>.from(map["children"].map((it) => UserInfo.fromJsonMap(it))),
-  courseId = map["courseId"],
-  id = map["id"],
-  name = StringUtils.urlDecoder(map["name"]),
-  order = map["order"],
-  parentChapterId = map["parentChapterId"],
-  userControlSetTop = map["userControlSetTop"],
-  visible = map["visible"];
+      : userId = map["userId"],
+        nickname = map["nickname"],
+        account = map["account"],
+        intro = map["intro"],
+        token = map["token"],
+        expireTime = map["expireTime"],
+        userRole = map["userRole"],
+         avatar = map["avatar"];
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['children'] =
-    children != null ? children.map((v) => v.toJson()).toList() : null;
-    data['courseId'] = courseId;
-    data['id'] = id;
-    data['name'] = name;
-    data['order'] = order;
-    data['parentChapterId'] = parentChapterId;
-    data['userControlSetTop'] = userControlSetTop;
-    data['visible'] = visible;
+    data['userId'] = userId;
+    data['nickname'] = nickname;
+    data['account'] = account;
+    data['intro'] = intro;
+    data['token'] = token;
+    data['expireTime'] = expireTime;
+    data['userRole'] = userRole;
+    data['avatar'] = avatar;
     return data;
   }
+
+
 
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'dart:convert';
@@ -8,6 +10,7 @@ class LocalStorage {
   static LocalStorage _singleton;
   static SharedPreferences _prefs;
   static Lock _lock = Lock();
+
 
   static Future<LocalStorage> getInstance() async {
     if (_singleton == null) {

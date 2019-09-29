@@ -14,18 +14,35 @@ class Routes {
 
   static String productDetailPage = "/productDetailPage";
 
-  static String webPage = "/webPage";
-
   static String myProductListPage = "/myProductList";
 
   static String newProductPage = "/newProductPage";
+
+  ////
+
+  static String webPage = "/webPageView";
+
+  static String liveMeeting = "/liveMeeting";
+
+  static String videoListPage = "/videoListPage";
+
+  static String videoDetailsPage = "/videoDetailsPage";
+
+  static String tabMedicalPage = "/tabMedicalPage";
+
+  static String newsContentPage = "/newsContentPage";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
        return null;
     });
-
+    router.define(videoDetailsPage, handler: videoDetailsHandler);
+    router.define(liveMeeting, handler: liveHandler);
+    router.define(webPage, handler: webHandler);
+    router.define(videoListPage, handler: videoHandler);
+    router.define(tabMedicalPage, handler: tabMedicalHandler);
+    router.define(newsContentPage, handler: newsDetailsHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

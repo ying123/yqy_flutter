@@ -9,14 +9,13 @@ import 'package:yqy_flutter/common/constant.dart' show AppColors;
 class WebviewPage extends StatefulWidget {
   final String title;
   final String url;
-  WebviewPage({Key key, @required this.title, @required this.url})
-      : super(key: key);
+  WebviewPage({@required this.title, @required this.url});
 
   @override
   _WebviewPageState createState() => _WebviewPageState();
 }
 
-class _WebviewPageState extends State<WebviewPage> {
+class _WebviewPageState extends State<WebviewPage>  with SingleTickerProviderStateMixin {
   final _loadingContainer = Container(
     color: Colors.white,
     constraints: BoxConstraints.expand(),
@@ -33,19 +32,24 @@ class _WebviewPageState extends State<WebviewPage> {
 
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
-      url: this.widget.url,
+      url: widget.url??"",
       appBar: AppBar(
-        title: Text(this.widget.title, style: TextStyle(color: Colors.white)),
-        elevation: 0.0,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
+        centerTitle: true,
+        title: Text(widget.title??"网页"),
+
       ),
       withZoom: true,
       withLocalStorage: true,
-      hidden: true,
+       hidden: true,
       initialChild: _loadingContainer,
     );
   }

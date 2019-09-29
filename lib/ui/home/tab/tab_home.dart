@@ -1,139 +1,180 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
+import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
+import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
-import 'package:flutter_marquee/flutter_marquee.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/route_handlers.dart';
+import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
+import 'package:yqy_flutter/widgets/marquee_view.dart';
 
 class TabHomePage extends StatefulWidget {
+
   @override
   _TabHomePageState createState() => _TabHomePageState();
 }
 
 
-class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClientMixin{
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+class _TabHomePageState extends State<TabHomePage> {
 
-  // 声明一个list，存放image Widget
-  List<String> imageList = List();
+  //页面加载状态，默认为加载中
+  LoadState _layoutState = LoadState.State_Loading;
+
 
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
 
+  List<String> marqueeList ;
+
+
+  HomeDataEntity _homeDataEntity;
+
+  LiveListInfo _liveListEntity;
+
+  VideoListEntity _videoListEntity;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    imageList.add(
-        "http://minimg.hexun.com/i4.hexunimg.cn/mobile_show/image/20190701/20190701121331_376_621x310.jpg");
-    imageList.add(
-        "http://minimg.hexun.com/i7.hexun.com/2015-11-16/180596378_c324x234.jpg");
-    imageList.add(
-        "http://minimg.hexun.com/i7.hexun.com/2014-09-02/168105362_c324x234.jpg");
+    loadData();
+  }
+
+  loadData () async{
+
+    Future.wait([
+
+    NetworkUtils.requestHomeData(), //轮播图 新闻
+    NetworkUtils.requestHosListData(1), // 热门
+    NetworkUtils.requestVideoListData(1),  // 往期
+
+    ]).then((results){
+
+      int statusCode = int.parse(results[0].status);
+
+
+      _homeDataEntity = HomeDataEntity.fromJson(results[0].info);
+
+      _liveListEntity = LiveListInfo.fromJson(results[1].info);
+
+      _videoListEntity = VideoListEntity.fromJson(results[2].info);
+
+
+      setState(() {
+        _layoutState = loadStateByCode(statusCode);
+      });
+    }).catchError((e){
+      setState(() {
+        _layoutState = loadStateByCode(-2);
+      });
+    });
+
+
+
   }
 
   void _onRefresh() async{
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
+   // await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
+    loadData();
     _refreshController.refreshCompleted();
     _refreshController.resetNoData();
   }
 
   void _onLoading() async{
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
+    //await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
   //  items.add((items.length+1).toString());
-    if(mounted)
+  /*  if(mounted){
       setState(() {
       });
+    }*/
     _refreshController.loadNoData();
   }
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: SmartRefresher(
+      body: LoadStateLayout(
+        state: _layoutState,
+        errorRetry: () {
+      setState(() {
+        _layoutState = LoadState.State_Loading;
+      });
+      this.loadData();
+    },
+    successWidget:
+    _homeDataEntity==null?Container():SmartRefresher(
           enablePullDown: true,
           enablePullUp: true,
           controller: _refreshController,
           onRefresh: _onRefresh,
           onLoading: _onLoading,
         header: BezierCircleHeader(),
-        footer: CustomFooter(
-          builder: (BuildContext context,LoadStatus mode){
-            Widget body ;
-            if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
-            }
-            else if(mode==LoadStatus.loading){
-              body =  CupertinoActivityIndicator();
-            }
-            else if(mode == LoadStatus.failed){
-              body = Text("加载失败！点击重试！");
-            }
-            else{
-              body = Text("我是有底线的~");
-            }
-            return Container(
-              height: 55.0,
-              child: Center(child:body),
-            );
-          },
-        ),
            child: ListView(
           padding: EdgeInsets.only(top: 0),
           children: <Widget>[
 
             cYMW(15),
 
-            getBannerView(), //轮播图
+            getBannerView(_homeDataEntity.banner), //轮播图
 
-            getMarqueeView(),//跑马灯
+
+           getMarqueeView(_homeDataEntity.medicalNews),//跑马灯
 
             getGridBtnView(), //图片按钮
 
-            cYM(10),
-
             getRowTextView("热门会议"),//热门会议标题栏
-
-            getHotVideo(["1","2"]),//热门会议视频横向列表
+            getHotVideo(_liveListEntity.xList??new List()),//热门会议视频横向列表
             cYM(10),
             getRowTextView("往期会议"),//热门会议标题栏
-            getHisVideoView(),
-            getHisVideoView(),
+            getHisVideoView(_videoListEntity.xList??new List(),0),
+            getHisVideoView(_videoListEntity.xList??new List(),1),
             cYM(10),
             getRowTextView("名医分享"),//往期会议标题栏
-            getDocView(),
-            getDocView()
-            
+            getDocView(_homeDataEntity.user??new List(),0),
+            getDocView(_homeDataEntity.user??new List(),1)
 
           ],
 
         ),
       )
+    ),
     );
   }
 
 
-  Widget getBannerView() {
+  Widget getBannerView(List<HomeDataBanner> data) {
+
+
+    print("getBannerView:"+data.length.toString());
+
+    if(data==null){
+
+      return Container();
+    }
+
     return BannerSwiper(
       //width  和 height 是图片的高宽比  不用传具体的高宽   必传
       height: 108,
       width: 54,
       //轮播图数目 必传
-      length: imageList.length,
+      length: data.length??1,
       //轮播的item  widget 必传
       getwidget: (index) {
         return new GestureDetector(
-            child: Image.network(
-              imageList[index % imageList.length],
+            child:  Image.network(
+              data[index % data.length].adFile,
               fit: BoxFit.fill,
             ),
             onTap: () {
@@ -143,42 +184,43 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     );
   }
 
-  Widget   getMarqueeView(){
+  Widget   getMarqueeView(List<HomeDatamedicalNews> data){
 
-    return Container(
-      padding: EdgeInsets.all(20),
-     height: 60,
-     color: Colors.white,
-      child: Row(
+    if(data==null){
 
-        children: <Widget>[
+      return Container();
 
-          Icon(Icons.notifications,size: 22,color: Colors.blueAccent,),
-          cXM(5),
-          Container(
-            height:60,
-            width: 300,
-            child:  FlutterMarquee(
-                texts: ["药监局发布医疗器械唯一标识系统规则", "国家药监局：无资质零售药店不得再进购氨酚进必考通片", "绿叶制药发布2019年上半年业绩公告", "国家药品监控目录冲击！中药注射剂板块业绩下滑严重"].toList(),
-                onChange: (i) {
-                  print(i);
-                },
-                duration: 4),
-          )
+    }else{
+      return  new Container(
+        padding: EdgeInsets.all(20),
+        height: 60,
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.notifications,size: 22,color: Colors.blueAccent,),
+            cXM(5),
+            Container(
+              width: 310,
+              height:60,
+              child:  MyNoticeVecAnimation(duration: const Duration(milliseconds: 6000),messages: data.map((e)=>(e.title)).toList()),
+            ),
 
+          ],
 
-        ],
+        ),
 
-      ),
+      );
+    }
 
-    );
 
   }
 
 
+
+
+
   Widget getGridBtnView(){
     return Container(
-
       height: 80,
       color: Colors.white,
       child: Row(
@@ -187,44 +229,77 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
         children: <Widget>[
 
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(Icons.android,size: 30,),
-              cYM(5),
-              Text("会议直播")
 
-            ],
+          new GestureDetector(
 
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+               // Icon(Icons.android,size: 30,),
+                Image.asset(
+                  wrapAssets("icon_streaming.png"),
+                  width: 45,
+                  height: 45,
+                  fit: BoxFit.fill,
+                ),
+                cYM(2),
+                Text("会议直播")
+
+              ],
+            ),
+            onTap: (){
+              RRouter.push(context, Routes.liveMeeting,{"title":"11"});
+            },
 
           ),
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(Icons.android,size: 30,),
-              cYM(5),
-              Text("往期会议")
 
-            ],
+          new GestureDetector(
 
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // Icon(Icons.android,size: 30,),
+                Image.asset(
+                  wrapAssets("icon_past.png"),
+                  width: 45,
+                  height: 45,
+                  fit: BoxFit.fill,
+                ),
+                cYM(2),
+                Text("往期会议")
+
+              ],
+            ),
+            onTap: (){
+              RRouter.push(context, Routes.videoListPage,{});
+            },
 
           ),
+
           new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(Icons.android,size: 30,),
-              cYM(5),
+              Image.asset(
+                wrapAssets("icon_mission.png"),
+                width: 45,
+                height: 45,
+                fit: BoxFit.fill,
+              ),
+              cYM(2),
               Text("专题视频")
-
             ],
-
 
           ),
           new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(Icons.android,size: 30,),
-              cYM(5),
+              Image.asset(
+                wrapAssets("icon_garden.png"),
+                width: 45,
+                height: 45,
+                fit: BoxFit.fill,
+              ),
+              cYM(2),
               Text("医学园")
 
             ],
@@ -256,7 +331,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
         children: <Widget>[
           
         new  Row(
-            
             children: <Widget>[
               Text(type,style: TextStyle(color: Colors.black,fontSize: 18),),
               cXM(3),
@@ -302,30 +376,30 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   }
 
-  Widget getHotVideo(List list){
+  Widget getHotVideo(List<LiveListInfoList>  list){
 
-    return  Container(
+    print("list:"+list.length.toString());
+
+    return list==null?Container():Container(
       color: Colors.white,
-      height: 100,
-      child: Row(
-
+      height: 110,
+      child: list.length==1?Image.network(list[0].image):Row(
         children: <Widget>[
-
         cXM(10),
        new  Expanded(
-          child: Container(
-            alignment: Alignment.center,
-            color: Colors.deepPurple,
-            child: Text(list[0]),
+          child: Image.network(
+              list[0].image,
+              height: 120,
+              fit: BoxFit.fill,
           ),
 
         )  ,
         cXM(10),
         new   Expanded(
-          child: Container(
-            alignment: Alignment.center,
-            color: Colors.cyanAccent,
-            child: Text(list[1]),
+          child: Image.network(
+              list[1].image,
+            height: 120,
+            fit: BoxFit.fill,
           ),
 
         )  ,
@@ -340,16 +414,21 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-  Widget getHisVideoView(){
+  Widget getHisVideoView(List<VideoListList> list,int pos){
 
-    return Container(
+     if(pos>list.length-1){
+
+       return Container();
+      }
+
+    return list==null?Container(): Container(
       height: 100,
       color: Colors.white,
       child: Row(
 
         children: <Widget>[
-
-          Icon(Icons.apps,size: 100,color: Colors.blueAccent,),
+          cXM(10),
+         Image.network(list[pos].image,width: 110,height: 90,fit: BoxFit.fill,),
           cXM(8),
          new Container(
              decoration: new BoxDecoration(
@@ -361,7 +440,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
                 Container(
                   padding: EdgeInsets.only(top: 15),
-                  child: Text("山东省肛肠专业科室管理交流暨2019年济南医学会钢厂专业委员会学术会议",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                  child: Text(list[pos].title,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),maxLines: 2,overflow: TextOverflow.ellipsis,),
                   width: 240,
                 ),
                 cYM(10),
@@ -369,21 +448,14 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                   children: <Widget>[
                     Icon(Icons.access_time,size: 16,color: Colors.black45,),
                     cXM(10),
-                    Text("2019-07-20 08:30",style: TextStyle(color: Colors.black45,fontSize: 14),),
+                    Text((list[pos].startTime),style: TextStyle(color: Colors.black45,fontSize: 14),),
                   ],
                 ),
 
 
               ],
-
             )
-
-
-
-
-
           )
-
 
         ],
 
@@ -395,17 +467,23 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-  Widget getDocView(){
-    
+  Widget getDocView(List<HomeDataUser> list,int pos){
+
+    if(list==null||pos>list.length-1){
+
+      return Container();
+    }
+
     return Container(
       color: Colors.white,
       height: 100,
       padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Row(
         children: <Widget>[
-          
-          Icon(Icons.account_circle,size: 90,),
-          cXM(5),
+
+          Image.network(list[pos].userPhoto,width: 90,fit: BoxFit.fill,),
+
+          cXM(15),
           Container(
             width: 240,
             decoration: new BoxDecoration(
@@ -415,15 +493,15 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 cYM(15),
-                Text("张三十",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),),
+                Text(list[pos].realname,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),),
                 cYM(5),
-                Text("该用户尚未填写简介....",style: TextStyle(color: Colors.black45,fontSize: 14),),
+                Text(list[pos].userInfo??"该用户尚未填写简介....",style: TextStyle(color: Colors.black45,fontSize: 14),),
                 cYM(5),
                 new Row(
                   children: <Widget>[
                     Icon(Icons.person,size: 16,color: Colors.black45,),
                     cXM(10),
-                    Text("石家庄市中医院分院",style: TextStyle(color: Colors.black45,fontSize: 14),),
+                    Text(list[pos].jName+list[pos].hName,style: TextStyle(color: Colors.black45,fontSize: 14),),
 
                   ],
 
@@ -446,6 +524,10 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     );
     
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
   
 
 }

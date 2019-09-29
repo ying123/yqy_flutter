@@ -1,7 +1,15 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/user/user_page.dart';
 import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
+
 void main() {
 
   runApp(MainHomePage());
@@ -10,19 +18,39 @@ void main() {
 
 
 class MainHomePage extends StatelessWidget {
+
+  MainHomePage() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    final router = new Router();
+    Routes.configureRoutes(router);
+    RRouter.initWithRouter(router);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "药企源",
-      debugShowCheckedModeBanner: false,//不显示debug
-      theme: ThemeData(
-          primaryColor: Colors.blue,
-          backgroundColor: Colors.white
-      ),
-      home: Home() ,
 
-
-
+    return  RefreshConfiguration( // 刷新控件全部配置
+        headerTriggerDistance: 100.0,// 头部触发刷新的越界距离
+        hideFooterWhenNotFull: true, // Viewport不满一屏时,禁用上拉加载更多功能
+        footerBuilder: () => ClassicFooter(
+          loadingText: "努力加载中..",
+          noDataText: "我是有底线的~",
+          idleText: "上拉加载",
+          failedText: "加载失败！点击重试！",
+        ) ,
+        child: OKToast( // Toast 全局配置
+            child:  MaterialApp(
+              title: "测试",
+              debugShowCheckedModeBanner: false,//不显示debug
+              theme: ThemeData(
+                  primaryColor: Colors.blue,
+                  backgroundColor: Colors.white
+              ),
+              home: Home() ,
+              onGenerateRoute: RRouter.router().generator,
+            )
+        )
     );
   }
 }
@@ -32,14 +60,14 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home>{
+class _HomeState extends State<Home> with TickerProviderStateMixin{
 
   final _bottomNavigationColor = Colors.black45;
   int _currentIndex = 0; //当前选中的坐标
 
   String showTv = "首页"; //当前显示的页面布局
 
-  final pages = [HomePage(), Text("专题"),Text("直播"),TaskHome(),UserPage()];
+  final pages = [HomePage(),SpecialPage(),Text("直播"),TaskHome(),UserPage()];
   
   
 

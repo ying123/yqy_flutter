@@ -12,6 +12,13 @@ class AppColors {
   static const DisableTextColor = Color(0xFFDCDCDC);
 }
 
+
+
+
+
+
+
+
 class AppSize {
   static const DividerWidth = 0.5;
 }
@@ -21,10 +28,14 @@ class Constant {
 }
 
 class APPConfig {
-  static const DEBUG = false;
-  static const Server = "http://47.107.231.54:8090";
+  static const DEBUG = true;
+  static const Server = "http://api.yaoqiyuan.com/api/";
   // static const Server = "http://localhost:8090";
 }
+
+
+
+
 
 class APPIcons {
   static const PlaceHolderAvatar = Icon(

@@ -4,7 +4,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import "package:yqy_flutter/utils/regex_utils.dart";
 
-class ITRouter {
+class RRouter {
   static Router _router;
 
   static initWithRouter(Router router) {
@@ -13,6 +13,8 @@ class ITRouter {
 
   static Router router() {
     return _router;
+
+
   }
 
   static push(BuildContext context, String path, Map<String, dynamic> params, {bool clearStack = false, TransitionType transition = TransitionType.inFromRight}) {
