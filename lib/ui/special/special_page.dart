@@ -15,9 +15,8 @@ class SpecialPage extends StatefulWidget {
 class _SpecialPageState extends State<SpecialPage> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-
-
         appBar: AppBar(
 
           backgroundColor: Colors.white,
@@ -32,8 +31,7 @@ class _SpecialPageState extends State<SpecialPage> {
 
 
 
-      body: SmartRefresher(
-          controller: null
+      body: Container(
 
 
 

@@ -189,7 +189,7 @@ packages:
       name: fijkplayer
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.3"
+    version: "0.1.6"
   fixnum:
     dependency: transitive
     description:

@@ -23,6 +23,10 @@ class MyScrvState extends State<MyScrv> {
     myColors.add(Colors.red);
     myColors.add(Colors.lightBlue);
     myColors.add(Colors.lightBlue);
+
+    myColors.add(Colors.black38);
+
+
   }
 
 

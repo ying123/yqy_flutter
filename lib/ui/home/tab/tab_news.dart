@@ -68,12 +68,15 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
         print("_videoListEntity.toString():"+_videoListEntity.toString());*/
 
       int statusCode = int.parse(res.status);
-
       if(statusCode==9999){
-
         if(page>1){
-          _refreshController.loadNoData();
-          _newsListEntity.xList.addAll(NewsListEntity.fromJson(res.info).xList);
+          if(_newsListEntity.xList==null||_newsListEntity.xList.length==0){
+            _refreshController.loadNoData();
+          }else{
+            _newsListEntity.xList.addAll(NewsListEntity.fromJson(res.info).xList);
+            _refreshController.loadComplete();
+          }
+
         }else{
           _newsListEntity = NewsListEntity.fromJson(res.info);
           _refreshController.refreshCompleted();
@@ -81,7 +84,6 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
         }
 
       }
-
       setState(() {
         _layoutState = loadStateByCode(statusCode);
       });
@@ -133,16 +135,14 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
     return GestureDetector(
 
-
       onTap: (){
         RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});
-      },
+        },
       child: new Container(
 
         color: Colors.white,
 
         height: 90,
-
 
         child: new Column(
 

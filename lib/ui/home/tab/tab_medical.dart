@@ -30,9 +30,23 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
    @override
   void initState() {
     // TODO: implement initState
-     _refreshController =   RefreshController(initialRefresh: false);
      super.initState();
+     _refreshController =   RefreshController(initialRefresh: false);
+
+     loadData();
+
+
+
   }
+  void loadData() async{
+
+
+
+
+
+  }
+
+
 
 
 

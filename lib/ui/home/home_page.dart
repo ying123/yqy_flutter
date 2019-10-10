@@ -33,6 +33,8 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
 
+
+
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 
@@ -54,7 +56,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    _tabController.dispose();
+   // _tabController.dispose();
   }
 
   @override
@@ -65,9 +67,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
             centerTitle: true,
             title: Text("主页"),
-            
           ),
-          
+
           body: new Column(
             children: <Widget>[
               cYM(5),
@@ -86,8 +87,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                   labelStyle: TextStyle(fontSize: 16),
                   indicatorPadding: EdgeInsets.only(top: 5),
                 ),
-
               ),
+
               Expanded(
                   child: TabBarView(
                     controller: _tabController,
@@ -106,6 +107,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
 
   }
+
 
 
 }

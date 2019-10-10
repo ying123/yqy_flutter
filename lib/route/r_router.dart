@@ -14,7 +14,6 @@ class RRouter {
   static Router router() {
     return _router;
 
-
   }
 
   static push(BuildContext context, String path, Map<String, dynamic> params, {bool clearStack = false, TransitionType transition = TransitionType.inFromRight}) {

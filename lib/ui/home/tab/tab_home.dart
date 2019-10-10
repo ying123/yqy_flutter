@@ -20,14 +20,14 @@ class TabHomePage extends StatefulWidget {
 }
 
 
-class _TabHomePageState extends State<TabHomePage> {
+class _TabHomePageState extends State<TabHomePage>  {
+
 
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 
 
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+  RefreshController _refreshController ;
 
   List<String> marqueeList ;
 
@@ -42,8 +42,11 @@ class _TabHomePageState extends State<TabHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _refreshController  = RefreshController(initialRefresh: false);
     loadData();
   }
+
+
 
   loadData () async{
 
@@ -525,9 +528,9 @@ class _TabHomePageState extends State<TabHomePage> {
     
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+
+
+
   
 
 }
