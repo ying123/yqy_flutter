@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,10 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
 import  'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
+import 'bean/special_video_entity.dart';
 class _TabData {
   final Widget tab;
   final Widget body;
@@ -13,24 +18,28 @@ class _TabData {
 }
 
 final _tabDataList = <_TabData>[
-  _TabData(tab: Text('会议介绍'), body: Text("")),
-  _TabData(tab: Text('会议日程'), body: Text(""))
+  _TabData(tab: Text('专题介绍'), body: Text("")),
 ];
 
 
 
 
-class VideoDetailsPage extends StatefulWidget {
+class SpecialVideoDetailsPage extends StatefulWidget {
+
 
   final String id;
-  VideoDetailsPage({@required this.id});
+  SpecialVideoDetailsPage(this.id);
 
 
   @override
   _VideoDetailsState createState() => _VideoDetailsState();
 }
 
-class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProviderStateMixin{
+class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTickerProviderStateMixin{
+
+
+  //页面加载状态，默认为加载中
+  LoadState _layoutState;
 
   final FijkPlayer player = FijkPlayer();
 
@@ -40,19 +49,47 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
   TabController _tabController;
 
-  String url1,url2;
 
+  SpecialVideoEntity _specialVideoEntity;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: tabBarList.length);
-    player.setDataSource("http://cdn1.yaoqiyuan.com/sv/337fc4e8-16cd5f49844/337fc4e8-16cd5f49844.mp4", autoPlay: true);
+    _layoutState = LoadState.State_Loading;
+    _tabController = TabController(vsync: this, length: tabBarList.length??1);
     loadData();
 
   }
+
+
+  void loadData() async{
+
+
+    //await Future.delayed(Duration(milliseconds: 1000));
+
+
+    NetworkUtils.requestSpecialArticle(widget.id)
+        .then((res){
+
+      setState(() {
+        _specialVideoEntity = SpecialVideoEntity.fromJson(res.info);
+        int statusCode = res.status;
+        _layoutState = loadStateByCode(statusCode);
+        if(res.status==9999){
+          tabBarViewList = [WebPage(_specialVideoEntity.content)];
+          player.setDataSource(_specialVideoEntity.playUrl, autoPlay: true);
+        }
+
+      });
+    });
+
+
+  }
+
+
+
 
   @override
   void dispose() {
@@ -74,34 +111,21 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
           },
         ),
         centerTitle: true,
-        title: Text("视频回顾", style: TextStyle(color: Colors.black),),
+        title: Text(_specialVideoEntity==null?"":_specialVideoEntity.title, style: TextStyle(color: Colors.black),),
         backgroundColor: Colors.white,
-        actions: <Widget>[
-
-          new GestureDetector(
-            child: Icon(Icons.star_border,color: Colors.black45,size: 30,),
-            onTap: (){
-              showToast("点击收藏");
-            },
-          ),
-          cXM(10),
-         new GestureDetector(
-            
-            child: Icon(Icons.share,color: Colors.black45,size: 26,),
-            
-            onTap: (){
-              showToast("点击分享");
-            },
-          ),
-         cXM(10),
-
-          
-        ],
-        
       ),
 
-
-      body: new Column(
+      body:
+    LoadStateLayout(
+    state: _layoutState,
+    errorRetry: () {
+    setState(() {
+    _layoutState = LoadState.State_Loading;
+    });
+    this.loadData();
+    },
+    successWidget:
+      new Column(
 
         children: <Widget>[
 
@@ -142,21 +166,14 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
         ],
 
+
       ),
+    )
+
     );
   }
 
-  void loadData() async{
 
-
-   //await Future.delayed(Duration(milliseconds: 1000));
-
-    url1 = "https://www.baidu.com/";
-    setState(() {
-      tabBarViewList = [WebPage(url1),WebPage(url1)];
-    });
-
-  }
 }
 
 
@@ -179,7 +196,7 @@ class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     return  new WebView(
-      initialUrl: widget.url,
+      initialUrl: widget.url.startsWith("http")?widget.url:new Uri.dataFromString(widget.url, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
     );
   }
 
@@ -189,5 +206,11 @@ class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
 }
 
 
+ String getHtmlData(String bodyHTML) {
+   String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
+   String resultStr = "<html>" + head + "<body>" +
+       bodyHTML + "<\/body></html>";
+   return resultStr;
+}
 
 

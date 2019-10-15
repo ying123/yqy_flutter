@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/common/constant.dart';
 
 Widget cYM(double y) {
@@ -22,6 +23,22 @@ Widget cYMW(double y) {
     ),
   );
 }
+
+
+ double setW(double w){
+  return ScreenUtil.getInstance().setWidth(w);
+ }
+
+
+double setH(double h){
+  return ScreenUtil.getInstance().setHeight(h);
+}
+
+double setSP(double sp){
+  return ScreenUtil.getInstance().setSp(sp);
+}
+
+
 
 
 

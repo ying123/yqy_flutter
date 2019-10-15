@@ -12,6 +12,8 @@ class NetworkUtils {
 
 
 
+  static String token = "4aef8efb0f1b306901759d4152b468341751894";
+
   ///
   ///  首页接口
   ///
@@ -26,7 +28,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestHosListData(int page) async {
     String url = APPConfig.Server + "broadcast/listing";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page,"token":"4aef8efb0f1b306901759d4152b468341751894"});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page,"token":token});
     return result;
   }
 
@@ -54,9 +56,67 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestNewsDetail(var id) async {
     String url = APPConfig.Server + "medicalnews/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"medicalnewsId":id,"token":"4aef8efb0f1b306901759d4152b468341751894"});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"medicalnewsId":id,"token":token});
     return result;
   }
+
+
+  ///
+  ///  专题视频列表
+  ///
+  static Future<BaseResult> requestSpecialList(var page) async {
+    String url = APPConfig.Server + "special/lists";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
+    return result;
+  }
+
+
+  ///
+  ///  专题视频banner
+  ///
+  static Future<BaseResult> requestSpecialBanner(var id) async {
+    String url = APPConfig.Server + "special/banner";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+    return result;
+  }
+
+
+  ///
+  ///  专题视频 tab  分类
+  ///
+  static Future<BaseResult> requestSpecialCate(var id) async {
+    String url = APPConfig.Server + "special/cate_list";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+    return result;
+  }
+
+
+  ///
+  ///  专题视频 分类 列表数据
+  ///
+  static Future<BaseResult> requestSpecialCateList(var id,var cid,var page) async {
+    String url = APPConfig.Server + "special/art_list";
+    Map<String, dynamic> map = new Map();
+    map["id"] = id;
+    map["token"] = token;
+    map["cid"] = cid;
+    map["page"] = page;
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
+  ///
+  ///  专题视频 视频主页
+  ///
+  static Future<BaseResult> requestSpecialArticle(var id) async {
+    String url = APPConfig.Server + "special/article";
+    Map<String, dynamic> map = new Map();
+    map["id"] = id;
+    map["token"] = token;
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
 
 
 

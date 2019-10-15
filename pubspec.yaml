@@ -25,8 +25,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   cached_network_image: ^1.1.1
   flutter_banner_swiper: ^0.1.4
-
-
+# 添加依赖屏幕适配
+  flutter_screenutil: ^0.5.3
   pull_to_refresh: ^1.5.4 # 刷新控件
   oktoast: ^2.2.0
   dio: ^2.1.13

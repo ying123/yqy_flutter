@@ -85,9 +85,7 @@ class _VideoHomePageState extends State<VideoHomePage> with SingleTickerProvider
           controller: _tabController,
           children: tabBarViewList
       ),
-
     );
-
   }
 }
 
@@ -133,6 +131,7 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
     page ++;
     loadData();
   }
+
 
   loadData () async{
     NetworkUtils.requestVideoListData(page)
@@ -194,8 +193,6 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
 
 
       ),
-
-
 
 
     );

@@ -20,11 +20,16 @@ class TabHomePage extends StatefulWidget {
 }
 
 
-class _TabHomePageState extends State<TabHomePage>  {
+class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClientMixin {
+
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => false;
 
 
   //页面加载状态，默认为加载中
-  LoadState _layoutState = LoadState.State_Loading;
+  LoadState _layoutState ;
 
 
   RefreshController _refreshController ;
@@ -42,6 +47,7 @@ class _TabHomePageState extends State<TabHomePage>  {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _layoutState = LoadState.State_Loading;
     _refreshController  = RefreshController(initialRefresh: false);
     loadData();
   }
@@ -527,6 +533,8 @@ class _TabHomePageState extends State<TabHomePage>  {
     );
     
   }
+
+
 
 
 

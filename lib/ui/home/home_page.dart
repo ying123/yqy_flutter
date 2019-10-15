@@ -66,7 +66,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           appBar: AppBar(
 
             centerTitle: true,
-            title: Text("主页"),
+            title: Text("药企源"),
           ),
 
           body: new Column(

@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
+import 'package:yqy_flutter/ui/special/special_details.dart';
+import 'package:yqy_flutter/ui/special/special_video_details.dart';
+import 'package:yqy_flutter/ui/special/special_web_details.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
 import 'package:yqy_flutter/ui/video/video_page.dart';
 
@@ -12,6 +15,7 @@ import 'package:yqy_flutter/ui/live/live_page.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_medical.dart';
 
 
+/*
 var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String title = params['title']?.first;
   var list = List<int>();
@@ -20,6 +24,7 @@ var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<St
   String url = params['url']?.first;
   return WebviewPage(title: title, url: url);
 });
+*/
 
 
 var liveHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -54,6 +59,26 @@ var newsDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String,
 
 
 
+var specialDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  String title = params["title"]?.first;
+  var list = List<int>();
+  jsonDecode(title).forEach(list.add);
+  title = Utf8Decoder().convert(list);
+  return SpecialDetailsPage(title,id);
+});
+
+
+var specialDetailsVideoHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return SpecialVideoDetailsPage(id);
+});
+
+
+var specialDetailsWebHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return SpecialWebDetailsPage(id);
+});
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

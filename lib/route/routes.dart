@@ -32,6 +32,13 @@ class Routes {
 
   static String newsContentPage = "/newsContentPage";
 
+  static String specialDetailsPage = "/specialDetailsPage";
+
+  static String specialDetailsVideoPage = "/specialDetailsVideoPage";
+
+  static String specialDetailsWebPage = "/specialDetailsWebPage";
+
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
@@ -39,10 +46,13 @@ class Routes {
     });
     router.define(videoDetailsPage, handler: videoDetailsHandler);
     router.define(liveMeeting, handler: liveHandler);
-    router.define(webPage, handler: webHandler);
+   // router.define(webPage, handler: webHandler);
     router.define(videoListPage, handler: videoHandler);
     router.define(tabMedicalPage, handler: tabMedicalHandler);
     router.define(newsContentPage, handler: newsDetailsHandler);
+    router.define(specialDetailsPage, handler: specialDetailsHandler);
+    router.define(specialDetailsVideoPage, handler: specialDetailsVideoHandler);
+    router.define(specialDetailsWebPage, handler: specialDetailsWebHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

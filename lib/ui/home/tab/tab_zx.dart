@@ -26,7 +26,6 @@ class MyScrvState extends State<MyScrv> {
 
     myColors.add(Colors.black38);
 
-
   }
 
 

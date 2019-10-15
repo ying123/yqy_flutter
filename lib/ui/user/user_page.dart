@@ -22,24 +22,57 @@ class _UserPageState extends State<UserPage> {
 
           getUserTopView(),// 顶部个人信息布局  收藏列表布局
 
-          getRowView(Icons.android,"我的积分"),//点击的选项卡
-          getRowView(Icons.android,"我的作品"),//点击的选项卡
-          getRowView(Icons.android,"我的医言"),//点击的选项卡
-          getRowView(Icons.android,"我的购买"),//点击的选项卡
-          getRowView(Icons.android,"我的专栏"),//点击的选项卡
-          getRowView(Icons.android,"我的草稿箱"),//点击的选项卡
+
+          cYM(5),
+
+          getTopGridView(),
+
+
+          getOtherGridView(),
+
+
+       /*   getRowView(Icons.android,"我的积分"),//点击的选项卡
           getRowView(Icons.android,"系统设置"),//点击的选项卡
           getRowView(Icons.android,"意见反馈"),//点击的选项卡
+         getRowView(Icons.android,"我的收藏"),//点击的选项卡
+          getRowView(Icons.android,"我的足迹"),//点击的选项卡
+          getRowView(Icons.android,"我的点赞"),//点击的选项卡*/
+      //    getRowView(Icons.android,"我的草稿箱"),//点击的选项卡
+
        ],
 
 
      ),
 
-
-
     );
 
   }
+  
+  Widget getItemGridView(String v,IconData iconData,Color colorr){
+    
+    
+    return  Container(
+
+      child:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+
+          Icon(iconData,size:40,color:colorr??Colors.black),
+
+          cYM(5),
+
+          Text(v,style: TextStyle(color: Colors.black,fontSize: setSP(42)),)
+
+
+        ],
+
+      ),
+
+    );
+    
+  }
+  
+  
 
  Widget getUserTopView() => new Stack(
 
@@ -50,17 +83,17 @@ class _UserPageState extends State<UserPage> {
         children: <Widget>[
 
           new Container(
-            height: 200,
+            height: setH(550),
             color: Colors.blue,
             child:  Stack(
               children: <Widget>[
                 new  Container(
                   child: Icon(Icons.account_circle,size: 90,color: Colors.white,) ,
-                  margin: EdgeInsets.fromLTRB(15, 40, 0, 0),
+                  margin: EdgeInsets.fromLTRB(15, 80, 0, 0),
                 )
                 ,
                 new  Container(
-                  margin: EdgeInsets.fromLTRB(115, 60, 0, 0),
+                  margin: EdgeInsets.fromLTRB(115, 90, 0, 0),
                   child: Row(
                     children: <Widget>[
                       Text("姓名",style: TextStyle(color: Colors.white,fontSize: 18),),
@@ -72,7 +105,7 @@ class _UserPageState extends State<UserPage> {
                 ),
                 new  Container(
 
-                  margin: EdgeInsets.fromLTRB(115, 90, 0, 0),
+                  margin: EdgeInsets.fromLTRB(115, 130, 0, 0),
                   child: Row(
                     children: <Widget>[
                       Text("关注：1",style: TextStyle(color: Colors.white,fontSize: 16),),
@@ -100,81 +133,13 @@ class _UserPageState extends State<UserPage> {
                   margin: EdgeInsets.only(right: 10),
                   child:   Icon(Icons.arrow_forward_ios,size: 20,color: Colors.white,),
 
-
                 ),
-
-
-
-
               ],
-
-
             ),
-
           ),
-          new Container(
-            color: Colors.white,
-            height: 60,
-            alignment: Alignment.bottomCenter,
-          )
         ],
 
       ),
-
-      new Container(
-        margin: EdgeInsets.fromLTRB(30, 160, 30, 10),
-        height: 90,
-        decoration: new BoxDecoration(
-          color: Colors.white,
-           border: new Border.all(color: Colors.blue, width: 0.1), // 边色与边宽度
-// 生成俩层阴影，一层绿，一层黄， 阴影位置由offset决定,阴影模糊层度由blurRadius大小决定（大就更透明更扩散），阴影模糊大小由spreadRadius决定
-           boxShadow: [BoxShadow(color:Colors.blue, offset: Offset(1, 1.0),    blurRadius:10, spreadRadius:0.5)],
-          borderRadius: new BorderRadius.circular((20.0)), // 圆角度
-        ),
-
-
-        child: new Row(
-
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("20",style: TextStyle(color: Colors.black,fontSize: 20),),
-                cYM(15),
-                Text("我的收藏",style: TextStyle(color: Colors.black45,fontSize: 18),)
-              ],
-            ),
-            new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("20",style: TextStyle(color: Colors.black,fontSize: 20),),
-                cYM(15),
-                Text("我的足迹",style: TextStyle(color: Colors.black45,fontSize: 18),)
-              ],
-
-            ),
-            new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("20",style: TextStyle(color: Colors.black,fontSize: 20),),
-                cYM(15),
-                Text("我的点赞",style: TextStyle(color: Colors.black45,fontSize: 18),)
-              ],
-
-
-            )
-
-          ],
-
-
-
-        ),
-
-
-
-
-      )
 
     ],
 
@@ -201,7 +166,6 @@ class _UserPageState extends State<UserPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(v,style: TextStyle(fontSize: 18,color: Colors.black),),
-
                 Container(
                   margin: EdgeInsets.only(right: 15),
                   alignment: Alignment.centerRight,
@@ -222,6 +186,67 @@ class _UserPageState extends State<UserPage> {
     ),
 
   );
+
+ Widget getTopGridView() {
+
+   return
+     Container(
+       height:140,
+       padding: EdgeInsets.all(5),
+       child: Card(
+         elevation: 0.3, //设置阴影
+         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))), //设置圆角
+         child: Row(
+             crossAxisAlignment: CrossAxisAlignment.center,
+           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           children: <Widget>[
+             getItemGridView("积分",Icons.monetization_on,Colors.blueAccent),
+             getItemGridView("分享",Icons.share,Colors.green),
+             getItemGridView("消息",Icons.message,Colors.deepOrange)
+
+           ],
+         ),
+
+       )
+
+     );
+
+
+
+
+ }
+
+Widget  getOtherGridView() {
+
+   return Container(
+    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+     height: 280,
+     child: Card(
+       elevation: 0.3, //设置阴影
+       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))), //设置圆角
+
+       child: GridView(
+         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+             crossAxisCount: 3,
+           //子组件宽高长度比例
+         ),
+         padding: EdgeInsets.all(0),
+         physics: new NeverScrollableScrollPhysics(),
+         children: <Widget>[
+           getItemGridView("我的收藏",Icons.collections,Colors.blueAccent),
+           getItemGridView("我的足迹",Icons.apps,Colors.green),
+           getItemGridView("我的点赞",Icons.favorite,Colors.deepOrange),
+           getItemGridView("系统设置",Icons.settings,Colors.blueAccent),
+           getItemGridView("意见反馈",Icons.feedback,Colors.green),
+         ],
+       ),
+
+
+     ),
+
+   );
+
+}
 
 
 
