@@ -6,6 +6,7 @@ import 'package:yqy_flutter/ui/special/bean/special_banner_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_cate_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_list_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_video_entity.dart';
+import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 
 class EntityFactory {
@@ -28,6 +29,8 @@ class EntityFactory {
       return SpecialListEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialVideoEntity") {
       return SpecialVideoEntity.fromJson(json) as T;
+    } else if (T.toString() == "VideoDetailsEntity") {
+      return VideoDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoListEntity") {
       return VideoListEntity.fromJson(json) as T;
     } else {

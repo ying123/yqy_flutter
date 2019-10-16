@@ -284,21 +284,26 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             },
 
           ),
+         new GestureDetector(
+              onTap: (){
+                RRouter.push(context, Routes.specialPage,{"type":"act"});
+              },
+             child: new Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: <Widget>[
+                 Image.asset(
+                   wrapAssets("icon_mission.png"),
+                   width: 45,
+                   height: 45,
+                   fit: BoxFit.fill,
+                 ),
+                 cYM(2),
+                 Text("专题视频")
+               ],
 
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                wrapAssets("icon_mission.png"),
-                width: 45,
-                height: 45,
-                fit: BoxFit.fill,
-              ),
-              cYM(2),
-              Text("专题视频")
-            ],
+    ),
 
-          ),
+         ),
           new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -391,7 +396,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
     return list==null?Container():Container(
       color: Colors.white,
-      height: 110,
+      height: 120,
       child: list.length==1?Image.network(list[0].image):Row(
         children: <Widget>[
         cXM(10),

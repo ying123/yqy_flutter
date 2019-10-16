@@ -10,6 +10,12 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'bean/special_list_entity.dart';
 
 class SpecialPage extends StatefulWidget {
+
+  String type;
+
+
+  SpecialPage(this.type);
+
   @override
   _SpecialPageState createState() => _SpecialPageState();
 }
@@ -88,15 +94,22 @@ class _SpecialPageState extends State<SpecialPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+
+
         appBar: AppBar(
 
-          backgroundColor: Colors.white,
+          backgroundColor: widget.type==null?Colors.white:Colors.blue,
 
           centerTitle: true,
 
-          title: Text("专题视频",style: TextStyle(color: Colors.black),),
+          title: Text("专题视频",style: TextStyle(color: widget.type==null?Colors.black:Colors.white),),
 
-          leading: Container(),
+          leading: widget.type==null?Container():GestureDetector(
+            child: Icon(Icons.arrow_back,color: widget.type==null?Colors.black:Colors.white,),
+            onTap: (){
+              Navigator.pop(context);
+            },
+          ),
 
         ),
 
@@ -120,10 +133,12 @@ class _SpecialPageState extends State<SpecialPage> {
     );
   }
 
+
+
+
   Widget getItemView(SpecilaListList bean) {
 
     return GestureDetector(
-
       onTap: (){
         RRouter.push(context, Routes.specialDetailsPage,{"title":bean.title,"id":bean.id,});
       },
@@ -138,8 +153,6 @@ class _SpecialPageState extends State<SpecialPage> {
             alignment: Alignment.bottomCenter,
 
             children: <Widget>[
-
-
               Image.network(bean.image,width: double.infinity,height: 180,fit: BoxFit.fill,),
               Container(
                 color: Colors.black38,

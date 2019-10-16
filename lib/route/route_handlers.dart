@@ -4,6 +4,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
+import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
 import 'package:yqy_flutter/ui/special/special_web_details.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
@@ -28,7 +29,7 @@ var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<St
 
 
 var liveHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LiveHomePage();
+  return LiveHomePage("act");
 });
 
 
@@ -57,6 +58,13 @@ var newsDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String,
   return NewsContentPage(id,title);
 });
 
+
+
+var specialHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  String type = params["type"]?.first;
+  return SpecialPage(type);
+});
 
 
 var specialDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

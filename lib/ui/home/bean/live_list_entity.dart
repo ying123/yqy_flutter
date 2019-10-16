@@ -135,11 +135,13 @@ class LiveListInfoList {
 	var introduce;
 	var isPlay;
 	var startTime;
+	var start_time;
 	var id;
 	var title;
 	var content;
+	var  review_id;
 
-	LiveListInfoList({this.image, this.introduce, this.isPlay, this.startTime, this.id, this.title, this.content});
+	LiveListInfoList({this.image, this.introduce, this.isPlay, this.startTime, this.id, this.title, this.content,this.review_id,this.start_time});
 
 	LiveListInfoList.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
@@ -149,6 +151,8 @@ class LiveListInfoList {
 		id = json['id'];
 		title = json['title'];
 		content = json['content'];
+		review_id = json['review_id'];
+		start_time = json['start_time'];
 	}
 
 	Map<String, dynamic> toJson() {
@@ -160,6 +164,8 @@ class LiveListInfoList {
 		data['id'] = this.id;
 		data['title'] = this.title;
 		data['content'] = this.content;
+		data['review_id'] = this.review_id;
+		data['start_time'] = this.start_time;
 		return data;
 	}
 }

@@ -32,6 +32,17 @@ class NetworkUtils {
     return result;
   }
 
+
+
+  ///
+  ///  互动会议接口
+  ///
+  static Future<BaseResult> requestInteractListData(int page) async {
+    String url = APPConfig.Server + "interact_live/listing";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page,"token":token});
+    return result;
+  }
+
   ///
   ///  往期会议接口
   ///
@@ -116,6 +127,20 @@ class NetworkUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
     return result;
   }
+
+  ///
+  ///  视频回顾详情页面
+  ///
+  static Future<BaseResult> requestReviewVideo(var id) async {
+    String url = APPConfig.Server + "review/info";
+    Map<String, dynamic> map = new Map();
+    map["reviewId"] = id;
+    map["token"] = token;
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
+
 
 
 

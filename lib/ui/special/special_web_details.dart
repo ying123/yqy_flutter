@@ -192,7 +192,7 @@ class _WebviewPageState extends State<WebviewPage>  with SingleTickerProviderSta
   }
 
   String getHtmlData(String bodyHTML) {
-    String subTitle = "<h3 align=\"center\" >" + widget.bean.title + "<\/h3><br/>";
+    String subTitle = "\<h3 align=\"center\">" + widget.bean.title + "<\/h3><br/>";
     String content = subTitle + bodyHTML;
     String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
     String resultStr = "<html>" + head + "<body>" +

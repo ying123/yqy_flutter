@@ -20,8 +20,8 @@ class _TabData {
 
 final _tabDataList = <_TabData>[
   _TabData(tab: Center(child: Text("视频会议"),), body: VideoMeetingPage()),
-  _TabData(tab:  Center(child: Text("音频会议")), body:  Center(child: Text("音频会议"),)),
-  _TabData(tab:  Center(child: Text("图文会议")), body: Center(child: Text("图文会议"),)),
+  _TabData(tab:  Center(child: Text("音频会议")), body:  Center(child: Text("暂无内容"),)),
+  _TabData(tab:  Center(child: Text("图文会议")), body: Center(child: Text("暂无内容"),)),
 ];
 
 
@@ -211,6 +211,12 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
 Widget getLiveItemView(context,VideoListList listBean){
 
   return  GestureDetector(
+
+    onTap: (){
+      RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.id});
+
+    },
+
     child: new Container(
       height: 100,
       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -252,7 +258,7 @@ Widget getLiveItemView(context,VideoListList listBean){
 
                       ),
 
-                      Text("看录播",style: TextStyle(color: Colors.greenAccent),)
+               //       Text("看录播",style: TextStyle(color: Colors.greenAccent),)
 
                     ],
                   ),
@@ -271,10 +277,7 @@ Widget getLiveItemView(context,VideoListList listBean){
       ),
 
     ),
-    onTap: (){
-      RRouter.push(context, Routes.videoDetailsPage,{"id":listBean.id});
 
-    },
 
   );
 

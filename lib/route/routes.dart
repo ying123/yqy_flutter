@@ -32,6 +32,8 @@ class Routes {
 
   static String newsContentPage = "/newsContentPage";
 
+  static String specialPage = "/specialPage";
+
   static String specialDetailsPage = "/specialDetailsPage";
 
   static String specialDetailsVideoPage = "/specialDetailsVideoPage";
@@ -50,6 +52,7 @@ class Routes {
     router.define(videoListPage, handler: videoHandler);
     router.define(tabMedicalPage, handler: tabMedicalHandler);
     router.define(newsContentPage, handler: newsDetailsHandler);
+    router.define(specialPage, handler: specialHandler);
     router.define(specialDetailsPage, handler: specialDetailsHandler);
     router.define(specialDetailsVideoPage, handler: specialDetailsVideoHandler);
     router.define(specialDetailsWebPage, handler: specialDetailsWebHandler);
