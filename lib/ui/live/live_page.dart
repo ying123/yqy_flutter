@@ -1,6 +1,9 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:oktoast/oktoast.dart';
@@ -185,7 +188,7 @@ class _LiveMeetingPageState extends State<LiveMeetingPage> with AutomaticKeepAli
           itemCount: _liveListEntity.xList.length,
           itemBuilder: (context,index){
 
-          return getLiveItemView(_liveListEntity.xList[index]	);
+          return getLiveItemView(_liveListEntity.xList[index],context	);
 
           }
       ),
@@ -289,7 +292,7 @@ class _LiveInteractionPageState extends State<LiveInteractionPage> with Automati
             itemCount: _liveListEntity.xList.length,
             itemBuilder: (context,index){
 
-              return getLiveItemView2(_liveListEntity.xList[index]	);
+              return getLiveItemView2(_liveListEntity.xList[index],context);
             }
         ),
 
@@ -305,36 +308,22 @@ class _LiveInteractionPageState extends State<LiveInteractionPage> with Automati
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///
 ///   直播列表item
 ///
-Widget getLiveItemView(	LiveListInfoList  bean){
+Widget getLiveItemView(	LiveListInfoList  bean,BuildContext context){
 
   return  GestureDetector(
+
+    onTap: (){
+      bean.review_id==null||bean.review_id==""?RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId":bean.id},transition:TransitionType.cupertino):RRouter.push(context ,Routes.videoDetailsPage,{"reviewId":bean.review_id},transition:TransitionType.cupertino);
+    },
     child: new Container(
       height: 100,
       color: Colors.white,
       child: Row(
 
         children: <Widget>[
-
           cXM(5),
           Image.network(bean.image,fit: BoxFit.fill,height: 90,width:110,),
           cXM(8),
@@ -390,10 +379,6 @@ Widget getLiveItemView(	LiveListInfoList  bean){
       ),
 
     ),
-    onTap: (){
-        showToast("点击会议直播");
-
-    },
 
   );
 
@@ -438,9 +423,12 @@ Widget getTextType(LiveListInfoList bean) {
 ///
 ///   互动直播列表item
 ///
-Widget getLiveItemView2(LiveListInfoList  bean){
+Widget getLiveItemView2(LiveListInfoList  bean,BuildContext context){
 
   return  GestureDetector(
+    onTap: (){
+      bean.review_id==null||bean.review_id==""?RRouter.push(context ,Routes.hdDetailsPage,{"interactId":bean.id},transition:TransitionType.cupertino):RRouter.push(context ,Routes.videoDetailsPage,{"reviewId":bean.review_id},transition:TransitionType.cupertino);
+    },
     child: new Container(
       height: 100,
       color: Colors.white,
@@ -504,11 +492,7 @@ Widget getLiveItemView2(LiveListInfoList  bean){
       ),
 
     ),
-    onTap: (){
 
-        showToast("点击互动直播");
-
-    },
 
   );
 

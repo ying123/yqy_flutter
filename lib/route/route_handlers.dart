@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
+import 'package:yqy_flutter/ui/live/hd_details.dart';
+import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
@@ -87,6 +89,22 @@ var specialDetailsWebHandler = Handler(handlerFunc: (BuildContext context, Map<S
   String id = params["id"]?.first;
   return SpecialWebDetailsPage(id);
 });
+
+
+
+
+var liveDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["broadcastId"]?.first;
+  return LiveDetailsPage(id);
+});
+
+
+var hdDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["interactId"]?.first;
+  return HdDetailsPage(id);
+});
+
+
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

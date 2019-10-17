@@ -40,6 +40,9 @@ class Routes {
 
   static String specialDetailsWebPage = "/specialDetailsWebPage";
 
+  static String liveDetailsPage = "/liveDetailsPage";
+
+  static String hdDetailsPage = "/hdDetailsPage";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -56,6 +59,8 @@ class Routes {
     router.define(specialDetailsPage, handler: specialDetailsHandler);
     router.define(specialDetailsVideoPage, handler: specialDetailsVideoHandler);
     router.define(specialDetailsWebPage, handler: specialDetailsWebHandler);
+    router.define(liveDetailsPage, handler: liveDetailsHandler);
+    router.define(hdDetailsPage, handler: hdDetailsHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

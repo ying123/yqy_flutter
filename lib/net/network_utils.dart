@@ -142,6 +142,31 @@ class NetworkUtils {
 
 
 
+  ///
+  ///  直播详情页面
+  ///
+  static Future<BaseResult> requestLiveDetails(var id) async {
+    String url = APPConfig.Server + "broadcast/info";
+    Map<String, dynamic> map = new Map();
+    map["broadcastId"] = id;
+    map["token"] = token;
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
+
+  ///
+  ///  互动详情页面
+  ///
+  static Future<BaseResult> requestHDDetails(var id) async {
+    String url = APPConfig.Server + "interact_live/info";
+    Map<String, dynamic> map = new Map();
+    map["interactId"] = id;
+    map["token"] = token;
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
 
 
 
