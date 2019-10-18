@@ -44,7 +44,7 @@ class MainHomePage extends StatelessWidget {
         ) ,
         child: OKToast( // Toast 全局配置
             child:  MaterialApp(
-              title: "测试",
+              title: "药企源",
               debugShowCheckedModeBanner: false,//不显示debug
               theme: ThemeData(
                   primaryColor: Colors.blue,

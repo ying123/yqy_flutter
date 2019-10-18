@@ -28,6 +28,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   bool get wantKeepAlive => false;
 
 
+
   //页面加载状态，默认为加载中
   LoadState _layoutState ;
 
@@ -357,11 +358,9 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             
           ),
 
-
         new GestureDetector(
 
           child: Row(
-
             children: <Widget>[
               Text("更多",style: TextStyle(color: Colors.black26,fontSize: 14),),
               cXM(2),
@@ -370,10 +369,11 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             ],
 
           ),
-        
-        onTap: (){
-            
-        },
+
+          onTap: (){
+            type=="热门会议"?RRouter.push(context, Routes.liveMeeting,{"title":"11"}):
+            RRouter.push(context, Routes.videoListPage,{});
+          },
 
         ),
 
@@ -394,32 +394,36 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
     print("list:"+list.length.toString());
 
-    return list==null?Container():Container(
-      color: Colors.white,
-      height: 120,
-      child: list.length==1?Image.network(list[0].image):Row(
-        children: <Widget>[
-        cXM(10),
-       new  Expanded(
-          child: Image.network(
-              list[0].image,
-              height: 120,
-              fit: BoxFit.fill,
-          ),
+    return list==null?Container(): InkWell(
+      child: Container(
+        color: Colors.white,
+        height: 120,
+        child: list.length==1?Image.network(list[0].image):Row(
+          children: <Widget>[
+            cXM(10),
+            new  Expanded(
+              child: Image.network(
+                list[0].image,
+                height: 120,
+                fit: BoxFit.fill,
+              ),
 
-        )  ,
-        cXM(10),
-        new   Expanded(
-          child: Image.network(
-              list[1].image,
-            height: 120,
-            fit: BoxFit.fill,
-          ),
+            )  ,
+            cXM(10),
+            new   Expanded(
+              child: Image.network(
+                list[1].image,
+                height: 120,
+                fit: BoxFit.fill,
+              ),
 
-        )  ,
-        cXM(10),
+            )  ,
+            cXM(10),
 
-        ],
+          ],
+
+        ),
+
 
       ),
 
@@ -435,44 +439,50 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
        return Container();
       }
 
-    return list==null?Container(): Container(
-      height: 100,
-      color: Colors.white,
-      child: Row(
+    return list==null?Container(): InkWell(
+      onTap: (){
+        RRouter.push(context, Routes.videoDetailsPage,{"reviewId":list[pos].id});
+      },
+      child: Container(
+        height: 100,
+        color: Colors.white,
+        child: Row(
 
-        children: <Widget>[
-          cXM(10),
-         Image.network(list[pos].image,width: 110,height: 90,fit: BoxFit.fill,),
-          cXM(8),
-         new Container(
-             decoration: new BoxDecoration(
-                 border: new Border(bottom:BorderSide(color: Colors.black12,width: 1) )
-             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-
-                Container(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(list[pos].title,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),maxLines: 2,overflow: TextOverflow.ellipsis,),
-                  width: 240,
+          children: <Widget>[
+            cXM(10),
+            Image.network(list[pos].image,width: 110,height: 90,fit: BoxFit.fill,),
+            cXM(8),
+            new Container(
+                decoration: new BoxDecoration(
+                    border: new Border(bottom:BorderSide(color: Colors.black12,width: 1) )
                 ),
-                cYM(10),
-                new Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Icon(Icons.access_time,size: 16,color: Colors.black45,),
-                    cXM(10),
-                    Text((list[pos].startTime),style: TextStyle(color: Colors.black45,fontSize: 14),),
+
+                    Container(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Text(list[pos].title,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                      width: 240,
+                    ),
+                    cYM(10),
+                    new Row(
+                      children: <Widget>[
+                        Icon(Icons.access_time,size: 16,color: Colors.black45,),
+                        cXM(10),
+                        Text((list[pos].startTime),style: TextStyle(color: Colors.black45,fontSize: 14),),
+                      ],
+                    ),
+
+
                   ],
-                ),
-
-
-              ],
+                )
             )
-          )
 
-        ],
+          ],
 
+
+        ),
 
       ),
 

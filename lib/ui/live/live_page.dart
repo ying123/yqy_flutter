@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -325,7 +326,7 @@ Widget getLiveItemView(	LiveListInfoList  bean,BuildContext context){
 
         children: <Widget>[
           cXM(5),
-          Image.network(bean.image,fit: BoxFit.fill,height: 90,width:110,),
+         CachedNetworkImage(imageUrl: bean.image,fit: BoxFit.fill,height: 90,width:110,),
           cXM(8),
          Expanded(
              child:
@@ -365,11 +366,6 @@ Widget getLiveItemView(	LiveListInfoList  bean,BuildContext context){
                ],
 
              )
-
-
-
-
-
          ))
 
 
@@ -435,9 +431,8 @@ Widget getLiveItemView2(LiveListInfoList  bean,BuildContext context){
       child: Row(
 
         children: <Widget>[
-
           cXM(5),
-          Image.network(bean.image,fit: BoxFit.fill,height: 90,width:110,),
+          CachedNetworkImage(imageUrl: bean.image,fit: BoxFit.fill,height: 90,width:110,),
           cXM(8),
           Expanded(
               child:
@@ -465,7 +460,6 @@ Widget getLiveItemView2(LiveListInfoList  bean,BuildContext context){
                          Icon(Icons.access_time,size: 16,color: Colors.black45,),
                          cXM(5),
                          Text(bean.start_time??"",style: TextStyle(color: Colors.black45,fontSize: 14),),
-
                        ],
 
                      ),

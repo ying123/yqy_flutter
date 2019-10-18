@@ -1,5 +1,6 @@
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/ui/home/tab/tab_zx.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_home.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_medical.dart';
@@ -17,7 +18,7 @@ final _tabDataList = <_TabData>[
   _TabData(tab: Text('首页'), body: TabHomePage()),
   _TabData(tab: Text('医学园'), body:TabMedicalPage()),
   _TabData(tab: Text('医药新闻'), body: TabNewsPage()),
-  _TabData(tab: Text('政策资讯'), body: Text("政策资讯")),
+  _TabData(tab: Text('政策资讯'), body: TabZxPage()),
   _TabData(tab: Text('法律法规'), body: Text("法律法规")),
   _TabData(tab: Text('规范解读'), body: Text("规范解读"))
 ];
@@ -31,7 +32,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
-
 
 
 
@@ -64,7 +64,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         return Scaffold(
 
           appBar: AppBar(
-
             centerTitle: true,
             title: Text("药企源"),
           ),

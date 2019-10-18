@@ -32,6 +32,9 @@ class Routes {
 
   static String newsContentPage = "/newsContentPage";
 
+  static String zxContentPage = "/zxContentPage";
+
+
   static String specialPage = "/specialPage";
 
   static String specialDetailsPage = "/specialDetailsPage";
@@ -61,6 +64,7 @@ class Routes {
     router.define(specialDetailsWebPage, handler: specialDetailsWebHandler);
     router.define(liveDetailsPage, handler: liveDetailsHandler);
     router.define(hdDetailsPage, handler: hdDetailsHandler);
+    router.define(zxContentPage, handler: zxDetailsHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

@@ -19,7 +19,7 @@ class MyNoticeVecAnimation extends StatefulWidget {
 }
 
 class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin,AutomaticKeepAliveClientMixin {
   AnimationController _controller;
 
   int _nextMassage = 0;
@@ -35,7 +35,7 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
     _startVerticalAni();
     //正向开启动画
     // TODO: implement build
-    return SlideTransition(
+    return   SlideTransition(
       position: _positionAni2,
       child: FadeTransition(
         opacity: _opacityAni2,
@@ -59,7 +59,10 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
   //纵向滚动
   void _startVerticalAni() {
     // TODO: implement initState
-    _controller = AnimationController(duration: widget.duration, vsync: this);
+
+    if(_controller==null){
+      _controller = AnimationController(duration: widget.duration, vsync: this);
+    }
 
     _opacityAni1 = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -113,4 +116,8 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
     // TODO: implement dispose
     super.dispose();
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

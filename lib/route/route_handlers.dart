@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
+import 'package:yqy_flutter/ui/home/zx_content.dart';
 import 'package:yqy_flutter/ui/live/hd_details.dart';
 import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
@@ -57,7 +58,22 @@ var newsDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String,
 
   String id = params["id"]?.first;
   String title = params["title"]?.first;
+  var list = List<int>();
+  jsonDecode(title).forEach(list.add);
+  title = Utf8Decoder().convert(list);
   return NewsContentPage(id,title);
+});
+
+
+
+var zxDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  String id = params["id"]?.first;
+  String title = params["title"]?.first;
+  var list = List<int>();
+  jsonDecode(title).forEach(list.add);
+  title = Utf8Decoder().convert(list);
+  return ZxContentPage(id,title);
 });
 
 

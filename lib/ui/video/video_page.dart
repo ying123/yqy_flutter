@@ -101,6 +101,11 @@ class VideoMeetingPage extends StatefulWidget {
 
 class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepAliveClientMixin{
 
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
+
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 
@@ -140,12 +145,9 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
      /*   print("res.toString():"+res.toString());
         print("res.info():"+res.info.toString());
         print("_videoListEntity.toString():"+_videoListEntity.toString());*/
-
       int statusCode = int.parse(res.status);
 
-
       if(statusCode==9999){
-
         if(page>1){
           _refreshController.loadNoData();
           _videoListEntity.xList.addAll(VideoListEntity.fromJson(res.info).xList);
@@ -154,7 +156,6 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
           _refreshController.refreshCompleted();
           _refreshController.resetNoData();
         }
-
       }
 
         setState(() {
@@ -198,9 +199,7 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+
 }
 
 
@@ -226,7 +225,7 @@ Widget getLiveItemView(context,VideoListList listBean){
         children: <Widget>[
          // Icon(Icons.apps,size: 110,color: Colors.blueAccent,),
         //  wrapImageUrl(listBean.image,110.0, 110.0),
-          Image.network(listBean.image,width: 110,height: 90,fit: BoxFit.fill,),
+          CachedNetworkImage(imageUrl: listBean.image,fit: BoxFit.fill,height: 90,width:110,),
         //  new Image(image: new CachedNetworkImageProvider("http://via.placeholder.com/350x150"),width: 110,height: 110,color: Colors.black,),
           cXM(8),
           new Container(
@@ -253,7 +252,6 @@ Widget getLiveItemView(context,VideoListList listBean){
                           Icon(Icons.access_time,size: 16,color: Colors.black45,),
                           cXM(5),
                           Text(listBean.startTime,style: TextStyle(color: Colors.black45,fontSize: 14),),
-
                         ],
 
                       ),

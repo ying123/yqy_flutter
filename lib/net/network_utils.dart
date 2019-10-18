@@ -170,8 +170,30 @@ class NetworkUtils {
 
 
 
+  ///
+  ///  政策资讯页面
+  ///
+  static Future<BaseResult> requestPolicyadvisory(var page) async {
+    String url = APPConfig.Server + "policyadvisory/listing";
+    Map<String, dynamic> map = new Map();
+    map["page"] = page;
+    map["token"] = token;
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
 
- /* static requestHomeAdvertisementsAndRecommendProductsData() async {
+
+  ///
+  ///  政策资讯详情
+  ///
+  static Future<BaseResult> requestPolicyDetail(var id) async {
+    String url = APPConfig.Server + "policyadvisory/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"policyId":id,"token":token});
+    return result;
+  }
+
+
+/* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);
     return result;

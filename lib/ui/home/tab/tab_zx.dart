@@ -1,94 +1,208 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
+import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
+import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
+import 'package:yqy_flutter/utils/margin.dart';
 
 
-class MyScrv extends StatefulWidget {
+class TabZxPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-
-    return new MyScrvState();
-  }
+  _TabZxPageState createState() => _TabZxPageState();
 }
 
-class MyScrvState extends State<MyScrv> {
-  List<String> _list = new List();
-  List<Color> myColors = new List();
+class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixin{
+
+
+
+  //页面加载状态，默认为加载中
+  LoadState _layoutState = LoadState.State_Loading;
+
+  int page = 1;
+
+  NewsListEntity  _newsListEntity ;
+
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
 
 
   @override
   void initState() {
-    _list.add("政府");
-    _list.add("部门11");
-    _list.add("部门22");
-    myColors.add(Colors.red);
-    myColors.add(Colors.lightBlue);
-    myColors.add(Colors.lightBlue);
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
 
-    myColors.add(Colors.black38);
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+
+
+  void _onRefresh() async{
+    // monitor network fetch
+    //   await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    page = 1;
+    loadData();
+  }
+
+  void _onLoading() async{
+    page ++;
+    loadData();
+  }
+
+  loadData () async{
+    
+    NetworkUtils.requestPolicyadvisory(page)
+        .then((res) {
+      //   if (res.status == 200) {
+      /*   print("res.toString():"+res.toString());
+        print("res.info():"+res.info.toString());
+        print("_videoListEntity.toString():"+_videoListEntity.toString());*/
+
+      int statusCode = int.parse(res.status);
+      if(statusCode==9999){
+        if(page>1){
+          if(_newsListEntity.xList==null||_newsListEntity.xList.length==0){
+            _refreshController.loadNoData();
+          }else{
+            _newsListEntity.xList.addAll(NewsListEntity.fromJson(res.info).xList);
+            _refreshController.loadComplete();
+          }
+
+        }else{
+          _newsListEntity = NewsListEntity.fromJson(res.info);
+          _refreshController.refreshCompleted();
+          _refreshController.resetNoData();
+        }
+
+      }
+      setState(() {
+        _layoutState = loadStateByCode(statusCode);
+      });
+    });
 
   }
 
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return new CustomScrollView(physics: ScrollPhysics(), slivers: <Widget>[
-      const SliverAppBar(
-        pinned: true,
-        expandedHeight: 250.0,
-        flexibleSpace: const FlexibleSpaceBar(
-          title: const Text('demo'),
+    return Scaffold(
+      
+      body:  LoadStateLayout(
+      state: _layoutState,
+      errorRetry: () {
+        setState(() {
+          _layoutState = LoadState.State_Loading;
+        });
+        this.loadData();
+      },
+      successWidget:
+      SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child:  ListView.builder(
+            itemCount:_newsListEntity==null?1:_newsListEntity.xList.length+1,
+            itemBuilder: (context,index) {
+
+              return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.xList[index-1]);
+            }
+
         ),
+
+
       ),
-      new SliverGrid(
-        gridDelegate: new SliverGridDelegateWithMaxCrossAxisExtent(
-          ///设置item的最大像素宽度  比如 130
-          maxCrossAxisExtent: 150,
 
-          ///沿主轴的每个子节点之间的逻辑像素数。 默认垂直方向的子child间距  这里的是主轴方向 当你改变 scrollDirection: Axis.vertical,就是改变了主轴发方向
-          mainAxisSpacing: 10.0,
 
-          ///沿横轴的每个子节点之间的逻辑像素数。默认水平方向的子child间距
-          crossAxisSpacing: 10.0,
+    ),
 
-          ///每个孩子的横轴与主轴范围的比率。 child的宽高比  常用来处理child的适配
-          childAspectRatio: 1.0,
-        ),
-        delegate: new SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-            return new Container(
-              //设置child居中显示
-              alignment: Alignment.center,
-              child: Text(
-                _list[index],
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    //去掉黄色下划线
-                    decoration: TextDecoration.none),
-              ),
-              decoration: new BoxDecoration(
-                color: myColors[index],
-              ),
-            );
 
-          },
-          childCount: _list.length,
-        ),
-      ),
-      new SliverFixedExtentList(
-        itemExtent: 50.0,
-        delegate: new SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-            return new Container(
-              alignment: Alignment.center,
-              color: Colors.lightBlue[100 * (index % 9)],
-              child: new Text('list item $index'),
-            );
-          },
-        ),
-      ),
-    ]);
+    );
   }
+
+  Widget getLiveItemView(BuildContext context,NewListList xlist) {
+
+
+    return GestureDetector(
+
+      onTap: (){
+        RRouter.push(context, Routes.zxContentPage, {"id":xlist.id,"title":xlist.title});
+        },
+      child: new Container(
+
+        color: Colors.white,
+
+        height: 90,
+
+        child: new Column(
+
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+          children: <Widget>[
+
+            new   Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child:   getTitleText(xlist.title),
+            ),
+
+            new  Container(
+
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+
+              child:  new  Row(
+
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                children: <Widget>[
+
+                  getContentText(xlist.source),
+
+                  getContentText(xlist.createTime),
+
+                ],
+
+
+              ),
+            ),
+
+
+            Divider(height: 1,color: Colors.black26,)
+
+
+
+          ],
+
+
+        ),
+
+
+
+
+
+
+      ),
+    );
+
+
+
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
+
+
+
+
