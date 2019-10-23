@@ -1,14 +1,19 @@
 
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
 //公告栏动画 垂直淡入淡出
 class MyNoticeVecAnimation extends StatefulWidget {
   final Duration duration;
   final List<String> messages;
+  final List<HomeDatamedicalNews> data;
 
   const MyNoticeVecAnimation({
     Key key,
     this.duration = const Duration(milliseconds: 3000),
     this.messages,
+    this.data,
   }) : super(key: key);
 
   @override
@@ -43,12 +48,18 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
           position: _positionAni1,
           child: FadeTransition(
             opacity: _opacityAni1,
-            child: Text(
-              widget.messages[_nextMassage],
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              //  style: GlobalConstant.middleText,
-            ),
+            child: InkWell(
+              onTap: (){
+                RRouter.push(context, Routes.newsContentPage, {"id":widget.data[_nextMassage].id,"title":widget.data[_nextMassage].title});
+              },
+              child:  Text(
+                widget.messages[_nextMassage],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                //  style: GlobalConstant.middleText,
+              ),
+
+            )
           ),
         ),
       ),

@@ -214,11 +214,13 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
 
   String value;
 
+
   if(isPlay==0||isPlay=="0"){
     value = "已结束";
   }else if(isPlay==2||isPlay=="2"){
     value = "未开始";
   }
+
 
   return Container(
     height: 220,

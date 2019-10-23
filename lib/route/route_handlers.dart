@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/ui/doctor/doctor_home.dart';
+import 'package:yqy_flutter/ui/home/flfg_content.dart';
+import 'package:yqy_flutter/ui/home/gf_content.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
 import 'package:yqy_flutter/ui/home/zx_content.dart';
 import 'package:yqy_flutter/ui/live/hd_details.dart';
@@ -78,6 +81,30 @@ var zxDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, L
 
 
 
+var flfgDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  String id = params["id"]?.first;
+  String title = params["title"]?.first;
+  var list = List<int>();
+  jsonDecode(title).forEach(list.add);
+  title = Utf8Decoder().convert(list);
+  return FLFGContentPage(id,title);
+});
+
+
+
+var gfDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  String id = params["id"]?.first;
+  String title = params["title"]?.first;
+  var list = List<int>();
+  jsonDecode(title).forEach(list.add);
+  title = Utf8Decoder().convert(list);
+  return GFContentPage(id,title);
+});
+
+
+
 var specialHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
 
   String type = params["type"]?.first;
@@ -119,6 +146,14 @@ var hdDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, L
   String id = params["interactId"]?.first;
   return HdDetailsPage(id);
 });
+
+
+
+var doctorHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["userId"]?.first;
+  return DoctorHomePage(userId: id,);
+});
+
 
 
 

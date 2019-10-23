@@ -9,12 +9,12 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 
-class TabNewsPage extends StatefulWidget {
+class TabFlfgPage extends StatefulWidget {
   @override
-  _TabNewsPageState createState() => _TabNewsPageState();
+  _TabFlfgPageState createState() => _TabFlfgPageState();
 }
 
-class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClientMixin{
+class _TabFlfgPageState extends State<TabFlfgPage> with AutomaticKeepAliveClientMixin{
 
 
 
@@ -46,6 +46,9 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
 
   void _onRefresh() async{
+    // monitor network fetch
+    //   await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
     page = 1;
     loadData();
   }
@@ -56,25 +59,37 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
   }
 
   loadData () async{
-    NetworkUtils.requestNewsListData(page)
+    
+    NetworkUtils.requestLawsList(page)
         .then((res) {
+      //   if (res.status == 200) {
+      /*   print("res.toString():"+res.toString());
+        print("res.info():"+res.info.toString());
+        print("_videoListEntity.toString():"+_videoListEntity.toString());*/
+
       int statusCode = int.parse(res.status);
-      if(statusCode==9999){
-        if(page>1){
+
+      if(statusCode==9999) {
+        if (page > 1) {
+
           if (NewsListEntity
               .fromJson(res.info)
               .xList.length == 0) {
             _refreshController.loadNoData();
           } else {
-            _newsListEntity.xList.addAll(NewsListEntity.fromJson(res.info).xList);
+            _newsListEntity.xList.addAll(NewsListEntity
+                .fromJson(res.info)
+                .xList);
             _refreshController.loadComplete();
           }
 
-        }else{
+
+        } else {
           _newsListEntity = NewsListEntity.fromJson(res.info);
           _refreshController.refreshCompleted();
           _refreshController.resetNoData();
         }
+
       }
       setState(() {
         _layoutState = loadStateByCode(statusCode);
@@ -108,12 +123,13 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
             itemBuilder: (context,index) {
 
               return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.xList[index-1]);
-
             }
 
         ),
 
+
       ),
+
 
     ),
 
@@ -127,8 +143,9 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
     return GestureDetector(
 
       onTap: (){
-      RRouter.push(context, Routes.newsContentPage, {"id":xlist.id,"title":xlist.title});
-    },
+        RRouter.push(context, Routes.flfgContentPage, {"id":xlist.lawsId,"title":xlist.title});
+        },
+
       child: new Container(
 
         color: Colors.white,
@@ -146,36 +163,16 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child:   getTitleText(xlist.title),
             ),
-
-            new  Container(
-
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-
-              child:  new  Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                children: <Widget>[
-
-                  getContentText("来源"+xlist.source),
-
-                  getContentText(xlist.createTime),
-
-                ],
-
-
-              ),
-            ),
-
-
             Divider(height: 1,color: Colors.black26,)
-
-
-
           ],
 
 
         ),
+
+
+
+
+
 
       ),
     );

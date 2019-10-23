@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/route/r_router.dart';
@@ -10,6 +11,7 @@ import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/user/user_page.dart';
 import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
+import 'package:yqy_flutter/utils/event_bus_util.dart';
 
 import 'ui/live/live_page.dart';
 
@@ -27,6 +29,7 @@ class MainHomePage extends StatelessWidget {
     final router = new Router();
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
+    requestPermission();
   }
 
 
@@ -71,15 +74,27 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
   String showTv = "首页"; //当前显示的页面布局
 
   final pages = [HomePage(),SpecialPage(null),LiveHomePage(null),TaskHome(),UserPage()];
-  
-  
+
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
-
     //设置适配尺寸 (填入设计稿中设备的屏幕尺寸) 假如设计稿是按iPhone6的尺寸设计的(iPhone6 750*1334)
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
-
     return Scaffold(
 
       ///使用 indexedStack 防止方式页面重复绘制
@@ -120,7 +135,31 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
 
 }
 
+Future requestPermission() async {
 
+  // 申请权限
+
+  Map<PermissionGroup, PermissionStatus> permissions =
+
+  await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+
+  // 申请结果
+
+  PermissionStatus permission =
+
+  await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+
+  if (permission == PermissionStatus.granted) {
+
+  //  Fluttertoast.showToast(msg: "权限申请通过");
+
+  } else {
+
+  //  Fluttertoast.showToast(msg: "权限申请被拒绝");
+
+  }
+
+}
 
 
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:fijkplayer/fijkplayer.dart';
@@ -73,17 +72,15 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
   }
 
 
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-    EventBusUtil.getDefault().unregister();  //销毁
-  }
+
+
 
   @override
   void dispose() {
-    player.release();
+    player.dispose();
     _tabController.dispose();
+  //  videoPlayerController.dispose();
+  //  chewieController.dispose();
     super.dispose();
   }
 
@@ -136,7 +133,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
         this.loadData();
       },
 
-     successWidget:     new Column(
+     successWidget:_videoDetailsEntity==null?Container():new Column(
 
        children: <Widget>[
 
@@ -150,6 +147,9 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
              height: double.infinity,
              player: player,
            ),
+         /*  child: new Chewie(
+             controller: chewieController,
+           ),*/
          ),
 
          Container(
@@ -292,7 +292,7 @@ class _getNodeListState extends State<getNodeList> {
 class WebPage extends StatefulWidget {
 
 
-  String  url;
+ final String  url;
 
   WebPage(this.url);
 
@@ -303,6 +303,11 @@ class WebPage extends StatefulWidget {
 class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
 
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

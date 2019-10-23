@@ -34,6 +34,9 @@ class Routes {
 
   static String zxContentPage = "/zxContentPage";
 
+  static String flfgContentPage = "/flfgContentPage";
+
+  static String gfContentPage = "/gfContentPage";
 
   static String specialPage = "/specialPage";
 
@@ -46,6 +49,8 @@ class Routes {
   static String liveDetailsPage = "/liveDetailsPage";
 
   static String hdDetailsPage = "/hdDetailsPage";
+
+  static String doctorHomePage = "/doctorHomePage";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -65,6 +70,9 @@ class Routes {
     router.define(liveDetailsPage, handler: liveDetailsHandler);
     router.define(hdDetailsPage, handler: hdDetailsHandler);
     router.define(zxContentPage, handler: zxDetailsHandler);
+    router.define(flfgContentPage, handler: flfgDetailsHandler);
+    router.define(gfContentPage, handler: gfDetailsHandler);
+    router.define(doctorHomePage, handler: doctorHomeHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

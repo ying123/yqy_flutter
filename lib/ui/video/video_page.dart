@@ -149,8 +149,14 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
 
       if(statusCode==9999){
         if(page>1){
-          _refreshController.loadNoData();
-          _videoListEntity.xList.addAll(VideoListEntity.fromJson(res.info).xList);
+          if (VideoListEntity .fromJson(res.info).xList.length == 0){
+            _refreshController.loadNoData();
+          } else {
+            _refreshController.loadNoData();
+            _videoListEntity.xList.addAll(VideoListEntity
+                .fromJson(res.info)
+                .xList);
+          }
         }else{
           _videoListEntity = VideoListEntity.fromJson(res.info);
           _refreshController.refreshCompleted();

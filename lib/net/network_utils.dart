@@ -193,6 +193,59 @@ class NetworkUtils {
   }
 
 
+  ///
+  ///  法律法规列表
+  ///
+  static Future<BaseResult> requestLawsList(var page) async {
+    String url = APPConfig.Server + "laws/laws_listing";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    return result;
+  }
+
+
+
+  ///
+  ///  法律法规详情
+  ///
+  static Future<BaseResult> requestLawsDetail(var id) async {
+    String url = APPConfig.Server + "laws/laws_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"lawsId":id,"token":token});
+    return result;
+  }
+
+
+
+
+
+  ///
+  ///  规范解读列表
+  ///
+  static Future<BaseResult> requestGFList(var page) async {
+    String url = APPConfig.Server + "normativeinterpretation/listing";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    return result;
+  }
+
+
+  ///
+  ///  规范解读详情
+  ///
+  static Future<BaseResult> requestGFDetail(var id) async {
+    String url = APPConfig.Server + "normativeinterpretation/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"normativeId":id,"token":token});
+    return result;
+  }
+
+
+  ///
+  ///  医生主页信息
+  ///
+  static Future<BaseResult> requestDoctorHome(var id) async {
+    String url = APPConfig.Server + "User/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":id,"token":token});
+    return result;
+  }
+
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);

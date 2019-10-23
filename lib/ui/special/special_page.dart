@@ -50,7 +50,6 @@ class _SpecialPageState extends State<SpecialPage> {
 
     NetworkUtils.requestSpecialList(page)
         .then((res){
-
           print("res:"+res.toString());
 
       if(res.status==9999){

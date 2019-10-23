@@ -28,7 +28,12 @@ class EventBusUtil {
   }
 
   void post(event) {
-    _streamController.add(event);
+
+    if (!_streamController.isClosed){
+      _streamController.add(event);
+    }
+
+
   }
 
   void unregister() {

@@ -41,7 +41,6 @@ double setSP(double sp){
 
 
 
-
 ///  普通列表标题的样式
 Widget getTitleText(String str){
 

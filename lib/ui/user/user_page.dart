@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 
 
@@ -12,32 +13,27 @@ class _UserPageState extends State<UserPage> {
 
 
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return Scaffold(
      body:ListView(
       padding: EdgeInsets.all(0),
        children: <Widget>[
 
           getUserTopView(),// 顶部个人信息布局  收藏列表布局
-
-
           cYM(5),
-
           getTopGridView(),
-
-
           getOtherGridView(),
 
-
-       /*   getRowView(Icons.android,"我的积分"),//点击的选项卡
-          getRowView(Icons.android,"系统设置"),//点击的选项卡
-          getRowView(Icons.android,"意见反馈"),//点击的选项卡
-         getRowView(Icons.android,"我的收藏"),//点击的选项卡
-          getRowView(Icons.android,"我的足迹"),//点击的选项卡
-          getRowView(Icons.android,"我的点赞"),//点击的选项卡*/
-      //    getRowView(Icons.android,"我的草稿箱"),//点击的选项卡
 
        ],
 
@@ -61,7 +57,7 @@ class _UserPageState extends State<UserPage> {
 
           cYM(5),
 
-          Text(v,style: TextStyle(color: Colors.black,fontSize: setSP(42)),)
+          Text(v,style: TextStyle(color: Colors.black,fontSize: 15),)
 
 
         ],
@@ -81,9 +77,8 @@ class _UserPageState extends State<UserPage> {
       new Column(
 
         children: <Widget>[
-
           new Container(
-            height: setH(550),
+            height:setH(600),
             color: Colors.blue,
             child:  Stack(
               children: <Widget>[
@@ -92,6 +87,7 @@ class _UserPageState extends State<UserPage> {
                   margin: EdgeInsets.fromLTRB(15, 80, 0, 0),
                 )
                 ,
+
                 new  Container(
                   margin: EdgeInsets.fromLTRB(115, 90, 0, 0),
                   child: Row(
@@ -121,7 +117,6 @@ class _UserPageState extends State<UserPage> {
                           child: Text("待审核",style: TextStyle(color: Colors.blue,fontSize: 12),),
                           alignment: Alignment.center,
                         ),
-
                       )
                     ],
 

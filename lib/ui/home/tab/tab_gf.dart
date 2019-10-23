@@ -9,12 +9,12 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 
-class TabNewsPage extends StatefulWidget {
+class TabGFPage extends StatefulWidget {
   @override
-  _TabNewsPageState createState() => _TabNewsPageState();
+  _TabGFPageState createState() => _TabGFPageState();
 }
 
-class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClientMixin{
+class _TabGFPageState extends State<TabGFPage> with AutomaticKeepAliveClientMixin{
 
 
 
@@ -46,6 +46,9 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
 
   void _onRefresh() async{
+    // monitor network fetch
+    //   await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
     page = 1;
     loadData();
   }
@@ -56,8 +59,13 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
   }
 
   loadData () async{
-    NetworkUtils.requestNewsListData(page)
+    
+    NetworkUtils.requestGFList(page)
         .then((res) {
+      //   if (res.status == 200) {
+      /*   print("res.toString():"+res.toString());
+        print("res.info():"+res.info.toString());
+        print("_videoListEntity.toString():"+_videoListEntity.toString());*/
       int statusCode = int.parse(res.status);
       if(statusCode==9999){
         if(page>1){
@@ -75,6 +83,7 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
           _refreshController.refreshCompleted();
           _refreshController.resetNoData();
         }
+
       }
       setState(() {
         _layoutState = loadStateByCode(statusCode);
@@ -108,12 +117,13 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
             itemBuilder: (context,index) {
 
               return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.xList[index-1]);
-
             }
 
         ),
 
+
       ),
+
 
     ),
 
@@ -122,13 +132,10 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
   }
 
   Widget getLiveItemView(BuildContext context,NewListList xlist) {
-
-
     return GestureDetector(
-
       onTap: (){
-      RRouter.push(context, Routes.newsContentPage, {"id":xlist.id,"title":xlist.title});
-    },
+        RRouter.push(context, Routes.gfContentPage, {"id":xlist.id,"title":xlist.title});
+        },
       child: new Container(
 
         color: Colors.white,
@@ -176,6 +183,11 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
 
         ),
+
+
+
+
+
 
       ),
     );

@@ -1,4 +1,6 @@
+import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
+import 'package:yqy_flutter/ui/home/bean/laws_deails_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_details_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
@@ -15,8 +17,12 @@ class EntityFactory {
   static T generateOBJ<T>(json) {
     if (1 == 0) {
       return null;
+    } else if (T.toString() == "DoctorInfoEntity") {
+      return DoctorInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "HomeDataEntity") {
       return HomeDataEntity.fromJson(json) as T;
+    } else if (T.toString() == "LawsDeailsEntity") {
+      return LawsDeailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LiveListInfo") {
       return LiveListInfo.fromJson(json) as T;
     } else if (T.toString() == "NewsDetailsEntity") {

@@ -266,13 +266,16 @@ class HomeDataBanner {
 	String adId;
 	String adFile;
 	String adURL;
-
-	HomeDataBanner({this.adId, this.adFile, this.adURL});
+	String adv_type;
+	 String art_id;
+	HomeDataBanner({this.adId, this.adFile, this.adURL, this.adv_type, this.art_id});
 
 	HomeDataBanner.fromJson(Map<String, dynamic> json) {
 		adId = json['adId'];
 		adFile = json['adFile'];
 		adURL = json['adURL'];
+		adv_type = json['adv_type'];
+		art_id = json['art_id'];
 	}
 
 	Map<String, dynamic> toJson() {
@@ -280,6 +283,8 @@ class HomeDataBanner {
 		data['adId'] = this.adId;
 		data['adFile'] = this.adFile;
 		data['adURL'] = this.adURL;
+		data['adv_type'] = this.adv_type;
+		data['art_id'] = this.art_id;
 		return data;
 	}
 }
@@ -346,7 +351,6 @@ class HomeDataDrugsrecommandCate {
 		name = json['name'];
 		id = json['id'];
 	}
-
 	Map<String, dynamic> toJson() {
 		final Map<String, dynamic> data = new Map<String, dynamic>();
 		data['name'] = this.name;

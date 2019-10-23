@@ -8,26 +8,26 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'bean/news_details_entity.dart';
 
 
-class ZxContentPage extends StatefulWidget {
+class GFContentPage extends StatefulWidget {
 
 
 
   var id;
   var title;
 
-  ZxContentPage(this.id,this.title);
+  GFContentPage(this.id,this.title);
 
 
 
   @override
-  _ZxContentPageState createState() => _ZxContentPageState();
+  _GFContentPageState createState() => _GFContentPageState();
 
 
 }
 
 
 
-class _ZxContentPageState extends State<ZxContentPage> with AutomaticKeepAliveClientMixin {
+class _GFContentPageState extends State<GFContentPage> with AutomaticKeepAliveClientMixin{
 
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
@@ -50,7 +50,7 @@ class _ZxContentPageState extends State<ZxContentPage> with AutomaticKeepAliveCl
 
    loadData() {
 
-     NetworkUtils.requestPolicyDetail(widget.id)
+     NetworkUtils.requestGFDetail(widget.id)
       .then((res){
 
        int statusCode = int.parse(res.status);
@@ -77,6 +77,8 @@ class _ZxContentPageState extends State<ZxContentPage> with AutomaticKeepAliveCl
        }
 
        print("html11111111111111========================="+htmlStr);
+
+
 
      });
   }
@@ -120,10 +122,6 @@ class _ZxContentPageState extends State<ZxContentPage> with AutomaticKeepAliveCl
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
-
-
-
-
 }
 
 

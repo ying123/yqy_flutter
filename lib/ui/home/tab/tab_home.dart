@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
@@ -54,6 +55,12 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    _refreshController.dispose();
+  }
 
   loadData () async{
 
@@ -187,8 +194,18 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
               data[index % data.length].adFile,
               fit: BoxFit.fill,
             ),
+
             onTap: () {
-              //点击后todo
+              switch( data[index % data.length].adv_type){
+                case "broadcast":  //会议直播
+                  RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId": data[index % data.length].art_id},transition:TransitionType.cupertino);
+                  break;
+                case "period":  //视频会议
+                  RRouter.push(context, Routes.videoDetailsPage,{"reviewId": data[index % data.length].art_id});
+                  break;
+              }
+
+
             });
       },
     );
@@ -197,9 +214,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   Widget   getMarqueeView(List<HomeDatamedicalNews> data){
 
     if(data==null){
-
       return Container();
-
     }else{
       return  new Container(
         padding: EdgeInsets.all(20),
@@ -212,7 +227,11 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             Container(
               width: 310,
               height:60,
-              child:  MyNoticeVecAnimation(duration: const Duration(milliseconds: 6000),messages: data.map((e)=>(e.title)).toList()),
+              child:  MyNoticeVecAnimation(
+                  duration: const Duration(milliseconds: 6000),
+                  messages: data.map((e)=>(e.title)).toList(),
+                  data: data,
+              ),
             ),
 
           ],
@@ -370,6 +389,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
           ),
 
+
           onTap: (){
             type=="热门会议"?RRouter.push(context, Routes.liveMeeting,{"title":"11"}):
             RRouter.push(context, Routes.videoListPage,{});
@@ -377,10 +397,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
         ),
 
-
-
-          
-          
         ],
         
         
@@ -395,27 +411,43 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     print("list:"+list.length.toString());
 
     return list==null?Container(): InkWell(
+      onTap: (){
+
+      },
+
       child: Container(
         color: Colors.white,
         height: 120,
         child: list.length==1?Image.network(list[0].image):Row(
           children: <Widget>[
             cXM(10),
-            new  Expanded(
-              child: Image.network(
-                list[0].image,
-                height: 120,
-                fit: BoxFit.fill,
-              ),
 
-            )  ,
+            new  Expanded(
+              child: InkWell(
+                onTap: (){
+                  list[0].review_id==null||list[0].review_id==""?RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId":list[0].id},transition:TransitionType.cupertino):RRouter.push(context ,Routes.videoDetailsPage,{"reviewId":list[0].review_id},transition:TransitionType.cupertino);
+                },
+                  child: Image.network(
+                    list[0].image,
+                    height: 120,
+                    fit: BoxFit.fill,
+                  )
+              )
+
+            ),
             cXM(10),
             new   Expanded(
-              child: Image.network(
-                list[1].image,
-                height: 120,
-                fit: BoxFit.fill,
-              ),
+              child: InkWell(
+                onTap: (){
+                  list[1].review_id==null||list[1].review_id==""?RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId":list[1].id},transition:TransitionType.cupertino):RRouter.push(context ,Routes.videoDetailsPage,{"reviewId":list[1].review_id},transition:TransitionType.cupertino);
+                },
+                child: Image.network(
+                  list[1].image,
+                  height: 120,
+                  fit: BoxFit.fill,
+
+                ),
+              )
 
             )  ,
             cXM(10),
@@ -498,53 +530,59 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       return Container();
     }
 
-    return Container(
-      color: Colors.white,
-      height: 100,
-      padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-      child: Row(
-        children: <Widget>[
+    return InkWell(
 
-          Image.network(list[pos].userPhoto,width: 90,fit: BoxFit.fill,),
+      onTap: (){
+        RRouter.push(context, Routes.doctorHomePage,{"userId":list[pos].userId});
+      },
+      child: new Container(
+        color: Colors.white,
+        height: 100,
+        padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+        child: Row(
+          children: <Widget>[
 
-          cXM(15),
-          Container(
-            width: 240,
-            decoration: new BoxDecoration(
-                border: new Border(bottom:BorderSide(color: Colors.black12,width: 1) )
-            ),
-            child:   new  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                cYM(15),
-                Text(list[pos].realname,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),),
-                cYM(5),
-                Text(list[pos].userInfo??"该用户尚未填写简介....",style: TextStyle(color: Colors.black45,fontSize: 14),),
-                cYM(5),
-                new Row(
-                  children: <Widget>[
-                    Icon(Icons.person,size: 16,color: Colors.black45,),
-                    cXM(10),
-                    Text(list[pos].jName+list[pos].hName,style: TextStyle(color: Colors.black45,fontSize: 14),),
+            Image.network(list[pos].userPhoto,width: 90,fit: BoxFit.fill,),
 
-                  ],
+            cXM(15),
+            Container(
+              width: 240,
+              decoration: new BoxDecoration(
+                  border: new Border(bottom:BorderSide(color: Colors.black12,width: 1) )
+              ),
+              child:   new  Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  cYM(15),
+                  Text(list[pos].realname,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),),
+                  cYM(5),
+                  Text(list[pos].userInfo??"该用户尚未填写简介....",style: TextStyle(color: Colors.black45,fontSize: 14),),
+                  cYM(5),
+                  new Row(
+                    children: <Widget>[
+                      Icon(Icons.person,size: 16,color: Colors.black45,),
+                      cXM(10),
+                      Text(list[pos].jName+list[pos].hName,style: TextStyle(color: Colors.black45,fontSize: 14),),
 
-                ),
-              ],
+                    ],
 
-            ),
+                  ),
+                ],
 
-          )
+              ),
+
+            )
 
 
-          
-          
-        ],
-        
-        
+
+
+          ],
+
+
+        ),
+
+
       ),
-      
-      
     );
     
   }

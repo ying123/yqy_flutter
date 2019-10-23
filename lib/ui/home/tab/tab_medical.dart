@@ -330,7 +330,9 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
        ),
        onTap:(){
-         RRouter.push(buildContext,Routes.webPage ,{'title': '嘻嘻嘻','url':'https://www.baidu.com'});
+      //   RRouter.push(buildContext,Routes.webPage ,{'title': '嘻嘻嘻','url':'https://www.baidu.com'});
+         showToast("点击列表");
+
        },
 
      );

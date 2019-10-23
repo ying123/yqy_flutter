@@ -70,9 +70,11 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
       int statusCode = int.parse(res.status);
       if(statusCode==9999){
         if(page>1){
-          if(_newsListEntity.xList==null||_newsListEntity.xList.length==0){
+          if (NewsListEntity
+              .fromJson(res.info)
+              .xList.length == 0) {
             _refreshController.loadNoData();
-          }else{
+          } else {
             _newsListEntity.xList.addAll(NewsListEntity.fromJson(res.info).xList);
             _refreshController.loadComplete();
           }

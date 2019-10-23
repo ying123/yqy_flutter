@@ -141,8 +141,14 @@ class _LiveMeetingPageState extends State<LiveMeetingPage> with AutomaticKeepAli
       if(statusCode==9999){
 
         if(page>1){
-          _refreshController.loadNoData();
-          _liveListEntity.xList.addAll(LiveListInfo.fromJson(res.info).xList);
+          if (LiveListInfo .fromJson(res.info) .xList.length == 0){
+            _refreshController.loadNoData();
+          } else {
+            _refreshController.loadNoData();
+            _liveListEntity.xList.addAll(LiveListInfo
+                .fromJson(res.info)
+                .xList);
+          }
         }else{
           _liveListEntity = LiveListInfo.fromJson(res.info);
           _refreshController.refreshCompleted();
@@ -245,8 +251,15 @@ class _LiveInteractionPageState extends State<LiveInteractionPage> with Automati
       if(statusCode==9999){
 
         if(page>1){
-          _refreshController.loadNoData();
-          _liveListEntity.xList.addAll(LiveListInfo.fromJson(res.info).xList);
+
+          if (LiveListInfo .fromJson(res.info) .xList.length == 0){
+            _refreshController.loadNoData();
+          } else {
+            _refreshController.loadNoData();
+            _liveListEntity.xList.addAll(LiveListInfo
+                .fromJson(res.info)
+                .xList);
+          }
         }else{
           _liveListEntity = LiveListInfo.fromJson(res.info);
           _refreshController.refreshCompleted();
