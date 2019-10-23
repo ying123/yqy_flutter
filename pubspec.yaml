@@ -30,7 +30,7 @@ dependencies:
   flutter_banner_swiper: ^0.1.4
 # 添加依赖屏幕适配
   flutter_screenutil: ^0.5.3
-  pull_to_refresh: ^1.5.4 # 刷新控件
+  pull_to_refresh: ^1.5.7 # 刷新控件
   oktoast: ^2.2.0
   fluro: ^1.5.1  # 路由跳转
   shared_preferences: ^0.5.3+4

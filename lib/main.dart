@@ -39,6 +39,14 @@ class MainHomePage extends StatelessWidget {
     return  RefreshConfiguration( // 刷新控件全部配置
         headerTriggerDistance: 100.0,// 头部触发刷新的越界距离
         hideFooterWhenNotFull: true, // Viewport不满一屏时,禁用上拉加载更多功能
+        headerBuilder: ()=> ClassicHeader(
+          idleText: "下拉刷新",
+          completeText: "刷新完成",
+          failedText: "刷新失败",
+          refreshingText: "刷新中",
+          releaseText: "释放开始刷新",
+          canTwoLevelText: "",
+        ),
         footerBuilder: () => ClassicFooter(
           loadingText: "努力加载中..",
           noDataText: "我是有底线的~",

@@ -77,11 +77,13 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
   @override
   void dispose() {
-    player.dispose();
+    player.release();
     _tabController.dispose();
+    super.dispose();
+
   //  videoPlayerController.dispose();
   //  chewieController.dispose();
-    super.dispose();
+
   }
 
   @override

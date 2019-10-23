@@ -243,7 +243,6 @@ Widget getLiveItemView(context,VideoListList listBean){
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
                   Container(
                     padding: EdgeInsets.only(top: 15),
                     child: Text(listBean.title,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),maxLines: 2,overflow: TextOverflow.ellipsis,),

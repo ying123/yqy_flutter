@@ -28,11 +28,7 @@ class EventBusUtil {
   }
 
   void post(event) {
-
-    if (!_streamController.isClosed){
       _streamController.add(event);
-    }
-
 
   }
 
