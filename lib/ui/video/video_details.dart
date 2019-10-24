@@ -4,6 +4,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:like_button/like_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
@@ -74,7 +75,6 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
 
 
-
   @override
   void dispose() {
     player.release();
@@ -104,7 +104,15 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
         actions: <Widget>[
 
           new GestureDetector(
-            child: Icon(Icons.star_border,color: Colors.black45,size: 30,),
+            child:  LikeButton(
+
+              likeBuilder: (bool isLike){
+
+                return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
+                          Icon(Icons.star,color:Colors.amber,size: 30,);
+              },
+
+            ),
             onTap: (){
               showToast("点击收藏");
             },

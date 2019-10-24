@@ -64,12 +64,10 @@ class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTick
   }
 
 
+
   void loadData() async{
 
-
     //await Future.delayed(Duration(milliseconds: 1000));
-
-
     NetworkUtils.requestSpecialArticle(widget.id)
         .then((res){
 
@@ -84,11 +82,7 @@ class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTick
 
       });
     });
-
-
   }
-
-
 
 
   @override

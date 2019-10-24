@@ -52,11 +52,15 @@ class Routes {
 
   static String doctorHomePage = "/doctorHomePage";
 
+  static String realNamePage = "/realNamePage";
+
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
        return null;
     });
+
     router.define(videoDetailsPage, handler: videoDetailsHandler);
     router.define(liveMeeting, handler: liveHandler);
    // router.define(webPage, handler: webHandler);
@@ -73,6 +77,8 @@ class Routes {
     router.define(flfgContentPage, handler: flfgDetailsHandler);
     router.define(gfContentPage, handler: gfDetailsHandler);
     router.define(doctorHomePage, handler: doctorHomeHandler);
+    router.define(realNamePage, handler: realNameHomeHandler);
+
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

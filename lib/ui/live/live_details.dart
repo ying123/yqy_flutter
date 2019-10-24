@@ -115,17 +115,14 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
          new GestureDetector(
             
             child: Icon(Icons.share,color: Colors.black45,size: 26,),
-            
             onTap: (){
               showToast("点击分享");
             },
           ),
          cXM(10),
-
         ],
         
       ),
-
 
       body:
       LoadStateLayout(
@@ -136,11 +133,8 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
         });
         this.loadData();
       },
-
      successWidget:_liveDetailsInfo==null?Container():new Column(
-
        children: <Widget>[
-
          Container(
            color: Colors.black,
            height: 220,
@@ -255,10 +249,7 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
 
       ],
     ),
-
-
   );
-
 
 
 
@@ -308,7 +299,6 @@ class _getNodeListState extends State<getNodeList> {
                         Text(widget.playList[index].author),
                         Divider(height: 1,color: Colors.black12,)
 
-
                       ],
 
                     ),
@@ -318,8 +308,6 @@ class _getNodeListState extends State<getNodeList> {
                 ],
 
               ),
-
-
             ),
 
           );

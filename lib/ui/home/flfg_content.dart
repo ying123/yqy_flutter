@@ -23,9 +23,7 @@ class FLFGContentPage extends StatefulWidget {
   @override
   _FLFGContentPageState createState() => _FLFGContentPageState();
 
-
 }
-
 
 
 class _FLFGContentPageState extends State<FLFGContentPage> with AutomaticKeepAliveClientMixin {

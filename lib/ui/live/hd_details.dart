@@ -28,8 +28,6 @@ final _tabDataList = <_TabData>[
 ];
 
 
-
-
 class HdDetailsPage extends StatefulWidget {
 
    var id;
@@ -57,7 +55,6 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
   HdDetailsInfo  _hdDetailsInfo;
 
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -80,6 +77,7 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
     // TODO: implement deactivate
     super.deactivate();
     EventBusUtil.getDefault().unregister();  //销毁
+    
   }
 
   @override
@@ -92,7 +90,6 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         titleSpacing: 0,
         leading: GestureDetector(

@@ -1,5 +1,8 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 
 
@@ -108,15 +111,21 @@ class _UserPageState extends State<UserPage> {
                       cXM(15),
                       Text("粉丝：1",style: TextStyle(color: Colors.white,fontSize: 16),),
                       cXM(15),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: Container(
-                          width: 75,
-                          height: 25,
-                          color: Colors.white,
-                          child: Text("待审核",style: TextStyle(color: Colors.blue,fontSize: 12),),
-                          alignment: Alignment.center,
+                      InkWell(
+                        onTap: (){
+                          RRouter.push(context, Routes.realNamePage,{},transition:TransitionType.cupertino);
+                        },
+                        child:  ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: 75,
+                            height: 25,
+                            color: Colors.white,
+                            child: Text("待审核",style: TextStyle(color: Colors.blue,fontSize: 12),),
+                            alignment: Alignment.center,
+                          ),
                         ),
+
                       )
                     ],
 

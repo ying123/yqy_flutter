@@ -13,6 +13,7 @@ import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
 import 'package:yqy_flutter/ui/special/special_web_details.dart';
+import 'package:yqy_flutter/ui/user/real_name_page.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
 import 'package:yqy_flutter/ui/video/video_page.dart';
 
@@ -154,6 +155,11 @@ var doctorHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, 
   return DoctorHomePage(userId: id,);
 });
 
+
+var realNameHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["userId"]?.first;
+  return RealNamePage();
+});
 
 
 
