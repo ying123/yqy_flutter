@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_flfg.dart';
@@ -63,6 +64,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
+        .copyWith(statusBarBrightness: Brightness.dark));
         return Scaffold(
 
           appBar: AppBar(

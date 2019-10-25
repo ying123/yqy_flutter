@@ -18,14 +18,13 @@ import 'ui/live/live_page.dart';
 void main() {
 
   runApp(MainHomePage());
-
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 }
 
 
 class MainHomePage extends StatelessWidget {
 
   MainHomePage() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     final router = new Router();
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);

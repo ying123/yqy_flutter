@@ -98,7 +98,6 @@ class _SpecialPageState extends State<SpecialPage> {
         appBar: AppBar(
 
           backgroundColor: widget.type==null?Colors.white:Colors.blue,
-
           centerTitle: true,
 
           title: Text("专题视频",style: TextStyle(color: widget.type==null?Colors.black:Colors.white),),
