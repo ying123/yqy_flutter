@@ -25,7 +25,7 @@ void main() {
 class MainHomePage extends StatelessWidget {
 
   MainHomePage() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     final router = new Router();
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
