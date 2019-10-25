@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
@@ -324,21 +325,29 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     ),
 
          ),
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                wrapAssets("icon_garden.png"),
-                width: 45,
-                height: 45,
-                fit: BoxFit.fill,
-              ),
-              cYM(2),
-              Text("医学园")
+          new InkWell(
+            onTap: (){
 
-            ],
+              showToast("暂无内容");
+
+            },
+
+            child:  new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  wrapAssets("icon_garden.png"),
+                  width: 45,
+                  height: 45,
+                  fit: BoxFit.fill,
+                ),
+                cYM(2),
+                Text("医学园")
+
+              ],
 
 
+            ),
           )
 
 

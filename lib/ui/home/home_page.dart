@@ -18,7 +18,7 @@ class _TabData {
 
 final _tabDataList = <_TabData>[
   _TabData(tab: Text('首页'), body: TabHomePage()),
-  _TabData(tab: Text('医学园'), body:TabMedicalPage()),
+ /* _TabData(tab: Text('医学园'), body:TabMedicalPage()),*/
   _TabData(tab: Text('医药新闻'), body: TabNewsPage()),
   _TabData(tab: Text('政策资讯'), body: TabZxPage()),
   _TabData(tab: Text('法律法规'), body:TabFlfgPage()),
