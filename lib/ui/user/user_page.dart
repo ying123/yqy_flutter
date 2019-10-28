@@ -57,11 +57,8 @@ class _UserPageState extends State<UserPage> {
         children: <Widget>[
 
           Icon(iconData,size:40,color:colorr??Colors.black),
-
           cYM(5),
-
           Text(v,style: TextStyle(color: Colors.black,fontSize: 15),)
-
 
         ],
 
@@ -78,7 +75,6 @@ class _UserPageState extends State<UserPage> {
     children: <Widget>[
 
       new Column(
-
         children: <Widget>[
           new Container(
             height:setH(600),
@@ -103,7 +99,6 @@ class _UserPageState extends State<UserPage> {
 
                 ),
                 new  Container(
-
                   margin: EdgeInsets.fromLTRB(115, 130, 0, 0),
                   child: Row(
                     children: <Widget>[

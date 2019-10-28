@@ -80,7 +80,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
 
   String showTv = "首页"; //当前显示的页面布局
 
-  final pages = [HomePage(),SpecialPage(null),LiveHomePage(null)/*,TaskHome()*//*,UserPage()*/];
+  final pages = [HomePage(),SpecialPage(null),LiveHomePage(null),TaskHome(),UserPage()];
 
 
 
@@ -96,7 +96,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
     super.initState();
 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +114,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
           items: [btmNb("首页", Icons.home),
           btmNb("专题", Icons.apps),
           btmNb("直播", Icons.live_tv),
-      /*    btmNb("任务", Icons.assignment_turned_in),*/
-        /*  btmNb("我的", Icons.person)*/
+          btmNb("任务", Icons.assignment_turned_in),
+          btmNb("我的", Icons.person)
           ],
           currentIndex: _currentIndex,
           onTap: _onItemTapped,
@@ -135,9 +134,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
 
   ///底部导航栏item
   btmNb(String v,IconData iconData) => BottomNavigationBarItem(icon: Icon(iconData),title: Text(v));
-
-
-
 
 
 }

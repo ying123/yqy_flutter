@@ -66,7 +66,6 @@ class _TabFlfgPageState extends State<TabFlfgPage> with AutomaticKeepAliveClient
       /*   print("res.toString():"+res.toString());
         print("res.info():"+res.info.toString());
         print("_videoListEntity.toString():"+_videoListEntity.toString());*/
-
       int statusCode = int.parse(res.status);
 
       if(statusCode==9999) {
@@ -82,7 +81,6 @@ class _TabFlfgPageState extends State<TabFlfgPage> with AutomaticKeepAliveClient
                 .xList);
             _refreshController.loadComplete();
           }
-
 
         } else {
           _newsListEntity = NewsListEntity.fromJson(res.info);

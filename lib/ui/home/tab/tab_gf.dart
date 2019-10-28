@@ -17,7 +17,6 @@ class TabGFPage extends StatefulWidget {
 class _TabGFPageState extends State<TabGFPage> with AutomaticKeepAliveClientMixin{
 
 
-
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 

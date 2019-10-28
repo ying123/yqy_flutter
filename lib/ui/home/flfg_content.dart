@@ -36,8 +36,6 @@ class _FLFGContentPageState extends State<FLFGContentPage> with AutomaticKeepAli
 
   String htmlStr;
 
-
-
   @override
   void initState() {
     // TODO: implement initState
