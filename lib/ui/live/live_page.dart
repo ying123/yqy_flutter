@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
@@ -185,22 +186,32 @@ class _LiveMeetingPageState extends State<LiveMeetingPage> with AutomaticKeepAli
         this.loadData();
       },
       successWidget:
-      _liveListEntity==null?Container():SmartRefresher(
-      enablePullDown: true,
-      enablePullUp: true,
+      _liveListEntity==null?Container():AnimationLimiter(
+      child:SmartRefresher(
+    enablePullDown: true,
+    enablePullUp: true,
     controller: _refreshController,
     onRefresh: _onRefresh,
     onLoading: _onLoading,
-    child:ListView.builder(
+    child: ListView.builder(
           itemCount: _liveListEntity.xList.length,
           itemBuilder: (context,index){
+            return  AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 1000),
+              child: FadeInAnimation(
+                child: getLiveItemView(_liveListEntity.xList[index],context	),
+              ),
 
-          return getLiveItemView(_liveListEntity.xList[index],context	);
+            );
+
 
           }
       ),
 
     ),
+      ),
+
     );
   }
 

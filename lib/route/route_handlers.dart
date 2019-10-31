@@ -9,10 +9,13 @@ import 'package:yqy_flutter/ui/home/news_content.dart';
 import 'package:yqy_flutter/ui/home/zx_content.dart';
 import 'package:yqy_flutter/ui/live/hd_details.dart';
 import 'package:yqy_flutter/ui/live/live_details.dart';
+import 'package:yqy_flutter/ui/login/login_page.dart';
+import 'package:yqy_flutter/ui/login/register_page.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
 import 'package:yqy_flutter/ui/special/special_web_details.dart';
+import 'package:yqy_flutter/ui/user/feed_back_page.dart';
 import 'package:yqy_flutter/ui/user/real_name_page.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
 import 'package:yqy_flutter/ui/video/video_page.dart';
@@ -34,6 +37,13 @@ var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<St
 });
 */
 
+var loginHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LoginPage();
+});
+
+var registerHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return RegisterPage();
+});
 
 var liveHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return LiveHomePage("act");
@@ -161,6 +171,10 @@ var realNameHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String
   return RealNamePage();
 });
 
+var feedBackHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["userId"]?.first;
+  return FeedBackPage();
+});
 
 
 /*
@@ -172,13 +186,7 @@ var mainHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<S
   return ApplicationPage();
 });
 
-var loginHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LoginPage();
-});
 
-var registerHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return RegisterPage();
-});
 
 var productDetailHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String productId = params['productId']?.first;

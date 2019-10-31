@@ -17,7 +17,7 @@ class _RealNamePageState extends State<RealNamePage> {
   String vName,vCard,vAddress = "选择地区";
 
   GlobalKey _formKey= new GlobalKey<FormState>();
-
+  GlobalKey _addressKey= new GlobalKey<FormState>();
 
 
   @override
@@ -104,7 +104,7 @@ class _RealNamePageState extends State<RealNamePage> {
                             children: <Widget>[
                               Expanded(
                                   child: Center(
-                                    child:  Text(vAddress,style: TextStyle(fontSize: 16),),
+                                    child:  Text(vAddress,style: TextStyle(fontSize: 16),key: _addressKey,),
                                   )
                               ),
                               IconButton(
@@ -119,7 +119,11 @@ class _RealNamePageState extends State<RealNamePage> {
                                     },
                                     selectArea: (area) {
                                       print(area);
-                                      vAddress = area.toString();
+
+                                        setState(() {
+                                          vAddress = area.toString();
+                                        });
+
                                     },
                                   );
                                 },
@@ -252,8 +256,8 @@ class _RealNamePageState extends State<RealNamePage> {
                         ),
                         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                         onPressed: () {
-
                           if((_formKey.currentState as FormState).validate()){
+
 
                             //验证通过提交数据
                           }

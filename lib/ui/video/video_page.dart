@@ -219,7 +219,6 @@ Widget getLiveItemView(context,VideoListList listBean){
 
     onTap: (){
       RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.id});
-
     },
 
     child: new Container(
@@ -227,7 +226,6 @@ Widget getLiveItemView(context,VideoListList listBean){
       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
       color: Colors.white,
       child: Row(
-
         children: <Widget>[
          // Icon(Icons.apps,size: 110,color: Colors.blueAccent,),
         //  wrapImageUrl(listBean.image,110.0, 110.0),

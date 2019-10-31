@@ -8,10 +8,6 @@ class Routes {
   
   static String mainPage = "/main";
 
-  static String loginPage = "/login";
-
-  static String registerPage = "/registerPage";
-
   static String productDetailPage = "/productDetailPage";
 
   static String myProductListPage = "/myProductList";
@@ -19,6 +15,10 @@ class Routes {
   static String newProductPage = "/newProductPage";
 
   ////
+
+  static String loginPage = "/login";
+
+  static String registerPage = "/registerPage";
 
   static String webPage = "/webPageView";
 
@@ -54,13 +54,20 @@ class Routes {
 
   static String realNamePage = "/realNamePage";
 
+  static String feedBackPage = "/feedBackPage";
+
+
+
+
+
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
        return null;
     });
-
+    router.define(loginPage, handler:loginHandler);
+    router.define(registerPage, handler:registerHandler);
     router.define(videoDetailsPage, handler: videoDetailsHandler);
     router.define(liveMeeting, handler: liveHandler);
    // router.define(webPage, handler: webHandler);
@@ -78,15 +85,14 @@ class Routes {
     router.define(gfContentPage, handler: gfDetailsHandler);
     router.define(doctorHomePage, handler: doctorHomeHandler);
     router.define(realNamePage, handler: realNameHomeHandler);
-
+    router.define(feedBackPage, handler: feedBackHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);
     router.define(webPage, handler: webHandler);
     router.define(myProductListPage, handler: myProductListHandler);
     router.define(newProductPage, handler: newProductHandler);
-     router.define(loginPage, handler:loginHandler);
-    router.define(registerPage, handler:registerHandler);*/
+   */
   }
 
 }

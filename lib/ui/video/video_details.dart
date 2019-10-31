@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_bus/event_bus.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:like_button/like_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/utils/event_bus_util.dart';
 import  'package:yqy_flutter/utils/margin.dart';
@@ -54,6 +56,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
   VideoDetailsInfo  _videoDetailsEntity;
 
+  bool isCollect;
 
 
   @override
@@ -103,20 +106,19 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
         backgroundColor: Colors.white,
         actions: <Widget>[
 
-          new GestureDetector(
-            child:  LikeButton(
-
+          LikeButton(
+              isLiked: isCollect,
               likeBuilder: (bool isLike){
 
                 return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
                           Icon(Icons.star,color:Colors.amber,size: 30,);
               },
+              onTap: (bool isLiked)
+              {
+                return onLikeButtonTap(isLiked,widget.id);
+              },
 
             ),
-            onTap: (){
-              showToast("点击收藏");
-            },
-          ),
           cXM(10),
          new GestureDetector(
             
@@ -206,6 +208,9 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
         _videoDetailsEntity = VideoDetailsInfo.fromJson(res.info);
       }
       setState(() {
+
+        print(_videoDetailsEntity.ifCollect);
+        isCollect = _videoDetailsEntity.ifCollect=="0"?false:true;
         tabBarViewList = [WebPage(_videoDetailsEntity.introduce),getNodeList(_videoDetailsEntity.playList)];
         player.setDataSource(_videoDetailsEntity.playUrl, autoPlay: true);
         _layoutState = loadStateByCode(statusCode);
@@ -215,8 +220,32 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
   }
 
 
-}
 
+  }
+
+  Future<bool> onLikeButtonTap(bool isLike,var  id) {
+
+    final Completer<bool> completer = new Completer<bool>();
+
+    if(!isLike){
+
+      NetworkUtils.requestCollectAdd(AppRequest.Comment_video_meeting,id)
+          .then((res){
+        int statusCode = int.parse(res.status);
+        completer.complete(statusCode==9999?true:false);
+        showToast(res.message);
+      });
+    }else{
+
+      NetworkUtils.requestCollectDel(AppRequest.Comment_video_meeting,id)
+          .then((res){
+        int statusCode = int.parse(res.status);
+        completer.complete(statusCode==9999?false:true);
+        showToast(res.message);
+      });
+     }
+    return completer.future;
+}
 
 
 

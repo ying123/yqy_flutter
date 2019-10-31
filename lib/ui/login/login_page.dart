@@ -1,0 +1,307 @@
+import 'package:flutter/material.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'dart:async';
+
+import 'package:yqy_flutter/route/routes.dart';
+
+
+
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  Timer _timer;
+
+  //倒计时数值
+  var countdownTime = 0;
+
+
+  final _formKey = GlobalKey<FormState>();
+  String _email, _password;
+  bool _isObscure = true;
+  Color _eyeColor;
+  List _loginMethod = [
+    {
+      "title": "facebook",
+      "icon": Icons.account_circle,
+    },
+    {
+      "title": "google",
+      "icon":Icons.account_circle,
+    },
+    {
+      "title": "twitter",
+      "icon": Icons.account_circle,
+    },
+  ];
+
+
+  //倒计时方法
+  startCountdown() {
+    //倒计时时间
+    countdownTime = 60;
+    final call = (timer) {
+      if (countdownTime < 1) {
+        _timer.cancel();
+      } else {
+        setState(() {
+          countdownTime -= 1;
+        });
+      }
+    };
+    _timer = Timer.periodic(Duration(seconds: 1), call);
+  }
+
+  String handleCodeAutoSizeText() {
+    if (countdownTime > 0) {
+      return "${countdownTime}s后重新获取";
+    }
+      return "获取验证码";
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if(_timer!=null){
+      _timer.cancel();
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        body: Form(
+            key: _formKey,
+            child: ListView(
+              padding: EdgeInsets.symmetric(horizontal: 22.0),
+              children: <Widget>[
+                SizedBox(
+                  height: kToolbarHeight,
+                ),
+                buildTitle(),
+                buildTitleLine(),
+                SizedBox(height: 70.0),
+                buildEmailTextField(),
+                SizedBox(height: 30.0),
+                buildSmsRow(context),
+                //    buildPasswordTextField(context),
+                //buildForgetPasswordText(context),
+                SizedBox(height: 60.0),
+                buildLoginButton(context),
+                SizedBox(height: 30.0),
+                buildOtherLoginText(),
+                buildOtherMethod(context),
+                buildRegisterText(context),
+              ],
+            )));
+  }
+
+  Align buildRegisterText(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: EdgeInsets.only(top: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('没有账号？'),
+            GestureDetector(
+              child: Text(
+                '点击注册',
+                style: TextStyle(color: Colors.green),
+              ),
+              onTap: () {
+                //TODO 跳转到注册页面
+                RRouter.push(context, Routes.registerPage,{});
+                },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ButtonBar buildOtherMethod(BuildContext context) {
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      children: _loginMethod
+          .map((item) => Builder(
+        builder: (context) {
+          return IconButton(
+              icon: Icon(item['icon'],
+                  color: Theme.of(context).iconTheme.color),
+              onPressed: () {
+                //TODO : 第三方登录方法
+                Scaffold.of(context).showSnackBar(new SnackBar(
+                  content: new Text("${item['title']}登录"),
+                  action: new SnackBarAction(
+                    label: "取消",
+                    onPressed: () {},
+                  ),
+                ));
+              });
+        },
+      ))
+          .toList(),
+    );
+  }
+
+  Align buildOtherLoginText() {
+    return Align(
+        alignment: Alignment.center,
+        child: Text(
+          '其他账号登录',
+          style: TextStyle(color: Colors.grey, fontSize: 14.0),
+        ));
+  }
+
+  Align buildLoginButton(BuildContext context) {
+    return Align(
+      child: SizedBox(
+        height: 45.0,
+        width: 270.0,
+        child: RaisedButton(
+          child: Text(
+            '登陆',
+            style: Theme.of(context).primaryTextTheme.headline,
+          ),
+          color: Colors.blueAccent,
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              ///只有输入的内容符合要求通过才会到达此处
+              _formKey.currentState.save();
+              //TODO 执行登录方法
+              print('email:$_email , assword:$_password');
+            }
+          },
+          shape: StadiumBorder(side: BorderSide(color: Colors.blueAccent)),
+        ),
+      ),
+    );
+  }
+
+  Padding buildForgetPasswordText(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: FlatButton(
+          child: Text(
+            '忘记密码？',
+            style: TextStyle(fontSize: 14.0, color: Colors.grey),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+  Container buildSmsRow(BuildContext context){
+
+    return Container(
+
+      child: Row(
+
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+
+          Expanded(
+
+          child: buildPasswordTextField(context),
+
+          ),
+
+          SizedBox(width: 20,),
+
+
+          InkWell(
+            onTap: (){
+
+              if(countdownTime==0){
+                startCountdown();
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blueAccent)
+
+              ),
+              alignment: Alignment.center,
+              height: 40,
+              child: Padding(padding:EdgeInsets.fromLTRB(10, 0, 10, 0) ,child: Text(handleCodeAutoSizeText(),style: TextStyle(color: Colors.blueAccent),),),
+
+            ) ,
+          )
+
+
+          //buildPasswordTextField(context),
+
+        ],
+
+      ),
+
+    );
+
+  }
+
+
+
+  TextField buildPasswordTextField(BuildContext context) {
+    return TextField(
+      obscureText: _isObscure,
+      decoration: InputDecoration(
+          labelText: '验证码',
+         ),
+    );
+  }
+
+  TextFormField buildEmailTextField() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: '手机号',
+      ),
+      validator: (String value) {
+       if(value.length==0){
+         return "请输入手机号";
+       }
+        return null;
+      },
+      onSaved: (String value) => _email = value,
+    );
+  }
+
+  Padding buildTitleLine() {
+    return Padding(
+      padding: EdgeInsets.only(left: 12.0, top: 4.0),
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: Container(
+          color: Colors.blue,
+          width: 40.0,
+          height: 2.0,
+        ),
+      ),
+    );
+  }
+
+  Padding buildTitle() {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text(
+        '药企源',
+        style: TextStyle(fontSize: 42.0,color: Colors.blue),
+      ),
+    );
+  }
+}

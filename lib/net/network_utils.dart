@@ -12,7 +12,7 @@ class NetworkUtils {
 
 
 
-  static String token = "4aef8efb0f1b306901759d4152b468341751894";
+  static String token = "4aef8efb0f1b306901759d4152b46834401351";
 
   ///
   ///  首页接口
@@ -245,6 +245,45 @@ class NetworkUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":id,"token":token});
     return result;
   }
+  ///
+  ///  意见反馈
+  ///
+  static Future<BaseResult> requestFeedback(var userId,var content ,var phone,) async {
+    String url = APPConfig.Server + "User/feedBack";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"fb_phone":phone,"fb_content":content,"token":token});
+    return result;
+  }
+
+
+  /**
+   * 添加收藏
+   *
+   * @param type     收藏类型
+   * @param otherId  收藏id
+   * @param observer
+   */
+  ///
+  static Future<BaseResult> requestCollectAdd(String type, String otherId) async {
+    String url = APPConfig.Server + "collect/add";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"otherId":otherId,"token":token});
+    return result;
+  }
+
+
+
+  ///
+  ///  删除收藏
+  ///
+  static Future<BaseResult> requestCollectDel(String type, String otherId) async {
+    String url = APPConfig.Server + "collect/del";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"otherId":otherId,"token":token});
+    return result;
+  }
+
+
+
+
+
 
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";

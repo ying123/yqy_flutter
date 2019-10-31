@@ -50,20 +50,25 @@ class _UserPageState extends State<UserPage> {
   Widget getItemGridView(String v,IconData iconData,Color colorr){
     
     
-    return  Container(
+    return   InkWell(
+      onTap: (){
+        RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
+      },
+      child: Container(
 
-      child:  Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        child:  Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
 
-          Icon(iconData,size:40,color:colorr??Colors.black),
-          cYM(5),
-          Text(v,style: TextStyle(color: Colors.black,fontSize: 15),)
+            Icon(iconData,size:40,color:colorr??Colors.black),
+            cYM(5),
+            Text(v,style: TextStyle(color: Colors.black,fontSize: 15),)
 
-        ],
+          ],
+
+        ),
 
       ),
-
     );
     
   }
@@ -73,7 +78,6 @@ class _UserPageState extends State<UserPage> {
  Widget getUserTopView() => new Stack(
 
     children: <Widget>[
-
       new Column(
         children: <Widget>[
           new Container(
@@ -84,8 +88,7 @@ class _UserPageState extends State<UserPage> {
                 new  Container(
                   child: Icon(Icons.account_circle,size: 90,color: Colors.white,) ,
                   margin: EdgeInsets.fromLTRB(15, 80, 0, 0),
-                )
-                ,
+                ),
 
                 new  Container(
                   margin: EdgeInsets.fromLTRB(115, 90, 0, 0),
@@ -96,7 +99,6 @@ class _UserPageState extends State<UserPage> {
                       Icon(Icons.android,size: 18,)
                     ],
                   ) ,
-
                 ),
                 new  Container(
                   margin: EdgeInsets.fromLTRB(115, 130, 0, 0),
@@ -149,9 +151,7 @@ class _UserPageState extends State<UserPage> {
 
     color: Colors.white,
     height: 55,
-
     child:  new Row(
-
       children: <Widget>[
         cXM(15),
         Icon(Icons.android,size: 26,),
@@ -189,7 +189,7 @@ class _UserPageState extends State<UserPage> {
  Widget getTopGridView() {
 
    return
-     Container(
+   new  Container(
        height:140,
        padding: EdgeInsets.all(5),
        child: Card(

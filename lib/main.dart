@@ -56,6 +56,7 @@ class MainHomePage extends StatelessWidget {
             child:  MaterialApp(
               title: "药企源",
               debugShowCheckedModeBanner: false,//不显示debug
+              locale:  Locale('zh', 'CN'), // 中文简体
               theme: ThemeData(
                   primaryColor: Colors.blue,
                   backgroundColor: Colors.white

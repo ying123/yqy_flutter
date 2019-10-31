@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -5,8 +6,10 @@ import 'package:event_bus/event_bus.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:like_button/like_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
@@ -54,7 +57,7 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
   String url1,url2;
 
   LiveDetailsInfo  _liveDetailsInfo;
-
+  bool isCollect;
 
 
   @override
@@ -105,11 +108,18 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
         backgroundColor: Colors.white,
         actions: <Widget>[
 
-          new GestureDetector(
-            child: Icon(Icons.star_border,color: Colors.black45,size: 30,),
-            onTap: (){
-              showToast("点击收藏");
+          LikeButton(
+            isLiked: isCollect,
+            likeBuilder: (bool isLike){
+
+              return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
+              Icon(Icons.star,color:Colors.amber,size: 30,);
             },
+            onTap: (bool isLiked)
+            {
+              return onLikeButtonTap(isLiked,widget.id);
+            },
+
           ),
           cXM(10),
          new GestureDetector(
@@ -203,6 +213,32 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
 
 }
 
+
+
+
+Future<bool> onLikeButtonTap(bool isLike,var  id) {
+
+  final Completer<bool> completer = new Completer<bool>();
+
+  if(!isLike){
+
+    NetworkUtils.requestCollectAdd(AppRequest.Comment_video_meeting,id)
+        .then((res){
+      int statusCode = int.parse(res.status);
+      completer.complete(statusCode==9999?true:false);
+      showToast(res.message);
+    });
+  }else{
+
+    NetworkUtils.requestCollectDel(AppRequest.Comment_video_meeting,id)
+        .then((res){
+      int statusCode = int.parse(res.status);
+      completer.complete(statusCode==9999?false:true);
+      showToast(res.message);
+    });
+  }
+  return completer.future;
+}
 
 Widget  getOtherStatusView(isPlay,imgUrl) {
 
