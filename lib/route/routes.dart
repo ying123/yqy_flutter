@@ -20,6 +20,9 @@ class Routes {
 
   static String registerPage = "/registerPage";
 
+  static String homePage = "/homePage";
+
+
   static String webPage = "/webPageView";
 
   static String liveMeeting = "/liveMeeting";
@@ -56,10 +59,15 @@ class Routes {
 
   static String feedBackPage = "/feedBackPage";
 
+  static String personalPage = "/personalPage";
 
+  static String updateExplainPage = "/updateExplainPage";
 
+  static String myCollectionPage = "/myCollectionPage";
 
+  static String settingPage = "/settingPage";
 
+  static String aboutPage = "/aboutPage";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -68,6 +76,7 @@ class Routes {
     });
     router.define(loginPage, handler:loginHandler);
     router.define(registerPage, handler:registerHandler);
+    router.define(homePage, handler: homeDetailsHandler);
     router.define(videoDetailsPage, handler: videoDetailsHandler);
     router.define(liveMeeting, handler: liveHandler);
    // router.define(webPage, handler: webHandler);
@@ -86,6 +95,11 @@ class Routes {
     router.define(doctorHomePage, handler: doctorHomeHandler);
     router.define(realNamePage, handler: realNameHomeHandler);
     router.define(feedBackPage, handler: feedBackHandler);
+    router.define(personalPage, handler: personalHandler);
+    router.define(updateExplainPage, handler: updateExplainHandler);
+    router.define(myCollectionPage, handler: myCollectionHandler);
+    router.define(settingPage, handler:settingHandler);
+    router.define(aboutPage, handler:aboutHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

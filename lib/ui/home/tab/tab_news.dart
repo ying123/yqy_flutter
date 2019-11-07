@@ -127,7 +127,7 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
     return GestureDetector(
 
       onTap: (){
-      RRouter.push(context, Routes.newsContentPage, {"id":xlist.id,"title":xlist.title});
+      RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});
     },
       child: new Container(
 
@@ -157,7 +157,7 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
                 children: <Widget>[
 
-                  getContentText("来源"+xlist.source),
+                  getContentText("来源："+xlist.source),
 
                   getContentText(xlist.createTime),
 

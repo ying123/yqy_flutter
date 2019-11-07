@@ -138,7 +138,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
     return GestureDetector(
 
       onTap: (){
-        RRouter.push(context, Routes.zxContentPage, {"id":xlist.id,"title":xlist.title});
+        RRouter.push(context, Routes.zxContentPage, {"id":xlist.id});
         },
       child: new Container(
 

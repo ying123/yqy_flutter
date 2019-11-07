@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'dart:async';
 
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
+import 'package:yqy_flutter/utils/regex_utils.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
 
@@ -19,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   final _formKey = GlobalKey<FormState>();
-  String _email, _password;
+  String _phone = "", _smsCode,_type="sms";
   bool _isObscure = true;
   Color _eyeColor;
   List _loginMethod = [
@@ -52,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     };
     _timer = Timer.periodic(Duration(seconds: 1), call);
+    sendSmsRequest();
   }
 
   String handleCodeAutoSizeText() {
@@ -93,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 60.0),
                 buildLoginButton(context),
                 SizedBox(height: 30.0),
-                buildOtherLoginText(),
-                buildOtherMethod(context),
+             //   buildOtherLoginText(),
+             //   buildOtherMethod(context),
                 buildRegisterText(context),
               ],
             )));
@@ -112,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               child: Text(
                 '点击注册',
-                style: TextStyle(color: Colors.green),
+                style: TextStyle(color: Colors.blueAccent),
               ),
               onTap: () {
                 //TODO 跳转到注册页面
@@ -167,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
         child: RaisedButton(
           child: Text(
             '登陆',
-            style: Theme.of(context).primaryTextTheme.headline,
+            style: Theme.of(context).primaryTextTheme.title,
           ),
           color: Colors.blueAccent,
           onPressed: () {
@@ -175,7 +182,11 @@ class _LoginPageState extends State<LoginPage> {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
               //TODO 执行登录方法
-              print('email:$_email , assword:$_password');
+              print('email:$_phone , assword:$_smsCode');
+
+              uploadLoginData();
+
+
             }
           },
           shape: StadiumBorder(side: BorderSide(color: Colors.blueAccent)),
@@ -183,6 +194,10 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
+
+
 
   Padding buildForgetPasswordText(BuildContext context) {
     return Padding(
@@ -203,16 +218,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 
-
-
-
   Container buildSmsRow(BuildContext context){
 
     return Container(
 
       child: Row(
 
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
 
           Expanded(
@@ -227,8 +239,11 @@ class _LoginPageState extends State<LoginPage> {
           InkWell(
             onTap: (){
 
-              if(countdownTime==0){
+              if(_phone.length>0&&RegexUtils.isChinaPhoneLegal(_phone)){
+                //验证通过提交数据
                 startCountdown();
+              }else{
+                showToast("手机号码格式不正确！");
               }
             },
             child: Container(
@@ -256,17 +271,32 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-  TextField buildPasswordTextField(BuildContext context) {
-    return TextField(
-      obscureText: _isObscure,
+  TextFormField buildPasswordTextField(BuildContext context) {
+    return TextFormField(
+     // obscureText: _isObscure,
+      inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
+      keyboardType: TextInputType.number,
+      maxLength: 6,
       decoration: InputDecoration(
           labelText: '验证码',
          ),
+      validator: (String value) {
+        if(value.length==0){
+          return "请输入验证码";
+        }
+        return null;
+      },
+      onSaved: (String value) => _smsCode = value,
     );
   }
 
   TextFormField buildEmailTextField() {
     return TextFormField(
+      onChanged: (v){
+        _phone = v;
+      },
+      inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
+      maxLength: 11,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: '手机号',
@@ -277,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
        }
         return null;
       },
-      onSaved: (String value) => _email = value,
+      onSaved: (String value) => _phone = value,
     );
   }
 
@@ -304,4 +334,49 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
+
+
+  ///
+  /// 发送短信验证请求
+  ///
+  void sendSmsRequest() {
+    NetworkUtils.requestLoginSms(_phone)
+        .then((res) {
+      showToast(res.message);
+
+    });
+  }
+
+    void uploadLoginData() {
+    NetworkUtils.requestLogin(phone: _phone,pass: _smsCode,type: _type)
+        .then((res){
+
+      int statusCode = int.parse(res.status);
+
+
+      if(statusCode==9999){
+
+        UserUtils.saveUserInfo(LoginEntity.fromJson(res.info));
+
+
+        print(UserUtils.getUserInfo().token);
+
+        RRouter.push(context, Routes.homePage,{},clearStack: true);
+
+      }else{
+
+        showToast(res.message);
+
+      }
+
+    });
+
+
+    }
+
+
+
+
 }

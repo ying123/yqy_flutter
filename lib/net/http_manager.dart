@@ -69,12 +69,14 @@ class HttpManager {
           BaseResult(null, response.statusCode, response.statusMessage);
     }
 
+
     return response.data;
   }
 
-  upload(String url, Uint8List data) async {
-    UploadFileInfo file = UploadFileInfo.fromBytes(data, 'fileName');
-    FormData formData = FormData.from({'file': file});
+  upload(String url, File data) async {
+    UploadFileInfo file = UploadFileInfo(data, 'fileName');
+    FormData formData = FormData.from({'image': file,"token":UserUtils.getUserInfo().token,"userId":UserUtils.getUserInfo().userId});
+
 
     Map<String, dynamic> header = {
       'token': UserUtils.getUserInfo().token ?? ""
@@ -82,7 +84,7 @@ class HttpManager {
 
     Response response;
     try {
-      response = await _dio.put(url,
+      response = await _dio.post(url,
           data: formData, options: Options(headers: header));
     } on DioError catch (e) {
       if (e.response != null) {

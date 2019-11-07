@@ -7,19 +7,24 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/user/user_page.dart';
 import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
 import 'package:yqy_flutter/utils/event_bus_util.dart';
-
+import 'package:yqy_flutter/utils/local_storage_utils.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 import 'ui/live/live_page.dart';
 
-void main() {
+void main()  {
+   LocalStorage.getInstance().then((res){
+     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+     runApp(MainHomePage());
+   });
 
-  runApp(MainHomePage());
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 }
+
 
 
 class MainHomePage extends StatelessWidget {
@@ -61,7 +66,7 @@ class MainHomePage extends StatelessWidget {
                   primaryColor: Colors.blue,
                   backgroundColor: Colors.white
               ),
-              home: Home() ,
+              home: UserUtils.isLogin()?HomeMainPage():LoginPage() ,
               onGenerateRoute: RRouter.router().generator,
             )
         )
@@ -69,12 +74,12 @@ class MainHomePage extends StatelessWidget {
   }
 }
 
-class Home extends StatefulWidget {
+class HomeMainPage extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin{
+class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   final _bottomNavigationColor = Colors.black45;
   int _currentIndex = 0; //当前选中的坐标
@@ -82,7 +87,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin{
   String showTv = "首页"; //当前显示的页面布局
 
   final pages = [HomePage(),SpecialPage(null),LiveHomePage(null),TaskHome(),UserPage()];
-
 
 
   @override

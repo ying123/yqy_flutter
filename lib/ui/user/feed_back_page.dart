@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
 
@@ -61,13 +63,14 @@ class _FeedBackPageState extends State<FeedBackPage> {
                     ),
                     Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child:  TextFormField(
-                        maxLines: 7,
+                        maxLines: 5,
                         maxLengthEnforced:true,
                         autofocus: true,
                         onSaved: (String value) => _str = value,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "请输入反馈内容",
+                            hintStyle: TextStyle(color: Colors.black26)
                         ),
                         validator: (v){
                           if(v.length==0){
@@ -108,15 +111,9 @@ class _FeedBackPageState extends State<FeedBackPage> {
                               border: InputBorder.none,
                               hintText: "选填联系方式",
                               hintStyle: TextStyle(fontSize: 16)
-
                           ),
-
-
                         )
-
                     )
-
-
                   ],
 
                 ),
@@ -131,14 +128,27 @@ class _FeedBackPageState extends State<FeedBackPage> {
                   alignment: Alignment.center,
                   height: 50,
                   child: Text("提交",style: TextStyle(color: Colors.white,fontSize: 16),),
-
                 ),
                 shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                 onPressed: () {
+
                   if((_formKey.currentState as FormState).validate()){
                     _formKey.currentState.save();
                     //验证通过提交数据
-                    showToast(_str);
+                 NetworkUtils. requestFeedback(UserUtils.getUserInfo().userId,_str,_phone)
+                    .then((res){
+
+                     showToast(res.message);
+
+                     if(res.status=="9999"){
+
+                       // 延时1s执行返回
+                       Future.delayed(Duration(seconds: 1), (){
+                         Navigator.of(context).pop();
+                       });
+                     }
+                  });
+
 
                   }
                 },

@@ -32,8 +32,10 @@ class NewListList {
 	String title;
 	String content;
 	String lawsId;
+	String type;
+	 String click_id;
 
-	NewListList({this.image, this.createTime, this.isTop, this.author, this.id, this.source, this.time, this.title, this.content,this.lawsId});
+	NewListList({this.image, this.createTime, this.isTop, this.author, this.id, this.source, this.time, this.title, this.content,this.lawsId,this.type,this.click_id});
 
 	NewListList.fromJson(Map<String, dynamic> json) {
 		if (json['image'] != null) {
@@ -48,6 +50,8 @@ class NewListList {
 		title = json['title'];
 		content = json['content'];
 		lawsId = json['lawsId'];
+		type = json['type'];
+		click_id = json['click_id'];
 	}
 
 	Map<String, dynamic> toJson() {
@@ -64,6 +68,8 @@ class NewListList {
 		data['title'] = this.title;
 		data['content'] = this.content;
 		data['lawsId'] = this.lawsId;
+		data['type'] = this.type;
+		data['click_id'] = this.click_id;
 		return data;
 	}
 }

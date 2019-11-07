@@ -133,7 +133,7 @@ class _TabGFPageState extends State<TabGFPage> with AutomaticKeepAliveClientMixi
   Widget getLiveItemView(BuildContext context,NewListList xlist) {
     return GestureDetector(
       onTap: (){
-        RRouter.push(context, Routes.gfContentPage, {"id":xlist.id,"title":xlist.title});
+        RRouter.push(context, Routes.gfContentPage, {"id":xlist.id});
         },
       child: new Container(
 

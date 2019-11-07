@@ -3,6 +3,7 @@ class BaseResult{
     dynamic status;
     String message;
 
+    bool get tokenCancel => "0000" == status;
 
     @override
     String toString() {

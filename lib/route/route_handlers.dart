@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/bean/personal_entity.dart';
+import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_home.dart';
 import 'package:yqy_flutter/ui/home/flfg_content.dart';
 import 'package:yqy_flutter/ui/home/gf_content.dart';
+import 'package:yqy_flutter/ui/home/home_page.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
 import 'package:yqy_flutter/ui/home/zx_content.dart';
 import 'package:yqy_flutter/ui/live/hd_details.dart';
@@ -15,8 +18,13 @@ import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
 import 'package:yqy_flutter/ui/special/special_web_details.dart';
+import 'package:yqy_flutter/ui/user/about_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
+import 'package:yqy_flutter/ui/user/my_collection_page.dart';
+import 'package:yqy_flutter/ui/user/personal_page.dart';
 import 'package:yqy_flutter/ui/user/real_name_page.dart';
+import 'package:yqy_flutter/ui/user/setting_page.dart';
+import 'package:yqy_flutter/ui/user/update_explain.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
 import 'package:yqy_flutter/ui/video/video_page.dart';
 
@@ -45,6 +53,12 @@ var registerHandler = Handler(handlerFunc: (BuildContext context, Map<String, Li
   return RegisterPage();
 });
 
+var homeDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return HomeMainPage();
+});
+
+
+
 var liveHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return LiveHomePage("act");
 });
@@ -71,11 +85,13 @@ var videoDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String
 var newsDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
 
   String id = params["id"]?.first;
+/*
   String title = params["title"]?.first;
   var list = List<int>();
   jsonDecode(title).forEach(list.add);
   title = Utf8Decoder().convert(list);
-  return NewsContentPage(id,title);
+*/
+  return NewsContentPage(id);
 });
 
 
@@ -83,11 +99,13 @@ var newsDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String,
 var zxDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
 
   String id = params["id"]?.first;
+/*
   String title = params["title"]?.first;
   var list = List<int>();
   jsonDecode(title).forEach(list.add);
   title = Utf8Decoder().convert(list);
-  return ZxContentPage(id,title);
+*/
+  return ZxContentPage(id);
 });
 
 
@@ -107,11 +125,11 @@ var flfgDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String,
 var gfDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
 
   String id = params["id"]?.first;
-  String title = params["title"]?.first;
+ /* String title = params["title"]?.first;
   var list = List<int>();
   jsonDecode(title).forEach(list.add);
-  title = Utf8Decoder().convert(list);
-  return GFContentPage(id,title);
+  title = Utf8Decoder().convert(list);*/
+  return GFContentPage(id);
 });
 
 
@@ -176,7 +194,33 @@ var feedBackHandler = Handler(handlerFunc: (BuildContext context, Map<String, Li
   return FeedBackPage();
 });
 
+var personalHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String avatarUrl = params["avatar"]?.first;
+  String userInfo = params["info"]?.first;
+  var list = List<int>();
+  jsonDecode(userInfo).forEach(list.add);
+  userInfo = Utf8Decoder().convert(list);
+  return PersonalPage(avatarUrl,userInfo);
+});
 
+var updateExplainHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["userId"]?.first;
+  return UpdateExplainPage();
+});
+
+var myCollectionHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["userId"]?.first;
+  return MyCollectionPage();
+});
+
+var settingHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SettingPage();
+});
+
+
+var aboutHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return AboutPage();
+});
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

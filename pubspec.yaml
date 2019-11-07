@@ -34,6 +34,7 @@ dependencies:
   oktoast: ^2.2.0
   fluro: ^1.5.1  # 路由跳转
   shared_preferences: ^0.5.3+4
+  image_picker: 0.6.1+10 # 照片选择
   synchronized: ^2.1.0+1
   json_annotation: ^2.0.0
   build_runner: ^1.2.8
@@ -56,6 +57,7 @@ dependencies:
   permission_handler: ^3.3.0 # 动态权限申请
   flutter_spinkit: ^4.0.0  # 加载进度条动画效果
   fijkplayer: ^0.1.9
+  url_launcher: ^5.2.5  # Url跳转 拨打电话
 dev_dependencies:
   flutter_test:
     sdk: flutter

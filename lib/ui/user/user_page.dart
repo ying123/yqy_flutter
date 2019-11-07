@@ -1,9 +1,12 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/bean/personal_entity.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import  'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
 
@@ -15,14 +18,47 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
 
 
+  PersonalInfo _personalInfo;
+
 
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+    loadData();
   }
 
+
+
+
+loadData () async{
+
+
+  NetworkUtils.requestUserIndex(UserUtils.getUserInfo().userId)
+      .then((res) {
+
+    int statusCode = int.parse(res.status);
+
+    if(statusCode==9999){
+
+      _personalInfo = PersonalInfo.fromJson(res.info);
+
+    }
+    setState(() {
+
+
+    });
+  });
+
+}
+
+@override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,28 +67,35 @@ class _UserPageState extends State<UserPage> {
      body:ListView(
       padding: EdgeInsets.all(0),
        children: <Widget>[
-
           getUserTopView(),// 顶部个人信息布局  收藏列表布局
           cYM(5),
           getTopGridView(),
           getOtherGridView(),
-
-
        ],
 
-
      ),
-
     );
 
   }
   
   Widget getItemGridView(String v,IconData iconData,Color colorr){
-    
-    
+
     return   InkWell(
       onTap: (){
-        RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
+        switch(v){
+          case "意见反馈":
+            RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
+            break;
+          case "我的收藏":
+            RRouter.push(context ,Routes.myCollectionPage,{},transition:TransitionType.cupertino);
+            break;
+          case "系统设置":
+            RRouter.push(context ,Routes.settingPage,{},transition:TransitionType.cupertino);
+            break;
+        }
+
+
+
       },
       child: Container(
 
@@ -86,28 +129,30 @@ class _UserPageState extends State<UserPage> {
             child:  Stack(
               children: <Widget>[
                 new  Container(
-                  child: Icon(Icons.account_circle,size: 90,color: Colors.white,) ,
-                  margin: EdgeInsets.fromLTRB(15, 80, 0, 0),
+                  child: new ClipOval(
+                  child: new Image.network(_personalInfo.userPhoto??"",width: 90,height: 90,fit: BoxFit.fill,)
+                   ),
+                  margin: EdgeInsets.fromLTRB(20, 80, 0, 0),
                 ),
 
                 new  Container(
-                  margin: EdgeInsets.fromLTRB(115, 90, 0, 0),
+                  margin: EdgeInsets.fromLTRB(140, 90, 0, 0),
                   child: Row(
                     children: <Widget>[
-                      Text("姓名",style: TextStyle(color: Colors.white,fontSize: 18),),
-                      cXM(10),
-                      Icon(Icons.android,size: 18,)
+                      Text(_personalInfo.realName??"",style: TextStyle(color: Colors.white,fontSize: 20),),
+                    //  cXM(10),
+                  //    Icon(Icons.android,size: 18,)
                     ],
                   ) ,
                 ),
                 new  Container(
-                  margin: EdgeInsets.fromLTRB(115, 130, 0, 0),
+                  margin: EdgeInsets.fromLTRB(140, 140, 0, 0),
                   child: Row(
                     children: <Widget>[
-                      Text("关注：1",style: TextStyle(color: Colors.white,fontSize: 16),),
+                    /*  Text("关注：1",style: TextStyle(color: Colors.white,fontSize: 16),),
                       cXM(15),
                       Text("粉丝：1",style: TextStyle(color: Colors.white,fontSize: 16),),
-                      cXM(15),
+                      cXM(15),*/
                       InkWell(
                         onTap: (){
                           RRouter.push(context, Routes.realNamePage,{},transition:TransitionType.cupertino);
@@ -118,23 +163,25 @@ class _UserPageState extends State<UserPage> {
                             width: 75,
                             height: 25,
                             color: Colors.white,
-                            child: Text("待审核",style: TextStyle(color: Colors.blue,fontSize: 12),),
+                            child: buildUserStatus(_personalInfo),
                             alignment: Alignment.center,
                           ),
                         ),
 
                       )
                     ],
-
                   ),
                 ),
-
                 new Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.only(right: 10),
-                  child:   Icon(Icons.arrow_forward_ios,size: 20,color: Colors.white,),
-
-                ),
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(right: 20),
+                    child: InkWell(
+                      onTap: (){
+                        RRouter.push(context, Routes.personalPage,{"avatar":_personalInfo.userPhoto,"info":_personalInfo.userInfo});
+                      },
+                      child:  Icon(Icons.arrow_forward_ios,size: 20,color: Colors.white,),
+                  ),
+                )
               ],
             ),
           ),
@@ -246,6 +293,32 @@ Widget  getOtherGridView() {
    );
 
 }
+
+ Widget buildUserStatus(PersonalInfo personalInfo) {
+
+   //                0:未认证，1认证成功，2待审核，3认证失败
+
+   String userInfoStatus = personalInfo.userInfoStatus;
+
+   String text;
+
+   switch (userInfoStatus) {
+     case "1":
+       text= "认证成功";
+       break;
+     case "2":
+       text = "待审核";
+       break;
+     case "3":
+       text = "认证失败";
+       break;
+     default:
+       text = "立即认证";
+       break;
+   }
+
+   return Text(text,style: TextStyle(color: Colors.blue,fontSize: 12),);
+  }
 
 
 

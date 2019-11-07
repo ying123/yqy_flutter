@@ -1,8 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/ui/video/video_details.dart';
+import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
 import 'bean/news_details_entity.dart';
@@ -13,9 +18,8 @@ class GFContentPage extends StatefulWidget {
 
 
   var id;
-  var title;
 
-  GFContentPage(this.id,this.title);
+  GFContentPage(this.id);
 
 
 
@@ -37,7 +41,7 @@ class _GFContentPageState extends State<GFContentPage> with AutomaticKeepAliveCl
 
   String htmlStr;
 
-
+  bool isCollect;
 
   @override
   void initState() {
@@ -57,6 +61,7 @@ class _GFContentPageState extends State<GFContentPage> with AutomaticKeepAliveCl
 
        if(statusCode==9999) {
          _detailsEntity = NewsDetailsEntity.fromJson(res.info);
+         isCollect = _detailsEntity.ifCollect=="0"?false:true;
          String subTitle = "<h3>" + _detailsEntity.title + "<\/h3>";
          String soure = "<p><span style=\"float:left;font-size:12px;color:#999999\">" +
              "来源:  " + _detailsEntity.source +
@@ -76,8 +81,6 @@ class _GFContentPageState extends State<GFContentPage> with AutomaticKeepAliveCl
          });
        }
 
-       print("html11111111111111========================="+htmlStr);
-
 
 
      });
@@ -87,11 +90,47 @@ class _GFContentPageState extends State<GFContentPage> with AutomaticKeepAliveCl
   Widget build(BuildContext context) {
 
     return Scaffold(
-      
+
+
       appBar: AppBar(
-        title: Text(widget.title),
+        titleSpacing: 0,
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back, color: Colors.black,),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
         centerTitle: true,
-        
+        title: Text("规范解读", style: TextStyle(color: Colors.black),),
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+
+          LikeButton(
+            isLiked: isCollect,
+            likeBuilder: (bool isLike){
+
+              return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
+              Icon(Icons.star,color:Colors.amber,size: 30,);
+            },
+            onTap: (bool isLiked)
+            {
+              return onLikeButtonTap(AppRequest.Collect_GF,isLiked,_detailsEntity.id);
+            },
+
+          ),
+          cXM(10),
+          new GestureDetector(
+
+            child: Icon(Icons.share,color: Colors.black45,size: 26,),
+
+            onTap: (){
+              showToast("点击分享");
+            },
+          ),
+          cXM(10),
+
+        ],
+
       ),
       
       

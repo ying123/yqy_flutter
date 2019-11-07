@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:yqy_flutter/bean/base_result.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 import 'http_manager.dart';
 import 'dart:typed_data';
@@ -12,7 +13,63 @@ class NetworkUtils {
 
 
 
-  static String token = "4aef8efb0f1b306901759d4152b46834401351";
+  static String token = UserUtils.getUserInfo().token;
+
+  /*??"4aef8efb0f1b306901759d4152b46834401351"*/
+
+
+
+  ///
+  ///  所有轮播图的接口  根据 type参数  返回不同页面的数据
+  ///  任务页面  20
+  ///
+  ///
+  static Future<BaseResult> requestBanner(String type) async {
+    String url = APPConfig.Server + "index/ads";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"token":token});
+    return result;
+  }
+
+  ///
+  ///  注册
+  ///
+  static Future<BaseResult> requestRegister({String regType,String realName,String h_name, String h_id,String phone,String code}) async {
+    String url = APPConfig.Server + "register/quickreg";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"regType":regType,"realName":realName,"h_name":h_name,"h_id":h_id,"phone":phone,"code":code});
+    return result;
+  }
+
+  ///
+  ///  发送短信（注册）
+  ///
+  static Future<BaseResult> requestRegisterSms(String phone) async {
+    String url = APPConfig.Server + "Register/sms";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone});
+    return result;
+  }
+
+
+
+  ///
+  ///  发送短信（登陆）
+  ///
+  static Future<BaseResult> requestLoginSms(String phone) async {
+    String url = APPConfig.Server + "Login/sms";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone});
+    return result;
+  }
+
+
+
+  ///
+  ///  登陆
+  ///
+  static Future<BaseResult> requestLogin({String phone,String type,String pass}) async {
+    String url = APPConfig.Server + "Login/dolog";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone,"type":type,"pass":pass});
+    return result;
+  }
+
 
   ///
   ///  首页接口
@@ -281,8 +338,86 @@ class NetworkUtils {
   }
 
 
+  ///
+  ///  任务列表
+  ///
+  static Future<BaseResult> requestTaskList() async {
+    String url = APPConfig.Server + "task/lists";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"token":token});
+    return result;
+  }
 
 
+
+
+  ///
+  ///  用户个人信息
+  ///
+  static Future<BaseResult> requestUserIndex(String userId) async {
+    String url = APPConfig.Server + "User/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token});
+    return result;
+  }
+
+
+  ///
+  ///  上传用户头像
+  ///
+  static Future<BaseResult> requestEditUserPhoto(File data) async {
+    String url = APPConfig.Server + "User/editUserPhoto";
+    BaseResult result = await httpManager.upload(url, data);
+    return result;
+  }
+
+
+  ///
+  ///  上传用户简介
+  ///
+  static Future<BaseResult> requestEditUserInfo(String userId,String userInfo) async {
+    String url = APPConfig.Server + "User/editUserIntro";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userInfo":userInfo,"userId":userId,"token":token});
+    return result;
+  }
+
+
+
+  ///
+  ///  我的收藏  ---- 学术会议
+  ///
+  static Future<BaseResult> requestMyCollectOne(String page) async {
+    String url = APPConfig.Server + "collect/listing_one";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    return result;
+  }
+
+  ///
+  ///  我的收藏  ---- 学术会议
+  ///
+  static Future<BaseResult> requestMyCollectTwo(String page) async {
+    String url = APPConfig.Server + "collect/listing_two";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    return result;
+  }
+
+
+  ///
+  ///  我的收藏  ---- 资讯
+  ///
+  static Future<BaseResult> requestMyCollectThree(String page) async {
+    String url = APPConfig.Server + "collect/listing_three";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    return result;
+  }
+
+
+  ///
+  ///  关于我们
+  ///
+  static Future<BaseResult> requestAbout(String userId) async {
+    String url = APPConfig.Server + "About/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId});
+    return result;
+  }
 
 
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {

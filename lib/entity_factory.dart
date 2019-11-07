@@ -1,3 +1,5 @@
+import 'package:yqy_flutter/bean/banner_entity.dart';
+import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/laws_deails_entity.dart';
@@ -6,10 +8,13 @@ import 'package:yqy_flutter/ui/home/bean/news_details_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
+import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_banner_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_cate_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_list_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_video_entity.dart';
+import 'package:yqy_flutter/ui/task/bean/task_list_entity.dart';
+import 'package:yqy_flutter/ui/user/bean/about_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 
@@ -17,6 +22,10 @@ class EntityFactory {
   static T generateOBJ<T>(json) {
     if (1 == 0) {
       return null;
+    } else if (T.toString() == "BannerEntity") {
+      return BannerEntity.fromJson(json) as T;
+    } else if (T.toString() == "PersonalEntity") {
+      return PersonalEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorInfoEntity") {
       return DoctorInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "HomeDataEntity") {
@@ -33,6 +42,8 @@ class EntityFactory {
       return HdDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LiveDetailsEntity") {
       return LiveDetailsEntity.fromJson(json) as T;
+    } else if (T.toString() == "LoginEntity") {
+      return LoginEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialBannerEntity") {
       return SpecialBannerEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialCateEntity") {
@@ -41,6 +52,10 @@ class EntityFactory {
       return SpecialListEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialVideoEntity") {
       return SpecialVideoEntity.fromJson(json) as T;
+    } else if (T.toString() == "TaskListEntity") {
+      return TaskListEntity.fromJson(json) as T;
+    } else if (T.toString() == "AboutEntity") {
+      return AboutEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoDetailsEntity") {
       return VideoDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoListEntity") {

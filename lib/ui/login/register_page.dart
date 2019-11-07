@@ -1,6 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
+import 'package:yqy_flutter/utils/regex_utils.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
+
 
 
 
@@ -11,12 +20,20 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
+  GlobalKey _formKey= new GlobalKey<FormState>();
 
   int code = 1; // 表示当前注册的类型   1  医生    2  推广经理   默认为医生
 
-  Timer _timer;
+  String _name;
 
+  String _hos;
+
+  String _sms; // 验证码
+
+  String _phone = "";//手机号
+
+
+  Timer _timer;
   //倒计时数值
   var countdownTime = 0;
 
@@ -34,7 +51,11 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     };
     _timer = Timer.periodic(Duration(seconds: 1), call);
+
+    sendSmsRequest();
+
   }
+
 
   String handleCodeAutoSizeText() {
     if (countdownTime > 0) {
@@ -53,33 +74,31 @@ class _RegisterPageState extends State<RegisterPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return  new Scaffold(
-
+    return   new Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text("注册"),
         ),
-
         body: Padding(padding: EdgeInsets.all(15),
-          child: ListView(
-            children: <Widget>[
-              SizedBox(height: 10,),
-              buildTopSele(context),
-              SizedBox(height: 10,),
-              buildNameET(context),
-              buildHosET(context),
-              buildMobileET(context),
-              buildSmsRow(context),
-              SizedBox(height: 60,),
-              buildSubBtn(context)
+            child: Form(
+              key: _formKey ,
+              child:  ListView(
+                children: <Widget>[
 
-            ],
+                  SizedBox(height: 10,),
+                  buildTopSele(context),
+                  SizedBox(height: 10,),
+                  buildNameET(context),
+                  buildHosET(context),
+                  buildMobileET(context),
+                  buildSmsRow(context),
+                  SizedBox(height: 60,),
+                  buildSubBtn(context)
 
-          ),
+                ],
+
+              ),)
         )
-
-
-
     );
   }
 
@@ -128,7 +147,6 @@ Widget  buildTopSele(BuildContext context) {
                   code = 2;
                 });
               }
-
             },
             child: Container(
               decoration: BoxDecoration(
@@ -163,6 +181,7 @@ Widget  buildTopSele(BuildContext context) {
           labelText: "姓名",
           hintText: "输入您的姓名",
         ),
+      onSaved: (String value) => _name = value,
         // 校验用户名
         validator: (v) {
           return v
@@ -177,6 +196,7 @@ Widget  buildTopSele(BuildContext context) {
    return TextFormField(
         autofocus: true,
     //    controller: _hosController,
+       onSaved: (String value) => _hos = value,
         decoration: InputDecoration(
           labelText: "医院",
           hintText: "输入您所在医院名称",
@@ -194,6 +214,11 @@ Widget  buildTopSele(BuildContext context) {
  Widget buildMobileET(BuildContext context) {
 
    return TextFormField(
+     onChanged: (v){
+       _phone = v;
+     },
+     inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
+     maxLength: 11,
      keyboardType: TextInputType.number,
      decoration: InputDecoration(
        labelText: '手机号',
@@ -202,6 +227,12 @@ Widget  buildTopSele(BuildContext context) {
        if(value.length==0){
          return "请输入手机号";
        }
+
+       if(!RegexUtils.isChinaPhoneLegal(value)){
+         return "手机号码格式不正确";
+
+       }
+
        return null;
      },
   //   onSaved: (String value) => _email = value,
@@ -220,23 +251,24 @@ Widget  buildTopSele(BuildContext context) {
 
           Expanded(
             child: buildPasswordTextField(context),
-
           ),
-
           SizedBox(width: 20,),
-
 
           InkWell(
             onTap: (){
 
               if(countdownTime==0){
-                startCountdown();
+                if(_phone.length>0&&RegexUtils.isChinaPhoneLegal(_phone)){
+                  //验证通过提交数据
+                  startCountdown();
+                }else{
+                    showToast("手机号码格式不正确！");
+                }
               }
             },
             child: Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.blueAccent)
-
               ),
               alignment: Alignment.center,
               height: 40,
@@ -244,7 +276,6 @@ Widget  buildTopSele(BuildContext context) {
 
             ) ,
           )
-
 
           //buildPasswordTextField(context),
 
@@ -256,11 +287,20 @@ Widget  buildTopSele(BuildContext context) {
 
   }
 
-  TextField buildPasswordTextField(BuildContext context) {
-    return TextField(
+  TextFormField buildPasswordTextField(BuildContext context) {
+    return TextFormField(
+      onSaved: (String value) => _sms = value,
+      keyboardType: TextInputType.number,
+      inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
       decoration: InputDecoration(
         labelText: '验证码',
       ),
+      validator: (v){
+        if(v.length==0){
+          return "验证码不能为空";
+        }
+        return null;
+      },
     );
   }
 
@@ -274,14 +314,16 @@ Widget  buildTopSele(BuildContext context) {
         alignment: Alignment.center,
         height: 50,
         child: Text("注册",style: TextStyle(color: Colors.white,fontSize: 16),),
-
       ),
       shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       onPressed: () {
-       /* if((_formKey.currentState as FormState).validate()){
-
+        if((_formKey.currentState as FormState).validate()){
           //验证通过提交数据
-        }*/
+          (_formKey.currentState as FormState).save();
+
+              uploadData();
+
+        }
 
 
       },
@@ -289,4 +331,44 @@ Widget  buildTopSele(BuildContext context) {
 
 
  }
+
+
+ ///
+  /// 发送短信验证请求
+  ///
+  void sendSmsRequest() {
+
+    NetworkUtils.requestRegisterSms(_phone)
+        .then((res){
+          showToast(res.message);
+
+    });
+
+  }
+
+  void uploadData() {
+
+    NetworkUtils.requestRegister(regType:code.toString(),realName: _name,phone: _phone,h_name: _hos,code: _sms,h_id: "0")
+        .then((res){
+      //showToast(res.message);
+
+      int statusCode = int.parse(res.status);
+
+
+      if(statusCode==9999){
+
+        UserUtils.saveUserInfo(LoginEntity.fromJson(res.info));
+
+        RRouter.push(context, Routes.homePage,{},clearStack: true);
+
+      }
+
+
+    });
+
+
+  }
+
+
+
 }

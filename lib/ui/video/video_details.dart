@@ -115,7 +115,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
               },
               onTap: (bool isLiked)
               {
-                return onLikeButtonTap(isLiked,widget.id);
+                return onLikeButtonTap(AppRequest.Comment_video_meeting,isLiked,widget.id);
               },
 
             ),
@@ -223,13 +223,13 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
   }
 
-  Future<bool> onLikeButtonTap(bool isLike,var  id) {
+  Future<bool> onLikeButtonTap(String type ,bool isLike,var  id) {
 
     final Completer<bool> completer = new Completer<bool>();
 
     if(!isLike){
 
-      NetworkUtils.requestCollectAdd(AppRequest.Comment_video_meeting,id)
+      NetworkUtils.requestCollectAdd(type,id)
           .then((res){
         int statusCode = int.parse(res.status);
         completer.complete(statusCode==9999?true:false);
@@ -237,7 +237,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
       });
     }else{
 
-      NetworkUtils.requestCollectDel(AppRequest.Comment_video_meeting,id)
+      NetworkUtils.requestCollectDel(type,id)
           .then((res){
         int statusCode = int.parse(res.status);
         completer.complete(statusCode==9999?false:true);

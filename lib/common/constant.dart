@@ -34,6 +34,10 @@ class AppRequest{
   static const String Collect_medical_park = "9";//医学园
   static const String Collect_live_broadcast = "5";//直播会议
   static const String Collect_HD_live_broadcast = "15";//互动直播
+  static const String Collect_News = "11";//医药新闻收藏
+  static const String Collect_ZX = "12";//政策资讯收藏
+  static const String Collect_GF = "13";//规范解读收藏
+
   static const String Comment_meeting_HD_live = "12";//互动直播评论的type id
   static const String Comment_meeting_notice = "4";//会议预告
   static const String Comment_meeting_live = "5";//会议预告
