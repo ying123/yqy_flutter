@@ -78,7 +78,6 @@ class _RealNamePageState extends State<RealNamePage> {
                             if( v
                                 .trim()
                                 .length == 0){
-
                               return "身份证号不能为空";
                             }
 
@@ -113,7 +112,8 @@ class _RealNamePageState extends State<RealNamePage> {
                                     context,
                                     selectProvince: (province) {
                                       print(province);
-                                    },
+
+                                      },
                                     selectCity: (city) {
                                       print(city);
                                     },

@@ -13,7 +13,7 @@ class NetworkUtils {
 
 
 
-  static String token = UserUtils.getUserInfo().token;
+ // static String token = UserUtils.getUserInfo().token;
 
   /*??"4aef8efb0f1b306901759d4152b46834401351"*/
 
@@ -26,7 +26,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestBanner(String type) async {
     String url = APPConfig.Server + "index/ads";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type});
     return result;
   }
 
@@ -85,7 +85,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestHosListData(int page) async {
     String url = APPConfig.Server + "broadcast/listing";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return result;
   }
 
@@ -96,7 +96,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestInteractListData(int page) async {
     String url = APPConfig.Server + "interact_live/listing";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return result;
   }
 
@@ -124,7 +124,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestNewsDetail(var id) async {
     String url = APPConfig.Server + "medicalnews/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"medicalnewsId":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"medicalnewsId":id});
     return result;
   }
 
@@ -144,7 +144,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestSpecialBanner(var id) async {
     String url = APPConfig.Server + "special/banner";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
 
@@ -154,7 +154,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestSpecialCate(var id) async {
     String url = APPConfig.Server + "special/cate_list";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
 
@@ -166,7 +166,6 @@ class NetworkUtils {
     String url = APPConfig.Server + "special/art_list";
     Map<String, dynamic> map = new Map();
     map["id"] = id;
-    map["token"] = token;
     map["cid"] = cid;
     map["page"] = page;
     BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
@@ -180,7 +179,6 @@ class NetworkUtils {
     String url = APPConfig.Server + "special/article";
     Map<String, dynamic> map = new Map();
     map["id"] = id;
-    map["token"] = token;
     BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
     return result;
   }
@@ -192,7 +190,6 @@ class NetworkUtils {
     String url = APPConfig.Server + "review/info";
     Map<String, dynamic> map = new Map();
     map["reviewId"] = id;
-    map["token"] = token;
     BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
     return result;
   }
@@ -206,7 +203,6 @@ class NetworkUtils {
     String url = APPConfig.Server + "broadcast/info";
     Map<String, dynamic> map = new Map();
     map["broadcastId"] = id;
-    map["token"] = token;
     BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
     return result;
   }
@@ -219,7 +215,6 @@ class NetworkUtils {
     String url = APPConfig.Server + "interact_live/info";
     Map<String, dynamic> map = new Map();
     map["interactId"] = id;
-    map["token"] = token;
     BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
     return result;
   }
@@ -234,7 +229,6 @@ class NetworkUtils {
     String url = APPConfig.Server + "policyadvisory/listing";
     Map<String, dynamic> map = new Map();
     map["page"] = page;
-    map["token"] = token;
     BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
     return result;
   }
@@ -245,7 +239,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestPolicyDetail(var id) async {
     String url = APPConfig.Server + "policyadvisory/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"policyId":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"policyId":id});
     return result;
   }
 
@@ -255,7 +249,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestLawsList(var page) async {
     String url = APPConfig.Server + "laws/laws_listing";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
 
@@ -266,7 +260,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestLawsDetail(var id) async {
     String url = APPConfig.Server + "laws/laws_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"lawsId":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"lawsId":id});
     return result;
   }
 
@@ -279,7 +273,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestGFList(var page) async {
     String url = APPConfig.Server + "normativeinterpretation/listing";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
 
@@ -289,7 +283,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestGFDetail(var id) async {
     String url = APPConfig.Server + "normativeinterpretation/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"normativeId":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"normativeId":id});
     return result;
   }
 
@@ -299,7 +293,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestDoctorHome(var id) async {
     String url = APPConfig.Server + "User/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":id});
     return result;
   }
   ///
@@ -307,7 +301,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestFeedback(var userId,var content ,var phone,) async {
     String url = APPConfig.Server + "User/feedBack";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"fb_phone":phone,"fb_content":content,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"fb_phone":phone,"fb_content":content});
     return result;
   }
 
@@ -322,7 +316,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestCollectAdd(String type, String otherId) async {
     String url = APPConfig.Server + "collect/add";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"otherId":otherId,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"otherId":otherId});
     return result;
   }
 
@@ -333,7 +327,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestCollectDel(String type, String otherId) async {
     String url = APPConfig.Server + "collect/del";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"otherId":otherId,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"otherId":otherId});
     return result;
   }
 
@@ -343,7 +337,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestTaskList() async {
     String url = APPConfig.Server + "task/lists";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
     return result;
   }
 
@@ -355,7 +349,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestUserIndex(String userId) async {
     String url = APPConfig.Server + "User/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId});
     return result;
   }
 
@@ -375,7 +369,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestEditUserInfo(String userId,String userInfo) async {
     String url = APPConfig.Server + "User/editUserIntro";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userInfo":userInfo,"userId":userId,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userInfo":userInfo,"userId":userId});
     return result;
   }
 
@@ -386,7 +380,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestMyCollectOne(String page) async {
     String url = APPConfig.Server + "collect/listing_one";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
 
@@ -395,7 +389,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestMyCollectTwo(String page) async {
     String url = APPConfig.Server + "collect/listing_two";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
 
@@ -405,7 +399,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestMyCollectThree(String page) async {
     String url = APPConfig.Server + "collect/listing_three";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
 
@@ -427,7 +421,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestScores(String userId) async {
     String url = APPConfig.Server + "User/userScores";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId});
     return result;
   }
 
@@ -436,7 +430,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestScoresList({String userId,String page,String payType }) async {
     String url = APPConfig.Server + "User/scoreList";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token,"page":page,"payType":payType});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"page":page,"payType":payType});
     return result;
   }
 
@@ -447,7 +441,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestScoresDetail(String userId,String id) async {
     String url = APPConfig.Server + "User/scoreDetail";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token,"id":id});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"id":id});
     return result;
   }
 
@@ -468,7 +462,7 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestShopExchange(String id,String name,String tel,String address) async {
     String url = APPConfig.Server + "shop/exchange";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
 
@@ -480,20 +474,22 @@ class NetworkUtils {
   ///
   static Future<BaseResult> requestOrderList(String page) async {
     String url = APPConfig.Server + "user/order";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
 
 
 
+
   ///
-  ///  积分商城  订单详情
+  ///  积分商城  订单列表
   ///
-  static Future<BaseResult> requestOrderDetails(String id) async {
-    String url = APPConfig.Server + "user/order_view";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+  static Future<BaseResult> requestMessageList(String page) async {
+    String url = APPConfig.Server + "message/message_listing";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
+
 
 
 

@@ -358,12 +358,9 @@ class _LoginPageState extends State<LoginPage> {
 
       if(statusCode==9999){
 
-        UserUtils.saveUserInfo(LoginEntity.fromJson(res.info));
-
-
-        print(UserUtils.getUserInfo().token);
-
-        RRouter.push(context, Routes.homePage,{},clearStack: true);
+         UserUtils.saveUserInfo(LoginEntity.fromJson(res.info));
+      //    print(UserUtils.getUserInfo().token);
+          RRouter.push(context, Routes.homePage,{},clearStack: true);
 
       }else{
 

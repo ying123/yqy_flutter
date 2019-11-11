@@ -28,6 +28,11 @@ class HttpManager {
       {ContentType contentType}) async {
     Options _options;
     Map<String, dynamic> header;
+
+    if(UserUtils.isLogin()){
+      params["token"] = UserUtils.getUserInfo().token ?? "";
+    }
+
     var type = contentType == null
         ? ContentType.parse(ContentTypeURLEncoded)
         : contentType;

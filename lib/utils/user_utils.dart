@@ -10,7 +10,7 @@ class UserUtils {
 
 
 
-  static saveUserInfo(LoginEntity userInfo) {
+  static  saveUserInfo(LoginEntity userInfo) {
     if (userInfo != null) {
       LocalStorage.putObject(USER_INFO_KEY, userInfo.toJson());
     }

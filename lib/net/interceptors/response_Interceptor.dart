@@ -21,7 +21,9 @@ class ResponseInterceptor extends InterceptorsWrapper {
 
 
 
-  EventBus eventBus = new EventBus();
+
+  var lock = new Lock();
+
 
   @override
   onResponse(Response response) {
@@ -32,7 +34,8 @@ class ResponseInterceptor extends InterceptorsWrapper {
 
 
         //token 过期
-        if(result.tokenCancel){
+        if(result.tokenCancel&&UserUtils.isLogin()){
+
           UserUtils.removeUserInfo();
           showToast(result.message);
         //  RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
