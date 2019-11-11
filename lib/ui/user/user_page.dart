@@ -100,6 +100,10 @@ loadData () async{
           case "积分兑换":
             RRouter.push(context ,Routes.shopHomePage,{},transition:TransitionType.cupertino);
             break;
+          case "我的足迹":
+            RRouter.push(context ,Routes.myFootPage,{},transition:TransitionType.cupertino);
+            break;
+
         }
 
 

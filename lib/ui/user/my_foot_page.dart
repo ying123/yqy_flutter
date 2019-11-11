@@ -11,10 +11,8 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
 
 ///
-///   我的收藏页面
+///   我的足迹页面
 ///
-///
-
 class _TabData {
   final Widget tab;
   final Widget body;
@@ -28,13 +26,14 @@ final _tabDataList = <_TabData>[
   _TabData(tab:  Center(child: Text("学术专区")), body: Center(child: Text("暂无内容"),)),
 ];
 
-class MyCollectionPage extends StatefulWidget {
+
+
+class MyFootPage extends StatefulWidget  {
   @override
-  _MyCollectionPageState createState() => _MyCollectionPageState();
+  _MyFootPageState createState() => _MyFootPageState();
 }
 
-class _MyCollectionPageState extends State<MyCollectionPage>  with SingleTickerProviderStateMixin {
-
+class _MyFootPageState extends State<MyFootPage>  with SingleTickerProviderStateMixin  {
 
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
@@ -43,7 +42,6 @@ class _MyCollectionPageState extends State<MyCollectionPage>  with SingleTickerP
   final tabBarViewList = _tabDataList.map((item) => item.body).toList();
 
   TabController _tabController;
-
 
   @override
   void initState() {
@@ -62,7 +60,6 @@ class _MyCollectionPageState extends State<MyCollectionPage>  with SingleTickerP
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         titleSpacing: 0,
         leading: GestureDetector(
@@ -72,7 +69,7 @@ class _MyCollectionPageState extends State<MyCollectionPage>  with SingleTickerP
           },
         ),
         centerTitle: true,
-        title: Text("我的收藏",style: TextStyle(color: Colors.black),),
+        title: Text("我的足迹",style: TextStyle(color: Colors.black),),
         backgroundColor: Colors.white,
         bottom: new TabBar(
           controller: _tabController,
@@ -93,16 +90,14 @@ class _MyCollectionPageState extends State<MyCollectionPage>  with SingleTickerP
       ),
 
 
+
+
+
     );
   }
 }
 
 
-
-
-///
-///   学术会议页面
-///
 class VideoMeetingPage extends StatefulWidget {
   @override
   _VideoMeetingPageState createState() => _VideoMeetingPageState();
@@ -146,7 +141,7 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
 
 
   loadData () async{
-    NetworkUtils.requestMyCollectOne(page.toString())
+    NetworkUtils.requestFootOne(page.toString())
         .then((res) {
       int statusCode = int.parse(res.status);
 
@@ -207,6 +202,7 @@ class _VideoMeetingPageState extends State<VideoMeetingPage> with AutomaticKeepA
 
 }
 
+
 ///
 ///   会议列表item
 ///
@@ -216,15 +212,15 @@ Widget getLiveItemView(context,VideoListList listBean){
 
 
     onTap: (){
-        //4-会议预告，5-会议直播，6-视频回顾，7-音频回顾，8-图文回顾
-        switch(listBean.type){
-          case "5":
-            RRouter.push(context, Routes.liveDetailsPage,{"broadcastId":listBean.click_id});
-            break;
-          case "6":
-            RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.click_id});
-            break;
-        }
+      //4-会议预告，5-会议直播，6-视频回顾，7-音频回顾，8-图文回顾
+      switch(listBean.type){
+        case "5":
+          RRouter.push(context, Routes.liveDetailsPage,{"broadcastId":listBean.click_id});
+          break;
+        case "6":
+          RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.click_id});
+          break;
+      }
     },
 
     child: new Container(
@@ -343,7 +339,7 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
   }
 
   loadData () async{
-    NetworkUtils.requestMyCollectThree(page.toString())
+    NetworkUtils.requestFootThree(page.toString())
         .then((res) {
       int statusCode = int.parse(res.status);
       if(statusCode==9999){
@@ -406,7 +402,13 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
 
     );
+
+
   }
+
+
+
+
 
   Widget getLiveItemView(BuildContext context,NewListList xlist) {
 
@@ -456,9 +458,9 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
                 children: <Widget>[
 
-                  getContentText("来源："+xlist.source),
+                  getContentText("来源："+xlist.source.toString()),
 
-                  getContentText(xlist.createTime),
+                  getContentText(xlist.time.toString()),
 
                 ],
 
@@ -487,7 +489,3 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
-
-
-
-

@@ -145,10 +145,10 @@ class _LiveMeetingPageState extends State<LiveMeetingPage> with AutomaticKeepAli
           if (LiveListInfo .fromJson(res.info) .xList.length == 0){
             _refreshController.loadNoData();
           } else {
-            _refreshController.loadNoData();
             _liveListEntity.xList.addAll(LiveListInfo
                 .fromJson(res.info)
                 .xList);
+            _refreshController.loadComplete();
           }
         }else{
           _liveListEntity = LiveListInfo.fromJson(res.info);

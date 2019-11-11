@@ -23,6 +23,7 @@ import 'package:yqy_flutter/ui/special/special_web_details.dart';
 import 'package:yqy_flutter/ui/user/about_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
 import 'package:yqy_flutter/ui/user/my_collection_page.dart';
+import 'package:yqy_flutter/ui/user/my_foot_page.dart';
 import 'package:yqy_flutter/ui/user/my_integral_detail_page.dart';
 import 'package:yqy_flutter/ui/user/my_integral_page.dart';
 import 'package:yqy_flutter/ui/user/personal_page.dart';
@@ -250,9 +251,16 @@ var shopHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, Li
 
   return ShopHomePage();
 });
+
 var orderListHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
 
   return OrderListPage();
+});
+
+
+var myFootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  return MyFootPage();
 });
 
 /*

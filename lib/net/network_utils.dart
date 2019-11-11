@@ -493,6 +493,37 @@ class NetworkUtils {
 
 
 
+
+  ///
+  ///    我的足迹
+  ///
+  static Future<BaseResult> requestFootOne(String page) async {
+    String url = APPConfig.Server + "foot/listing_one";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
+    return result;
+  }
+
+
+  ///
+  ///    我的足迹
+  ///
+  static Future<BaseResult> requestFootTwo(String page) async {
+    String url = APPConfig.Server + "foot/listing_two";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
+    return result;
+  }
+
+
+  ///
+  ///    我的足迹
+  ///
+  static Future<BaseResult> requestFootThree(String page) async {
+    String url = APPConfig.Server + "foot/listing_three";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
+    return result;
+  }
+
+
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);

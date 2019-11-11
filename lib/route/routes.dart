@@ -79,6 +79,9 @@ class Routes {
   static String orderListPage = "/orderListPage";
 
 
+  static String myFootPage = "/myFootPage";
+
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
@@ -114,6 +117,7 @@ class Routes {
     router.define(myIntegralDetailPage, handler:myIntegralDetailHandler);
     router.define(shopHomePage, handler: shopHomeHandler);
     router.define(orderListPage, handler: orderListHandler);
+    router.define(myFootPage, handler: myFootHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);
