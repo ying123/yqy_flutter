@@ -3,14 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/utils/regex_utils.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
-
-
 
 
 
@@ -92,8 +91,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   buildHosET(context),
                   buildMobileET(context),
                   buildSmsRow(context),
-                  SizedBox(height: 60,),
-                  buildSubBtn(context)
+                  SizedBox(height: 40,),
+                  buildSubBtn(context),
+                  SizedBox(height: 5,),
+                  buildTipText(context),
+                  SizedBox(height: 30,),
+                  buildAgreementText(context),
 
                 ],
 
@@ -366,6 +369,47 @@ Widget  buildTopSele(BuildContext context) {
 
     });
 
+
+  }
+
+ Widget buildTipText(BuildContext context) {
+
+    return Text("一旦注册不可更改身份",style: TextStyle(fontSize: 14,color: Colors.black45),);
+
+  }
+
+ Widget buildAgreementText(BuildContext context) {
+
+
+   return Container(
+
+
+     child: Row(
+
+       mainAxisAlignment: MainAxisAlignment.center,
+       children: <Widget>[
+
+       Text("点击注册即表示同意",style: TextStyle(fontSize: 14,color: Colors.black45),),
+
+       InkWell(
+
+         onTap: (){
+           RRouter.push(context, Routes.webPage,{"url":APPConfig.Agreement,"title":"用户协议"});
+         },
+         child:   Text("《用户注册协议》",style: TextStyle(fontSize: 14,color: Colors.blueAccent),),
+
+
+       )
+
+
+
+       ],
+
+
+     ),
+
+
+    );
 
   }
 
