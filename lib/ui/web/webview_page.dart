@@ -6,16 +6,16 @@ import 'package:yqy_flutter/common/constant.dart' show AppColors;
 ///
 ///   webView 页面
 ///
-class WebviewPage extends StatefulWidget {
+class CommonWebviewPage extends StatefulWidget {
   final String title;
   final String url;
-  WebviewPage({@required this.title, @required this.url});
+  CommonWebviewPage({@required this.title, @required this.url});
 
   @override
-  _WebviewPageState createState() => _WebviewPageState();
+  _CommonWebviewPageState createState() => _CommonWebviewPageState();
 }
 
-class _WebviewPageState extends State<WebviewPage>  with SingleTickerProviderStateMixin {
+class _CommonWebviewPageState extends State<CommonWebviewPage>  with SingleTickerProviderStateMixin {
   final _loadingContainer = Container(
     color: Colors.white,
     constraints: BoxConstraints.expand(),

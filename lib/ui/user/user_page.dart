@@ -56,8 +56,10 @@ loadData () async{
 @override
   void deactivate() {
     // TODO: implement deactivate
-    super.deactivate();
-    loadData();
+  super.deactivate();
+    if(UserUtils.isLogin()){
+      loadData();
+    }
   }
 
   @override
@@ -91,6 +93,12 @@ loadData () async{
             break;
           case "系统设置":
             RRouter.push(context ,Routes.settingPage,{},transition:TransitionType.cupertino);
+            break;
+          case "积分":
+            RRouter.push(context ,Routes.myIntegralPage,{},transition:TransitionType.cupertino);
+            break;
+          case "积分兑换":
+            RRouter.push(context ,Routes.shopHomePage,{},transition:TransitionType.cupertino);
             break;
         }
 
@@ -130,7 +138,7 @@ loadData () async{
               children: <Widget>[
                 new  Container(
                   child: new ClipOval(
-                  child: new Image.network(_personalInfo.userPhoto??"",width: 90,height: 90,fit: BoxFit.fill,)
+                  child: new Image.network(_personalInfo==null?"":_personalInfo.userPhoto,width: 90,height: 90,fit: BoxFit.fill,)
                    ),
                   margin: EdgeInsets.fromLTRB(20, 80, 0, 0),
                 ),
@@ -139,7 +147,7 @@ loadData () async{
                   margin: EdgeInsets.fromLTRB(140, 90, 0, 0),
                   child: Row(
                     children: <Widget>[
-                      Text(_personalInfo.realName??"",style: TextStyle(color: Colors.white,fontSize: 20),),
+                      Text(_personalInfo==null?"":_personalInfo.realName,style: TextStyle(color: Colors.white,fontSize: 20),),
                     //  cXM(10),
                   //    Icon(Icons.android,size: 18,)
                     ],
@@ -163,7 +171,7 @@ loadData () async{
                             width: 75,
                             height: 25,
                             color: Colors.white,
-                            child: buildUserStatus(_personalInfo),
+                            child: buildUserStatus(_personalInfo==null?"":_personalInfo),
                             alignment: Alignment.center,
                           ),
                         ),
@@ -284,6 +292,7 @@ Widget  getOtherGridView() {
            getItemGridView("我的点赞",Icons.favorite,Colors.deepOrange),
            getItemGridView("系统设置",Icons.settings,Colors.blueAccent),
            getItemGridView("意见反馈",Icons.feedback,Colors.green),
+           getItemGridView("积分兑换",Icons.feedback,Colors.red),
          ],
        ),
 

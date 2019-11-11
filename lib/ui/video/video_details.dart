@@ -204,17 +204,15 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
       int statusCode = int.parse(res.status);
 
       if(statusCode==9999){
-
         _videoDetailsEntity = VideoDetailsInfo.fromJson(res.info);
+        setState(() {
+          isCollect = _videoDetailsEntity.ifCollect=="0"?false:true;
+          tabBarViewList = [WebPage(_videoDetailsEntity.introduce),getNodeList(_videoDetailsEntity.playList)];
+          player.setDataSource(_videoDetailsEntity.playUrl, autoPlay: true);
+          _layoutState = loadStateByCode(statusCode);
+        });
       }
-      setState(() {
 
-        print(_videoDetailsEntity.ifCollect);
-        isCollect = _videoDetailsEntity.ifCollect=="0"?false:true;
-        tabBarViewList = [WebPage(_videoDetailsEntity.introduce),getNodeList(_videoDetailsEntity.playList)];
-        player.setDataSource(_videoDetailsEntity.playUrl, autoPlay: true);
-        _layoutState = loadStateByCode(statusCode);
-      });
     });
 
   }

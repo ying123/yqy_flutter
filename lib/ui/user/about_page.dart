@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/user/bean/about_entity.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
 class AboutPage extends StatefulWidget {
@@ -7,6 +13,44 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
+
+
+
+  AboutInfo _aboutInfo;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+
+  }
+
+
+
+  loadData () async{
+
+
+    NetworkUtils.requestAbout(UserUtils.getUserInfo().userId)
+        .then((res) {
+
+      int statusCode = int.parse(res.status);
+
+      if(statusCode==9999){
+
+        _aboutInfo = AboutInfo.fromJson(res.info);
+        setState(() {
+
+        });
+
+      }
+
+    });
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +68,14 @@ class _AboutPageState extends State<AboutPage> {
 
             buildTopIconLogo(context),
 
-            SizedBox(height: 5,),
+            SizedBox(height: 10,),
 
             buildVersion(context),
-
+            SizedBox(height: 10,),
+            buildUserAgreement(context),
+            Divider(height: 1,),
+            buildPlatformQualification(context),
+            buildCopyright(context),
 
           ],
 
@@ -52,13 +100,9 @@ class _AboutPageState extends State<AboutPage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
 
-          ClipRRect(
-            
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-            child: Image.network("",width: 40,height: 40,fit: BoxFit.fill,),
-          ),
+          Image.network(_aboutInfo==null?"":_aboutInfo.logo),
           
-          Text("药企源",style: TextStyle(color: Colors.black45,fontSize: 14),)
+      //    Text("药企源",style: TextStyle(color: Colors.black45,fontSize: 14),)
 
 
         ],
@@ -74,8 +118,8 @@ class _AboutPageState extends State<AboutPage> {
 
     return Container(
       color: Colors.white,
-      height: 90,
-      padding: EdgeInsets.all(10),
+      height: 100,
+      padding: EdgeInsets.all(15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -85,7 +129,7 @@ class _AboutPageState extends State<AboutPage> {
             children: <Widget>[
 
               Text("版本号",style: TextStyle(color: Colors.black87,fontSize: 16),),
-              Text("1.1.2",style: TextStyle(color: Colors.black87,fontSize: 16),),
+              Text(_aboutInfo==null?"":_aboutInfo.versionCode,style: TextStyle(color: Colors.black87,fontSize: 16),),
 
             ],
 
@@ -95,7 +139,7 @@ class _AboutPageState extends State<AboutPage> {
             children: <Widget>[
 
               Text("官方网站",style: TextStyle(color: Colors.black87,fontSize: 16),),
-              Text("1.1.2",style: TextStyle(color: Colors.black87,fontSize: 16),),
+              Text(_aboutInfo==null?"":_aboutInfo.webName,style: TextStyle(color: Colors.black87,fontSize: 16),),
 
             ],
 
@@ -109,6 +153,110 @@ class _AboutPageState extends State<AboutPage> {
 
 
     );
+
+  }
+
+ Widget buildUserAgreement(BuildContext context) {
+
+   return  InkWell(
+     onTap: (){
+
+       RRouter.push(context, Routes.webPage,{"url":APPConfig.Agreement,"title":"用户协议"});
+
+     },
+     child: Container(
+       height: 60,
+       color: Colors.white,
+       padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+       child: Row(
+
+         crossAxisAlignment: CrossAxisAlignment.center,
+         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+         children: <Widget>[
+
+           Text("用户协议",style: TextStyle(color: Colors.black87,fontSize: 16),),
+           new Expanded(
+               child: Container(
+                   padding: EdgeInsets.only(right: 10),
+                   alignment: Alignment.centerRight,
+               )
+
+           ),
+
+           Icon(Icons.keyboard_arrow_right,size: 30,color: Colors.black26,),
+
+         ],
+       ),
+
+     ),
+   );
+
+
+  }
+  Widget buildPlatformQualification(BuildContext context) {
+
+    return  InkWell(
+      onTap: (){
+        RRouter.push(context, Routes.webPage,{"url":APPConfig.WebIntro,"title":"平台资质"});
+      },
+      child: Container(
+        height: 60,
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+        child: Row(
+
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+
+            Text("平台资质",style: TextStyle(color: Colors.black87,fontSize: 16),),
+            new Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                )
+
+            ),
+
+            Icon(Icons.keyboard_arrow_right,size: 30,color: Colors.black26,),
+
+          ],
+        ),
+
+      ),
+    );
+
+
+  }
+
+ Widget buildCopyright(BuildContext context) {
+
+    return  Expanded(
+        child: Align(
+
+          alignment: Alignment.bottomCenter,
+          child: Container(
+
+            height: 80,
+            child: Column(
+
+              children: <Widget>[
+
+                Text("药企源版权所有"),
+                SizedBox(height: 5,),
+                Text(_aboutInfo==null?"":_aboutInfo.copyright,textAlign: TextAlign.center,)
+
+
+              ],
+
+            ),
+
+
+
+          ),
+        )
+    );
+
 
   }
 }

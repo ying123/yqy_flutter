@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/base_result.dart';
+import 'package:yqy_flutter/bean/event_bus_token.dart';
+import 'package:yqy_flutter/common/CustomNavigatorObserver.dart';
 import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
@@ -29,9 +33,11 @@ class ResponseInterceptor extends InterceptorsWrapper {
 
         //token 过期
         if(result.tokenCancel){
-          print(" //token 过期----------------------------------------11111111");
           UserUtils.removeUserInfo();
-          eventBus.fire(new LoginPage());//refreshToken过期，eventBus弹出登录页面
+          showToast(result.message);
+        //  RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
+          MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
+        //  MainHomePage.navigatorKey.currentState.pushNamed("/login");
         }
         return result;
       }else {

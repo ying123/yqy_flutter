@@ -23,6 +23,7 @@ class HttpManager {
     _dio.interceptors.add(ResponseInterceptor());
   }
 
+
   request(HttpMethod method, String url, Map<String, dynamic> params,
       {ContentType contentType}) async {
     Options _options;

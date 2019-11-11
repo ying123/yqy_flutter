@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/common/CustomNavigatorObserver.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
@@ -15,7 +18,12 @@ import 'package:yqy_flutter/ui/home/home_page.dart';
 import 'package:yqy_flutter/utils/event_bus_util.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
+import 'bean/event_bus_token.dart';
 import 'ui/live/live_page.dart';
+import 'package:event_bus/event_bus.dart';
+
+
+
 
 void main()  {
    LocalStorage.getInstance().then((res){
@@ -29,12 +37,19 @@ void main()  {
 
 class MainHomePage extends StatelessWidget {
 
+
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+
   MainHomePage() {
     final router = new Router();
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
     requestPermission();
   }
+
+
+
 
 
   @override
@@ -56,10 +71,12 @@ class MainHomePage extends StatelessWidget {
           noDataText: "我是有底线的~",
           idleText: "上拉加载",
           failedText: "加载失败！点击重试！",
+          canLoadingText: "加载更多数据",
         ) ,
         child: OKToast( // Toast 全局配置
             child:  MaterialApp(
               title: "药企源",
+              navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,//不显示debug
               locale:  Locale('zh', 'CN'), // 中文简体
               theme: ThemeData(
@@ -81,6 +98,7 @@ class HomeMainPage extends StatefulWidget {
 
 class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
+
   final _bottomNavigationColor = Colors.black45;
   int _currentIndex = 0; //当前选中的坐标
 
@@ -93,13 +111,13 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    //取消订阅
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
   @override

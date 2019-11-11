@@ -14,6 +14,8 @@ import 'package:yqy_flutter/ui/live/hd_details.dart';
 import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/login/register_page.dart';
+import 'package:yqy_flutter/ui/shop/order_list_page.dart';
+import 'package:yqy_flutter/ui/shop/shop_home_page.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
@@ -21,6 +23,8 @@ import 'package:yqy_flutter/ui/special/special_web_details.dart';
 import 'package:yqy_flutter/ui/user/about_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
 import 'package:yqy_flutter/ui/user/my_collection_page.dart';
+import 'package:yqy_flutter/ui/user/my_integral_detail_page.dart';
+import 'package:yqy_flutter/ui/user/my_integral_page.dart';
 import 'package:yqy_flutter/ui/user/personal_page.dart';
 import 'package:yqy_flutter/ui/user/real_name_page.dart';
 import 'package:yqy_flutter/ui/user/setting_page.dart';
@@ -33,7 +37,6 @@ import '../utils/user_utils.dart';
 import 'package:yqy_flutter/ui/live/live_page.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_medical.dart';
 
-
 /*
 var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String title = params['title']?.first;
@@ -44,6 +47,15 @@ var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<St
   return WebviewPage(title: title, url: url);
 });
 */
+var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String url = params["url"]?.first;
+  String title = params["title"]?.first;
+  var list = List<int>();
+  jsonDecode(title).forEach(list.add);
+  title = Utf8Decoder().convert(list);
+  return CommonWebviewPage(url: url,title: title,);
+});
+
 
 var loginHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return LoginPage();
@@ -221,6 +233,28 @@ var settingHandler = Handler(handlerFunc: (BuildContext context, Map<String, Lis
 var aboutHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return AboutPage();
 });
+
+var myIntegralHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  return MyIntegralPage();
+});
+
+
+var myIntegralDetailHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+
+  return MyIntegralDetailPage(id);
+});
+
+var shopHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  return ShopHomePage();
+});
+var orderListHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  return OrderListPage();
+});
+
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

@@ -69,7 +69,7 @@ class _SettingPageState extends State<SettingPage> {
         title: Text("系统设置"),
 
       ),
-      body:_aboutInfo==null?Container():Column(
+      body:Column(
 
         children: <Widget>[
 
@@ -123,7 +123,7 @@ class _SettingPageState extends State<SettingPage> {
                 child: Container(
                   padding: EdgeInsets.only(right: 5),
                   alignment: Alignment.centerRight,
-                  child: Text(_aboutInfo.userPhone??"",style: TextStyle(color: Colors.black38,fontSize: 15),)
+                  child: Text(_aboutInfo==null?"":_aboutInfo.userPhone??"",style: TextStyle(color: Colors.black38,fontSize: 15),)
                 )
 
             ),
@@ -161,7 +161,7 @@ class _SettingPageState extends State<SettingPage> {
                 child: Container(
                     padding: EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
-                    child: Text(_aboutInfo.serviceTel3??"",style: TextStyle(color: Colors.blueAccent,fontSize: 15),)
+                    child: Text(_aboutInfo==null?"":_aboutInfo.serviceTel3,style: TextStyle(color: Colors.blueAccent,fontSize: 15),)
                 )
 
             ),

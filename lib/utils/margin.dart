@@ -66,9 +66,10 @@ Widget wrapImageUrl(String url,double w,double h){
   return CachedNetworkImage(
     width: w,
     height: h,
+    fit: BoxFit.fill,
     imageUrl: url,
-    placeholder: (context, url) => Icon(Icons.apps,size: 110,color: Colors.blueAccent,),
-    errorWidget: (context, url, error) => new Icon(Icons.error,size: 110),
+  //  placeholder: (context, url) => Icon(Icons.picture_in_picture,size: 110,color: Colors.black45,),
+    errorWidget: (context, url, error) => new Icon(Icons.error,size: 110,color: Colors.black45,),
   );
 }
 

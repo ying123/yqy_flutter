@@ -420,6 +420,83 @@ class NetworkUtils {
   }
 
 
+
+
+  ///
+  ///  我的积分
+  ///
+  static Future<BaseResult> requestScores(String userId) async {
+    String url = APPConfig.Server + "User/userScores";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token});
+    return result;
+  }
+
+  ///
+  ///  我的积分 列表
+  ///
+  static Future<BaseResult> requestScoresList({String userId,String page,String payType }) async {
+    String url = APPConfig.Server + "User/scoreList";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token,"page":page,"payType":payType});
+    return result;
+  }
+
+
+
+  ///
+  ///  我的积分 明细详情
+  ///
+  static Future<BaseResult> requestScoresDetail(String userId,String id) async {
+    String url = APPConfig.Server + "User/scoreDetail";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"userId":userId,"token":token,"id":id});
+    return result;
+  }
+
+
+
+  ///
+  ///  积分商城 列表
+  ///
+  static Future<BaseResult> requestShopList() async {
+    String url = APPConfig.Server + "shop/lists";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+  ///
+  ///  积分商城  兑换商品
+  ///
+  static Future<BaseResult> requestShopExchange(String id,String name,String tel,String address) async {
+    String url = APPConfig.Server + "shop/exchange";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+    return result;
+  }
+
+
+
+
+  ///
+  ///  积分商城  订单列表
+  ///
+  static Future<BaseResult> requestOrderList(String page) async {
+    String url = APPConfig.Server + "user/order";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"token":token});
+    return result;
+  }
+
+
+
+  ///
+  ///  积分商城  订单详情
+  ///
+  static Future<BaseResult> requestOrderDetails(String id) async {
+    String url = APPConfig.Server + "user/order_view";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"token":token});
+    return result;
+  }
+
+
+
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);
