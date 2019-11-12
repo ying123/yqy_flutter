@@ -453,7 +453,7 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
 
               child:  new  Row(
-
+                
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                 children: <Widget>[
@@ -467,12 +467,7 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
               ),
             ),
-
-
             Divider(height: 1,color: Colors.black26,)
-
-
-
           ],
 
 

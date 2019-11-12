@@ -524,6 +524,26 @@ class NetworkUtils {
   }
 
 
+
+  ///
+  ///   实名认证 需要的 数据
+  ///
+  static Future<BaseResult> requestRegInfo() async {
+    String url = APPConfig.Server + "Register/regInfo";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+  ///
+  ///   完善实名认证资料
+  ///
+  static Future<BaseResult> requestEditInfo(Map<String, dynamic> map) async {
+    String url = APPConfig.Server + "User/editUserInfo";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);

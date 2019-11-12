@@ -207,9 +207,9 @@ class _CityPickerState extends State<_CityPickerWidget> {
                       return new Align(
                         child: new Text(
                           v['name'],
-                          textScaleFactor: 1,
+                          textScaleFactor: 0.8,
                         ),
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                       );
                     }).toList();
                   },
@@ -234,9 +234,9 @@ class _CityPickerState extends State<_CityPickerWidget> {
                       return new Align(
                         child: new Text(
                           v['name'],
-                          textScaleFactor: 1,
+                          textScaleFactor: 0.8,
                         ),
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                       );
                     }).toList();
                   },
@@ -258,9 +258,9 @@ class _CityPickerState extends State<_CityPickerWidget> {
                       return new Align(
                         child: new Text(
                           v['name'],
-                          textScaleFactor: 1,
+                          textScaleFactor: 0.8,
                         ),
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                       );
                     }).toList();
                   },

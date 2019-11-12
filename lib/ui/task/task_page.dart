@@ -233,6 +233,8 @@ Widget  buildTitleType(String t_id) {
    return FlatButton(
        onPressed: (){
 
+         
+
        },
        child: Container(
          alignment: Alignment.center,

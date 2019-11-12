@@ -35,6 +35,7 @@ class NewListList {
 	String type;
 	 String click_id;
 
+
 	NewListList({this.image, this.createTime, this.isTop, this.author, this.id, this.source, this.time, this.title, this.content,this.lawsId,this.type,this.click_id});
 
 	NewListList.fromJson(Map<String, dynamic> json) {

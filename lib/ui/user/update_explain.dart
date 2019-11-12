@@ -103,7 +103,7 @@ class _UpdateExplainPageState extends State<UpdateExplainPage> {
                       if((_formKey.currentState as FormState).validate()){
                         _formKey.currentState.save();
                         //验证通过提交数据
-                        NetworkUtils. requestEditUserInfo(UserUtils.getUserInfo().userId,_str)
+                        NetworkUtils.requestEditUserInfo(UserUtils.getUserInfo().userId,_str)
                             .then((res){
 
                           showToast(res.message);

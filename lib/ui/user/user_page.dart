@@ -25,7 +25,6 @@ class _UserPageState extends State<UserPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     loadData();
   }
 
@@ -193,10 +192,19 @@ loadData () async{
                       },
                       child:  Icon(Icons.arrow_forward_ios,size: 20,color: Colors.white,),
                   ),
+                ),
+                new Container(
+                  alignment: Alignment.bottomLeft,
+                  margin: EdgeInsets.fromLTRB(40, 0, 0, 30),
+                  child:  Text(_personalInfo==null?"":_personalInfo.userInfo,style: TextStyle(color: Colors.white),)
+
                 )
+
               ],
             ),
           ),
+          
+
         ],
 
       ),
