@@ -82,6 +82,22 @@ class Routes {
   static String myFootPage = "/myFootPage";
 
 
+  static String taskQuestionNairePage = "/taskQuestionNairePage";
+
+
+  static String taskVideoPage = "/taskVideoPage";
+
+  static String myEnterprisePage = "/myEnterprisePage";
+
+  static String enterpriseHomePage = "/enterpriseHomePage";
+
+  static String staffListPage = "/staffListPage";
+
+  static String searchPage = "/searchPage";
+
+
+
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
@@ -118,6 +134,12 @@ class Routes {
     router.define(shopHomePage, handler: shopHomeHandler);
     router.define(orderListPage, handler: orderListHandler);
     router.define(myFootPage, handler: myFootHandler);
+    router.define(taskQuestionNairePage, handler:taskQuestionNaireHandler);
+    router.define(myEnterprisePage, handler:myEnterpriseHandler);
+    router.define(enterpriseHomePage, handler:enterpriseHomeHandler);
+    router.define(staffListPage, handler:staffListHandler);
+    router.define(searchPage, handler:searchHandler);
+    router.define(taskVideoPage, handler:taskVideoHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

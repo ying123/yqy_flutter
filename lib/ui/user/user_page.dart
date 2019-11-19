@@ -102,9 +102,10 @@ loadData () async{
           case "我的足迹":
             RRouter.push(context ,Routes.myFootPage,{},transition:TransitionType.cupertino);
             break;
-
+          case "我的企业":
+            RRouter.push(context ,Routes.myEnterprisePage,{},transition:TransitionType.cupertino);
+            break;
         }
-
 
 
       },
@@ -301,7 +302,7 @@ Widget  getOtherGridView() {
          children: <Widget>[
            getItemGridView("我的收藏",Icons.collections,Colors.blueAccent),
            getItemGridView("我的足迹",Icons.apps,Colors.green),
-           getItemGridView("我的点赞",Icons.favorite,Colors.deepOrange),
+           getItemGridView("我的企业",Icons.supervised_user_circle,Colors.deepOrange),
            getItemGridView("系统设置",Icons.settings,Colors.blueAccent),
            getItemGridView("意见反馈",Icons.feedback,Colors.green),
            getItemGridView("积分兑换",Icons.feedback,Colors.red),

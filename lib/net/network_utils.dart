@@ -544,6 +544,58 @@ class NetworkUtils {
     return result;
   }
 
+
+
+
+  ///
+  ///   领取任务
+  ///
+  static Future<BaseResult> requestGetTask(String id) async {
+    String url = APPConfig.Server + "task/get_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
+
+
+  ///
+  ///   完成任务
+  ///
+  static Future<BaseResult> requestCompleteTask(Map<String, dynamic> map) async {
+    String url = APPConfig.Server + "task/complete_video_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+  ///
+  ///   领取积分
+  ///
+  static Future<BaseResult> requestGetScore(Map<String, dynamic> map) async {
+    String url = APPConfig.Server + "task/get_score";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
+
+  ///
+  ///   问卷任务详情
+  ///
+  static Future<BaseResult> requestTaskQuestion(String tid) async {
+    String url = APPConfig.Server + "task/task_question";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"tid":tid});
+    return result;
+  }
+
+
+
+  ///
+  ///   视频任务详情
+  ///
+  static Future<BaseResult> requestTaskVideo(String tid) async {
+    String url = APPConfig.Server + "task/task_video";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":tid});
+    return result;
+  }
+
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);

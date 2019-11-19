@@ -242,7 +242,7 @@ class _AboutPageState extends State<AboutPage> {
 
               children: <Widget>[
 
-                Text("药企源版权所有"),
+                Text("水燕版权所有"),
                 SizedBox(height: 5,),
                 Text(_aboutInfo==null?"":_aboutInfo.copyright,textAlign: TextAlign.center,)
 

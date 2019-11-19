@@ -124,7 +124,6 @@ class APPConfig {
 
 
 
-
 class APPIcons {
   static const PlaceHolderAvatar = Icon(
     IconData(

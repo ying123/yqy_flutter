@@ -1,9 +1,13 @@
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/task/bean/task_list_entity.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/bean/banner_entity.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
   class TaskHome extends StatefulWidget {
@@ -29,7 +33,6 @@ import 'package:yqy_flutter/bean/banner_entity.dart';
 
     loadData () async {
       Future.wait([
-
         NetworkUtils.requestBanner("20"),
         NetworkUtils.requestTaskList()
 
@@ -87,8 +90,6 @@ import 'package:yqy_flutter/bean/banner_entity.dart';
           ],
 
         ),
-
-
       );
     }
 
@@ -232,8 +233,50 @@ Widget  buildTitleType(String t_id) {
    }
    return FlatButton(
        onPressed: (){
+         String  status =  info.status;
 
-         
+
+         if(status=="1"){  //去完成任务
+
+           switch (info.tId){
+             case "1": /// 跳转视频任务
+               RRouter.push(context, Routes.taskVideoPage,{"tid":info.id});
+               break;
+             case "2":/// 跳转问卷任务
+               RRouter.push(context, Routes.taskQuestionNairePage,{"tid":info.id});
+               break;
+             case "3": /// 跳转实名任务
+             //  1:医生，2:医学代表，3:企业，4：结构，
+               switch (UserUtils.getUserInfo().regType) {
+                 case "1":
+                   RRouter.push(context, Routes.realNamePage,{});
+                   break;
+                 case "2":
+                   break;
+                 case "3":
+                 case "4":
+                   break;
+               }
+               break;
+             default:
+               showToast("暂未开放，可以到药企源公众号进行此任务！");
+               break;
+           }
+
+         }else if(status=="0"){ // 领取任务请求
+
+           NetworkUtils.requestGetTask(info.id)
+               .then((res){
+
+                 showToast(res.message);
+
+                 loadData();
+
+           });
+
+         }else if(status=="2"){ // 领取积分请求
+
+         }
 
        },
        child: Container(
@@ -248,9 +291,6 @@ Widget  buildTitleType(String t_id) {
 
        ));
 
-
   }
-
-
 
   }

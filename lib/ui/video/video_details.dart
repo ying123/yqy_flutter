@@ -80,12 +80,9 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
   @override
   void dispose() {
-    player.release();
-    _tabController.dispose();
     super.dispose();
-
-  //  videoPlayerController.dispose();
-  //  chewieController.dispose();
+    _tabController.dispose();
+     player.release();
 
   }
 
@@ -123,7 +120,6 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
          new GestureDetector(
             
             child: Icon(Icons.share,color: Colors.black45,size: 26,),
-            
             onTap: (){
               showToast("点击分享");
             },

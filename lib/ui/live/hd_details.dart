@@ -82,9 +82,9 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
 
   @override
   void dispose() {
-    player.release();
-    _tabController.dispose();
     super.dispose();
+    _tabController.dispose();
+    player.release();
   }
 
   @override
@@ -124,7 +124,6 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
         
       ),
 
-
       body:
       LoadStateLayout(
       state: _layoutState,
@@ -144,7 +143,7 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
            height: 220,
            width: double.infinity,
            /// 如果 isPlay = 1 正在直播状态   其他状态显示封面图和文字
-           child: _hdDetailsInfo.isPlay==1?FijkView(
+           child: _hdDetailsInfo.isPlay=="1"||_hdDetailsInfo.isPlay==1?FijkView(
              color: Colors.black,
              width: double.infinity,
              height: double.infinity,
@@ -210,7 +209,7 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
 
 Widget  getOtherStatusView(isPlay,imgUrl) {
 
-  String value;
+  String value = "";
 
   if(isPlay==0||isPlay=="0"){
     value = "已结束";
@@ -241,7 +240,7 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))), //设置圆角
             child: Center(
 
-              child: Text(value,style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+              child: Text(value??"",style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
 
             )
           ),

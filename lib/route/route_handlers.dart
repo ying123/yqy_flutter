@@ -20,7 +20,13 @@ import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
 import 'package:yqy_flutter/ui/special/special_web_details.dart';
+import 'package:yqy_flutter/ui/task/task_question_naire_page.dart';
+import 'package:yqy_flutter/ui/task/task_video_page.dart';
 import 'package:yqy_flutter/ui/user/about_page.dart';
+import 'package:yqy_flutter/ui/user/enterprise/enterprise_home_page.dart';
+import 'package:yqy_flutter/ui/user/enterprise/my_enterprise_page.dart';
+import 'package:yqy_flutter/ui/user/enterprise/search_page.dart';
+import 'package:yqy_flutter/ui/user/enterprise/staff_list_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
 import 'package:yqy_flutter/ui/user/my_collection_page.dart';
 import 'package:yqy_flutter/ui/user/my_foot_page.dart';
@@ -262,6 +268,38 @@ var myFootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List
 
   return MyFootPage();
 });
+
+
+var taskQuestionNaireHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["tid"]?.first;
+  return TaskQuestionNairePage(id);
+});
+
+var myEnterpriseHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return MyEnterprisePage();
+});
+
+
+var enterpriseHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return EnterpriseHomePage();
+});
+
+
+
+var staffListHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return StaffListPage();
+});
+
+
+var searchHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SearchPage();
+});
+
+var taskVideoHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["tid"]?.first;
+  return TaskVideoPage(id);
+});
+
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

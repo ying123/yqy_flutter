@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -74,10 +75,15 @@ class MainHomePage extends StatelessWidget {
         ) ,
         child: OKToast( // Toast 全局配置
             child:  MaterialApp(
-              title: "药企源",
+              title: "水燕Med",
               navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,//不显示debug
-              locale:  Locale('zh', 'CN'), // 中文简体
+              locale: Locale('zh', 'CN'),
+              localizationsDelegates: const [
+                GlobalCupertinoLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate
+              ],
               theme: ThemeData(
                   primaryColor: Colors.blue,
                   backgroundColor: Colors.white
