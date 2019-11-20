@@ -233,8 +233,8 @@ Widget  buildTitleType(String t_id) {
    }
    return FlatButton(
        onPressed: (){
-         String  status =  info.status;
 
+         String  status =  info.status;
 
          if(status=="1"){  //去完成任务
 

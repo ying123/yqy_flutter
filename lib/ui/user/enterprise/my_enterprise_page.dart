@@ -592,6 +592,9 @@ class searchBarDelegate extends SearchDelegate<String> {
                          new InkWell(
                             onTap: (){
                               Navigator.pop(context);
+
+                              showApplySuccessDialog(context);
+
                             },
                             child:   Container(
                               width: ScreenUtil().setWidth(207),
@@ -641,6 +644,88 @@ class searchBarDelegate extends SearchDelegate<String> {
 
 
   }
+
+
+  ///
+  ///  申请加入公司成功
+  ///
+  void showApplySuccessDialog(BuildContext context) {
+
+    showDialog(
+        context: context,
+        builder: (_){
+
+          return Material(
+            color: Colors.transparent,
+            child:Container(
+              margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(148), ScreenUtil().setHeight(655), ScreenUtil().setWidth(148), ScreenUtil().setHeight(755)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+
+
+                  Text("您的申请已提交",style: TextStyle(color: Color(0xFF666666),fontSize: ScreenUtil().setSp(40)),),
+                  Text("请等待企业管理员审核",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46)),),
+                  Container(
+                    width: ScreenUtil().setWidth(513),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+
+                        new InkWell(
+                          onTap: (){
+                            Navigator.pop(context);
+                            showApplySuccessDialog(context);
+
+                          },
+                          child:   Container(
+                            width: ScreenUtil().setWidth(207),
+                            height: ScreenUtil().setHeight(84),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Color(0xFF0072EE),
+                                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
+                            ),
+                            child: Text("确定",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40)),),
+                          ),
+                        ),
+                        new InkWell(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child:   Container(
+                            width: ScreenUtil().setWidth(207),
+                            height: ScreenUtil().setHeight(84),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Color(0xFFC4C4C4),width: ScreenUtil().setWidth(3)),
+                                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
+                            ),
+                            child: Text("取消",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+                          ),
+                        )
+
+
+                      ],
+
+                    ),
+                  )
+
+                ],
+
+              ),
+
+            ) ,
+
+          );
+
+        }
+    );
+
+  }
+
 
  /* @override
   Widget buildSuggestions(BuildContext context) {

@@ -46,7 +46,7 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
   void initData() {
     NetworkUtils.requestTaskVideo(widget.tid)
         .then((res){
-          
+
       int statusCode = int.parse(res.status);
       if(statusCode==9999){
         _taskVideoInfo = TaskVideoInfo.fromJson(res.info);

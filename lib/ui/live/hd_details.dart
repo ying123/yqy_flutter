@@ -5,8 +5,10 @@ import 'package:event_bus/event_bus.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
@@ -115,7 +117,9 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
             child: Icon(Icons.share,color: Colors.black45,size: 26,),
             
             onTap: (){
-              showToast("点击分享");
+              if(_hdDetailsInfo!=null){
+                Share.share(_hdDetailsInfo.title+"\r\n"+"直播观看地址：\r\n"+APPConfig.SHARE_LIVE_HD_START+_hdDetailsInfo.id+APPConfig.SHARE_LIVE_END);
+              }
             },
           ),
          cXM(10),

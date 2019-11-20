@@ -60,6 +60,8 @@ dependencies:
   flutter_spinkit: ^4.0.0  # 加载进度条动画效果
   fijkplayer: ^0.2.1
   url_launcher: ^5.2.5  # Url跳转 拨打电话
+  flutter_custom_dialog: ^1.0.14 # 弹窗
+  share: 0.6.3+1 # 分享
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git
 dev_dependencies:

@@ -110,14 +110,31 @@ class Constant {
 
 class APPConfig {
   static const DEBUG = true;
- // static const Server = "http://api.yaoqiyuan.com/api/";
+  static const Server = "http://api.yaoqiyuan.com/api/";
 
-  static const Server = "http://test.yaoqiyuan.com/api/"; //测试地址
+  //static const Server = "http://test.yaoqiyuan.com/api/"; //测试地址
   // static const Server = "http://localhost:8090";
+
+
+   static String onlinePicUrl = "http://api.yaoqiyuan.com/";//视频分享地址
+
+
+   static String onlineLiveUrl = "http://m.yaoqiyuan.com/";//直播分享地址
 
   static const Agreement = Server+ "Register/agreement";  //用户协议
 
   static const WebIntro = Server+ "About/WebIntro"; // 平台资质
+
+
+   static final String Share_meeting_broadcast =  onlinePicUrl+"Home/meeting/broadcastinfo/id/";//会议直播
+  static final String Share_meeting_video = onlinePicUrl+"Home/meeting/periodinfo/id/";//视频会议
+
+
+   static final String SHARE_LIVE_START = onlineLiveUrl+"meeting/live_info/id/";//分享正在直播的会议 需要拼接 直播ID  74
+
+   static final String SHARE_LIVE_HD_START = onlineLiveUrl+"meeting/interact_info/id/";//分享正在互动直播的会议 需要拼接 直播ID  74
+
+   static final String SHARE_LIVE_END = ".html?from=groupmessage";//分享正在直播的会议结束
 
 }
 

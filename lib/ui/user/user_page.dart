@@ -7,7 +7,7 @@ import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
-
+import 'package:share/share.dart';
 
 
 class UserPage extends StatefulWidget {
@@ -105,6 +105,10 @@ loadData () async{
           case "我的企业":
             RRouter.push(context ,Routes.myEnterprisePage,{},transition:TransitionType.cupertino);
             break;
+          case "分享":
+            Share.share('水燕Med  http://www.shuiyanmed.com/');
+            break;
+
         }
 
 
