@@ -120,6 +120,7 @@ loadData () async{
           case "分享":
             Share.share('水燕Med  http://www.shuiyanmed.com/');
             break;
+            
 
         }
 
@@ -285,7 +286,7 @@ loadData () async{
            children: <Widget>[
              getItemGridView("积分",Icons.monetization_on,Colors.blueAccent),
              getItemGridView("分享",Icons.share,Colors.green),
-             getItemGridView("消息",Icons.message,Colors.deepOrange)
+             getItemGridView("我的企业",Icons.supervised_user_circle,Colors.deepOrange)
 
            ],
          ),
@@ -318,8 +319,7 @@ Widget  getOtherGridView() {
          children: <Widget>[
            getItemGridView("我的收藏",Icons.collections,Colors.blueAccent),
            getItemGridView("我的足迹",Icons.apps,Colors.green),
-           getItemGridView("我的企业",Icons.supervised_user_circle,Colors.deepOrange),
-           getItemGridView("系统设置",Icons.settings,Colors.blueAccent),
+           getItemGridView("系统设置",Icons.settings,Colors.red),
            getItemGridView("意见反馈",Icons.feedback,Colors.green),
            getItemGridView("积分兑换",Icons.feedback,Colors.red),
          ],

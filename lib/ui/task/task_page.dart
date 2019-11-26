@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
@@ -5,6 +7,7 @@ import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/task/bean/task_list_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/bean/banner_entity.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -23,13 +26,29 @@ import 'package:yqy_flutter/utils/user_utils.dart';
 
     BannerEntity _bannerEntity;
 
-
     TaskListEntity _listEntity;
+
+    StreamSubscription changeSubscription;
+
     @override
     void initState() {
       super.initState();
       loadData();
+      changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+        setState(() {
+          loadData();
+        });
+
+      });
     }
+
+    @override
+    void dispose() {
+      super.dispose();
+      changeSubscription.cancel();
+
+    }
+
 
     loadData () async {
       Future.wait([
@@ -154,13 +173,7 @@ Widget  buildListView(BuildContext context) {
                 buildButton(_listEntity.info[index])
 
                 ],
-
-
               ),
-
-
-
-
             );
           },
           itemCount: _listEntity.info.length,
@@ -223,8 +236,8 @@ Widget  buildTitleType(String t_id) {
        color = 0xffeeb161;
        break;
      case "3":
-       text ="已结束";
-       color = 0xffFF656363;
+       text ="已完成";
+       color = 0x61000000;
        break;
      case "-1":
        text ="已过期";
@@ -275,6 +288,22 @@ Widget  buildTitleType(String t_id) {
            });
 
          }else if(status=="2"){ // 领取积分请求
+
+           NetworkUtils.requestGetScore(info.id)
+               .then((res){
+
+                 showToast(res.message);
+
+                 if(res.status=="9999"){
+
+                   setState(() {
+                      loadData();
+                   });
+
+                 }
+
+           });
+
 
          }
 

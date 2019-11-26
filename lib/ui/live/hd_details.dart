@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -5,6 +6,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:like_button/like_button.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
@@ -55,6 +57,7 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
 
   HdDetailsInfo  _hdDetailsInfo;
 
+  bool isCollect;
 
   @override
   void initState() {
@@ -88,12 +91,18 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
         title: Text("会议直播", style: TextStyle(color: Colors.black),),
         backgroundColor: Colors.white,
         actions: <Widget>[
+          LikeButton(
+            isLiked: isCollect,
+            likeBuilder: (bool isLike){
 
-          new GestureDetector(
-            child: Icon(Icons.star_border,color: Colors.black45,size: 30,),
-            onTap: (){
-              showToast("点击收藏");
+              return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
+              Icon(Icons.star,color:Colors.amber,size: 30,);
             },
+            onTap: (bool isLiked)
+            {
+              return onLikeButtonTap(isLiked,widget.id);
+            },
+
           ),
           cXM(10),
          new GestureDetector(
@@ -174,6 +183,8 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
 
   void loadData() async{
 
+
+    
     NetworkUtils.requestHDDetails(widget.id)
         .then((res) {
       int statusCode = int.parse(res.status);
@@ -183,6 +194,7 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
         _hdDetailsInfo = HdDetailsInfo.fromJson(res.info);
       }
       setState(() {
+        isCollect = _hdDetailsInfo.ifCollect=="0"?false:true;
         tabBarViewList = [WebPage(_hdDetailsInfo.introduce),WebPage(_hdDetailsInfo.content)];
         player.setDataSource(_hdDetailsInfo.interact.info.channelUrl.urlRtmp, autoPlay: true);
         _layoutState = loadStateByCode(statusCode);
@@ -250,7 +262,29 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
 
 
 
+Future<bool> onLikeButtonTap(bool isLike,var  id) {
 
+  final Completer<bool> completer = new Completer<bool>();
+
+  if(!isLike){
+
+    NetworkUtils.requestCollectAdd(AppRequest.Collect_live_broadcast,id)
+        .then((res){
+      int statusCode = int.parse(res.status);
+      completer.complete(statusCode==9999?true:false);
+      showToast(res.message);
+    });
+  }else{
+
+    NetworkUtils.requestCollectDel(AppRequest.Collect_live_broadcast,id)
+        .then((res){
+      int statusCode = int.parse(res.status);
+      completer.complete(statusCode==9999?false:true);
+      showToast(res.message);
+    });
+  }
+  return completer.future;
+}
 
 
 

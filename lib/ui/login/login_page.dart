@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
     return Align(
       child: SizedBox(
         height: 45.0,
-        width: 270.0,
+        width: 320.0,
         child: RaisedButton(
           child: Text(
             '登陆',
@@ -330,7 +330,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Text(
-        '药企源',
+        '水燕Med',
         style: TextStyle(fontSize: 42.0,color: Colors.blue),
       ),
     );

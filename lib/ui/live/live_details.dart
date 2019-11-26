@@ -189,6 +189,7 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
         _liveDetailsInfo = LiveDetailsInfo.fromJson(res.info);
       }
       setState(() {
+        isCollect = _liveDetailsInfo.ifCollect=="0"?false:true;
         tabBarViewList = [WebPage(_liveDetailsInfo.introduce),WebPage(_liveDetailsInfo.content)];
         player.setDataSource(_liveDetailsInfo.broadcast.info.channelUrl.urlRtmp, autoPlay: true);
         _layoutState = loadStateByCode(statusCode);
@@ -209,7 +210,7 @@ Future<bool> onLikeButtonTap(bool isLike,var  id) {
 
   if(!isLike){
 
-    NetworkUtils.requestCollectAdd(AppRequest.Comment_video_meeting,id)
+    NetworkUtils.requestCollectAdd(AppRequest.Collect_live_broadcast,id)
         .then((res){
       int statusCode = int.parse(res.status);
       completer.complete(statusCode==9999?true:false);
@@ -217,7 +218,7 @@ Future<bool> onLikeButtonTap(bool isLike,var  id) {
     });
   }else{
 
-    NetworkUtils.requestCollectDel(AppRequest.Comment_video_meeting,id)
+    NetworkUtils.requestCollectDel(AppRequest.Collect_live_broadcast,id)
         .then((res){
       int statusCode = int.parse(res.status);
       completer.complete(statusCode==9999?false:true);

@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/task/bean/task_video_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/widgets/CustomFijkPanel.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -30,7 +33,6 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     initData();
   }
 
@@ -76,7 +78,7 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
         });
          this.initData();
       },
-      successWidget: Column(
+      successWidget:_taskVideoInfo==null?Container(): Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
             buildVideoView(),
@@ -85,8 +87,7 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
               padding: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
               alignment: Alignment.centerRight,
               width: double.infinity,
-              child: InkWell(
-
+            /*  child: InkWell(
                 onTap: (){
                   subData();
                 },
@@ -101,7 +102,7 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
                   child: Text("答题",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40)),),
 
                 ),
-              ),
+              ),*/
             ),
             Container(
               padding: EdgeInsets.only(left: ScreenUtil().setWidth(40)),
@@ -132,6 +133,13 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
           width: double.infinity,
           height: double.infinity,
           player: player,
+          panelBuilder: (FijkPlayer player, BuildContext context, Size viewSize, Rect texturePos) {
+            return CustomFijkPanel(
+                player: player,
+                buildContext: context,
+                viewSize: viewSize,
+                texturePos: texturePos);
+          },
         ),
       );
 

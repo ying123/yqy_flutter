@@ -592,9 +592,9 @@ class NetworkUtils {
   ///
   ///   领取积分
   ///
-  static Future<BaseResult> requestGetScore(Map<String, dynamic> map) async {
+  static Future<BaseResult> requestGetScore(String id) async {
     String url = APPConfig.Server + "task/get_score";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
 
@@ -609,6 +609,15 @@ class NetworkUtils {
   }
 
 
+
+  ///
+  ///   问卷任务提交
+  ///
+  static Future<BaseResult> requestTaskQuestionComplete() async {
+    String url = APPConfig.Server + "task/complete_question_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
 
   ///
   ///   视频任务详情

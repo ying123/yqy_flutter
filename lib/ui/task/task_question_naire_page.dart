@@ -1,7 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/bean/base_result.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/task/bean/task_question_entity.dart';
+import 'package:yqy_flutter/ui/task/bean/upload_naire_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
 class TaskQuestionNairePage extends StatefulWidget {
@@ -20,6 +27,8 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
 
 
   List seleValues;
+
+  List seleValues2; // 每个问题的ID  提交数据时用到
 
   TaskQuestionInfo _questionInfo;
 
@@ -42,6 +51,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
 
         _questionInfo = TaskQuestionInfo.fromJson(res.info);
         seleValues  = new List(_questionInfo.xList.length);
+        seleValues2  = new List(_questionInfo.xList.length);
         seleValues.fillRange(0,seleValues.length,-1);
         setState(() {
 
@@ -120,7 +130,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
           shrinkWrap: true,//内容适配
           itemCount: _questionInfo.xList[firstIndex].content.length,
           itemBuilder: (c,index){
-            return  buildAnswerItemView(firstIndex,index);
+            return  buildAnswerItemView(firstIndex,index,_questionInfo.xList[firstIndex].questionId);
           },
 
         ),
@@ -136,12 +146,13 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
   ///   firstIndex 表示在列表的是第几个
   ///    index  表示 当前是第几个选项
   ///
-  Widget buildAnswerItemView(int firstIndex,int index) {
+  Widget buildAnswerItemView(int firstIndex,int index,String queId) {
 
     return FlatButton(
         onPressed: (){
           setState(() {
             seleValues[firstIndex] = index;
+            seleValues2[firstIndex] = queId;
           });
         },
         child: buildAnswerTextStatus(seleValues[firstIndex],firstIndex,index),
@@ -248,7 +259,48 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
   ///
   ///  提交数据
   ///
-  void submissionData() {
+  Future submissionData() async {
+
+    bool result = seleValues.any((element)=>(element==-1)); // 判断当前每道题是否都已经选择完成
+
+
+    if(result){
+        showToast("当前还有题目未选择答案！");
+        return;
+    }
+
+
+
+    List<answer>  answerList = new List();
+
+    int i = 0;
+    seleValues.forEach((element){//遍历每个元素  此时不可add或remove  否则报错 但可以修改元素值，
+        answerList.add(new answer(id:seleValues2[i],value: element.toString() ));
+        i++;
+    });
+
+    UploadQuestionBean questionBean = new UploadQuestionBean(tid: widget.tid,token: UserUtils.getUserInfo().token,answe: answerList);
+
+
+    Dio _dio = Dio();
+
+    Response response =  await _dio.post(APPConfig.Server + "task/complete_question_task",data: questionBean.toJson());
+
+    BaseResult fromJsonMap = BaseResult.fromJsonMap(response.data);
+
+    showToast(fromJsonMap.message);
+
+    if(fromJsonMap.status=="9999"){
+
+      eventBus.fire(new EventBusChange(fromJsonMap.status));
+
+      Navigator.pop(context);
+
+
+
+    }
+
+
 
 
 
