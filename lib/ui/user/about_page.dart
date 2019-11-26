@@ -79,12 +79,7 @@ class _AboutPageState extends State<AboutPage> {
 
           ],
 
-
-
-
       ),
-
-
 
     );
   }
@@ -141,6 +136,7 @@ class _AboutPageState extends State<AboutPage> {
               Text("官方网站",style: TextStyle(color: Colors.black87,fontSize: 16),),
               Text(_aboutInfo==null?"":_aboutInfo.webName,style: TextStyle(color: Colors.black87,fontSize: 16),),
 
+
             ],
 
           )
@@ -160,7 +156,6 @@ class _AboutPageState extends State<AboutPage> {
 
    return  InkWell(
      onTap: (){
-
        RRouter.push(context, Routes.webPage,{"url":APPConfig.Agreement,"title":"用户协议"});
 
      },

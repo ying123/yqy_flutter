@@ -11,7 +11,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
-import 'package:yqy_flutter/utils/event_bus_util.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
@@ -27,6 +27,8 @@ final _tabDataList = <_TabData>[
   _TabData(tab: Text('会议介绍'), body: Text("")),
   _TabData(tab: Text('会议日程'), body: Text(""))
 ];
+
+
 
 
 
@@ -59,6 +61,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
   bool isCollect;
 
+  StreamSubscription changeSubscription;
 
   @override
   void initState() {
@@ -66,14 +69,15 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
     loadData();
-    EventBusUtil.getDefault().register((String i) { //注册
-        setState(() {
-          player.reset().then((_){
-            player.setDataSource(i, autoPlay: true);
-          });
-
+    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+      setState(() {
+        player.reset().then((_){
+          player.setDataSource(event.url, autoPlay: true);
         });
+
+      });
     });
+
   }
 
 
@@ -84,6 +88,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
     super.dispose();
     _tabController.dispose();
      player.release();
+    changeSubscription.cancel();
 
   }
 
@@ -125,7 +130,6 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
               if(_videoDetailsEntity!=null){
                 Share.share(_videoDetailsEntity.title+"\r\n"+"观看地址：\r\n"+APPConfig.Share_meeting_video+_videoDetailsEntity.id);
               }
-
             },
           ),
          cXM(10),
@@ -262,6 +266,9 @@ class getNodeList extends StatefulWidget {
 }
 
 class _getNodeListState extends State<getNodeList> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return  new ListView.builder(
@@ -269,7 +276,8 @@ class _getNodeListState extends State<getNodeList> {
         itemBuilder: (content,index){
           return InkWell(
             onTap: (){
-              EventBusUtil.getDefault().post(widget.playList[index].url);//发送EnentBus消息
+          //    EventBusUtil.getDefault().post(widget.playList[index].url);//发送EnentBus消息
+              eventBus.fire(new EventBusChange(widget.playList[index].url));
             },
             child: Container(
               padding: EdgeInsets.all(10),

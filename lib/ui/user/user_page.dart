@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +7,7 @@ import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'package:share/share.dart';
@@ -19,13 +22,14 @@ class _UserPageState extends State<UserPage> {
 
 
   PersonalInfo _personalInfo;
-
+  StreamSubscription changeSubscription;
 
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loadData();
+    initEventBusListener();
   }
 
 
@@ -52,14 +56,22 @@ loadData () async{
 
 }
 
+
 @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    changeSubscription.cancel();
+  }
+
+/*@override
   void deactivate() {
     // TODO: implement deactivate
   super.deactivate();
     if(UserUtils.isLogin()){
       loadData();
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -344,6 +356,20 @@ Widget  getOtherGridView() {
    }
 
    return Text(text,style: TextStyle(color: Colors.blue,fontSize: 12),);
+  }
+
+
+
+  void initEventBusListener() {
+    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+      setState(() {
+        loadData();
+      });
+    });
+
+
+
+
   }
 
 

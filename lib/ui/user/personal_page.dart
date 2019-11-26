@@ -9,6 +9,7 @@ import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 
 
@@ -39,11 +40,14 @@ class _PersonalPageState extends State<PersonalPage> {
           .then((res){
       setState(() {
           showToast(res.message);
+          if(res.status=="9999"){
+            eventBus.fire(EventBusChange(_imageFile.path));
+            // 延时1s执行返回
+            Future.delayed(Duration(seconds: 1), (){
+              Navigator.of(context).pop();
+            });
+          }
 
-          // 延时1s执行返回
-          Future.delayed(Duration(seconds: 1), (){
-            Navigator.of(context).pop();
-          });
 
       });
     });

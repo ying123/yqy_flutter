@@ -15,12 +15,9 @@ import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/user/user_page.dart';
 import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
-import 'package:yqy_flutter/utils/event_bus_util.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
-import 'bean/event_bus_token.dart';
 import 'ui/live/live_page.dart';
-import 'package:event_bus/event_bus.dart';
 
 
 
@@ -86,8 +83,9 @@ class MainHomePage extends StatelessWidget {
               ],
               theme: ThemeData(
                   primaryColor: Colors.blue,
-                  backgroundColor: Colors.white
-              ),
+                  backgroundColor: Colors.white,
+
+        ),
               home: UserUtils.isLogin()?HomeMainPage():LoginPage() ,
               onGenerateRoute: RRouter.router().generator,
             )
@@ -123,6 +121,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
   void initState() {
     // TODO: implement initState
     super.initState();
+
   }
 
   @override
@@ -162,6 +161,9 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   ///底部导航栏item
   btmNb(String v,IconData iconData) => BottomNavigationBarItem(icon: Icon(iconData),title: Text(v));
+
+
+
 
 
 }

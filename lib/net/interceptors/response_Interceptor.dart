@@ -3,7 +3,6 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/base_result.dart';
-import 'package:yqy_flutter/bean/event_bus_token.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/route/r_router.dart';

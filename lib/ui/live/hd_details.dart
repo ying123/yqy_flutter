@@ -13,7 +13,6 @@ import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
-import 'package:yqy_flutter/utils/event_bus_util.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
@@ -63,24 +62,9 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
     loadData();
-    EventBusUtil.getDefault().register((String i) { //注册
-        setState(() {
-          player.reset().then((_){
-            player.setDataSource(i, autoPlay: true);
-          });
-
-        });
-    });
   }
 
 
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-    EventBusUtil.getDefault().unregister();  //销毁
-    
-  }
 
   @override
   void dispose() {
@@ -261,70 +245,6 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
 
 
 
-}
-
-
-///
-///  回放视频节点列表
-///
-class getNodeList extends StatefulWidget {
-
-  List<VideoDetailsInfoPlayList> playList;
-
-
-  getNodeList(this.playList);
-
-  @override
-  _getNodeListState createState() => _getNodeListState();
-}
-
-class _getNodeListState extends State<getNodeList> {
-  @override
-  Widget build(BuildContext context) {
-    return  new ListView.builder(
-        itemCount: widget.playList.length,
-        itemBuilder: (content,index){
-          return InkWell(
-            onTap: (){
-              EventBusUtil.getDefault().post(widget.playList[index].url);//发送EnentBus消息
-            },
-            child: Container(
-              padding: EdgeInsets.all(10),
-              height: 110,
-              color: Colors.white,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-
-                  Image.network(widget.playList[index].image,width: 130,height: 90,fit: BoxFit.fill,),
-                  Expanded(child: Container(
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-
-                        Text(widget.playList[index].title,textAlign:TextAlign.center,),
-                        Text(widget.playList[index].author),
-                        Divider(height: 1,color: Colors.black12,)
-
-
-                      ],
-
-                    ),
-
-                  ))
-
-                ],
-
-              ),
-
-
-            ),
-
-          );
-        }
-    );
-  }
 }
 
 

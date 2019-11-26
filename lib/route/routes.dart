@@ -95,6 +95,9 @@ class Routes {
 
   static String searchPage = "/searchPage";
 
+  static String searchHomePage = "/searchHomePage"; //首页的搜索
+
+  static String noticeHomePage = "/noticeHomePage"; //首页的通知
 
 
 
@@ -140,6 +143,8 @@ class Routes {
     router.define(staffListPage, handler:staffListHandler);
     router.define(searchPage, handler:searchHandler);
     router.define(taskVideoPage, handler:taskVideoHandler);
+    router.define(searchHomePage, handler:searchHomeHandler);
+    router.define(noticeHomePage, handler:noticeHomeHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

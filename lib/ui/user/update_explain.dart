@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 
@@ -109,6 +110,8 @@ class _UpdateExplainPageState extends State<UpdateExplainPage> {
                           showToast(res.message);
 
                           if(res.status=="9999"){
+
+                            eventBus.fire(EventBusChange(_str));
 
                             // 延时1s执行返回
                             Future.delayed(Duration(seconds: 1), (){

@@ -155,8 +155,8 @@ class _ShopHomePageState extends State<ShopHomePage> {
               child: Row(
 
                 children: <Widget>[
-                  Text("兑换记录"),
-                  Icon(Icons.arrow_forward_ios,size: 16,color: Colors.black26,)
+               //   Text("兑换记录"),
+                //  Icon(Icons.arrow_forward_ios,size: 16,color: Colors.black26,)
 
                 ],
 

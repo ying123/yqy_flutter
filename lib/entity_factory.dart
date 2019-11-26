@@ -1,11 +1,13 @@
 import 'package:yqy_flutter/bean/banner_entity.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
+import 'package:yqy_flutter/bean/update_version_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/laws_deails_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_details_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
+import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
@@ -32,6 +34,8 @@ class EntityFactory {
       return BannerEntity.fromJson(json) as T;
     } else if (T.toString() == "PersonalEntity") {
       return PersonalEntity.fromJson(json) as T;
+    } else if (T.toString() == "UpdateVersionEntity") {
+      return UpdateVersionEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorInfoEntity") {
       return DoctorInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "HomeDataEntity") {
@@ -44,6 +48,8 @@ class EntityFactory {
       return NewsDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "NewsListEntity") {
       return NewsListEntity.fromJson(json) as T;
+    } else if (T.toString() == "NoticeHomeEntity") {
+      return NoticeHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "HdDetailsEntity") {
       return HdDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LiveDetailsEntity") {

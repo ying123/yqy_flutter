@@ -20,6 +20,16 @@ class NetworkUtils {
 
 
   ///
+  ///   检查 Android App版本更新接口
+  ///
+  static Future<BaseResult> requestAppVersion() async {
+    String url = APPConfig.Server + "Index/version";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+  ///
   ///  所有轮播图的接口  根据 type参数  返回不同页面的数据
   ///  任务页面  20
   ///
@@ -110,6 +120,18 @@ class NetworkUtils {
   }
 
   ///
+  ///  往期会议接口  带搜索参数 后期可以合并为一个接口暂时未做（新增）
+  ///
+  static Future<BaseResult> requestVideoListDataKey(int page,String key) async {
+    String url = APPConfig.Server + "review/listing";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"key":key,"selfid":UserUtils.getUserInfo().userId});
+    return result;
+  }
+
+
+
+
+  ///
   ///  医药资讯列表
   ///
   static Future<BaseResult> requestNewsListData(int page) async {
@@ -117,6 +139,21 @@ class NetworkUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
+
+
+  ///
+  ///  医药资讯列表 带搜索参数 后期可以合并为一个接口暂时未做（新增）
+  ///
+  static Future<BaseResult> requestNewsListDataKey(int page,String key) async {
+    String url = APPConfig.Server + "medicalnews/listing";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"key":key});
+    return result;
+  }
+
+
+
+
+
 
 
   ///
@@ -480,20 +517,6 @@ class NetworkUtils {
 
 
 
-
-  ///
-  ///  积分商城  订单列表
-  ///
-  static Future<BaseResult> requestMessageList(String page) async {
-    String url = APPConfig.Server + "message/message_listing";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
-    return result;
-  }
-
-
-
-
-
   ///
   ///    我的足迹
   ///
@@ -596,6 +619,17 @@ class NetworkUtils {
     return result;
   }
 
+
+
+
+  ///
+  ///     系统消息列表
+  ///
+  static Future<BaseResult> requestMessageList(String page) async {
+    String url = APPConfig.Server + "message/message_listing";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
+    return result;
+  }
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);
