@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/task/bean/task_video_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/CustomFijkPanel.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
@@ -27,13 +30,32 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
 
   TaskVideoInfo _taskVideoInfo;
 
-  Duration _duration = Duration();
+  StreamSubscription _currentPosSubs;
+  Duration _currentPos;
+
+  int videoNode = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initData();
+    player.addListener(_fijkValueListener);
+    _currentPos = player.currentPos;
+    _currentPosSubs = player.onCurrentPosUpdate.listen((v) {
+
+
+        if(videoNode != v.inSeconds){
+
+          videoNode = v.inSeconds;
+
+           uploadData();
+
+        }
+
+
+    });
+
   }
 
 
@@ -41,9 +63,32 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    player.removeListener(_fijkValueListener);
     player.release();
+    _currentPosSubs?.cancel();
   }
 
+  ///
+  ///  监听 播放器的状态接口
+  ///
+  void _fijkValueListener() {
+
+    FijkValue value = player.value;
+
+
+    // 准备完毕  跳转到之前的播放进度
+    if (value.state == FijkState.prepared) {
+         player.seekTo(_taskVideoInfo==null?0:int.parse(_taskVideoInfo.playTime)*1000);
+    }
+
+
+    // 播放完成
+    if(value.state == FijkState.completed){
+       completedVideo();
+    }
+
+
+  }
 
   void initData() {
     NetworkUtils.requestTaskVideo(widget.tid)
@@ -153,6 +198,41 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
 
 
 
+
+  }
+
+
+  ///
+  ///  上传视频播放的进度
+  ///
+  void uploadData() async{
+
+
+    NetworkUtils.requestTaskVideoNode(widget.tid,videoNode.toString())
+        .then((res){
+
+
+    });
+
+
+  }
+
+  void completedVideo() {
+
+    NetworkUtils.requestTaskVideoComplete(widget.tid)
+        .then((res){
+
+         if(res.status=="9999"){
+           showToast(res.message);
+         }
+
+         eventBus.fire(new EventBusChange(res.message));
+
+         Navigator.pop(context);
+
+
+
+     });
   }
 
 

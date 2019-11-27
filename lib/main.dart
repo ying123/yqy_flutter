@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,6 +16,7 @@ import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/user/user_page.dart';
 import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
+import 'package:yqy_flutter/utils/chinese_cupertino_localizations.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'ui/live/live_page.dart';
@@ -75,12 +77,16 @@ class MainHomePage extends StatelessWidget {
               title: "水燕Med",
               navigatorKey: navigatorKey,
               debugShowCheckedModeBanner: false,//不显示debug
-              locale: Locale('zh', 'CN'),
-              localizationsDelegates: const [
-                GlobalCupertinoLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate
-              ],
+                localizationsDelegates: [
+                  ChineseCupertinoLocalizations.delegate, // 这里加上这个,是自定义的delegate
+                  DefaultCupertinoLocalizations.delegate, // 这个截止目前只包含英文
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale("en", "US"),
+                  const Locale("zh", "CH"),
+                ],
               theme: ThemeData(
                   primaryColor: Colors.blue,
                   backgroundColor: Colors.white,

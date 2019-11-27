@@ -210,8 +210,10 @@ Widget  buildTitleType(String t_id) {
     title = "问卷调查";
   }else if (t_id=="3"){
     title = "实名认证";
+  }else if (t_id=="4"){
+    title = "病例收集";
   }else{
-    title = "问卷调查";
+    title = "其他任务";
   }
   return Text(title,style: TextStyle(color: Colors.black,fontSize: 15),maxLines: 2,overflow: TextOverflow.ellipsis,);
   }

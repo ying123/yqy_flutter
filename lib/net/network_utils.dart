@@ -630,6 +630,25 @@ class NetworkUtils {
 
 
 
+  ///
+  ///   视频任务 提交视频播放节点进度
+  ///
+  static Future<BaseResult> requestTaskVideoNode(String tid,String play_time) async {
+    String url = APPConfig.Server + "task/video_node";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"tid":tid,"play_time":play_time});
+    return result;
+  }
+
+
+  ///
+  ///   视频任务 提交视频任务完成
+  ///
+  static Future<BaseResult> requestTaskVideoComplete(String tid) async {
+    String url = APPConfig.Server + "task/complete_video_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"tid":tid});
+    return result;
+  }
+
 
   ///
   ///     系统消息列表
