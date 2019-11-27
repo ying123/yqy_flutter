@@ -114,9 +114,9 @@ class APPConfig {
 
 
   static const DEBUG = true;
- // static const Server = "http://api.yaoqiyuan.com/api/";
+  static const Server = "http://api.yaoqiyuan.com/api/";
 
-  static const Server = "http://test.yaoqiyuan.com/api/"; //测试地址
+ // static const Server = "http://test.yaoqiyuan.com/api/"; //测试地址
   // static const Server = "http://localhost:8090";
 
 

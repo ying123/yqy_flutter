@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
@@ -44,7 +46,15 @@ class MainHomePage extends StatelessWidget {
     final router = new Router();
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
+    FlutterUmplus.init(
+      '5dde2aec4ca357e85300027b',
+      channel: Platform.isAndroid?"Android":"iOS",
+      reportCrash: false,
+      logEnable: true,
+      encrypt: true,
+    );
     requestPermission();
+
   }
 
 

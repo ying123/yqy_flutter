@@ -240,6 +240,8 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
   }
 
 
+
+
   return Container(
     height: 220,
     child: Stack(
@@ -315,6 +317,8 @@ class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
         content + "<\/body></html>";
     return resultStr;
   }
+
+
 
 }
 
