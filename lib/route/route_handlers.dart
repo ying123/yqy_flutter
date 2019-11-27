@@ -35,7 +35,8 @@ import 'package:yqy_flutter/ui/user/my_foot_page.dart';
 import 'package:yqy_flutter/ui/user/my_integral_detail_page.dart';
 import 'package:yqy_flutter/ui/user/my_integral_page.dart';
 import 'package:yqy_flutter/ui/user/personal_page.dart';
-import 'package:yqy_flutter/ui/user/real_name_page.dart';
+import 'package:yqy_flutter/ui/user/real_name_doctor_page.dart';
+import 'package:yqy_flutter/ui/user/real_name_represent_page.dart';
 import 'package:yqy_flutter/ui/user/setting_page.dart';
 import 'package:yqy_flutter/ui/user/update_explain.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
@@ -309,6 +310,14 @@ var searchHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, 
 var noticeHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return NoticeHomePage();
 });
+
+
+var realNameRepresentHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return RealNameRepresentPage();
+});
+
+
+
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

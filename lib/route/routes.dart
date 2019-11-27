@@ -99,6 +99,8 @@ class Routes {
 
   static String noticeHomePage = "/noticeHomePage"; //首页的通知
 
+  static String realNameRepresentPage = "/realNameRepresentPage"; // 代表的实名认证页面
+
 
 
   static void configureRoutes(Router router) {
@@ -145,6 +147,7 @@ class Routes {
     router.define(taskVideoPage, handler:taskVideoHandler);
     router.define(searchHomePage, handler:searchHomeHandler);
     router.define(noticeHomePage, handler:noticeHomeHandler);
+    router.define(realNameRepresentPage, handler:realNameRepresentHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

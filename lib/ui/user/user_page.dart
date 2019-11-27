@@ -90,7 +90,10 @@ loadData () async{
     );
 
   }
-  
+
+
+
+  //  item 布局跳转
   Widget getItemGridView(String v,IconData iconData,Color colorr){
 
     return   InkWell(
@@ -105,7 +108,7 @@ loadData () async{
           case "系统设置":
             RRouter.push(context ,Routes.settingPage,{},transition:TransitionType.cupertino);
             break;
-          case "积分":
+          case "我的积分":
             RRouter.push(context ,Routes.myIntegralPage,{},transition:TransitionType.cupertino);
             break;
           case "积分兑换":
@@ -120,7 +123,6 @@ loadData () async{
           case "分享":
             Share.share('水燕Med  http://www.shuiyanmed.com/');
             break;
-            
 
         }
 
@@ -184,7 +186,15 @@ loadData () async{
                       cXM(15),*/
                       InkWell(
                         onTap: (){
-                          RRouter.push(context, Routes.realNamePage,{},transition:TransitionType.cupertino);
+
+
+                          // 1. 医生用户
+
+                        /*  // 1 医生用户   2 代表用户
+                          UserUtils.getUserInfo().regType=="1"?RRouter.push(context, Routes.realNamePage,{},transition:TransitionType.cupertino):
+                                              RRouter.push(context, Routes.realNameRepresentPage,{},transition:TransitionType.cupertino);*/
+
+                          RRouter.push(context, Routes.realNameRepresentPage,{},transition:TransitionType.cupertino);
                         },
                         child:  ClipRRect(
                           borderRadius: BorderRadius.circular(30),
@@ -284,9 +294,9 @@ loadData () async{
              crossAxisAlignment: CrossAxisAlignment.center,
            mainAxisAlignment: MainAxisAlignment.spaceAround,
            children: <Widget>[
-             getItemGridView("积分",Icons.monetization_on,Colors.blueAccent),
-             getItemGridView("分享",Icons.share,Colors.green),
-             getItemGridView("我的企业",Icons.supervised_user_circle,Colors.deepOrange)
+             getItemGridView("我的积分",Icons.monetization_on,Colors.blueAccent),
+             getItemGridView("积分兑换",Icons.shopping_cart,Colors.green),
+             getItemGridView("系统设置",Icons.settings,Colors.deepOrange)
 
            ],
          ),
@@ -319,9 +329,16 @@ Widget  getOtherGridView() {
          children: <Widget>[
            getItemGridView("我的收藏",Icons.collections,Colors.blueAccent),
            getItemGridView("我的足迹",Icons.apps,Colors.green),
-           getItemGridView("系统设置",Icons.settings,Colors.red),
-           getItemGridView("意见反馈",Icons.feedback,Colors.green),
-           getItemGridView("积分兑换",Icons.feedback,Colors.red),
+           getItemGridView("意见反馈",Icons.feedback,Colors.red),
+           getItemGridView("分享",Icons.share,Colors.blueAccent),
+
+           // 当只有用户是 代表时  才会显示 我的企业
+           Visibility(
+             visible: UserUtils.getUserInfo().regType=="2"?true:false,
+             child:getItemGridView("我的企业",Icons.supervised_user_circle,Colors.green),
+           )
+
+
          ],
        ),
 

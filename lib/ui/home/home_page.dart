@@ -85,8 +85,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
-        .copyWith(statusBarBrightness: Brightness.dark));
+    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
         return Scaffold(
 
           appBar: AppBar(
