@@ -241,7 +241,6 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
 
 
 
-
   return Container(
     height: 220,
     child: Stack(

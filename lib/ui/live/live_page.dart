@@ -40,8 +40,6 @@ class _LiveHomePageState extends State<LiveHomePage> with TickerProviderStateMix
 
 
 
-
-
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 
@@ -67,16 +65,13 @@ class _LiveHomePageState extends State<LiveHomePage> with TickerProviderStateMix
   }
 
 
-  
-
-
-
 
   @override
   Widget build(BuildContext context) {
       return Scaffold(
 
         appBar: AppBar(
+          brightness: Brightness.light,
           titleSpacing: 0,
           leading:widget.type==null?Container():GestureDetector(
             child: Icon(Icons.arrow_back,color: Colors.black,),
@@ -104,13 +99,10 @@ class _LiveHomePageState extends State<LiveHomePage> with TickerProviderStateMix
             children: tabBarViewList
         ),
 
-
       );
 
   }
 }
-
-
 
 
 ///
@@ -252,6 +244,7 @@ class _LiveInteractionPageState extends State<LiveInteractionPage> with Automati
   LiveListInfo _liveListEntity;
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
+
 
 
   @override

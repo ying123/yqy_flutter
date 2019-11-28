@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
@@ -147,17 +148,15 @@ class _ShopHomePageState extends State<ShopHomePage> {
 
           Text("商品列表"),
 
-
           FlatButton(
               onPressed: (){
-
+                RRouter.push(context ,Routes.myIntegralPage,{},transition:TransitionType.cupertino);
               },
               child: Row(
 
                 children: <Widget>[
-               //   Text("兑换记录"),
-                //  Icon(Icons.arrow_forward_ios,size: 16,color: Colors.black26,)
-
+                  Text("积分明细"),
+                  Icon(Icons.arrow_forward_ios,size: 16,color: Colors.black26,)
                 ],
 
               )

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
@@ -79,7 +80,7 @@ import 'package:yqy_flutter/utils/user_utils.dart';
       return Scaffold(
 
         appBar: AppBar(
-
+          brightness: Brightness.light,
           centerTitle: true,
           backgroundColor: Colors.white,
           title: new Text(

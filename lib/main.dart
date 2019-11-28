@@ -28,7 +28,7 @@ import 'ui/live/live_page.dart';
 
 void main()  {
    LocalStorage.getInstance().then((res){
-     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
      runApp(MainHomePage());
    });
 
@@ -41,18 +41,11 @@ class MainHomePage extends StatelessWidget {
 
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
-
-  MainHomePage() {
+  MainHomePage()  {
     final router = new Router();
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
-    FlutterUmplus.init(
-      '5dde2aec4ca357e85300027b',
-      channel: Platform.isAndroid?"Android":"iOS",
-      reportCrash: false,
-      logEnable: true,
-      encrypt: true,
-    );
+    initUMeng();
     requestPermission();
 
   }
@@ -98,8 +91,9 @@ class MainHomePage extends StatelessWidget {
                   const Locale("zh", "CH"),
                 ],
               theme: ThemeData(
+
                   primaryColor: Colors.blue,
-                  backgroundColor: Colors.white,
+                 backgroundColor: Colors.white,
 
         ),
               home: UserUtils.isLogin()?HomeMainPage():LoginPage() ,
@@ -107,6 +101,17 @@ class MainHomePage extends StatelessWidget {
             )
         )
     );
+  }
+
+  void initUMeng() async{
+  await  FlutterUmplus.init(
+      '5dde2aec4ca357e85300027b',
+      channel: Platform.isAndroid?"Android":"iOS",
+      reportCrash: false,
+      logEnable: true,
+      encrypt: true,
+    );
+
   }
 }
 
@@ -145,6 +150,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
     //设置适配尺寸 (填入设计稿中设备的屏幕尺寸) 假如设计稿是按iPhone6的尺寸设计的(iPhone6 750*1334)
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return Scaffold(
+
 
       ///使用 indexedStack 防止方式页面重复绘制
       body: IndexedStack(

@@ -96,7 +96,7 @@ class _SpecialPageState extends State<SpecialPage> {
 
 
         appBar: AppBar(
-
+          brightness: Brightness.light,
           backgroundColor: widget.type==null?Colors.white:Colors.blue,
           centerTitle: true,
 

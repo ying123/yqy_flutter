@@ -89,6 +89,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         return Scaffold(
 
           appBar: AppBar(
+            brightness: Brightness.light,
             backgroundColor: Colors.white,
             title:  buildAppbarView(),
               elevation: 0,
