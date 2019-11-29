@@ -4,6 +4,9 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:like_button/like_button.dart';
 import 'package:share/share.dart';
@@ -65,12 +68,12 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
     loadData();
+    FlutterUmplus.beginPageView(runtimeType.toString());
   }
-
-
 
   @override
   void dispose() {
+    FlutterUmplus.endPageView(runtimeType.toString());
     super.dispose();
     _tabController.dispose();
     player.release();
@@ -81,6 +84,7 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
     return Scaffold(
 
       appBar: AppBar(
+        brightness: Brightness.light,
         titleSpacing: 0,
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.black,),
@@ -190,7 +194,7 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
       }
       setState(() {
         isCollect = _liveDetailsInfo.ifCollect=="0"?false:true;
-        tabBarViewList = [WebPage(_liveDetailsInfo.introduce),WebPage(_liveDetailsInfo.content)];
+        tabBarViewList = [WebPage(_liveDetailsInfo.introduces),WebPage(_liveDetailsInfo.contents)];
         player.setDataSource(_liveDetailsInfo.broadcast.info.channelUrl.urlRtmp, autoPlay: true);
         _layoutState = loadStateByCode(statusCode);
       });
@@ -277,14 +281,12 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
   );
 
 
-
 }
 
 
 
 
 class WebPage extends StatefulWidget {
-
 
   String  url;
 
@@ -300,14 +302,27 @@ class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
 
   @override
   Widget build(BuildContext context) {
-    return  new WebView(
-      initialUrl: widget.url.startsWith("http")?widget.url:new Uri.dataFromString(widget.url, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+    
+    
+    return ListView(
+
+      children: <Widget>[
+
+           Html(data: getHtmlData(widget.url)),
+
+      ],
     );
+
+
+  /*  return  new WebView(
+      initialUrl: widget.url.startsWith("http")?widget.url:new Uri.dataFromString(getHtmlData(widget.url), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+    );*/
   }
 
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+    
 
 
   String getHtmlData(String content) {

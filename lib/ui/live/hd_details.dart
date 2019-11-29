@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:like_button/like_button.dart';
 import 'package:share/share.dart';
@@ -195,7 +196,7 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
       }
       setState(() {
         isCollect = _hdDetailsInfo.ifCollect=="0"?false:true;
-        tabBarViewList = [WebPage(_hdDetailsInfo.introduce),WebPage(_hdDetailsInfo.content)];
+        tabBarViewList = [WebPage(_hdDetailsInfo.introduces),WebPage(_hdDetailsInfo.contents)];
         player.setDataSource(_hdDetailsInfo.interact.info.channelUrl.urlRtmp, autoPlay: true);
         _layoutState = loadStateByCode(statusCode);
       });
@@ -314,9 +315,19 @@ class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
 
   @override
   Widget build(BuildContext context) {
-    return  new WebView(
-      initialUrl: widget.url.startsWith("http")?widget.url:new Uri.dataFromString(widget.url, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+
+    return ListView(
+
+      children: <Widget>[
+
+        Html(data: getHtmlData(widget.url)),
+
+      ],
     );
+
+   /* return  new WebView(
+      initialUrl: widget.url.startsWith("http")?widget.url:new Uri.dataFromString(widget.url, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+    );*/
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
@@ -47,10 +48,13 @@ class _VideoHomePageState extends State<VideoHomePage> with SingleTickerProvider
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
+    FlutterUmplus.beginPageView(runtimeType.toString());
   }
+
 
   @override
   void dispose() {
+    FlutterUmplus.endPageView(runtimeType.toString());
     _tabController.dispose();
     super.dispose();
   }
@@ -60,6 +64,7 @@ class _VideoHomePageState extends State<VideoHomePage> with SingleTickerProvider
     return Scaffold(
 
       appBar: AppBar(
+        brightness: Brightness.light,
         titleSpacing: 0,
         leading: GestureDetector(
           child: Icon(Icons.arrow_back,color: Colors.black,),

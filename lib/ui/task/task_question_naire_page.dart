@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/base_result.dart';
 import 'package:yqy_flutter/common/constant.dart';
@@ -36,7 +37,17 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    FlutterUmplus.beginPageView(runtimeType.toString());
     loadData();
+
+  }
+
+
+  @override
+  void dispose() {
+    FlutterUmplus.endPageView(runtimeType.toString());
+    // TODO: implement dispose
+    super.dispose();
 
   }
 

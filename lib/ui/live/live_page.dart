@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:yqy_flutter/common/base_state.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -36,7 +37,7 @@ class LiveHomePage extends StatefulWidget {
   _LiveHomePageState createState() => _LiveHomePageState();
 }
 
-class _LiveHomePageState extends State<LiveHomePage> with TickerProviderStateMixin{
+class _LiveHomePageState  extends State<LiveHomePage> with TickerProviderStateMixin{
 
 
 
@@ -51,14 +52,14 @@ class _LiveHomePageState extends State<LiveHomePage> with TickerProviderStateMix
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
+     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
-    FlutterUmplus.beginPageView('直播列表页面');
+     FlutterUmplus.beginPageView(runtimeType.toString());
   }
 
   @override
   void dispose() {
-      FlutterUmplus.endPageView('直播列表页面');
+    FlutterUmplus.endPageView(runtimeType.toString());
     // FIXME 这个最好放在最后，iOS有效，Android无论如何都无效。
     _tabController.dispose();
     super.dispose();

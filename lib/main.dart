@@ -91,7 +91,9 @@ class MainHomePage extends StatelessWidget {
                   const Locale("zh", "CH"),
                 ],
               theme: ThemeData(
-
+                  appBarTheme: AppBarTheme(
+                    brightness: Brightness.light,
+                  ),
                   primaryColor: Colors.blue,
                  backgroundColor: Colors.white,
 

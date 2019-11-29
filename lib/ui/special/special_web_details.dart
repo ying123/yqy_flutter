@@ -95,44 +95,6 @@ class _VideoDetailsState extends State<SpecialWebDetailsPage>  with SingleTicker
 
 
 
-class WebPage extends StatefulWidget {
-
-
-  SpecialVideoEntity  bean;
-
-  WebPage(this.bean);
-
-  @override
-  _WebPageState createState() => _WebPageState();
-}
-
-class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return  new WebView(
-      initialUrl: widget.bean.content.startsWith("http")?widget.bean.content:new Uri.dataFromString(widget.bean.content, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
-    );
-  }
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
-
-
-  String getHtmlData(String bodyHTML) {
-    String subTitle = "<h3 align=\"center\" >" + widget.bean.title + "<\/h3><br/>";
-    String content = subTitle + bodyHTML;
-    String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
-    String resultStr = "<html>" + head + "<body>" +
-        content + "<\/body></html>";
-    return resultStr;
-  }
-
-}
-
 
 
 class WebviewPage extends StatefulWidget {
@@ -169,8 +131,10 @@ class _WebviewPageState extends State<WebviewPage>  with SingleTickerProviderSta
 
   @override
   Widget build(BuildContext context) {
+    print("加载的页面："+widget.bean.content);
+
     return WebviewScaffold(
-      url:  widget.bean.content.startsWith("http")?widget.bean.content:new Uri.dataFromString(widget.bean.content, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+      url:  widget.bean.content.startsWith("http")?widget.bean.content:new Uri.dataFromString(getHtmlData(widget.bean.content), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
     appBar: AppBar(
         centerTitle: true,
         title: Text( widget.bean.title??"网页"),
