@@ -235,8 +235,12 @@ class LiveDetailsInfoLiveList {
 	String isShow;
 	String cid;
 	String status;
+	 PlayUrlBean play_url;
 
 	LiveDetailsInfoLiveList({this.image, this.courseId, this.youinshCateId, this.isPlay, this.startTime, this.id, this.title, this.isShow, this.cid, this.status});
+
+
+
 
 	LiveDetailsInfoLiveList.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
@@ -263,6 +267,41 @@ class LiveDetailsInfoLiveList {
 		data['is_show'] = this.isShow;
 		data['cid'] = this.cid;
 		data['status'] = this.status;
+		return data;
+	}
+}
+
+class PlayUrlBean {
+
+	String pulish_url;
+	String url_rtmp;
+	String status;
+	String url_hls;
+	String live_channel_id;
+	String url_flv;
+	String publish_url;
+
+	PlayUrlBean({this.pulish_url, this.url_rtmp, this.status, this.url_hls, this.live_channel_id, this.url_flv, this.publish_url});
+
+	PlayUrlBean.fromJson(Map<String, dynamic> json) {
+		pulish_url = json['pulish_url'];
+		url_rtmp = json['url_rtmp'];
+		status = json['status'];
+		url_hls = json['url_hls'];
+		live_channel_id = json['live_channel_id'];
+		url_flv = json['url_flv'];
+		publish_url = json['publish_url'];
+	}
+
+	Map<String, dynamic> toJson() {
+		final Map<String, dynamic> data = new Map<String, dynamic>();
+		data['pulish_url'] = this.pulish_url;
+		data['url_rtmp'] = this.url_rtmp;
+		data['status'] = this.status;
+		data['url_hls'] = this.url_hls;
+		data['live_channel_id'] = this.live_channel_id;
+		data['url_flv'] = this.url_flv;
+		data['publish_url'] = this.publish_url;
 		return data;
 	}
 }

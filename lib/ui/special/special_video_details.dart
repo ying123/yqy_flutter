@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
@@ -187,13 +188,22 @@ class _WebPageState extends State<WebPage> with AutomaticKeepAliveClientMixin{
 
 
 
+
+
   @override
   Widget build(BuildContext context) {
-    return  new WebView(
-      initialUrl: widget.url.startsWith("http")?widget.url:new Uri.dataFromString(widget.url, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
-    );
-  }
+    return ListView(
 
+      children: <Widget>[
+
+        Html(data: getHtmlData(widget.url)),
+
+      ],
+    );
+    /*  return  new WebView(
+      initialUrl: widget.url.startsWith("http")?widget.url:new Uri.dataFromString(getHtmlData(widget.url), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+    );*/
+  }
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;

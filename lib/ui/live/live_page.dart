@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:yqy_flutter/common/base_state.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -38,6 +37,7 @@ class LiveHomePage extends StatefulWidget {
 }
 
 class _LiveHomePageState  extends State<LiveHomePage> with TickerProviderStateMixin{
+
 
 
 

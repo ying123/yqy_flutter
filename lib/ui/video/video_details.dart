@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:like_button/like_button.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -240,7 +241,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
           .then((res){
         int statusCode = int.parse(res.status);
         completer.complete(statusCode==9999?true:false);
-        showToast(res.message);
+        Fluttertoast.showToast(msg: res.message,gravity: ToastGravity.CENTER);
       });
     }else{
 
@@ -248,7 +249,7 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
           .then((res){
         int statusCode = int.parse(res.status);
         completer.complete(statusCode==9999?false:true);
-        showToast(res.message);
+        Fluttertoast.showToast(msg: res.message,gravity: ToastGravity.CENTER);
       });
      }
     return completer.future;

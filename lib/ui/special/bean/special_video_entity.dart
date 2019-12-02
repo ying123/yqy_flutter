@@ -7,6 +7,7 @@ class SpecialVideoEntity {
 	var type;
   var title;
   var content;
+	var contents;
 	var isTop;
 	var isShow;
 	var sid;
@@ -14,7 +15,7 @@ class SpecialVideoEntity {
 	var cid;
 	var status;
 
-	SpecialVideoEntity({this.image, this.pv, this.videoId, this.playUrl, this.createTime, this.type, this.title, this.content, this.isTop, this.isShow, this.sid, this.id, this.cid, this.status});
+	SpecialVideoEntity({this.contents,this.image, this.pv, this.videoId, this.playUrl, this.createTime, this.type, this.title, this.content, this.isTop, this.isShow, this.sid, this.id, this.cid, this.status});
 
 	SpecialVideoEntity.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
@@ -31,6 +32,7 @@ class SpecialVideoEntity {
 		id = json['id'];
 		cid = json['cid'];
 		status = json['status'];
+		contents = json['contents'];
 	}
 
 	Map<String, dynamic> toJson() {
@@ -49,6 +51,7 @@ class SpecialVideoEntity {
 		data['id'] = this.id;
 		data['cid'] = this.cid;
 		data['status'] = this.status;
+		data['contents'] = this.contents;
 		return data;
 	}
 }

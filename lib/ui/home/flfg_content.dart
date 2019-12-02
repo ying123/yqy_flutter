@@ -98,14 +98,21 @@ class _FLFGContentPageState extends State<FLFGContentPage> with AutomaticKeepAli
   Widget build(BuildContext context) {
 
     return Scaffold(
-      
+
       appBar: AppBar(
-        title: Text(widget.title),
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back, color: Colors.black,),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
         centerTitle: true,
-        
+        title: Text(widget.title, style: TextStyle(color: Colors.black),),
+        backgroundColor: Colors.white,
+
       ),
-      
-      
+
+
       body:  LoadStateLayout(
 
         state: _layoutState,
@@ -126,7 +133,7 @@ class _FLFGContentPageState extends State<FLFGContentPage> with AutomaticKeepAli
         ),
 
       ),
-      
+
     );
   }
 

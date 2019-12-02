@@ -331,11 +331,15 @@ Widget  getOtherGridView() {
            getItemGridView("意见反馈",Icons.feedback,Colors.red),
            getItemGridView("分享",Icons.share,Colors.blueAccent),
 
+
+           getItemGridView("我的企业",Icons.supervised_user_circle,Colors.green),
+
+
            // 当只有用户是 代表时  才会显示 我的企业
-           Visibility(
+        /*   Visibility(
              visible: UserUtils.getUserInfo().regType=="2"?true:false,
              child:getItemGridView("我的企业",Icons.supervised_user_circle,Colors.green),
-           )
+           )*/
 
 
          ],

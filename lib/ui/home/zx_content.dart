@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:like_button/like_button.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -89,10 +91,10 @@ class _ZxContentPageState extends State<ZxContentPage> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
 
+    return  _detailsEntity==null?Container():WebviewScaffold(
+      url: _detailsEntity.content.startsWith("http")?_detailsEntity.content:new Uri.dataFromString(getHtmlData(_detailsEntity.content), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
       appBar: AppBar(
-        titleSpacing: 0,
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.black,),
           onTap: () {
@@ -131,39 +133,52 @@ class _ZxContentPageState extends State<ZxContentPage> with AutomaticKeepAliveCl
         ],
 
       ),
-      
-      
-      body:  LoadStateLayout(
-
-        state: _layoutState,
-        errorRetry: () {
-          setState(() {
-            _layoutState = LoadState.State_Loading;
-          });
-          this.loadData();
-        },
-
-        successWidget:
-        _detailsEntity==null?Container():
-
-        WebView(
-
-          initialUrl:_detailsEntity.content.startsWith("http")? htmlStr:new Uri.dataFromString(htmlStr, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
-
-        ),
-
-      ),
-      
+      withZoom: true,
+      withLocalStorage: true,
+      useWideViewPort:false,
+      hidden: true,
+      localUrlScope:"javascript:(function(){" +
+          "var objs = document.getElementsByTagName('img'); " +
+          "for(var i=0;i<objs.length;i++)  " +
+          "{"
+          + "var img = objs[i];   " +
+          "    img.style.maxWidth = '100%'; img.style.height = 'auto';  " +
+          "}" +
+          "})()",
+      initialChild: _loadingContainer,
     );
   }
+
+  String getHtmlData(String bodyHTML) {
+    //   String subTitle = "\<h3 align=\"center\">" + widget.bean.title + "<\/h3><br/>";
+    //  String content = subTitle + bodyHTML;
+    String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
+    String resultStr = "<html>" + head + "<body>" +
+        bodyHTML + "<\/body></html>";
+    return resultStr;
+  }
+
+
 
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
-
-
-
-
 }
+
+
+final _loadingContainer = Container(
+  color: Colors.white,
+  constraints: BoxConstraints.expand(),
+  child: Center(
+    child: Opacity(
+      opacity: 0.9,
+      child: SpinKitRing(
+        color: AppColors.PrimaryColor,
+        size: 50.0,
+      ),
+    ),
+  ),
+);
+
 
 

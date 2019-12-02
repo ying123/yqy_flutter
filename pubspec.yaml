@@ -36,6 +36,7 @@ dependencies:
   flutter_screenutil: ^0.5.3
   pull_to_refresh: ^1.5.7 # 刷新控件
   oktoast: ^2.2.0
+  fluttertoast: ^3.1.3
   fluro: ^1.5.1  # 路由跳转
   shared_preferences: ^0.5.3+4
   image_picker: 0.6.1+10 # 照片选择
@@ -60,7 +61,7 @@ dependencies:
   package_info: ^0.4.0+3
   permission_handler: ^3.3.0 # 动态权限申请
   flutter_spinkit: ^4.0.0  # 加载进度条动画效果
-  fijkplayer: ^0.2.1
+  fijkplayer: ^0.2.2
   url_launcher: ^5.2.5  # Url跳转 拨打电话
   flutter_custom_dialog: ^1.0.14 # 弹窗
   share: 0.6.3+1 # 分享

@@ -16,9 +16,10 @@ import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class _TabData {
   final Widget tab;
@@ -61,6 +62,8 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
   LiveDetailsInfo  _liveDetailsInfo;
   bool isCollect;
 
+  StreamSubscription changeSubscription;
+
 
   @override
   void initState() {
@@ -69,6 +72,14 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
     _tabController = TabController(vsync: this, length: tabBarList.length);
     loadData();
     FlutterUmplus.beginPageView(runtimeType.toString());
+    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+      setState(() {
+        player.reset().then((_){
+          player.setDataSource(event.url, autoPlay: true);
+        });
+
+      });
+    });
   }
 
   @override
@@ -77,6 +88,7 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
     super.dispose();
     _tabController.dispose();
     player.release();
+    changeSubscription.cancel();
   }
 
   @override
@@ -149,6 +161,15 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
            ): getOtherStatusView(_liveDetailsInfo.isPlay,_liveDetailsInfo.image)
          ),
 
+
+         Visibility(
+
+            visible: _liveDetailsInfo==null?false:_liveDetailsInfo.liveList.length>1&&_liveDetailsInfo.isPlay!=0?true:false,
+             child: buildMultiVenueView(context,_liveDetailsInfo),
+
+         ),
+
+
          Container(
            height: 45,
            color: Colors.white,
@@ -201,6 +222,8 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
     });
 
   }
+
+
 
 
 }
@@ -279,6 +302,140 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
       ],
     ),
   );
+
+
+}
+
+
+
+///
+///   多会场切换的布局
+///
+Widget  buildMultiVenueView(BuildContext context,LiveDetailsInfo detailsInfo) {
+
+  return Container(
+    height: ScreenUtil().setHeight(260),
+    width: double.infinity,
+    color: Colors.white,
+    child: Row(
+
+      children: <Widget>[
+
+        Container(
+          width: ScreenUtil().setWidth(100),
+          height: double.infinity,
+          child: Text("会场列表",style: TextStyle(color: Colors.white),),
+          color: Colors.black38,
+          alignment: Alignment.center,
+        ),
+
+       cXM(ScreenUtil().setWidth(35)),
+
+       Expanded(
+           child:  ListView.builder(
+             //   //设置横向排列，不设置就是默认的垂直排列
+               itemCount: detailsInfo.liveList.length,
+               scrollDirection: Axis.horizontal,
+               itemBuilder: (c,index){
+                 return itemMultiVenueView(detailsInfo.liveList[index]);
+               })
+       )
+
+
+      ],
+
+    ),
+
+
+
+
+
+  );
+
+
+}
+
+
+
+Widget itemMultiVenueView(LiveDetailsInfoLiveList bean) {
+
+
+  return InkWell(
+    onTap: (){
+
+      String is_play = bean.isPlay;
+      switch (is_play) {
+        case "1":
+          if(bean.play_url==null){
+            showToast("直播地址不存在");
+          }else{
+            eventBus.fire(new EventBusChange(bean.play_url.url_rtmp));
+          }
+          break;
+        case "2":
+          showToast("当前会场直播还未开始");
+          break;
+        case "0":
+          showToast("当前会场直播已经结束");
+          break;
+      }
+
+
+    },
+    child: Container(
+      margin: EdgeInsets.fromLTRB(0, 5, ScreenUtil().setWidth(40), 5),
+      height: double.infinity,
+      width: ScreenUtil().setWidth(400),
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: <Widget>[
+
+          Container(
+            child: wrapImageUrl(bean.image,double.infinity,double.infinity),
+          ),
+
+          Positioned(
+              bottom: 0,
+              child:  Container(
+                alignment: Alignment.center,
+                width: ScreenUtil().setWidth(400),
+                height: ScreenUtil().setHeight(100),
+                child: Text(bean.title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(36)),textAlign: TextAlign.center,),
+                color: Colors.black38,
+              )
+          ),
+          Container(
+            color: bean.isPlay=="1"?Colors.red:Colors.blue,
+            alignment: Alignment.center,
+            width: ScreenUtil().setWidth(150),
+            height: ScreenUtil().setHeight(50),
+            child: Text(buildMultiVenueTip(bean.isPlay),style: TextStyle(fontSize: ScreenUtil().setSp(30),color: Colors.white),),
+          ),
+
+
+        ],
+
+      ),
+
+
+    ),
+  );
+
+}
+
+String buildMultiVenueTip(var isPlay) {
+
+  String value;
+
+  if(isPlay==0||isPlay=="0"){
+    value = "已结束";
+  }else if(isPlay==1||isPlay=="1"){
+    value = "直播中";
+  }else if(isPlay==2||isPlay=="2"){
+    value = "未开始";
+  }
+
+  return value;
 
 
 }
