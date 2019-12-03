@@ -101,6 +101,7 @@ class Routes {
 
   static String realNameRepresentPage = "/realNameRepresentPage"; // 代表的实名认证页面
 
+  static String shopDetailsPage = "/shopDetailsPage"; //  积分商城详情
 
 
   static void configureRoutes(Router router) {
@@ -148,6 +149,7 @@ class Routes {
     router.define(searchHomePage, handler:searchHomeHandler);
     router.define(noticeHomePage, handler:noticeHomeHandler);
     router.define(realNameRepresentPage, handler:realNameRepresentHandler);
+    router.define(shopDetailsPage, handler:shopDetailsPageHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

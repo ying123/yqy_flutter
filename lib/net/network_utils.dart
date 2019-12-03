@@ -658,6 +658,18 @@ class NetworkUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page});
     return result;
   }
+
+
+
+  ///
+  ///     积分商城  商品详情
+  ///
+  static Future<BaseResult> requestShopInfo(String id) async {
+    String url = APPConfig.Server + "shop/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);

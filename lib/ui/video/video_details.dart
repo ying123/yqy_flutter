@@ -293,7 +293,8 @@ class _getNodeListState extends State<getNodeList> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
 
-                  Image.network(widget.playList[index].image,width: 130,height: 90,fit: BoxFit.fill,),
+
+                  wrapImageUrl(widget.playList[index].image, 130, 90),
                   Expanded(child: Container(
 
                     child: Column(

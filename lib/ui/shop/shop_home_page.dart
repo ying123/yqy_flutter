@@ -182,6 +182,8 @@ class _ShopHomePageState extends State<ShopHomePage> {
 
       onTap: (){
 
+        RRouter.push(context, Routes.shopDetailsPage,{"id":bean.id,});
+
       },
 
       child: Container(

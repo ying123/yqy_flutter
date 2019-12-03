@@ -17,6 +17,7 @@ import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/login/register_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
+import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_home_page.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
@@ -316,6 +317,12 @@ var realNameRepresentHandler = Handler(handlerFunc: (BuildContext context, Map<S
   return RealNameRepresentPage();
 });
 
+
+
+var shopDetailsPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return ShopDetailsPage(id);
+});
 
 
 /*

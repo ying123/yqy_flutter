@@ -218,11 +218,11 @@ class _VideoDetailsState extends State<LiveDetailsPage>  with SingleTickerProvid
         tabBarViewList = [WebPage(_liveDetailsInfo.introduces),WebPage(_liveDetailsInfo.contents)];
         player.setDataSource(_liveDetailsInfo.broadcast.info.channelUrl.urlRtmp, autoPlay: true);
         _layoutState = loadStateByCode(statusCode);
+
       });
     });
 
   }
-
 
 
 
@@ -295,9 +295,7 @@ Widget  getOtherStatusView(isPlay,imgUrl) {
 
             )
           ),
-
         )
-
 
       ],
     ),
@@ -379,7 +377,6 @@ Widget itemMultiVenueView(LiveDetailsInfoLiveList bean) {
           showToast("当前会场直播已经结束");
           break;
       }
-
 
     },
     child: Container(
