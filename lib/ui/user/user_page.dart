@@ -161,13 +161,13 @@ loadData () async{
               children: <Widget>[
                 new  Container(
                   child: new ClipOval(
-                  child: new Image.network(_personalInfo==null?"":_personalInfo.userPhoto,width: 90,height: 90,fit: BoxFit.fill,)
+                  child: new Image.network(_personalInfo==null?"":_personalInfo.userPhoto,width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(240),fit: BoxFit.fill,)
                    ),
-                  margin: EdgeInsets.fromLTRB(20, 80, 0, 0),
+                  margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), ScreenUtil().setHeight(200), 0, 0),
                 ),
 
                 new  Container(
-                  margin: EdgeInsets.fromLTRB(140, 90, 0, 0),
+                  margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(400),  ScreenUtil().setHeight(240), 0, 0),
                   child: Row(
                     children: <Widget>[
                       Text(_personalInfo==null?"":_personalInfo.realName,style: TextStyle(color: Colors.white,fontSize: 20),),
@@ -177,7 +177,7 @@ loadData () async{
                   ) ,
                 ),
                 new  Container(
-                  margin: EdgeInsets.fromLTRB(140, 140, 0, 0),
+                  margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(380), ScreenUtil().setHeight(340), 0, 0),
                   child: Row(
                     children: <Widget>[
                     /*  Text("关注：1",style: TextStyle(color: Colors.white,fontSize: 16),),
@@ -222,7 +222,7 @@ loadData () async{
                 ),
                 new Container(
                   alignment: Alignment.bottomLeft,
-                  margin: EdgeInsets.fromLTRB(40, 0, 0, 30),
+                  margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(90), 0, 0, ScreenUtil().setHeight(60)),
                   child:  Text(_personalInfo==null?"":_personalInfo.userInfo,style: TextStyle(color: Colors.white),)
 
                 )

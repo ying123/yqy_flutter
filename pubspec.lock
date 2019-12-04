@@ -203,7 +203,7 @@ packages:
       name: fijkplayer
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.2"
+    version: "0.2.3"
   fixnum:
     dependency: transitive
     description:
