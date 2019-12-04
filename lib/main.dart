@@ -106,7 +106,7 @@ class MainHomePage extends StatelessWidget {
 
   void initUMeng() async{
   await  FlutterUmplus.init(
-      '5dde2aec4ca357e85300027b',
+       Platform.isAndroid?'5dde2aec4ca357e85300027b':"5de76de9570df303f5000336",
       channel: Platform.isAndroid?"Android":"iOS",
       reportCrash: false,
       logEnable: true,
@@ -184,8 +184,6 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   ///底部导航栏item
   btmNb(String v,IconData iconData) => BottomNavigationBarItem(icon: Icon(iconData),title: Text(v));
-
-
 
 
 

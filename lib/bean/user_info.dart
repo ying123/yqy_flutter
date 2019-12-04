@@ -21,6 +21,7 @@ class UserInfo{
       this.expireTime, this.userRole, this.avatar);
 
 
+
   UserInfo.fromJsonMap(Map<String, dynamic> map)
       : userId = map["userId"],
         nickname = map["nickname"],
