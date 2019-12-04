@@ -20,6 +20,7 @@ import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
 import 'package:yqy_flutter/utils/chinese_cupertino_localizations.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
+import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'ui/live/live_page.dart';
 
@@ -161,11 +162,11 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-          items: [btmNb("首页", Icons.home),
-          btmNb("专题", Icons.apps),
-          btmNb("直播", Icons.live_tv),
-          btmNb("任务", Icons.assignment_turned_in),
-          btmNb("我的", Icons.person)
+          items: [btmNb("首页",  Image.asset("assets/imgs/tab/tab_home.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),0),
+          btmNb("文献",  Image.asset("assets/imgs/tab/tab_news.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),1),
+          btmNb("视频",  Image.asset("assets/imgs/tab/tab_video.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),2),
+          btmNb("专家",  Image.asset("assets/imgs/tab/tab_doc.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),3),
+          btmNb("我的", Image.asset("assets/imgs/tab/tab_me.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),4)
           ],
           currentIndex: _currentIndex,
           onTap: _onItemTapped,
@@ -183,7 +184,70 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
   }
 
   ///底部导航栏item
-  btmNb(String v,IconData iconData) => BottomNavigationBarItem(icon: Icon(iconData),title: Text(v));
+  btmNb(String v,Widget iconData,int pos) => BottomNavigationBarItem(icon: iconData,title: Text(v,style: TextStyle(color:pos==_currentIndex? Color(buildColorType(_currentIndex)):Color(0xFF333333)),),activeIcon: Image.asset(buildseleIcon(_currentIndex),width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),));
+
+
+
+  ///
+  ///   选中的 icon 变化
+  ///
+  String buildseleIcon(int currentIndex) {
+
+    String img;
+    switch(currentIndex){
+      case 0:
+        img = "assets/imgs/tab/tab_home_sele.png";
+        break;
+      case 1:
+        img = "assets/imgs/tab/tab_news_sele.png";
+        break;
+      case 2:
+        img = "assets/imgs/tab/tab_video_sele.png";
+        break;
+      case 3:
+        img = "assets/imgs/tab/tab_doc_sele.png";
+        break;
+      case 4:
+        img = "assets/imgs/tab/tab_me_sele.png";
+        break;
+
+    }
+
+    return img;
+
+  }
+
+
+
+  ///
+  ///  选择的 icon 的颜色变化
+  ///
+  int buildColorType(int currentIndex) {
+
+    int  color;
+    switch(currentIndex){
+      case 0:
+        color = 0xFF10D5B1;
+        break;
+      case 1:
+        color = 0xFF35A4FC;
+        break;
+      case 2:
+        color = 0xFF8551FE;
+        break;
+      case 3:
+        color = 0xFF3FBBFE;
+        break;
+      case 4:
+        color = 0xFFFB7D39;
+        break;
+
+    }
+
+    return color;
+
+
+  }
 
 
 

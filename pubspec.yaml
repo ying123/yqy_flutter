@@ -85,4 +85,5 @@ flutter:
 
   assets:
       - assets/imgs/
+      - assets/imgs/tab/
       - data/
