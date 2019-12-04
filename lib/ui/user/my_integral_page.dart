@@ -7,7 +7,7 @@ import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_list_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 ///
 ///  我的积分页面
 ///
@@ -129,7 +129,7 @@ class _MyIntegralPageState extends State<MyIntegralPage> {
               ),
               pinned: true,
               bottom: PreferredSize(child: buildTitle(context), preferredSize: Size.fromHeight(40)),
-              expandedHeight: 340.0,
+              expandedHeight: ScreenUtil().setHeight(750),
               flexibleSpace: new FlexibleSpaceBar(
                   background: Container(
 
