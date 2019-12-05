@@ -163,7 +163,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
           items: [btmNb("首页",  Image.asset("assets/imgs/tab/tab_home.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),0),
-          btmNb("文献",  Image.asset("assets/imgs/tab/tab_news.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),1),
+          btmNb("文献指南",  Image.asset("assets/imgs/tab/tab_news.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),1),
           btmNb("视频",  Image.asset("assets/imgs/tab/tab_video.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),2),
           btmNb("专家",  Image.asset("assets/imgs/tab/tab_doc.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),3),
           btmNb("我的", Image.asset("assets/imgs/tab/tab_me.png",width: ScreenUtil().setWidth(69),height: ScreenUtil().setHeight(69),),4)

@@ -91,7 +91,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           appBar: AppBar(
             brightness: Brightness.light,
             backgroundColor: Colors.white,
-            title:  buildAppbarView(),
+            title:  buildTopView(),
               elevation: 0,
               actions: <Widget>[
 
@@ -151,12 +151,22 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       child: Container(
         padding: EdgeInsets.only(left: ScreenUtil().setWidth(50)),
         alignment: Alignment.centerLeft,
-        height: ScreenUtil().setHeight(90),
+        width: ScreenUtil().setWidth(517),
+        height: ScreenUtil().setHeight(84),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(22))),
-          color: Color(0xfff5f5f5),
+          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(42))),
+          color: Color(0xFFEEEEEE),
         ),
-        child: Icon(Icons.search,size: ScreenUtil().setWidth(70),color: Colors.black38,),
+        child: Row(
+          
+          children: <Widget>[
+            
+            Text("搜索",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
+
+          ],
+          
+          
+        ),
 
 
       ),
@@ -286,6 +296,28 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     setState(() {
       _dialogKey.currentState.progress = _progress;
     });
+  }
+
+ Widget buildTopView() {
+
+    return Container(
+      padding: EdgeInsets.all(0),
+      child: Row(
+        children: <Widget>[
+          Image.asset(wrapAssets("home/logo.png"),width: ScreenUtil().setWidth(194),height: ScreenUtil().setHeight(66),fit: BoxFit.fill,),
+          cXM(ScreenUtil().setWidth(33)),
+          buildAppbarView(),
+        ],
+
+
+
+      ),
+
+
+    );
+
+
+
   }
 }
 
