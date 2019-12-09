@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:yqy_flutter/common/constant.dart';
@@ -10,6 +11,7 @@ import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_flfg.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_gf.dart';
+import 'package:yqy_flutter/ui/home/tab/tab_live.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_zx.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_home.dart';
@@ -32,12 +34,11 @@ class _TabData {
 }
 
 final _tabDataList = <_TabData>[
-  _TabData(tab: Text('首页'), body: TabHomePage()),
- /* _TabData(tab: Text('医学园'), body:TabMedicalPage()),*/
-  _TabData(tab: Text('医药新闻'), body: TabNewsPage()),
-  _TabData(tab: Text('政策资讯'), body: TabZxPage()),
-  _TabData(tab: Text('法律法规'), body:TabFlfgPage()),
-  _TabData(tab: Text('规范解读'), body: TabGFPage())
+  _TabData(tab: Text('推荐'), body: TabHomePage()),
+  _TabData(tab: Text('直播'), body: TabLivePage()),
+  _TabData(tab: Text('医学专题'), body: TabFlfgPage()),
+  _TabData(tab: Text('医药咨询'), body:TabZxPage()),
+ // _TabData(tab: Text('规范解读'), body: TabGFPage())
 ];
 
 
@@ -62,11 +63,30 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   GlobalKey<UpdateDialogState> _dialogKey = new GlobalKey();
 
+  int tabIndex = 0;  // 当前选中索引  用索引来判断刷新字体大小  为了解决字体抖动
+
+   bool _showScreenBtn = false;// 用来判断 是否显示 筛选按钮  当只有滑动到资讯页面 才展示
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: tabBarList.length);
+    _tabController = TabController(vsync: this, length: tabBarList.length)
+      ..addListener(() {
+        if (_tabController.index.toDouble() == _tabController.animation.value) {
+
+          if(_tabController.index==3){
+            _showScreenBtn = true;
+          }else{
+            _showScreenBtn = false;
+          }
+          setState(() {
+
+          });
+
+        }
+      });
 
 
     if(!APPConfig.DEBUG){
@@ -92,45 +112,64 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             brightness: Brightness.light,
             backgroundColor: Colors.white,
             title:  buildTopView(),
-              elevation: 0,
-              actions: <Widget>[
-
-                InkWell(
-                  onTap: (){
-                    RRouter.push(context, Routes.noticeHomePage,{});
-                  },
-                  child: Image.asset(wrapAssets("icon_msg.png"),width: ScreenUtil().setWidth(70),height: ScreenUtil().setWidth(70),),
-                ),
-                cXM(ScreenUtil().setWidth(25))
-
-              ],
+            elevation: 0,
+            titleSpacing: 0,
           ),
 
           body: new Column(
             children: <Widget>[
-              Container(
-                height: 38,
+           new   Container(
+                height: ScreenUtil().setHeight(85),
+                width: double.infinity,
+                alignment: Alignment.centerLeft,
                 color: Colors.white,
-                child:  TabBar(
-                  controller: _tabController,
-                  tabs: tabBarList,
-                  indicatorColor: Colors.blueAccent, //指示器颜色 如果和标题栏颜色一样会白色
-                  isScrollable: true, //是否可以滑动
-                  labelColor: Colors.blueAccent ,
-                  unselectedLabelColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  unselectedLabelStyle: TextStyle(fontSize: 16),
-                  labelStyle: TextStyle(fontSize: 16),
-                  indicatorPadding: EdgeInsets.only(top: 5),
-                ),
+                child: Row(
+                  children: <Widget>[
+                    cXM(ScreenUtil().setWidth(30)),
+                    TabBar(
+                      controller: _tabController,
+                      tabs:tabBarList,
+                      indicatorColor: Colors.white, //指示器颜色 如果和标题栏颜色一样会白色
+                      isScrollable: true, //是否可以滑动
+                      labelPadding: EdgeInsets.only(right: ScreenUtil().setWidth(80)),
+                      labelColor: Color(0xFF17E2BD) ,
+                      unselectedLabelColor: Color(0xFF7E7E7E),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(37)), //防止字体抖动 不用此方法
+                      labelStyle: TextStyle(fontSize: ScreenUtil().setSp(58),fontWeight: FontWeight.bold),  //防止字体抖动 不用此方法
+                    ),
+
+                    Visibility(
+                        visible: _showScreenBtn,
+                        child:  Expanded(
+                            child: InkWell(
+                              onTap: (){
+
+                              },
+                              child:  Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Text("全部",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
+                                  cXM(ScreenUtil().setWidth(10)),
+                                  Image.asset(wrapAssets("tab/tab_zx_down_arrow.png"),width: ScreenUtil().setWidth(23),height: ScreenUtil().setHeight(14),)
+                                ],
+                              ),
+                            )
+                        ),
+                    ),
+                    cXM(ScreenUtil().setWidth(60))
+
+                  ],
+                )
               ),
 
-              Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: tabBarViewList,
-                  )
-              )
+           Expanded(
+               child: TabBarView(
+                 controller: _tabController,
+                 children: tabBarViewList,
+               )
+           ),
+
 
             ],
 
@@ -149,7 +188,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         RRouter.push(context, Routes.searchHomePage,{});
       },
       child: Container(
-        padding: EdgeInsets.only(left: ScreenUtil().setWidth(50)),
+        padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
         alignment: Alignment.centerLeft,
         width: ScreenUtil().setWidth(517),
         height: ScreenUtil().setHeight(84),
@@ -158,10 +197,20 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           color: Color(0xFFEEEEEE),
         ),
         child: Row(
-          
+
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
           children: <Widget>[
             
             Text("搜索",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
+
+            Container(
+              padding: EdgeInsets.only(right: ScreenUtil().setWidth(25)),
+              child:   Image.asset(wrapAssets("home/search.png"),width: ScreenUtil().setWidth(39),height: ScreenUtil().setWidth(39),),
+
+            )
+
+
 
           ],
           
@@ -304,9 +353,32 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       padding: EdgeInsets.all(0),
       child: Row(
         children: <Widget>[
-          Image.asset(wrapAssets("home/logo.png"),width: ScreenUtil().setWidth(194),height: ScreenUtil().setHeight(66),fit: BoxFit.fill,),
+          cXM(ScreenUtil().setWidth(27)),
+          Image.asset(wrapAssets("home/logo.png"),width: ScreenUtil().setWidth(194),height: ScreenUtil().setHeight(66)),
           cXM(ScreenUtil().setWidth(33)),
           buildAppbarView(),
+          cXM(ScreenUtil().setWidth(10)),
+          Image.asset(wrapAssets("home/integral_btn.png"),width: ScreenUtil().setWidth(204),height: ScreenUtil().setHeight(100),),
+          InkWell(
+            onTap: (){
+              RRouter.push(context, Routes.noticeHomePage,{});
+            },
+            child: Image.asset(wrapAssets("home/msg_btn.png"),width: ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(58),),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(35)),
+           width: ScreenUtil().setWidth(17),
+            height: ScreenUtil().setHeight(17),
+            decoration: BoxDecoration(
+              color: Color(0xFFFF1818),
+              borderRadius: BorderRadius.all(Radius.circular(30))
+
+            ),
+
+
+          )
+
+
         ],
 
 

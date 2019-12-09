@@ -30,7 +30,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
           child: Opacity(
             opacity: 0.8,
             child: SpinKitRing(
-              color: AppColors.PrimaryColor,
+              color: Color(0xFF17E2BD),
               size: 50.0,
             ),
           ),

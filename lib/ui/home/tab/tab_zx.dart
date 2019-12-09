@@ -7,7 +7,7 @@ import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:yqy_flutter/utils/margin.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TabZxPage extends StatefulWidget {
   @override
@@ -116,8 +116,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
         child:  ListView.builder(
             itemCount:_newsListEntity==null?1:_newsListEntity.xList.length+1,
             itemBuilder: (context,index) {
-
-              return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.xList[index-1]);
+              return  _newsListEntity==null?Container():index==0?buildBannerView(context):getLiveItemView(context,_newsListEntity.xList[index-1]);
             }
 
         ),
@@ -133,8 +132,6 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
   }
 
   Widget getLiveItemView(BuildContext context,NewListList xlist) {
-
-
     return GestureDetector(
 
       onTap: (){
@@ -203,6 +200,13 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+ Widget buildBannerView(BuildContext context) {
+    
+  return  Container(color:Colors.white,padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),child: Image.asset(wrapAssets("tab/tab_news_banner.png"),height: ScreenUtil().setHeight(403),width: double.infinity,fit: BoxFit.fill,),);
+    
+  }
+
 }
 
 
