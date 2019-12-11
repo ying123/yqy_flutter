@@ -13,6 +13,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/guide/guide_page.dart';
 import 'package:yqy_flutter/ui/home/video_page.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
@@ -131,7 +132,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   String showTv = "首页"; //当前显示的页面布局
 
-  final pages = [HomePage(),SpecialPage(null),VideoPage(),TaskHome(),UserPage()];
+  final pages = [HomePage(),GuidePage(),VideoPage(),TaskHome(),UserPage()];
 
 
   @override
@@ -163,11 +164,11 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-          items: [btmNb("首页",  Image.asset("assets/imgs/tab/tab_home.png",width: ScreenUtil().setWidth(60),height: ScreenUtil().setHeight(55),),0),
-          btmNb("文献指南",  Image.asset("assets/imgs/tab/tab_news.png",width: ScreenUtil().setWidth(60),height: ScreenUtil().setHeight(55),),1),
-          btmNb("视频",  Image.asset("assets/imgs/tab/tab_video.png",width: ScreenUtil().setWidth(60),height: ScreenUtil().setHeight(55),),2),
-          btmNb("专家",  Image.asset("assets/imgs/tab/tab_doc.png",width: ScreenUtil().setWidth(60),height: ScreenUtil().setHeight(55),),3),
-          btmNb("我的", Image.asset("assets/imgs/tab/tab_me.png",width: ScreenUtil().setWidth(60),height: ScreenUtil().setHeight(55),),4)
+          items: [btmNb("首页",  Image.asset("assets/imgs/tab/tab_home.png",width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),),0),
+          btmNb("文献指南",  Image.asset("assets/imgs/tab/tab_news.png",width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),),1),
+          btmNb("视频",  Image.asset("assets/imgs/tab/tab_video.png",width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),),2),
+          btmNb("专家",  Image.asset("assets/imgs/tab/tab_doc.png",width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),),3),
+          btmNb("我的", Image.asset("assets/imgs/tab/tab_me.png",width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),),4)
           ],
           currentIndex: _currentIndex,
           onTap: _onItemTapped,
@@ -185,7 +186,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
   }
 
   ///底部导航栏item
-  btmNb(String v,Widget iconData,int pos) => BottomNavigationBarItem(icon: iconData,title: Text(v,style: TextStyle(color:pos==_currentIndex? Color(buildColorType(_currentIndex)):Color(0xFF333333)),),activeIcon: Image.asset(buildseleIcon(_currentIndex),width: ScreenUtil().setWidth(60),height: ScreenUtil().setHeight(55),));
+  btmNb(String v,Widget iconData,int pos) => BottomNavigationBarItem(icon: iconData,title: Text(v,style: TextStyle(color:pos==_currentIndex? Color(buildColorType(_currentIndex)):Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),activeIcon: Image.asset(buildseleIcon(_currentIndex),width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),));
 
 
 

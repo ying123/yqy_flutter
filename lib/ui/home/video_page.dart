@@ -42,7 +42,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
       body: Column(
 
         children: <Widget>[
-          cYM(ScreenUtil().setHeight(60)),
+          cYM(ScreenUtil().setHeight(80)),
           buildBannerView(context),
           buildScreenView(context),
           Expanded(child: buildListView(new List()))
@@ -52,7 +52,6 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
       endDrawer: buildDrawer(context),
 
-
     );
   }
 
@@ -60,7 +59,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
   Widget buildBannerView(BuildContext context) {
 
-    return Image.asset(wrapAssets("tab/tab_live_banner.png"),width: double.infinity,height: ScreenUtil().setHeight(403),fit: BoxFit.fill,);
+    return Image.asset(wrapAssets("tab/tab_live_banner.png"),width: double.infinity,height: ScreenUtil().setHeight(420),fit: BoxFit.fill,);
 
   }
 
@@ -68,7 +67,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
   Widget buildScreenView(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.fromLTRB(0, ScreenUtil().setHeight(40), ScreenUtil().setWidth(29), 0),
+      margin: EdgeInsets.fromLTRB(0, 0, ScreenUtil().setWidth(29), 0),
     //  height: ScreenUtil().setHeight(40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,

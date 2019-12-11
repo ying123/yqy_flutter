@@ -11,6 +11,7 @@ import 'package:yqy_flutter/ui/home/home_page.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
 import 'package:yqy_flutter/ui/home/notice/notice_home_page.dart';
 import 'package:yqy_flutter/ui/home/search/search_home_page.dart';
+import 'package:yqy_flutter/ui/home/special_detail_page.dart';
 import 'package:yqy_flutter/ui/home/zx_content.dart';
 import 'package:yqy_flutter/ui/live/hd_details.dart';
 import 'package:yqy_flutter/ui/live/live_details.dart';
@@ -324,7 +325,9 @@ var shopDetailsPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
   return ShopDetailsPage(id);
 });
 
-
+var specialDetailHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SpecialDetailPage();
+});
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

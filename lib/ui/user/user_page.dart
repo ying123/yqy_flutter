@@ -123,10 +123,7 @@ loadData () async{
           case "分享":
             Share.share('水燕Med  http://www.shuiyanmed.com/');
             break;
-
         }
-
-
       },
       child: Container(
 
@@ -144,7 +141,6 @@ loadData () async{
 
       ),
     );
-    
   }
   
   
@@ -187,12 +183,9 @@ loadData () async{
                       InkWell(
                         onTap: (){
 
-
-
                           // 1 医生用户   2 代表用户
                           UserUtils.getUserInfo().regType=="1"?RRouter.push(context, Routes.realNamePage,{},transition:TransitionType.cupertino):
                                               RRouter.push(context, Routes.realNameRepresentPage,{},transition:TransitionType.cupertino);
-
                        //   RRouter.push(context, Routes.realNameRepresentPage,{},transition:TransitionType.cupertino);
                         },
                         child:  ClipRRect(

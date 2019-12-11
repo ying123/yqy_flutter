@@ -12,6 +12,7 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_flfg.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_gf.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_live.dart';
+import 'package:yqy_flutter/ui/home/tab/tab_special.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_zx.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_home.dart';
@@ -36,7 +37,7 @@ class _TabData {
 final _tabDataList = <_TabData>[
   _TabData(tab: Text('推荐'), body: TabHomePage()),
   _TabData(tab: Text('直播'), body: TabLivePage()),
-  _TabData(tab: Text('医学专题'), body: TabFlfgPage()),
+  _TabData(tab: Text('医学专题'), body: TabSpecialPage()),
   _TabData(tab: Text('医药咨询'), body:TabZxPage()),
  // _TabData(tab: Text('规范解读'), body: TabGFPage())
 ];
@@ -67,6 +68,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
    bool _showScreenBtn = false;// 用来判断 是否显示 筛选按钮  当只有滑动到资讯页面 才展示
 
+  bool _showScreenView = false;// 用来判断 是否显示 筛选view
 
   @override
   void initState() {
@@ -118,7 +120,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
           body: new Column(
             children: <Widget>[
-           new   Container(
+               new   Container(
                 height: ScreenUtil().setHeight(85),
                 width: double.infinity,
                 alignment: Alignment.centerLeft,
@@ -142,34 +144,45 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     Visibility(
                         visible: _showScreenBtn,
                         child:  Expanded(
-                            child: InkWell(
-                              onTap: (){
-
-                              },
-                              child:  Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Text("全部",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
-                                  cXM(ScreenUtil().setWidth(10)),
-                                  Image.asset(wrapAssets("tab/tab_zx_down_arrow.png"),width: ScreenUtil().setWidth(23),height: ScreenUtil().setHeight(14),)
-                                ],
+                            child: Material(
+                              color: Colors.white,
+                              child: InkWell(
+                                  onTap: (){
+                                    setState(() {
+                                      _showScreenView?_showScreenView=false:_showScreenView=true;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(ScreenUtil().setHeight(10)),
+                                    child:  Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text("全部",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
+                                        cXM(ScreenUtil().setWidth(10)),
+                                        Image.asset(wrapAssets(_showScreenView?"tab/tab_zx_up_arrow.png":"tab/tab_zx_down_arrow.png"),width: ScreenUtil().setWidth(23),height: ScreenUtil().setHeight(14),)
+                                      ],
+                                    ),
+                                  )
                               ),
                             )
                         ),
                     ),
                     cXM(ScreenUtil().setWidth(60))
-
                   ],
                 )
               ),
 
            Expanded(
-               child: TabBarView(
-                 controller: _tabController,
-                 children: tabBarViewList,
+               child:  Stack(
+                 children: <Widget>[
+                   TabBarView(
+                     controller: _tabController,
+                     children: tabBarViewList,
+                   ),
+                  buildScreenView()
+                 ],
                )
-           ),
-
+            ),
 
             ],
 
@@ -388,6 +401,105 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
     );
 
+
+
+  }
+
+
+  ///
+  ///  弹出筛选的view
+  ///
+  buildScreenView() {
+
+    List<String> list = ["全部","药品新闻","医疗新闻","学术新闻","名词说明","规范解读","法律法规","政策资讯"];
+
+    return  Visibility(
+        visible: _showScreenView,
+        child: Column(
+
+          children: <Widget>[
+
+           new Container(
+              color: Colors.white,
+              child: Column(
+
+                children: <Widget>[
+
+                  GridView.count(
+                    shrinkWrap: true ,
+                    //水平子Widget之间间距
+                    crossAxisSpacing: ScreenUtil().setWidth(12),
+                    //垂直子Widget之间间距
+                    mainAxisSpacing: ScreenUtil().setHeight(17),
+                    //GridView内边距
+                    padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+                    //一行的Widget数量
+                    crossAxisCount: 4,
+                    childAspectRatio: 2.4,
+                    //子Widget宽高比例
+                    //子Widget列表
+                    children: list.map((item) => buildItemView(item)).toList(),
+                  )
+
+
+                ],
+
+              ),
+            ),
+           new Container(
+              color: Colors.white,
+              padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
+              height: ScreenUtil().setHeight(105),
+              child: Row(
+
+                children: <Widget>[
+                  
+                 Container(
+                    padding: EdgeInsets.all(0),
+                    width: ScreenUtil().setWidth(540),
+                         alignment: Alignment.center,
+                          child: FlatButton(onPressed: (){
+
+                          }, child: Text("重置",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37)),),)
+                  ),
+                 Container(
+                    padding: EdgeInsets.all(0),
+                    alignment: Alignment.center,
+                    color: Color(0xFF2CAAEE),
+                    width: ScreenUtil().setWidth(540),
+                    child: FlatButton(onPressed: (){
+
+                    }, child:  Text("确定",style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(37)),),)
+                  )
+                  
+                ],
+
+              ),
+              
+            ),
+           new Expanded(child: Container(color: Colors.black38,))
+
+
+          ],
+
+
+        )
+
+    );
+
+  }
+
+ Widget buildItemView(String item) {
+
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(14))),
+        color: Color(0xFFF5F5F5)
+      ),
+    child: Text(item,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
+
+    );
 
 
   }

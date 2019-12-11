@@ -46,6 +46,9 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   VideoListEntity _videoListEntity;
 
+
+  ScrollController _scrollController = new ScrollController(); // 解决嵌套滑动冲突  设置统一滑动
+
   @override
   void initState() {
     // TODO: implement initState
@@ -142,6 +145,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
           onLoading: _onLoading,
         header: BezierCircleHeader(),
            child: ListView(
+          controller: _scrollController,
           padding: EdgeInsets.only(top: 0),
           children: <Widget>[
 
@@ -295,7 +299,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       );
     }
 
-
   }
 
 
@@ -367,6 +370,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   Widget getHotVideo(List<LiveListInfoList>  list){
 
     return list==null?Container(): GridView.count(
+      controller: _scrollController,
       shrinkWrap: true ,
       physics: new NeverScrollableScrollPhysics(),
       //水平子Widget之间间距
@@ -531,6 +535,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
  Widget getDocViews(List<HomeDataUser> list) {
 
    return list==null?Container(): GridView.builder(
+       controller: _scrollController,
        itemCount: list.length,
        shrinkWrap: true ,
        padding: EdgeInsets.all(ScreenUtil().setWidth(27)),
@@ -633,6 +638,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
  Widget getNewsListView() {
 
     return  ListView.builder(
+        controller: _scrollController,
         shrinkWrap: true ,
         physics: new NeverScrollableScrollPhysics(),
         itemCount:10,
