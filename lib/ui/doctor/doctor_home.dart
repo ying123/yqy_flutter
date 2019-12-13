@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DoctorHomePage extends StatefulWidget {
 
@@ -27,7 +27,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 4);
     loadData();
   }
   void loadData() {
@@ -48,118 +48,187 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return _doctorInfoInfo==null?Container(): new  CustomScrollView(
+    return _doctorInfoInfo==null?Container():Scaffold(
+      backgroundColor: Colors.white,
+      body:  new  CustomScrollView(
+        slivers: <Widget>[
+          new SliverAppBar(
+            title: Text("医生主页"),
+            centerTitle: true,
+            leading: InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios,color: Colors.white,),
+            ),
+            pinned: true,
+            expandedHeight: ScreenUtil().setHeight(800),
+            bottom: TopCommonView(_tabController),
+            flexibleSpace: new FlexibleSpaceBar(
+                background: Container(
+                  child: new Stack(
+                    children: <Widget>[
+                      Image.network(_doctorInfoInfo.background,width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
+                      Center(
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: ScreenUtil().setHeight(240),
+                            ),
+                            Image.network(_doctorInfoInfo.userPhoto,width: 80,height: 80,fit: BoxFit.fill,),
+                            cYM( ScreenUtil().setHeight(20)),
+                            Text(_doctorInfoInfo.realName,style: TextStyle(color: Colors.white,fontSize: 18),),
+                            cYM( ScreenUtil().setHeight(20)),
+                            Text(_doctorInfoInfo.hName,style: TextStyle(color: Colors.white,fontSize: 14),),
+                            cYM( ScreenUtil().setHeight(20)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text("发布 454 |",style: TextStyle(color: Colors.white,fontSize: 14),),
+                                Text(" 粉丝 5645",style: TextStyle(color: Colors.white,fontSize: 14),),
 
-      slivers: <Widget>[
+                              ],
 
-        SliverAppBar(
-          title: Text("医生主页"),
-          centerTitle: true,
-          leading: InkWell(
-            onTap: (){
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios,color: Colors.white,),
+                            )
+                          ],
+
+
+                        ),
+
+
+                      )
+                    ],
+                  ),
+                )
+
+            ),
           ),
-          pinned: true,
-          expandedHeight: 360.0,
-          bottom: TopCommonView(_tabController),
-          flexibleSpace: new FlexibleSpaceBar(
-              background: Container(
-
-                child: new Stack(
-                  children: <Widget>[
-                    Image.network(_doctorInfoInfo.background,width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
-                    Center(
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 100,
-                          ),
-                          Image.network(_doctorInfoInfo.userPhoto,width: 80,height: 80,fit: BoxFit.fill,),
-                          cYM(10),
-                          Text(_doctorInfoInfo.realName,style: TextStyle(color: Colors.white,fontSize: 18),),
-                          cYM(10),
-                          Text(_doctorInfoInfo.hName,style: TextStyle(color: Colors.white,fontSize: 14),),
-                          cYM(10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text("关注：0",style: TextStyle(color: Colors.white,fontSize: 14),),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text("粉丝：0",style: TextStyle(color: Colors.white,fontSize: 14),),
-
-                            ],
-
-                          )
-                        ],
 
 
+          SliverList(
+
+            delegate: new SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                //创建子widget
+                return  Container(
+                  height: 1000,
+                  child: new TabBarView(
+                    controller: _tabController,
+                    children: <Widget>[
+                        buildDoctorHomeView(context),
+                      Container(
+                        height: 20,
+                        child: Text("暂无数据"),
+                      ),
+                      Container(
+                        height: 20,
+                        child: Text("暂无数据"),
+                      ),
+                      Container(
+                        height: 20,
+                        child: Text("暂无数据"),
                       ),
 
 
-                    )
-                  ],
+
+                    ],
+                  ),
+                );
+              },
+              childCount: 1,
+            ),
+
+          ),
+
+        ],
+
+
+
+      ),
+    );
+  }
+
+
+  ///
+  ///  主页 选项卡
+  ///
+  buildDoctorHomeView(BuildContext context) {
+
+   return     buildContentView(context);
+
+  }
+
+
+
+  Widget  buildContentView(BuildContext context) {
+
+    return Container(
+      color: Colors.white,
+      height: ScreenUtil().setHeight(200),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          new  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("肿瘤科医学专题",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),),
+              Container(
+                alignment: Alignment.center,
+                width: ScreenUtil().setWidth(120),
+                height: ScreenUtil().setHeight(50),
+                decoration: BoxDecoration(
+                    color: Color(0xFF4AB1F2),
+                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(20)))
+                ),
+                child: Text("关注",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(34)),),
+              )
+            ],
+          ),
+          cYM(ScreenUtil().setHeight(20)),
+          new  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("6段视频    4篇文章    225人关注",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),),
+
+              Material(
+
+                color: Colors.white30,
+                child: InkWell(
+                  onTap: (){
+
+                    setState(() {
+                    //  _showTipContent?_showTipContent=false:_showTipContent = true;
+                    });
+
+                  },
                 ),
               )
 
+
+
+            ],
           ),
-        ),
+          cYM(ScreenUtil().setHeight(20)),
+          Visibility(
+              visible: true,
+              child:   new  Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("6段视频    4篇文章    225人关注",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),),
+                ],
+              )
+          )
 
-
-        SliverToBoxAdapter(
-            child: Container(
-
-              color: Colors.white,
-
-              height:1000 ,
-
-              child: TabBarView(
-                  controller: _tabController,
-                  children: [ Container(
-                    height: 100,
-                    child: Text("暂无数据",style: TextStyle(fontSize: 16,color: Colors.black45),),
-                  ),Container(
-                    height: 100,
-                    child: Text("暂无数据",style: TextStyle(fontSize: 16,color: Colors.black45),),
-                  )]
-              ),
-            )
-
-
-
-        )
-
-
-      ],
-
-
+        ],
+      ),
 
     );
+
   }
-
-  getView() {
-    return ListView(
-
-      children: <Widget>[
-        getListItemView(0),
-        getListItemView(0),
-        getListItemView(0),
-        getListItemView(0),
-        getListItemView(0),
-        getListItemView(0),
-        getListItemView(0),
-        getListItemView(0),
-
-      ],
-    );
-  }
-
-
 
 }
+
+
 getListItemView(int v) {
   return Container(
       height: 200,
@@ -200,11 +269,11 @@ class _TopCommonViewState extends State<TopCommonView> with SingleTickerProvider
           color: Colors.white,
           child:  TabBar(
             controller: widget._tabController,
-            tabs: [Text('简介'),Text('专栏')],
-            indicatorColor: Colors.blueAccent, //指示器颜色 如果和标题栏颜色一样会白色
+            tabs: [Text('主页'),Text('文章'),Text('视频'),Text('相关')],
+            indicatorColor: Color(0xFF1DD5E6), //指示器颜色 如果和标题栏颜色一样会白色
         //    isScrollable: true, //是否可以滑动
-            labelColor: Colors.blueAccent ,
-            unselectedLabelColor: Colors.black,
+            labelColor: Color(0xFF1DD5E6) ,
+            unselectedLabelColor: Color(0xFF999999),
             indicatorSize: TabBarIndicatorSize.label,
             unselectedLabelStyle: TextStyle(fontSize: 16),
             labelStyle: TextStyle(fontSize: 16),

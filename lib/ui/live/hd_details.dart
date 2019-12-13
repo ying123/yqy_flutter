@@ -66,6 +66,7 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
     loadData();
+
   }
 
 

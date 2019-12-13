@@ -17,6 +17,7 @@ import 'package:yqy_flutter/ui/guide/guide_page.dart';
 import 'package:yqy_flutter/ui/home/video_page.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
+import 'package:yqy_flutter/ui/user/new_user_page.dart';
 import 'package:yqy_flutter/ui/user/user_page.dart';
 import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
@@ -30,6 +31,7 @@ import 'ui/live/live_page.dart';
 
 
 void main()  {
+  WidgetsFlutterBinding.ensureInitialized();
    LocalStorage.getInstance().then((res){
      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
      runApp(MainHomePage());
@@ -132,7 +134,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   String showTv = "首页"; //当前显示的页面布局
 
-  final pages = [HomePage(),GuidePage(),VideoPage(),TaskHome(),UserPage()];
+  final pages = [HomePage(),GuidePage(),VideoPage(),TaskHome(),NewUserPage()];
 
 
   @override
