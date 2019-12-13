@@ -27,7 +27,7 @@ dependencies:
   path_provider: ^1.1.0
   open_file: ^2.1.1 # 打开文件
   cupertino_icons: ^0.1.2
-  cached_network_image: ^1.1.2
+  cached_network_image: ^2.0.0-rc
   dio: ^2.1.16
   event_bus: ^1.1.0
   extended_nested_scroll_view: ^0.3.6
@@ -65,6 +65,7 @@ dependencies:
   url_launcher: ^5.2.5  # Url跳转 拨打电话
   flutter_custom_dialog: ^1.0.14 # 弹窗
   share: 0.6.3+1 # 分享
+  fluwx: ^1.1.3 # 微信sdk相关  分享登录
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git
 dev_dependencies:

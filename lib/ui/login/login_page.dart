@@ -9,7 +9,7 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/utils/regex_utils.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
-
+import 'package:fluwx/fluwx.dart' as fluwx;
 
 
 class LoginPage extends StatefulWidget {
@@ -148,7 +148,13 @@ class _LoginPageState extends State<LoginPage> {
                   content: new Text("${item['title']}登录"),
                   action: new SnackBarAction(
                     label: "取消",
-                    onPressed: () {},
+                    onPressed: () {
+                      fluwx
+                          .sendWeChatAuth(
+                          scope: "snsapi_userinfo", state: "wechat_sdk_demo_test")
+                          .then((data) {});
+
+                    },
                   ),
                 ));
               });

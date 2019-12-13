@@ -22,11 +22,12 @@ import 'package:yqy_flutter/utils/chinese_cupertino_localizations.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'ui/live/live_page.dart';
-
+import 'package:fluwx/fluwx.dart' as fluwx;
 
 
 
 void main()  {
+  WidgetsFlutterBinding.ensureInitialized();
    LocalStorage.getInstance().then((res){
      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
      runApp(MainHomePage());
@@ -46,6 +47,7 @@ class MainHomePage extends StatelessWidget {
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
     initUMeng();
+    initWxSDK();
     requestPermission();
 
   }
@@ -112,6 +114,12 @@ class MainHomePage extends StatelessWidget {
       logEnable: true,
       encrypt: true,
     );
+
+  }
+
+  void initWxSDK() {
+
+    fluwx.registerWxApi(appId:"wx86155ed3e169e37a",universalLink:"https://shuiyanmed.com/");
 
   }
 }
