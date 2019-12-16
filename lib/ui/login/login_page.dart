@@ -104,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
              //   buildOtherLoginText(),
              //   buildOtherMethod(context),
                 buildRegisterText(context),
+                buildOtherMethod(context)
               ],
             )));
   }
