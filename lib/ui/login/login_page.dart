@@ -4,13 +4,13 @@ import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'dart:async';
-
+import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/utils/regex_utils.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -80,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return new Scaffold(
       backgroundColor: Colors.white,
         body: Form(
@@ -104,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
              //   buildOtherLoginText(),
              //   buildOtherMethod(context),
                 buildRegisterText(context),
+                cYM(ScreenUtil().setHeight(100)),
                 buildOtherMethod(context)
               ],
             )));
@@ -134,8 +136,37 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  ButtonBar buildOtherMethod(BuildContext context) {
-    return ButtonBar(
+  Widget buildOtherMethod(BuildContext context) {
+
+
+    return Container(
+      child: Column(
+          children: <Widget>[
+
+            InkWell(
+              onTap: (){
+                fluwx
+                    .sendWeChatAuth(
+                    scope: "snsapi_userinfo", state: "wechat_sdk_demo_test")
+                    .then((data) {
+                       String code = data.code;
+                      showToast("code:"+code+"----所搜"+data.toString());
+
+                });
+
+              },
+              child: Image.asset(wrapAssets("icon_home_n.png"),width: ScreenUtil().setWidth(90),height: ScreenUtil().setHeight(90),),
+            ),
+            Text("微信登陆",style: TextStyle(fontSize: ScreenUtil().setSp(32)),)
+
+          ],
+
+      ),
+
+    );
+
+
+   /* return  new ButtonBar(
       alignment: MainAxisAlignment.center,
       children: _loginMethod
           .map((item) => Builder(
@@ -159,10 +190,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ));
               });
-        },
-      ))
+          },
+       ))
           .toList(),
-    );
+    );*/
   }
 
   Align buildOtherLoginText() {
