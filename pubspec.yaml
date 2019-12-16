@@ -89,4 +89,5 @@ flutter:
       - assets/imgs/tab/
       - assets/imgs/home/
       - assets/imgs/user/
+      - assets/imgs/task/
       - data/

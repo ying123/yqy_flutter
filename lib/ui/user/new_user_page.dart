@@ -14,7 +14,7 @@ class _NewUserPageState extends State<NewUserPage> {
     return Scaffold(
     backgroundColor: Colors.white,
       body: ListView(
-
+        padding: EdgeInsets.all(0),
         children: <Widget>[
 
           buildTopInfoView(context),
@@ -43,22 +43,24 @@ class _NewUserPageState extends State<NewUserPage> {
   buildTopInfoView(BuildContext context) {
 
     return Container(
-      height: ScreenUtil().setHeight(580),
+      height: ScreenUtil().setHeight(660),
       child: Stack(
 
         children: <Widget>[
 
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(40), 0, ScreenUtil().setWidth(40), 0),
-              color: Color(0XFF609CFB),
-              height: ScreenUtil().setHeight(357),
+              color: Colors.white,
+              height: ScreenUtil().setHeight(420),
             ),
 
+           Image.asset(wrapAssets("user/top_bg.png"),width: double.infinity,height:  ScreenUtil().setHeight(470),fit: BoxFit.fill,),
+
            Positioned(
-             top: ScreenUtil().setHeight(43),
+             top: ScreenUtil().setHeight(120),
              right: ScreenUtil().setWidth(136),
                child:  Material(
-             color: Color(0XFF609CFB),
+             color: Colors.transparent,
              child:  InkWell(
                  onTap: (){},
                  child: Padding(padding: EdgeInsets.all(10),
@@ -69,10 +71,10 @@ class _NewUserPageState extends State<NewUserPage> {
              ),
            )),
             Positioned(
-                top: ScreenUtil().setHeight(43),
+                top: ScreenUtil().setHeight(120),
                 right: ScreenUtil().setWidth(3),
                 child:  Material(
-                  color: Color(0XFF609CFB),
+                  color: Colors.transparent,
                   child:  InkWell(
                       onTap: (){},
                       child: Padding(padding: EdgeInsets.all(10),
@@ -83,7 +85,7 @@ class _NewUserPageState extends State<NewUserPage> {
                   ),
                 )),
             Positioned(
-                top: ScreenUtil().setHeight(170),
+                top: ScreenUtil().setHeight(250),
                 left: ScreenUtil().setWidth(30),
                 child:  Material(
                   child:  InkWell(
@@ -94,18 +96,18 @@ class _NewUserPageState extends State<NewUserPage> {
                 )),
 
             Positioned(
-                top: ScreenUtil().setHeight(230),
+                top: ScreenUtil().setHeight(290),
                 left: ScreenUtil().setWidth(256),
                 child:  Text("按时的",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),)
             ),
             Positioned(
-                top: ScreenUtil().setHeight(302),
+                top: ScreenUtil().setHeight(370),
                 left: ScreenUtil().setWidth(261),
                 child:  Text("国家级医药专家",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
             ),
 
           new  Positioned(
-                top: ScreenUtil().setHeight(246),
+                top: ScreenUtil().setHeight(320),
                 right: ScreenUtil().setWidth(30),
                 child: Container(padding: EdgeInsets.all(ScreenUtil().setWidth(20),),
                       child:  Material(

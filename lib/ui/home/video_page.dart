@@ -42,7 +42,10 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
       body: Column(
 
         children: <Widget>[
-          cYM(ScreenUtil().setHeight(80)),
+          Container(
+            height: ScreenUtil().setHeight(80),
+            color: Colors.blue[300],
+          ),
           buildBannerView(context),
           buildScreenView(context),
           Expanded(child: buildListView(new List()))

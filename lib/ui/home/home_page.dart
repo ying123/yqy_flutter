@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:yqy_flutter/common/constant.dart';
