@@ -77,7 +77,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
 
  Widget  buildContentView(BuildContext context) {
 
-    return Container(
+    return  new Container(
       padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -493,8 +493,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
     return  InkWell(
       onTap: (){
-
-
+        RRouter.push(context, Routes.liveIngPage, {});
       },
       child: Container(
         width: double.infinity,

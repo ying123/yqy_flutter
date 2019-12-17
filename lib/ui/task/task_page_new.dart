@@ -215,8 +215,6 @@ class _TaskPageNewState extends State<TaskPageNew> {
 
                     Image.asset(wrapAssets("task/task_item_l.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
                     Text("领取任务",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),)
-
-
                   ],
                 ),
 
@@ -233,21 +231,13 @@ class _TaskPageNewState extends State<TaskPageNew> {
 
   }
 
+
   buildTipTextView() {
 
-
     return Container(
-
-      
-
-
-    );
-
-
-  /*  return Container(
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
       child:   Text("兑换礼品",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(45),fontWeight: FontWeight.bold)),
-    );*/
+    );
     
   }
 

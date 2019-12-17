@@ -15,6 +15,8 @@ import 'package:yqy_flutter/ui/home/special_detail_page.dart';
 import 'package:yqy_flutter/ui/home/zx_content.dart';
 import 'package:yqy_flutter/ui/live/hd_details.dart';
 import 'package:yqy_flutter/ui/live/live_details.dart';
+import 'package:yqy_flutter/ui/live/live_ing_page.dart';
+import 'package:yqy_flutter/ui/live/live_notice_page.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/login/register_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
@@ -328,6 +330,17 @@ var shopDetailsPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
 var specialDetailHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return SpecialDetailPage();
 });
+
+
+var liveNoticeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LiveNoticePage();
+});
+
+var liveIngHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LiveIngPage();
+});
+
+
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

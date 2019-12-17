@@ -103,7 +103,14 @@ class Routes {
 
   static String shopDetailsPage = "/shopDetailsPage"; //  积分商城详情
 
+  //
+
   static String specialDetailPage = "/specialDetailPage"; //  新的主题二级页面详情
+
+  static String liveNoticePage = "/liveNoticePage"; //  新的直播预告
+
+  static String liveIngPage = "/liveIngPage"; //  新的正在直播
+
 
 
   static void configureRoutes(Router router) {
@@ -153,6 +160,8 @@ class Routes {
     router.define(realNameRepresentPage, handler:realNameRepresentHandler);
     router.define(shopDetailsPage, handler:shopDetailsPageHandler);
     router.define(specialDetailPage, handler:specialDetailHandler);
+    router.define(liveNoticePage, handler:liveNoticeHandler);
+    router.define(liveIngPage, handler:liveIngHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);
