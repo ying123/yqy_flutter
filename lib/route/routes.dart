@@ -111,6 +111,10 @@ class Routes {
 
   static String liveIngPage = "/liveIngPage"; //  新的正在直播
 
+  static String livePaybackPage = "/livePaybackPage"; //  新的直播回放
+
+  static String taskNewPage = "/taskNewPage"; //  新的积分兑换任务首页
+
 
 
   static void configureRoutes(Router router) {
@@ -162,6 +166,9 @@ class Routes {
     router.define(specialDetailPage, handler:specialDetailHandler);
     router.define(liveNoticePage, handler:liveNoticeHandler);
     router.define(liveIngPage, handler:liveIngHandler);
+    router.define(livePaybackPage, handler:livePaybackHandler);
+    router.define(taskNewPage, handler:taskNewPageHandler);
+
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

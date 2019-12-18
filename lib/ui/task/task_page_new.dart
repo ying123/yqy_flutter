@@ -12,17 +12,111 @@ import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-class TaskPageNew extends StatefulWidget {
+
+
+
+
+//滚动最大距离
+const APPBAR_SCROLL_OFFSET = 40;
+
+class TaskNewPage extends StatefulWidget {
   @override
-  _TaskPageNewState createState() => _TaskPageNewState();
+  _TaskNewPageState createState() => _TaskNewPageState();
 }
 
-class _TaskPageNewState extends State<TaskPageNew> {
+class _TaskNewPageState extends State<TaskNewPage> {
+
+
+  double appBarAlpha = 0;
+  __onScroll(offset){
+    double alpha = offset/APPBAR_SCROLL_OFFSET;
+    if(alpha < 0 && appBarAlpha == 0||alpha > 1 && appBarAlpha == 1) {
+      return;
+    }
+    if(alpha<0){
+      alpha = 0;
+    }else if(alpha>1){
+      alpha = 1;
+    }
+
+
+
+    setState(() {
+      appBarAlpha = alpha;
+    });
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
     backgroundColor: Colors.white,
-      body: ListView(
+        body: Stack(
+          children: <Widget>[
+            MediaQuery.removePadding(context: context,
+                removeTop: true,
+                //监听列表的滚动
+                child: NotificationListener(
+                  //监听滚动后要调用的方法
+                  // ignore: missing_return
+                  onNotification: (scrollNotification){
+                    //只有当是更新状态下和是第0个child的时候才会调用
+                    if(scrollNotification is ScrollUpdateNotification &&scrollNotification.depth==0){
+                      __onScroll(scrollNotification.metrics.pixels);
+                    }
+                  },
+                  child: ListView(
+                    children: <Widget>[
+                      buildTopView(context),
+                      buildItemListView(context),
+                      buildTipTextView(),
+                      cYM(ScreenUtil().setHeight(40)),
+                      buildBottomShopView(context),
+                      cYM(ScreenUtil().setHeight(80)),
+                    ],
+                  ),
+                )
+            ),
+            //通过Opacity的透明度来控制appBar的显示与隐藏
+            // opacity:透明度，0.0 到 1.0，0.0表示完全透明，1.0表示完全不透明
+            Visibility(
+              visible: appBarAlpha>0,
+                child:  Opacity(
+              opacity: appBarAlpha,
+              child: Container(
+                  height: ScreenUtil().setHeight(220),
+                  width: double.infinity,
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+
+                      Positioned(left:ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(120),
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              size: ScreenUtil().setWidth(60),
+                              color: Colors.black26,
+                            ),
+                          )
+                      ),
+                      Positioned(top: ScreenUtil().setHeight(120),child:  Text("积分兑换",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.w600),))
+
+                    ],
+                  )
+              ),
+            ))
+          ],
+        )
+
+
+     /* body: ListView(
         padding: EdgeInsets.all(0),
         children: <Widget>[
           buildTopView(context),
@@ -32,7 +126,7 @@ class _TaskPageNewState extends State<TaskPageNew> {
           buildBottomShopView(context),
           cYM(ScreenUtil().setHeight(80)),
         ],
-      ),
+      ),*/
 
     );
   }
@@ -44,6 +138,20 @@ class _TaskPageNewState extends State<TaskPageNew> {
       child: new Stack(
         children: <Widget>[
           Image.asset(wrapAssets("task/task_bg.png"),width:double.infinity ,height: double.infinity,fit: BoxFit.fill,),
+
+
+           Visibility(
+             visible: appBarAlpha==0,
+             child:  new Positioned(
+               top: ScreenUtil().setHeight(150),
+               left: ScreenUtil().setWidth(30),
+               child: InkWell(
+                 onTap: (){
+                   Navigator.pop(context);
+                 },
+                 child: Icon(Icons.arrow_back_ios,color: Colors.white,size: ScreenUtil().setWidth(70),),
+           )),),
+
            new   Positioned(
                 left: ScreenUtil().setWidth(228),
                 top: ScreenUtil().setHeight(100),

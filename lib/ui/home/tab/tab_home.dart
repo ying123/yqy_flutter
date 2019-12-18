@@ -315,8 +315,14 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                 child: Image.asset(wrapAssets("home/bg_doctor_video.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,)
             ),
             cXM(ScreenUtil().setWidth(17)),
+
             Expanded(
-                child: Image.asset(wrapAssets("home/bg_integral.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,)
+                child: InkWell(
+                  onTap: (){
+                   RRouter.push(context ,Routes.taskNewPage,{});
+                  },
+                  child: Image.asset(wrapAssets("home/bg_integral.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
+                )
             ),
             cXM(ScreenUtil().setWidth(27)),
           ],
@@ -493,7 +499,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
     return  InkWell(
       onTap: (){
-        RRouter.push(context, Routes.liveIngPage, {});
+        RRouter.push(context, Routes.livePaybackPage, {});
       },
       child: Container(
         width: double.infinity,

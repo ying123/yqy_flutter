@@ -13,6 +13,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/doctor/doctor_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_page.dart';
 import 'package:yqy_flutter/ui/home/video_page.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
@@ -135,7 +136,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   String showTv = "首页"; //当前显示的页面布局
 
-  final pages = [HomePage(),GuidePage(),VideoPage(),TaskPageNew(),NewUserPage()];
+  final pages = [HomePage(),GuidePage(),VideoPage(),DoctorHomePage(),NewUserPage()];
 
 
   @override

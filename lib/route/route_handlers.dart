@@ -4,7 +4,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/main.dart';
-import 'package:yqy_flutter/ui/doctor/doctor_home.dart';
+import 'package:yqy_flutter/ui/doctor/doctor_details.dart';
 import 'package:yqy_flutter/ui/home/flfg_content.dart';
 import 'package:yqy_flutter/ui/home/gf_content.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
@@ -17,6 +17,7 @@ import 'package:yqy_flutter/ui/live/hd_details.dart';
 import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/live/live_ing_page.dart';
 import 'package:yqy_flutter/ui/live/live_notice_page.dart';
+import 'package:yqy_flutter/ui/live/live_playback_page.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/login/register_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
@@ -50,7 +51,7 @@ import 'package:yqy_flutter/ui/web/webview_page.dart';
 import '../utils/user_utils.dart';
 import 'package:yqy_flutter/ui/live/live_page.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_medical.dart';
-
+import 'package:yqy_flutter/ui/task/task_page_new.dart';
 /*
 var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String title = params['title']?.first;
@@ -340,6 +341,14 @@ var liveIngHandler = Handler(handlerFunc: (BuildContext context, Map<String, Lis
   return LiveIngPage();
 });
 
+var livePaybackHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LivePaybackPage();
+});
+
+
+var taskNewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return TaskNewPage();
+});
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

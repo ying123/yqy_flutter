@@ -47,6 +47,9 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
             color: Colors.blue[300],
           ),
           buildBannerView(context),
+          cYM(ScreenUtil().setHeight(20)),
+          buildAdView(context),
+          cYM(ScreenUtil().setHeight(40)),
           buildScreenView(context),
           Expanded(child: buildListView(new List()))
 
@@ -66,6 +69,17 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
   }
 
+  buildAdView(BuildContext context) {
+
+    return Container(
+      alignment: Alignment.center,
+      width: double.infinity,
+      height: ScreenUtil().setHeight(173),
+      child: Image.asset(wrapAssets("ad_bg.png"),width: ScreenUtil().setWidth(1022),height: ScreenUtil().setHeight(173),fit: BoxFit.fill,),
+
+    );
+
+  }
 
   Widget buildScreenView(BuildContext context) {
 
@@ -150,7 +164,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(5),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(20), 0, ScreenUtil().setWidth(20), ScreenUtil().setWidth(20)),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例
@@ -158,6 +172,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
       children: list.map((item) => buildItemView(item)).toList(),
     ): ListView.builder(
         shrinkWrap: true ,
+       padding: EdgeInsets.all(0),
        // physics: new NeverScrollableScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (context,index){
