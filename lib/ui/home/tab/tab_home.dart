@@ -308,11 +308,15 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
         height: ScreenUtil().setHeight(260),
         width: double.infinity,
         child: Row(
-
           children: <Widget>[
             cXM(ScreenUtil().setWidth(27)),
             Expanded(
-                child: Image.asset(wrapAssets("home/bg_doctor_video.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,)
+                child: InkWell(
+                  onTap: (){
+                      RRouter.push(context ,Routes.drugsCompanyHomePage,{});
+                  },
+                  child: Image.asset(wrapAssets("home/bg_doctor_video.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
+                )
             ),
             cXM(ScreenUtil().setWidth(17)),
 

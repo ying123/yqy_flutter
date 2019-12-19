@@ -115,6 +115,7 @@ class Routes {
 
   static String taskNewPage = "/taskNewPage"; //  新的积分兑换任务首页
 
+  static String drugsCompanyHomePage = "/drugsCompanyHomePage"; //  药企首页
 
 
   static void configureRoutes(Router router) {
@@ -168,7 +169,7 @@ class Routes {
     router.define(liveIngPage, handler:liveIngHandler);
     router.define(livePaybackPage, handler:livePaybackHandler);
     router.define(taskNewPage, handler:taskNewPageHandler);
-
+    router.define(drugsCompanyHomePage, handler:drugsCompanyHomePageHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

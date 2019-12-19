@@ -91,4 +91,5 @@ flutter:
       - assets/imgs/home/
       - assets/imgs/user/
       - assets/imgs/task/
+      - assets/imgs/drugs/
       - data/

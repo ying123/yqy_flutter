@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_details.dart';
+import 'package:yqy_flutter/ui/drugs/drugs_company_home_page.dart';
 import 'package:yqy_flutter/ui/home/flfg_content.dart';
 import 'package:yqy_flutter/ui/home/gf_content.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
@@ -349,6 +350,12 @@ var livePaybackHandler = Handler(handlerFunc: (BuildContext context, Map<String,
 var taskNewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return TaskNewPage();
 });
+
+
+var drugsCompanyHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return DrugsCompanyHomePage();
+});
+
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
