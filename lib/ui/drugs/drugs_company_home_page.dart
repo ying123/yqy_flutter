@@ -186,23 +186,28 @@ class _DrugsState extends State<DrugsCompanyHomePage> {
 
           children: <Widget>[
 
-            new Container(
-              width: ScreenUtil().setWidth(501),
-              decoration: BoxDecoration(
+            InkWell(
+              onTap: (){
+                RRouter.push(context ,Routes.drugsCompanyDetailPage,{});
+              },
+              child:  new Container(
+                width: ScreenUtil().setWidth(501),
+                decoration: BoxDecoration(
                   color: Colors.white,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Image.asset(wrapAssets("drugs/notice.png"),
-                    width: ScreenUtil().setWidth(501),
-                    height: ScreenUtil().setHeight(288),
-                    fit: BoxFit.fill,),
-                  Text("制药公司", style: TextStyle(
-                      color: Color(0xFF333333),
-                      fontSize: ScreenUtil().setSp(37)),)
-                ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Image.asset(wrapAssets("drugs/notice.png"),
+                      width: ScreenUtil().setWidth(501),
+                      height: ScreenUtil().setHeight(288),
+                      fit: BoxFit.fill,),
+                    Text("制药公司", style: TextStyle(
+                        color: Color(0xFF333333),
+                        fontSize: ScreenUtil().setSp(37)),)
+                  ],
+                ),
               ),
             ),
             cXM(ScreenUtil().setWidth(19)),
@@ -245,6 +250,7 @@ class _DrugsState extends State<DrugsCompanyHomePage> {
 
   buildTip(BuildContext context) {
     return Container(
+
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(27)),
       height: ScreenUtil().setHeight(100),
@@ -255,9 +261,7 @@ class _DrugsState extends State<DrugsCompanyHomePage> {
 
   buildRecommendView(BuildContext context) {
     return Container(
-
       child: GridView.count(
-
         shrinkWrap: true ,
         physics: new NeverScrollableScrollPhysics(),
         //水平子Widget之间间距
@@ -348,8 +352,26 @@ class _DrugsState extends State<DrugsCompanyHomePage> {
               ],
             ),
           ),
+          new Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Image.asset(wrapAssets("drugs/drugs.png"),
+                  width: ScreenUtil().setWidth(288),
+                  //  height: ScreenUtil().setHeight(288),
+                  fit: BoxFit.fill,),
+                Text("制药公司", style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: ScreenUtil().setSp(37)),)
+              ],
+            ),
+          )
         ]
-
 
       ),
     );

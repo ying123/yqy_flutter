@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_details.dart';
+import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_home_page.dart';
 import 'package:yqy_flutter/ui/home/flfg_content.dart';
 import 'package:yqy_flutter/ui/home/gf_content.dart';
@@ -356,6 +357,10 @@ var drugsCompanyHomePageHandler = Handler(handlerFunc: (BuildContext context, Ma
   return DrugsCompanyHomePage();
 });
 
+
+var drugsCompanyDetailPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return DrugsCompanyDetailPage();
+});
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
