@@ -32,6 +32,7 @@ final _tabDataList = <_TabData>[
 ];
 
 
+
 class HdDetailsPage extends StatefulWidget {
 
    var id;
@@ -66,7 +67,6 @@ class _VideoDetailsState extends State<HdDetailsPage>  with SingleTickerProvider
     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
     loadData();
-
   }
 
 
