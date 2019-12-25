@@ -92,4 +92,5 @@ flutter:
       - assets/imgs/user/
       - assets/imgs/task/
       - assets/imgs/drugs/
+      - assets/imgs/login/
       - data/

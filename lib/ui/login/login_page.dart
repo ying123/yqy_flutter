@@ -255,7 +255,6 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.center,
               height: 40,
               child: Padding(padding:EdgeInsets.fromLTRB(10, 0, 10, 0) ,child: Text(handleCodeAutoSizeText(),style: TextStyle(color: Colors.blueAccent),),),
-
             ) ,
           )
 

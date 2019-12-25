@@ -35,6 +35,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return Scaffold(
     key: _globalKey,
     backgroundColor: Colors.white,

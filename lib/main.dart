@@ -16,7 +16,7 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_page.dart';
 import 'package:yqy_flutter/ui/home/video_page.dart';
-import 'package:yqy_flutter/ui/login/login_page.dart';
+import 'package:yqy_flutter/ui/login/login_new_page.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/task/task_page_new.dart';
 import 'package:yqy_flutter/ui/user/new_user_page.dart';

@@ -42,6 +42,7 @@ class _GuidePageState extends State<GuidePage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return Scaffold(
 
       appBar: AppBar(
