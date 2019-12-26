@@ -72,7 +72,7 @@ class HttpManager {
         response.statusMessage = "请求超时,请稍后再试!";
       }
       response.data =
-          BaseResult(null, response.statusCode, response.statusMessage);
+          BaseResult(null,null, response.statusCode, response.statusCode, response.statusMessage);
     }
 
 
@@ -105,7 +105,7 @@ class HttpManager {
         response.statusMessage = "请求超时,请稍后再试!";
       }
       response.data =
-          BaseResult(null, response.statusCode, response.data.message);
+          BaseResult(null,null, response.statusCode, response.statusCode, response.data.message);
     }
 
     return response.data;

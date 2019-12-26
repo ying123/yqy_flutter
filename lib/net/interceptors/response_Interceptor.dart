@@ -50,7 +50,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
        if (APPConfig.DEBUG) {
           print("ResponseInterceptor: $e.toString() + options.path");
         }
-        return BaseResult(response.data, response.statusCode, e.toString());
+        return BaseResult(response.data,response.data, response.statusCode, response.statusCode, e.toString());
     }
   }
 }

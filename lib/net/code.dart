@@ -13,4 +13,5 @@ class Code {
   static const TOKEN_CANCEL = 0000;
 
   static const SUCCESS = 200;
+
 }

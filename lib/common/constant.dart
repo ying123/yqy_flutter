@@ -16,6 +16,9 @@ class AppColors {
 
 class AppRequest{
 
+
+
+
   static const  String Loading_content = "正在加载,请稍后...";
   static const String Banner_home = "9";//首页banner 类型
   static const String Banner_doctor = "10";//名医分享banner
@@ -114,9 +117,9 @@ class APPConfig {
 
 
   static const DEBUG = true;
-  static const Server = "http://api.yaoqiyuan.com/api/";
+  //static const Server = "http://api.yaoqiyuan.com/api/";
 
- // static const Server = "http://test.yaoqiyuan.com/api/"; //测试地址
+  static const Server = "http://test.yaoqiyuan.com/api/"; //测试地址
   // static const Server = "http://localhost:8090";
 
 
@@ -139,6 +142,10 @@ class APPConfig {
    static final String SHARE_LIVE_HD_START = onlineLiveUrl+"meeting/interact_info/id/";//分享正在互动直播的会议 需要拼接 直播ID  74
 
    static final String SHARE_LIVE_END = ".html?from=groupmessage";//分享正在直播的会议结束
+
+
+
+  static const SEARCH_COMPANY = Server+ "organiation/search_company";  //搜索企业
 
 }
 

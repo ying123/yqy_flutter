@@ -1,10 +1,24 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/bean/base_result.dart';
+import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/net/http_manager.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/user/enterprise/bean/my_enterprise_entity.dart';
+import 'package:yqy_flutter/ui/user/enterprise/bean/search_company_entity.dart';
 import 'package:yqy_flutter/ui/user/enterprise/search_page.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
+import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
 ///
 ///   我的企业页面  包含 未加入企业view  和 已加入企业view
@@ -16,21 +30,104 @@ class MyEnterprisePage extends StatefulWidget {
 }
 
 class _MyEnterprisePageState extends State<MyEnterprisePage> {
+
+  //页面加载状态，默认为加载中
+  LoadState _layoutState ;
+
+  MyEnterpriseData _myEnterpriseData;
+
+  StreamSubscription changeSubscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+    initEventbusListener();
+  }
+
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    changeSubscription.cancel();
+  }
+
+  loadData () async{
+
+    NetworkUtils.requestMyCompany()
+        .then((res){
+
+       int code =   res.code;
+
+       _layoutState = loadStateByCode(code);
+
+       if(_layoutState==LoadState.State_Success){
+
+          _myEnterpriseData = MyEnterpriseData.fromJson(res.data);
+
+
+       }
+      setState(() {
+
+      });
+
+    });
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       backgroundColor: Color(0xFFFAFAFA),
       appBar: AppBar(
-
         title: Text("我的企业"),
         centerTitle: true,
 
       ),
+      body: LoadStateLayout(
+      state: _layoutState,
+      errorRetry: () {
+        setState(() {
+          _layoutState = LoadState.State_Loading;
+        });
+        this.loadData();
+      },
+      successWidget:_myEnterpriseData==null?Container(): buildContextView(),
 
-      body: buildDataView(),
+    )
+    );
+  }
+
+  buildContextView() {
+    return  ListView(
+      shrinkWrap: true,//内容适配
+      children: <Widget>[
+
+        _myEnterpriseData.companyList.length==0?buildEmptyView():buildMyEnterpriseList(context,_myEnterpriseData.companyList),//我的企业列表
+        Visibility(visible: _myEnterpriseData.companyList.length==0?false:true,child:  buildAddBtn(context),),
+       //添加企业按钮
+        cYM(ScreenUtil().setHeight(28)),
+        buildTipTextView("我的申请"),//提示文字
+        buildApplyList(context,_myEnterpriseData.myApply),// 我的申请列表
+        cYM(ScreenUtil().setHeight(29)),
+        buildTipTextView("邀我加入"),//提示文字
+        buildInvitationList(context,_myEnterpriseData.invite),// 邀请我加入的列表
+
+      ],
 
     );
+
+  }
+
+  void initEventbusListener() {
+
+    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+         loadData();
+    });
   }
 
 }
@@ -50,47 +147,52 @@ class _buildEmptyViewState extends State<buildEmptyView> {
     ///
     ///  当前未加入企业的 显示的页面
     ///
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          width: double.infinity,
-          margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(591)),
-          child: Text("您还没有加入任何企业哦~", style: TextStyle(
-              fontSize: ScreenUtil.getInstance().setSp(45),
-              color: Color(0xFF666666),
-              fontWeight: FontWeight.w400),),
-        ),
-
-        SizedBox(
-          height: ScreenUtil().setHeight(76),
-
-        ),
-
-        InkWell(
-          onTap: () {
-
-          },
-          child: Container(
+    return  Container(
+      color: Colors.white,
+      height: ScreenUtil().setHeight(500),
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
             alignment: Alignment.center,
-            width: ScreenUtil().setWidth(265),
-            height: ScreenUtil().setHeight(84),
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Color(0xFFC4C4C4), width: ScreenUtil().setWidth(3)),
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                    Radius.circular(ScreenUtil().setWidth(12)))
+            margin: EdgeInsets.only(top:  ScreenUtil().setHeight(145)),
+            height: ScreenUtil().setHeight(145),
+            width: double.infinity,
+            child: Text("您还没有加入任何企业哦~", style: TextStyle(
+                fontSize: ScreenUtil.getInstance().setSp(40),
+                color: Color(0xFF666666),
+                fontWeight: FontWeight.w400),),
+          ),
 
-            ),
-            child: Text("+添加企业", style: TextStyle(
-                color: Color(0xFF999999), fontSize: ScreenUtil().setSp(40)),),
+          SizedBox(
+            height: ScreenUtil().setHeight(20),
 
           ),
-        )
-      ],
 
+          InkWell(
+            onTap: () {
+              showSearch(context: context, delegate: searchBarDelegate());
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: ScreenUtil().setWidth(265),
+              height: ScreenUtil().setHeight(84),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Color(0xFFC4C4C4), width: ScreenUtil().setWidth(3)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(ScreenUtil().setWidth(12)))
+
+              ),
+              child: Text("+添加企业", style: TextStyle(
+                  color: Color(0xFF999999), fontSize: ScreenUtil().setSp(40)),),
+
+               ),
+          )
+        ],
+
+      ),
     );
   }
 }
@@ -98,50 +200,22 @@ class _buildEmptyViewState extends State<buildEmptyView> {
 
 
 
-///
-///  已经加入企业 显示的页面
-///
-class buildDataView extends StatefulWidget {
-  @override
-  _buildDataViewState createState() => _buildDataViewState();
-}
-
-class _buildDataViewState extends State<buildDataView> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,//内容适配
-      children: <Widget>[
-
-          buildMyEnterpriseList(context),//我的企业列表
-           buildAddBtn(context),//添加企业按钮
-            cYM(ScreenUtil().setHeight(28)),
-            buildTipTextView("我的申请"),//提示文字
-            buildApplyList(context),// 我的申请列表
-            cYM(ScreenUtil().setHeight(29)),
-          buildTipTextView("邀我加入"),//提示文字
-          buildInvitationList(context),// 邀请我加入的列表
-
-      ],
-
-    );
-  }
 
 
-  buildMyEnterpriseList(BuildContext context) {
+
+  buildMyEnterpriseList(BuildContext context,List<MyEnterpriseDataCompanyList> list) {
 
     return  ListView.builder(
-       physics: const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,//内容适配
         itemBuilder: (context,index){
 
-          return itemMyEnterpriseView();
+          return itemMyEnterpriseView(context,list[index]);
 
         },
-        itemCount: 2,
+        itemCount: list.length,
 
     );
-
 
   }
 
@@ -184,84 +258,133 @@ class _buildDataViewState extends State<buildDataView> {
 
   }
 
-  buildApplyList(BuildContext context) {
+  buildApplyList(BuildContext context,	List<MyEnterpriseDataMyApply> list) {
 
     return  ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,//内容适配
       itemBuilder: (context,index){
 
-        return itemApplyView();
+        return itemApplyView(context,list[index]);
 
       },
-      itemCount: 2,
+      itemCount: list.length,
 
     );
 
 
   }
 
-  buildInvitationList(BuildContext context) {
+  buildInvitationList(BuildContext context,	List<MyEnterpriseDataInvite> list) {
+    return  ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,//内容适配
+      itemBuilder: (context,index){
 
-    return new Container(
-        color: Colors.white,
-        height: ScreenUtil().setHeight(170),
-        width: double.infinity,
-        child: Column(
+        return itemInvitationView(context,list[index]);
 
-          children: <Widget>[
+      },
+      itemCount: list.length,
 
-            Expanded(child:  Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: ScreenUtil().setWidth(108),
-                ),
-                Image.asset(wrapAssets("icon_home_s.png"),width: ScreenUtil().setWidth(81),height:ScreenUtil().setWidth(81) ,),
-
-                SizedBox(
-                  width: ScreenUtil().setWidth(23),
-                ),
-                Expanded(child: Text("山东汉方制药有限公司",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),),),
-
-                 InkWell(
-                   onTap: (){
-                     showTipDialog(context);
-                     Future.delayed(Duration(milliseconds: 1500), (){
-                       Navigator.of(context).pop();
-                     });
-                   },
-                   child: Container(
-                     alignment: Alignment.center,
-                     width: ScreenUtil().setWidth(207),
-                     height: ScreenUtil().setHeight(84),
-                     decoration: BoxDecoration(
-                       border: Border.all(color: Color(0xFFC4C4C4),width: ScreenUtil().setWidth(3)),
-                       color: Colors.white,
-                       borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12))),
-                     ),
-                     child: Text("同意",style: TextStyle(color: Color(0xFF0072EE),fontSize: ScreenUtil().setSp(40)),),
-                   ),
-                 ),
-
-                SizedBox(
-                  width: ScreenUtil().setWidth(43),
-                ),
-              ],
-
-            ),),
-
-            Divider(height: ScreenUtil().setHeight(1),color: Color(0xFFF2F2F2),)
-          ],
-        )
     );
+
 
   }
 
-  itemMyEnterpriseView() {
+itemInvitationView(BuildContext context, MyEnterpriseDataInvite bean) {
+  return new Container(
+      color: Colors.white,
+      height: ScreenUtil().setHeight(170),
+      width: double.infinity,
+      child: Column(
+
+        children: <Widget>[
+
+          Expanded(child:  Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: ScreenUtil().setWidth(108),
+              ),
+              wrapImageUrl(bean.userPhoto,  ScreenUtil().setWidth(81),  ScreenUtil().setWidth(81)),
+
+              SizedBox(
+                width: ScreenUtil().setWidth(23),
+              ),
+              Expanded(child: Text(bean.companyName,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),),),
+
+              InkWell(
+                onTap: (){
+                  showTipDialog(context);
+                  Future.delayed(Duration(milliseconds: 1500), (){
+                    Navigator.of(context).pop();
+                  });
+                },
+                child:bean.dataFlag==4?Container(
+                  alignment: Alignment.center,
+                  width: ScreenUtil().setWidth(207),
+                  height: ScreenUtil().setHeight(84),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFC4C4C4),width: ScreenUtil().setWidth(3)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12))),
+                  ),
+                  child: Text(getStatus(bean.dataFlag),style: TextStyle(color: Color(0xFF0072EE),fontSize: ScreenUtil().setSp(40)),),
+                ):Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    // 点击同意加入企业
+                    onTap: (){
+                        requestJoinData(context,bean.id);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: ScreenUtil().setWidth(207),
+                      height: ScreenUtil().setHeight(84),
+                      child: Text(getStatus(bean.dataFlag),style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+                    ),
+                  ),
+                )
+              ),
+
+              SizedBox(
+                width: ScreenUtil().setWidth(43),
+              ),
+            ],
+
+          ),),
+
+          Divider(height: ScreenUtil().setHeight(1),color: Color(0xFFF2F2F2),)
+        ],
+      )
+  );
+
+}
+
+
+///
+///  点击同意邀请  加入企业
+///
+void requestJoinData(BuildContext context,int id) {
+
+  NetworkUtils.requestDealCompanyInvite(id.toString(), "1")
+      .then((res){
+
+        showToast(res.message);
+        if(res.code==200){
+          //如果点击同意  则刷新界面
+          eventBus.fire(new EventBusChange(""));
+        }
+
+  });
+
+
+}
+
+  itemMyEnterpriseView(BuildContext context,MyEnterpriseDataCompanyList bean) {
     return InkWell(
       onTap: (){
-        RRouter.push(context ,Routes.enterpriseHomePage,{},transition:TransitionType.cupertino);
+        RRouter.push(context ,Routes.enterpriseHomePage,{"cid":bean.cid,"bid":0},transition:TransitionType.cupertino);
       },
       child: new Container(
           color: Colors.white,
@@ -276,12 +399,11 @@ class _buildDataViewState extends State<buildDataView> {
                   SizedBox(
                     width: ScreenUtil().setWidth(108),
                   ),
-                  Image.asset(wrapAssets("icon_home_s.png"),width: ScreenUtil().setWidth(81),height:ScreenUtil().setWidth(81) ,),
-
+                  wrapImageUrl(bean.userPhoto, ScreenUtil().setWidth(81), ScreenUtil().setWidth(81)),
                   SizedBox(
                     width: ScreenUtil().setWidth(23),
                   ),
-                  Expanded(child: Text("山东汉方制药有限公司",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),),),
+                  Expanded(child: Text(bean.companyName,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),),),
 
                   Icon(Icons.arrow_forward_ios,color: Color(0xFFC8C8C8),size: 20,),
 
@@ -304,7 +426,7 @@ class _buildDataViewState extends State<buildDataView> {
 
   }
 
-  itemApplyView() {
+  itemApplyView(BuildContext context,MyEnterpriseDataMyApply bean) {
 
     return new Container(
         color: Colors.white,
@@ -320,14 +442,13 @@ class _buildDataViewState extends State<buildDataView> {
                 SizedBox(
                   width: ScreenUtil().setWidth(108),
                 ),
-                Image.asset(wrapAssets("icon_home_s.png"),width: ScreenUtil().setWidth(81),height:ScreenUtil().setWidth(81) ,),
-
+                wrapImageUrl(bean.userPhoto, ScreenUtil().setWidth(81), ScreenUtil().setWidth(81)),
                 SizedBox(
                   width: ScreenUtil().setWidth(23),
                 ),
-                Expanded(child: Text("山东汉方制药有限公司",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),),),
+                Expanded(child: Text(bean.companyName,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),),),
 
-               Text("审核中",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),),
+               Text(getStatus(bean.dataFlag),style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),),
 
                 SizedBox(
                   width: ScreenUtil().setWidth(43),
@@ -348,6 +469,32 @@ class _buildDataViewState extends State<buildDataView> {
     );
 
   }
+
+
+ ///
+///  获取审核状态
+///  备注：dataflag:1正常 0已离职 2申请中 3申请拒绝 4邀请中 5邀请拒绝
+///
+String getStatus(int dataFlag) {
+
+  switch(dataFlag){
+
+    case 0:
+      return "已离职";
+    case 1:
+      return "正常";
+    case 2:
+      return "申请中";
+    case 3:
+      return "申请拒绝";
+    case 4:
+      return "同意";
+    case 5:
+      return "邀请拒绝";
+  }
+
+
+}
 
   void showTipDialog(BuildContext context) {
 
@@ -387,7 +534,7 @@ class _buildDataViewState extends State<buildDataView> {
       );
 
   }
-}
+
 
 
 class searchBarDelegate extends SearchDelegate<String> {
@@ -418,67 +565,51 @@ class searchBarDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Container(
-      width: 100.0,
-      height: 100.0,
-      child: Card(
-        color: Colors.redAccent,
-        child: Center(
-          child: Text(query),
-        ),
-      ),
-    );
+    return  SearchContentView(query);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    List<String> searchList = new List();
 
-     return query.isEmpty?buildSearchEmptyView(context):buildSearchData(searchList);
+    SearchCompanyEntity searchCompanyEntity;
 
+    NetworkUtils.requestSearchCompany(query)
+          .then((res){
+
+
+      searchCompanyEntity = SearchCompanyEntity.fromJson(json.decode(res.data));
+      print("searchCompanyEntity::::"+searchCompanyEntity.toString());
+
+      if(res.code==200){
+
+
+        for(var x in searchCompanyEntity.info){
+          searchList.add(x.companyName);
+        }
+
+        return query.isEmpty?buildSearchEmptyView(context,searchCompanyEntity.info):buildSearchData(searchCompanyEntity.info);
+      }
+    });
+
+    return Container();
   }
 
-  buildSearchEmptyView(BuildContext context) {
+  buildSearchEmptyView(BuildContext context,	List<SearchCompanyInfo> list) {
 
     return  Container(
       padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
       color: Colors.white,
-      child: Column(
+      child: ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context,index){
+            return Container(
+                  height: 60,
+              color: Colors.red,
 
-        children: <Widget>[
-          Row(
-
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-            children: <Widget>[
-
-              Text("搜索历史", style: TextStyle(
-                  color: Color(0xFF333333), fontSize: ScreenUtil().setSp(40)),),
-              IconButton(
-                  icon: Icon(
-                  Icons.delete_forever, size: 30, color: Color(0xFFC8C8C8)),
-                  onPressed: () {
-
-                  })
-
-            ],
-
-          ),
-
-          cYM(ScreenUtil().setHeight(20)),
-
-          Wrap(
-            spacing: ScreenUtil().setWidth(30), //主轴上子控件的间距
-            runSpacing: ScreenUtil().setHeight(20), //交叉轴上子控件之间的间距
-            children: Boxs(), //要显示的子控件集合
-
-          )
-
-
-
-        ],
-
-      ),
-      
+            );
+          }
+      )
     );
 
 
@@ -495,7 +626,7 @@ class searchBarDelegate extends SearchDelegate<String> {
 
          print(list[index].toString().indexOf(query));
 
-         return Container(
+         return  new Container(
            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(30), 0),
            color: Colors.white,
            height: ScreenUtil().setHeight(145),
@@ -726,6 +857,16 @@ class searchBarDelegate extends SearchDelegate<String> {
 
   }
 
+  Future<Response> requestData(String q) async {
+    Response response;
+    Dio dio = Dio();
+    response = await dio.post(APPConfig.SEARCH_COMPANY, data: {"keyword":q});
+    return response;
+  }
+
+
+
+
 
  /* @override
   Widget buildSuggestions(BuildContext context) {
@@ -800,3 +941,229 @@ List<TextSpan> searchData(List list,String v) => List.generate(list.length, (ind
         );
 
 });
+
+
+///
+///  搜索页面  主内容  默认显示所有企业的列表
+///
+class SearchContentView extends StatefulWidget {
+
+  String query;
+
+  SearchContentView(this.query);
+
+  @override
+  _SearchContentViewState createState() => _SearchContentViewState();
+}
+
+class _SearchContentViewState extends State<SearchContentView> {
+  SearchCompanyEntity entity;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     requestData(widget.query).then((res){
+       entity = SearchCompanyEntity.fromJson(json.decode(res.data));
+      if(entity.code==200){
+        setState(() {
+
+        });
+      }
+
+    });
+  }
+  Future<Response> requestData(String q) async {
+    Response response;
+    Dio dio = Dio();
+    response = await dio.post(APPConfig.SEARCH_COMPANY, data: {"keyword":q});
+    return response;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return entity==null?Container(): ListView.builder(
+        itemCount: entity.info.length,
+        itemBuilder: (context,index){
+          return    new Container(
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(30), 0),
+            color: Colors.white,
+            height: ScreenUtil().setHeight(145),
+            width: double.infinity,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+
+                Text(entity.info[index].companyName,style: TextStyle(color: Color(0xFF666666),fontSize: ScreenUtil().setSp(40)),),
+
+                InkWell(
+
+                  onTap: (){
+
+                    showApplyDialog(context,entity.info[index]);
+
+                  },
+                  child:  Container(
+                    alignment: Alignment.center,
+                    width: ScreenUtil().setWidth(265),
+                    height: ScreenUtil().setHeight(84),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Color(0xFFC4C4C4),width: ScreenUtil().setWidth(3)),
+                        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
+                    ),
+                    child: Text("申请加入",style: TextStyle(color: Color(0xFF0072EE),fontSize:  ScreenUtil().setSp(40)),),
+
+                  ),
+                )
+
+              ],
+
+            ),
+
+          );
+        });
+  }
+  ///
+  ///  确认申请加入的弹窗
+  ///
+  void showApplyDialog(BuildContext context,SearchCompanyInfo bean) {
+
+    showDialog(
+        context: context,
+        builder: (_){
+          return Material(
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12))),
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(148), ScreenUtil().setHeight(655), ScreenUtil().setWidth(148), ScreenUtil().setHeight(755)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text("确认申请加入",style: TextStyle(color: Color(0xFF666666),fontSize: ScreenUtil().setSp(40)),),
+                  Text(bean.companyName,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46)),),
+                  Container(
+                    width: ScreenUtil().setWidth(513),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+
+                        new InkWell(
+                          onTap: (){
+                            Navigator.pop(context);
+
+                            showApplySuccessDialog(context,bean);
+
+                          },
+                          child:   Container(
+                            width: ScreenUtil().setWidth(207),
+                            height: ScreenUtil().setHeight(84),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Color(0xFF0072EE),
+                                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
+                            ),
+                            child: Text("确定",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40)),),
+                          ),
+                        ),
+                        new InkWell(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child:   Container(
+                            width: ScreenUtil().setWidth(207),
+                            height: ScreenUtil().setHeight(84),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Color(0xFFC4C4C4),width: ScreenUtil().setWidth(3)),
+                                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
+                            ),
+                            child: Text("取消",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+                          ),
+                        )
+
+
+                      ],
+
+                    ),
+                  )
+
+                ],
+
+              ),
+
+            ),
+
+
+          );
+
+        }
+    );
+
+
+  }
+
+
+  ///
+  ///  申请加入公司成功
+  ///
+  void showApplySuccessDialog(BuildContext context,SearchCompanyInfo bean) {
+
+
+    NetworkUtils.requestApplyJoinCompany(bean.userId.toString())
+          .then((res){
+
+            if(res.code==200){
+              showDialog(
+                  context: context,
+                  builder: (_){
+                    return Material(
+                      color: Colors.transparent,
+                      child:Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12))),
+                          color: Colors.white,
+                        ),
+                        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(148), ScreenUtil().setHeight(655), ScreenUtil().setWidth(148), ScreenUtil().setHeight(755)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.assignment_turned_in,size: 60,color: Colors.blue,),
+                            cYM(ScreenUtil().setHeight(30)),
+                            Text("您的申请已提交",style: TextStyle(color: Color(0xFF666666),fontSize: ScreenUtil().setSp(40)),),
+                            cYM(ScreenUtil().setHeight(30)),
+                            Text("请等待企业管理员审核",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46)),),
+                          ],
+
+                        ),
+
+                      ) ,
+
+                    );
+
+                  }
+              );
+              Future.delayed(Duration(milliseconds: 2000), (){
+                Navigator.of(context).pop();
+                //刷新我的企业界面
+                eventBus.fire(new EventBusChange(""));
+              });
+
+
+            }else{
+              showToast(res.message);
+            }
+
+
+    });
+
+
+
+
+  }
+}

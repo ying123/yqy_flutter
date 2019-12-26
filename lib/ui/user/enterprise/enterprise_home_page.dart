@@ -1,19 +1,64 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/user/enterprise/bean/enterprise_hone_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 ///
 ///
 ///  企业主页
 ///
 class EnterpriseHomePage extends StatefulWidget {
-  @override
+
+    String cid;
+    String bid;
+
+
+    EnterpriseHomePage(this.cid, this.bid);
+
+    @override
   _EnterpriseHomePageState createState() => _EnterpriseHomePageState();
 }
 
 class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
+  //页面加载状态，默认为加载中
+  LoadState _layoutState ;
+
+  EnterpriseHoneInfo _enterpriseHoneInfo;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    loadData();
+  }
+
+  loadData () async{
+
+    NetworkUtils.requestMyCompanyInfo(widget.cid, widget.bid)
+        .then((res){
+
+      int code =   res.code;
+
+      _layoutState = loadStateByCode(code);
+
+      if(_layoutState==LoadState.State_Success){
+
+        _enterpriseHoneInfo = EnterpriseHoneInfo.fromJson(res.info);
+
+      }
+      setState(() {
+
+      });
+
+    });
+
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,10 +67,9 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
         title: Text("企业主页"),
         centerTitle: true,
       ),
-      body: Column(
+      body:_enterpriseHoneInfo==null?Container(): Column(
 
         children: <Widget>[
-
 
           buildTopView(context),//顶部企业信息
           cYM(ScreenUtil().setHeight(30)),
@@ -56,12 +100,10 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
 
          new Row(
             children: <Widget>[
-              Image.asset(
-                wrapAssets("icon_home_s.png"), width: ScreenUtil().setWidth(81),
-                height: ScreenUtil().setWidth(81),),
+              wrapImageUrl(_enterpriseHoneInfo.userPhoto,  ScreenUtil().setWidth(81),  ScreenUtil().setWidth(81)),
               cXM(ScreenUtil().setWidth(23)),
               Expanded(
-                  child: Text("山东汉方制药有限公司", style: TextStyle(
+                  child: Text(_enterpriseHoneInfo.companyName, style: TextStyle(
                       color: Color(0xFF333333),
                       fontSize: ScreenUtil().setSp(46)))
               ),
@@ -89,7 +131,7 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
            children: <Widget>[
              Text("我的部门：",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),),
              cXM(ScreenUtil().setWidth(23)),
-             Text("临床事业部 > 临床一部",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),),
+             Text(_enterpriseHoneInfo.my.branchName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),),
 
            ],
 
@@ -100,7 +142,7 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
            children: <Widget>[
              Text("我的角色：",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),),
              cXM(ScreenUtil().setWidth(23)),
-             Text("医学产品经理",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),),
+             Text(_enterpriseHoneInfo.my.groupName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),),
 
            ],
 
@@ -128,18 +170,18 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context,index){
-              return itemDepartment();
+              return itemDepartment(_enterpriseHoneInfo.branchLists[index]);
             },
-            itemCount: 5,
+            itemCount: _enterpriseHoneInfo.branchLists.length,
         ),
         cYM(ScreenUtil().setHeight(29)),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context,index){
-            return itemOtherCount();
+            return itemOtherCount(_enterpriseHoneInfo.staffLists[index]);
           },
-          itemCount: 2,
+          itemCount: _enterpriseHoneInfo.staffLists.length,
         )
 
 
@@ -152,7 +194,7 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
 
   }
 
-  itemDepartment() {
+  itemDepartment(EnterpriseHoneInfoBranchList bean) {
     return Column(
       
       children: <Widget>[
@@ -169,7 +211,7 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
            child: Row(
              mainAxisAlignment: MainAxisAlignment.spaceBetween,
              children: <Widget>[
-               Text("市场部（15）",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),),
+               Text(bean.name+"("+bean.staffNums.toString()+")",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),),
                Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xFFC8C8C8),)
 
              ],
@@ -189,7 +231,7 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
 
   }
 
-  itemOtherCount() {
+  itemOtherCount(EnterpriseHoneInfoStaffList bean) {
 
     return Container(
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(95)),
@@ -204,12 +246,10 @@ class _EnterpriseHomePageState extends State<EnterpriseHomePage> {
             height: ScreenUtil().setHeight(145),
             child:  new Row(
               children: <Widget>[
-                Image.asset(
-                  wrapAssets("icon_home_s.png"), width: ScreenUtil().setWidth(81),
-                  height: ScreenUtil().setWidth(81),),
+                wrapImageUrl(bean.userPhoto,  ScreenUtil().setWidth(81),  ScreenUtil().setWidth(81)),
                   cXM(ScreenUtil().setWidth(21)),
                   Expanded(
-                    child: Text("张小燕", style: TextStyle(
+                    child: Text(bean.realName, style: TextStyle(
                         color: Color(0xFF333333),
                         fontSize: ScreenUtil().setSp(40)))
                 ),

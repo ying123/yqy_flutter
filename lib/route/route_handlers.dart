@@ -285,7 +285,9 @@ var myEnterpriseHandler = Handler(handlerFunc: (BuildContext context, Map<String
 
 
 var enterpriseHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return EnterpriseHomePage();
+  String cid = params["cid"]?.first;
+  String bid = params["bid"]?.first;
+  return EnterpriseHomePage(cid,bid);
 });
 
 

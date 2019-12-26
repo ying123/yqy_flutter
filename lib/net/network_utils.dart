@@ -670,6 +670,64 @@ class NetworkUtils {
     return result;
   }
 
+  ///
+  ///    代表用户  企业管理  我的企业
+  ///
+  static Future<BaseResult> requestMyCompany() async {
+    String url = APPConfig.Server + "organiation/my_company";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+  ///
+  ///    代表用户  搜索企业
+  ///    keyword	是	string	公司名称
+  ///
+  static Future<BaseResult> requestSearchCompany(String keyword) async {
+    String url = APPConfig.Server + "organiation/search_company";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"keyword":keyword});
+    return result;
+  }
+
+  ///
+  ///    代表用户-我的企业详情
+  ///    cid	是	string	企业编号
+  ///    bid	否	string	部门编号,如果传入0，则显示顶级部门，传入部门ID，则显示二级部门内的部门和用户
+  ///
+  static Future<BaseResult> requestMyCompanyInfo(String cid,String bid) async {
+    String url = APPConfig.Server + "organiation/my_company_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"cid":cid,"bid":bid});
+    return result;
+  }
+
+
+
+  ///
+  ///   代表用户-申请加入企业
+  ///
+  ///   cid	是	string	公司编号
+  ///
+  static Future<BaseResult> requestApplyJoinCompany(String cid) async {
+    String url = APPConfig.Server + "organiation/apply_join_company";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"cid":cid});
+    return result;
+  }
+
+
+  ///
+  ///   代表用户-处理企业邀请
+  ///
+  ///   id	是	string	邀请编号(员工与企业关联编号)
+  ///    dataFlag	是	string	处理反馈 1同意；5拒绝
+  ///
+  static Future<BaseResult> requestDealCompanyInvite(String id,String dataFlag) async {
+    String url = APPConfig.Server + "organization/deal_company_invite";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id,"dataFlag":dataFlag});
+    return result;
+  }
+
+
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";
     BaseResult result = await httpManager.request(HttpMethod.GET, url, null);
