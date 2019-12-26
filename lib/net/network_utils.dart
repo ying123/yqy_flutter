@@ -153,9 +153,6 @@ class NetworkUtils {
 
 
 
-
-
-
   ///
   ///  医药资讯详情
   ///
@@ -669,6 +666,9 @@ class NetworkUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
+
+
+
 
 /* static requestHomeAdvertisementsAndRecommendProductsData() async {
     String url = APPConfig.Server + "/home/index";

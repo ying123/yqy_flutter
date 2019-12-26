@@ -444,7 +444,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
         Text("我已阅读并同意",style: TextStyle(color:  Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
         Text("《用户服务协议》",style: TextStyle(color:  Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),)
 
-        
+
       ],
 
 
