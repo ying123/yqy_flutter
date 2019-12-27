@@ -103,6 +103,9 @@ class Routes {
 
   static String shopDetailsPage = "/shopDetailsPage"; //  积分商城详情
 
+  static String searchCompanyPage = "/searchCompanyPage"; // 搜索企业
+
+
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -144,12 +147,12 @@ class Routes {
     router.define(myEnterprisePage, handler:myEnterpriseHandler);
     router.define(enterpriseHomePage, handler:enterpriseHomeHandler);
     router.define(staffListPage, handler:staffListHandler);
-    router.define(searchPage, handler:searchHandler);
     router.define(taskVideoPage, handler:taskVideoHandler);
     router.define(searchHomePage, handler:searchHomeHandler);
     router.define(noticeHomePage, handler:noticeHomeHandler);
     router.define(realNameRepresentPage, handler:realNameRepresentHandler);
     router.define(shopDetailsPage, handler:shopDetailsPageHandler);
+    router.define(searchCompanyPage, handler:searchCompanyPageHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

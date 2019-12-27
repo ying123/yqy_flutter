@@ -28,7 +28,7 @@ import 'package:yqy_flutter/ui/task/task_video_page.dart';
 import 'package:yqy_flutter/ui/user/about_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/enterprise_home_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/my_enterprise_page.dart';
-import 'package:yqy_flutter/ui/user/enterprise/search_page.dart';
+import 'package:yqy_flutter/ui/user/enterprise/search_company_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/staff_list_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
 import 'package:yqy_flutter/ui/user/my_collection_page.dart';
@@ -297,9 +297,6 @@ var staffListHandler = Handler(handlerFunc: (BuildContext context, Map<String, L
 });
 
 
-var searchHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return SearchPage();
-});
 
 var taskVideoHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String id = params["tid"]?.first;
@@ -326,6 +323,10 @@ var shopDetailsPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
   return ShopDetailsPage(id);
 });
 
+
+var searchCompanyPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SearchCompanyPage();
+});
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

@@ -14,7 +14,7 @@ import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/user/enterprise/bean/my_enterprise_entity.dart';
 import 'package:yqy_flutter/ui/user/enterprise/bean/search_company_entity.dart';
-import 'package:yqy_flutter/ui/user/enterprise/search_page.dart';
+import 'package:yqy_flutter/ui/user/enterprise/bean/search_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -32,7 +32,7 @@ class MyEnterprisePage extends StatefulWidget {
 class _MyEnterprisePageState extends State<MyEnterprisePage> {
 
   //页面加载状态，默认为加载中
-  LoadState _layoutState ;
+  LoadState _layoutState  = LoadState.State_Loading;
 
   MyEnterpriseData _myEnterpriseData;
 
@@ -171,7 +171,8 @@ class _buildEmptyViewState extends State<buildEmptyView> {
 
           InkWell(
             onTap: () {
-              showSearch(context: context, delegate: searchBarDelegate());
+          //    showSearch(context: context, delegate: searchBarDelegate());
+              RRouter.push(context ,Routes.searchCompanyPage,{},transition:TransitionType.native);
             },
             child: Container(
               alignment: Alignment.center,
@@ -224,8 +225,8 @@ class _buildEmptyViewState extends State<buildEmptyView> {
     return InkWell(
 
       onTap: (){
-        showSearch(context: context, delegate: searchBarDelegate());
-       // RRouter.push(context ,Routes.searchPage,{},transition:TransitionType.cupertino);
+       // showSearch(context: context, delegate: searchBarDelegate());
+        RRouter.push(context ,Routes.searchCompanyPage,{},transition:TransitionType.native);
       },
 
       child: Container(
@@ -536,7 +537,10 @@ String getStatus(int dataFlag) {
   }
 
 
-
+///
+///  搜索布局设置
+///
+///
 class searchBarDelegate extends SearchDelegate<String> {
 
   @override
@@ -553,6 +557,7 @@ class searchBarDelegate extends SearchDelegate<String> {
         onPressed: () => query = "",
       )
     ];
+
   }
 
   @override
@@ -565,62 +570,56 @@ class searchBarDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return  SearchContentView(query);
+    return  Container(color: Colors.red,);
+
   }
 
   @override
+  void showResults(BuildContext context) {
+    // TODO: implement showResults
+    super.showResults(context);
+
+  }
+
+
+  @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> searchList = new List();
 
     SearchCompanyEntity searchCompanyEntity;
 
-    NetworkUtils.requestSearchCompany(query)
+    if(query.isNotEmpty){
+
+      NetworkUtils.requestSearchCompany(query)
           .then((res){
+        searchCompanyEntity = SearchCompanyEntity.fromJson(res.toJson());
+        return searchCompanyEntity.info.length==0?buildSearchEmptyView(context):buildSearchData(searchCompanyEntity.info);
+      });
+      return Container(
+        height: 50,
+        color: Colors.black,
+      );
+    }else{
+      return Container(
+      );
+
+    }
 
 
-      searchCompanyEntity = SearchCompanyEntity.fromJson(json.decode(res.data));
-      print("searchCompanyEntity::::"+searchCompanyEntity.toString());
-
-      if(res.code==200){
-
-
-        for(var x in searchCompanyEntity.info){
-          searchList.add(x.companyName);
-        }
-
-        return query.isEmpty?buildSearchEmptyView(context,searchCompanyEntity.info):buildSearchData(searchCompanyEntity.info);
-      }
-    });
-
-    return Container();
   }
 
-  buildSearchEmptyView(BuildContext context,	List<SearchCompanyInfo> list) {
+  buildSearchEmptyView(BuildContext context) {
 
     return  Container(
-      padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
-      color: Colors.white,
-      child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (context,index){
-            return Container(
-                  height: 60,
-              color: Colors.red,
 
-            );
-          }
-      )
     );
 
 
   }
 
-  buildSearchData(List list) {
+  buildSearchData(List<SearchCompanyInfo> list) {
 
-
-
-
-   return ListView.builder(
+  print("buildSearchData--------------"+list.toString());
+   return new ListView.builder(
        itemCount: list.length,
        itemBuilder: (context,index){
 
@@ -640,14 +639,13 @@ class searchBarDelegate extends SearchDelegate<String> {
                        text: "",
                        style: TextStyle(
                            color: Color(0xFF0072EE), fontWeight: FontWeight.bold),
-                       children: searchData(list[index].toString().split(""),query))),
+                       children: searchData(list[index].companyName.split(""),query))),
                InkWell(
 
                  onTap: (){
-
                    showApplyDialog(context);
-
                  },
+
                  child:  Container(
                    alignment: Alignment.center,
                    width: ScreenUtil().setWidth(265),
@@ -962,14 +960,16 @@ class _SearchContentViewState extends State<SearchContentView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-     requestData(widget.query).then((res){
-       entity = SearchCompanyEntity.fromJson(json.decode(res.data));
+    NetworkUtils.requestSearchCompany(widget.query)
+        .then((res){
+      entity = SearchCompanyEntity.fromJson(json.decode(res.data));
+      print("searchCompanyEntity::::"+entity.toString());
+
       if(entity.code==200){
         setState(() {
 
         });
       }
-
     });
   }
   Future<Response> requestData(String q) async {
