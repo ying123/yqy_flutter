@@ -269,6 +269,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
 
   }
 
+
   buildBtnRegisterView(BuildContext context) {
 
     return  InkWell(
