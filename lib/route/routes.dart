@@ -119,6 +119,7 @@ class Routes {
 
   static String drugsCompanyDetailPage = "/drugsCompanyDetailPage"; //  药企详情
 
+  static String realNameNewPage = "/realNameNewPage"; //  新的实名认证页面
 
 
   static void configureRoutes(Router router) {
@@ -174,6 +175,7 @@ class Routes {
     router.define(taskNewPage, handler:taskNewPageHandler);
     router.define(drugsCompanyHomePage, handler:drugsCompanyHomePageHandler);
     router.define(drugsCompanyDetailPage, handler:drugsCompanyDetailPageHandler);
+    router.define(realNameNewPage, handler:realNameNewPageHandler);
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

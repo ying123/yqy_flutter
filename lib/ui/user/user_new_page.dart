@@ -1,4 +1,7 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -114,7 +117,7 @@ class _NewUserPageState extends State<NewUserPage> {
                         color: Color(0XFF609CFB),
                         child: InkWell(
                           onTap: (){
-
+                            RRouter.push(context ,Routes.realNameNewPage,{},transition:TransitionType.cupertino);
                           },
                           child: Row(
                             children: <Widget>[

@@ -18,46 +18,71 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
         title: Text("实名认证"),
       ),
 
-      body: Stack(
-
+      body: ListView(
         children: <Widget>[
 
 
-          Positioned(top:ScreenUtil().setHeight(220),left: ScreenUtil().setWidth(58),child: FlatButton.icon(onPressed: (){}, icon: Icon(Icons.account_circle), label: Text("认证信息",style: TextStyle(color: Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(46)),))),
+        new Container(
+          
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58),  ScreenUtil().setHeight(100), 0, 0),
+          child:  new Row(
+            children: <Widget>[
+              Icon(Icons.account_circle),
+              cXM(ScreenUtil().setWidth(16)),
+              Text("认证信息",style: TextStyle(color: Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(46))),
+            ],
+          ),
+        ),
 
-          Container(
-
+        new  Container(
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(20), ScreenUtil().setHeight(40), ScreenUtil().setWidth(20), 0),
             child: Column(
-
               children: <Widget>[
-                cYM(ScreenUtil().setHeight(30)),
                 // 姓名输入
                 buildNameInputView(context),
                 buildLine(),
-                // 手机号输入
-                buildMobileInputView(context),
+                // 身份证输入
+                buildIDCardInputView(context),
                 buildLine(),
-                // 密码再次输入
-                buildPwdContinueInputView(context),
+                // 医院地区选择
+                buildHosAddressInputView(context),
                 buildLine(),
-                // 医院名称输入
-                buildHosInputView(context),
+                // 医院名称
+                buildHosNameInputView(context),
                 buildLine(),
-                // 手机号输入
+                // 科室选择
                 buildDepartmentInputView(context),
                 buildLine(),
-                buildCheckBoxAgreementView(context),
-                cYM(ScreenUtil().setHeight(40)),
-                //注册按钮
-                buildBtnRegisterView(context),
+                // 职称选择
+                buildJobNameInputView(context),
+                buildLine(),
+                // 职业证书号码
+                buildJobNumberInputView(context),
+                buildLine(),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58),  ScreenUtil().setHeight(80), 0, 0),
+                  child:  new Row(
+                    children: <Widget>[
+                      Icon(Icons.account_circle),
+                      cXM(ScreenUtil().setWidth(16)),
+                      Text("认证资料",style: TextStyle(color: Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(46))),
+                    ],
+                  ),
+                ),
                 cYM(ScreenUtil().setHeight(43)),
-
+                buildImageView(),
+                //提交按钮
+                cYM(ScreenUtil().setHeight(100)),
+                buildBtnRegisterView(context),
+                cYM(ScreenUtil().setHeight(60)),
 
 
               ],
             ),
 
-          )
+          ),
+
+
 
         ],
       ),
@@ -70,12 +95,13 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
   buildLine() {
 
     return Container(
-      width: ScreenUtil().setWidth(723),
+      width: ScreenUtil().setWidth(962),
       color: Color(0xFF2CAAEE),
       height: ScreenUtil().setWidth(1),
     );
 
   }
+
 
   buildBtnRegisterView(BuildContext context) {
 
@@ -91,14 +117,14 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43)))
         ),
         alignment: Alignment.center,
-        child: Text("立即注册",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),),
+        child: Text("提交审核",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),),
       ),
     );
 
   }
 
 
-  buildMobileInputView(BuildContext context) {
+  buildIDCardInputView(BuildContext context) {
 
     return  new Row(
       children: <Widget>[
@@ -107,7 +133,7 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
           width:   ScreenUtil().setWidth(50),
           height:   ScreenUtil().setWidth(50),
           alignment: Alignment.center,
-          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+          child:  Image.asset(wrapAssets("login/ic_mobile.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
         Expanded(child: TextFormField(
           keyboardType: TextInputType.phone,
@@ -115,7 +141,7 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
           textAlign: TextAlign.start,
           maxLines: 1,
           decoration: InputDecoration(
-            hintText: "请输入手机号号码",
+            hintText: "请输入身份证号码",
             hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
             border: InputBorder.none, // 去除下划线
           ),
@@ -124,8 +150,8 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
         )),
         Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(40),
-          height:   ScreenUtil().setWidth(40),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
           child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
 
@@ -137,7 +163,7 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
 
 
   buildNameInputView(BuildContext context) {
-    return Row(
+    return new Row(
       children: <Widget>[
         Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
@@ -161,9 +187,9 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
         )),
         Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(40),
-          height:   ScreenUtil().setWidth(40),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
         ),
 
       ],
@@ -293,6 +319,175 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
 
 
       ],
+
+
+    );
+
+
+  }
+
+  buildHosNameInputView(BuildContext context) {
+
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          keyboardType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请输入医院全称",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+        ),
+
+      ],
+
+    );
+  }
+
+
+  buildHosAddressInputView(BuildContext context) {
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          keyboardType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请选择医院所在地区",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+        ),
+
+      ],
+
+    );
+  }
+
+  buildJobNameInputView(BuildContext context) {
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          keyboardType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请选择职称",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+        ),
+
+      ],
+
+    );
+  }
+
+  buildJobNumberInputView(BuildContext context) {
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          keyboardType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请输入医师执业证书号",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+        ),
+
+      ],
+
+    );
+  }
+
+  buildImageView() {
+
+
+    return Container(
+      width: ScreenUtil().setWidth(461),
+      height: ScreenUtil().setHeight(328),
+      decoration: BoxDecoration(
+        borderRadius:BorderRadius.all(Radius.circular(ScreenUtil().setWidth(14))),
+        border: Border.all(color: Color(0xFF2CAAEE),width: ScreenUtil().setWidth(3))
+      ),
+      child: Column(
+
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(Icons.add_circle,size: ScreenUtil().setWidth(60),color: Color(0xFF2CAAEE),),
+          cYM(ScreenUtil().setHeight(39)),
+          Text("请上传医师执业证",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
+
+        ],
+      ),
 
 
     );
