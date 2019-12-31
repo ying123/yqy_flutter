@@ -30,7 +30,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   bool get wantKeepAlive => false;
 
 
-
   //页面加载状态，默认为加载中
   LoadState _layoutState ;
 
@@ -89,13 +88,11 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       setState(() {
         _layoutState = loadStateByCode(statusCode);
       });
-    }).catchError((e){
+      }).catchError((e){
       setState(() {
         _layoutState = loadStateByCode(-2);
       });
     });
-
-
 
   }
 

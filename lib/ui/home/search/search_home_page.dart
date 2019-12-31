@@ -16,19 +16,6 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
 
 
-class _TabData {
-  final Widget tab;
-  final Widget body;
-  _TabData({this.tab, this.body});
-}
-
-
-final _tabDataList = <_TabData>[
-  _TabData(tab: Center(child: Text("视频"),), body: VideoMeetingPage()),
-  _TabData(tab:  Center(child: Text("资讯")), body: TabNewsPage()),
-];
-
-
 
 class SearchHomePage extends StatefulWidget {
   @override
@@ -40,21 +27,16 @@ class _SearchHomePageState extends State<SearchHomePage> with SingleTickerProvid
   String  key;
 
 
-  final tabBarList = _tabDataList.map((item) => item.tab).toList();
-  final tabBarViewList = _tabDataList.map((item) => item.body).toList();
 
-  TabController _tabController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: tabBarList.length);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
 
@@ -62,7 +44,7 @@ class _SearchHomePageState extends State<SearchHomePage> with SingleTickerProvid
   Widget build(BuildContext context) {
     return Scaffold(
 
-
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
@@ -80,21 +62,19 @@ class _SearchHomePageState extends State<SearchHomePage> with SingleTickerProvid
           ),
           cXM(ScreenUtil().setWidth(25))
         ],
-        bottom: new TabBar(
-          controller: _tabController,
-          tabs: tabBarList,
-          indicatorColor: Colors.blueAccent, //指示器颜色 如果和标题栏颜色一样会白色
-          labelColor: Colors.blueAccent ,
-          labelPadding: EdgeInsets.fromLTRB(0,0,0,15),
-          unselectedLabelColor: Colors.black,
-          unselectedLabelStyle: TextStyle(fontSize: 16),
-          labelStyle: TextStyle(fontSize: 16),
-        ),
       ),
-      body: TabBarView(
-          controller: _tabController,
-          children: tabBarViewList
-      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          cYM(ScreenUtil().setHeight(40)),
+          buildTitleView("搜索历史"),
+          buildHosListView(context),
+          cYM(ScreenUtil().setHeight(40)),
+          buildTitleView("热门搜索"),
+          buildHosListView(context),
+
+        ],
+      )
 
 
     );
@@ -122,14 +102,16 @@ class _SearchHomePageState extends State<SearchHomePage> with SingleTickerProvid
             Icon(Icons.search,size: ScreenUtil().setWidth(70),color: Colors.black38,),
             Expanded(
                 child: Container(
-                  padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
+                  alignment: Alignment.center,
                   child: TextFormField(
+                    autofocus: true,
                     textInputAction: TextInputAction.search,
+                    style: TextStyle(fontSize: ScreenUtil().setSp(40)),
+                    textAlign: TextAlign.center,
                     decoration: InputDecoration(
                         hintText: "请输入您想要搜索的内容",
                         hintStyle: TextStyle(color: Colors.black38,fontSize: ScreenUtil().setSp(40)),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: ScreenUtil().setHeight(0))
                     ),
                     onChanged: (v){
                       key = v;
@@ -151,6 +133,68 @@ class _SearchHomePageState extends State<SearchHomePage> with SingleTickerProvid
     );
 
   }
+
+  buildTitleView(String v) {
+
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(27), 0, 0, 0),
+      child: Text(v,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
+    );
+
+
+  }
+
+
+  ///
+  ///  历史搜索页面
+  ///
+  buildHosListView(BuildContext context) {
+
+    return GridView.count(
+      shrinkWrap: true,
+      physics: new NeverScrollableScrollPhysics(),
+      //水平子Widget之间间距
+      crossAxisSpacing:  ScreenUtil().setHeight(17),
+      //垂直子Widget之间间距
+      mainAxisSpacing: ScreenUtil().setHeight(14),
+      //GridView内边距
+      padding: EdgeInsets.all(10.0),
+      //一行的Widget数量
+      crossAxisCount: 4,
+      //子Widget宽高比例
+      childAspectRatio: 2.2,
+      //子Widget列表
+      children: [
+        itemListView(),
+        itemListView(),
+        itemListView(),
+        itemListView(),
+        itemListView(),
+        itemListView(),
+        itemListView()
+        
+      ]
+    );
+  }
+
+  itemListView() {
+
+    return Container(
+      width: ScreenUtil().setWidth(173),
+      height: ScreenUtil().setHeight(81),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(40))),
+        color: Color(0xFFF6F6F6)
+      ),
+      child: Text("中医",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(32)),),
+
+    );
+
+  }
+
+
 
 }
 

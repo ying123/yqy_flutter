@@ -256,6 +256,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
     );
   }
 
+
   buildForgetPwdView(BuildContext context) {
 
     return Container(
