@@ -121,6 +121,10 @@ class Routes {
 
   static String realNameNewPage = "/realNameNewPage"; //  新的实名认证页面
 
+  static String followHomePage = "/followHomePage"; //  关注首页
+
+  static String collectHomePage = "/collectHomePage"; //  收藏首页
+
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -176,6 +180,9 @@ class Routes {
     router.define(drugsCompanyHomePage, handler:drugsCompanyHomePageHandler);
     router.define(drugsCompanyDetailPage, handler:drugsCompanyDetailPageHandler);
     router.define(realNameNewPage, handler:realNameNewPageHandler);
+    router.define(followHomePage, handler:followHomePageHandler);
+    router.define(collectHomePage, handler:collectHomePageHandler);
+
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
     router.define(productDetailPage, handler: productDetailHandler);

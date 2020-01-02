@@ -25,11 +25,10 @@ class _NewUserPageState extends State<NewUserPage> {
           buildMoreView(context),
           buildVideoListView(context),
           buildLine(),
-          buildBtnView(context),
-          buildBtnView(context),
-          buildBtnView(context),
-          buildBtnView(context),
-
+          buildBtnView(context,"我的企业"),
+          buildBtnView(context,"积分专区"),
+          buildBtnView(context,"我的订单"),
+          buildBtnView(context,"用户反馈"),
 
 
         ],
@@ -183,7 +182,7 @@ class _NewUserPageState extends State<NewUserPage> {
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
-
+                     RRouter.push(context ,Routes.collectHomePage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -193,7 +192,6 @@ class _NewUserPageState extends State<NewUserPage> {
                        children: <Widget>[
                          Text("235",style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
                          Text("收藏",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
-
 
                        ],
                      ),
@@ -207,7 +205,7 @@ class _NewUserPageState extends State<NewUserPage> {
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
-
+                     RRouter.push(context ,Routes.followHomePage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -367,13 +365,13 @@ class _NewUserPageState extends State<NewUserPage> {
   ///
   ///  跳转布局
   ///
-  buildBtnView(BuildContext context) {
+  buildBtnView(BuildContext context,String value) {
 
     return Material(
       color: Colors.white,
       child: InkWell(
         onTap: (){
-
+          RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
         },
         child: Container(
           height: ScreenUtil().setHeight(140),
@@ -390,7 +388,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
                       Icon(Icons.account_balance,size: ScreenUtil().setWidth(70),),
                       cXM(ScreenUtil().setWidth(23)),
-                      Expanded(child:  Text("我的赞",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),)),
+                      Expanded(child:  Text(value,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),)),
                       Icon(Icons.arrow_forward_ios,color: Colors.black12,size: ScreenUtil().setWidth(46),),
                     ],
                   )

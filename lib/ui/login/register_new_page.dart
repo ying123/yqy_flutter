@@ -135,18 +135,6 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
           // 姓名输入
           buildNameInputView(context),
           buildLine(),
-          // 手机号输入
-          buildMobileInputView(context),
-          buildLine(),
-          // 短信验证码输入
-          buildPwdInputView(context,2),
-          buildLine(),
-          // 密码输入
-          buildPwdInputView(context,1),
-          buildLine(),
-          // 密码再次输入
-          buildPwdContinueInputView(context),
-          buildLine(),
           // 医院名称输入
           buildHosInputView(context),
           buildLine(),

@@ -32,11 +32,13 @@ import 'package:yqy_flutter/ui/special/special_web_details.dart';
 import 'package:yqy_flutter/ui/task/task_question_naire_page.dart';
 import 'package:yqy_flutter/ui/task/task_video_page.dart';
 import 'package:yqy_flutter/ui/user/about_page.dart';
+import 'package:yqy_flutter/ui/user/collect/collect_home_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/enterprise_home_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/my_enterprise_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/search_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/staff_list_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
+import 'package:yqy_flutter/ui/user/follow/follow_home_page.dart';
 import 'package:yqy_flutter/ui/user/my_collection_page.dart';
 import 'package:yqy_flutter/ui/user/my_foot_page.dart';
 import 'package:yqy_flutter/ui/user/my_integral_detail_page.dart';
@@ -368,7 +370,13 @@ var realNameNewPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
   return RealNameNewPage();
 });
 
+var followHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return FollowHomePage();
+});
 
+var collectHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return CollectHomePage();
+});
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

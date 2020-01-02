@@ -25,7 +25,7 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
 
         new Container(
           
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58),  ScreenUtil().setHeight(100), 0, 0),
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58),  ScreenUtil().setHeight(60), 0, 0),
           child:  new Row(
             children: <Widget>[
               Image.asset(wrapAssets("user/ic_prove.png"),width:  ScreenUtil().setWidth(49),height: ScreenUtil().setWidth(49),fit: BoxFit.fill,),

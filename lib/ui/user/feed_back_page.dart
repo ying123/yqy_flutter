@@ -4,7 +4,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
@@ -26,7 +26,7 @@ class _FeedBackPageState extends State<FeedBackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      backgroundColor: Colors.white,
         appBar: AppBar(
 
           centerTitle: true,
@@ -34,53 +34,65 @@ class _FeedBackPageState extends State<FeedBackPage> {
 
         ),
 
-        body: Padding(padding: EdgeInsets.all(20),
+        body: Form(
+          key: _formKey,
+          child: new ListView(
 
-          child: Form(
-            key: _formKey,
-            child: new Column(
-
+            shrinkWrap: true,
             children: <Widget>[
 
               new  Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent,width: 1)
-                ),
-                height: 200,
+                //  height: ScreenUtil().setHeight(500),
                 child: Column(
 
                   crossAxisAlignment: CrossAxisAlignment.start,
 
                   children: <Widget>[
 
-                    cYM(10),
+                    cYM(ScreenUtil().setHeight(10)),
 
                     Container(
-                      padding: EdgeInsets.only(left: 10),
+                      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setHeight(71), 0, 0),
                       child:
-                      Text("意见反馈",style: TextStyle(fontSize: 16,color: Colors.black),),
-
+                      Text("问题和意见",style: TextStyle(fontSize: ScreenUtil().setSp(40),color: Colors.black,fontWeight: FontWeight.bold),),
                     ),
-                    Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    new  Container(
+                      constraints: BoxConstraints(
+                        minHeight: ScreenUtil().setHeight(100),
+                        maxHeight: ScreenUtil().setHeight(200),
+                      ),
+                      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(59), 0, ScreenUtil().setWidth(59), 0),
                       child:  TextFormField(
                         maxLines: 5,
                         maxLengthEnforced:true,
                         autofocus: true,
+                        keyboardType: TextInputType.text,
                         onSaved: (String value) => _str = value,
                         decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "请输入反馈内容",
-                            hintStyle: TextStyle(color: Colors.black26)
+                            border: InputBorder.none,
+                            hintText: "请简要描述您要反馈的问题和意见",
+                            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35))
                         ),
                         validator: (v){
                           if(v.length==0){
-                            return "反馈内容不能为空";
+                            return "";
                           }
                           return null;
-                          },
+                        },
                       ) ,
 
-                    )
+                    ),
+
+                    new Container(
+                      margin: EdgeInsets.only(left: ScreenUtil().setWidth(59)),
+                      width: ScreenUtil().setWidth(228),
+                      height: ScreenUtil().setHeight(179),
+                      child: Icon(Icons.add_photo_alternate,size:ScreenUtil().setWidth(200),),
+
+                    ),
+
+
+
                   ],
 
                 ),
@@ -89,74 +101,86 @@ class _FeedBackPageState extends State<FeedBackPage> {
               ),
 
               cYM(15),
-
               new Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent,width: 1)
-                ),
-                height: 45,
+                height: ScreenUtil().setHeight(12),
+                color: Color(0xFFF5F5F5),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setHeight(71), 0, 0),
+                child:
+                Text("联系方式",style: TextStyle(fontSize: ScreenUtil().setSp(40),color: Colors.black,fontWeight: FontWeight.bold),),
+              ),
+              new Container(
+                height: ScreenUtil().setHeight(100),
 
                 child: Row(
 
                   children: <Widget>[
-                    cXM(10),
-                    Text("联系方式",style: TextStyle(fontSize: 16,color: Colors.black),),
-                    cXM(25),
+                    cXM(ScreenUtil().setWidth(59)),
                     Expanded(
                         child: TextFormField(
                           onSaved: (String value) => _phone = value,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.phone,
                           inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
                           decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: "选填联系方式",
-                              hintStyle: TextStyle(fontSize: 16)
+                              hintText: "请留下您的手机号码",
+                              hintStyle: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999))
                           ),
+
                         )
                     )
                   ],
 
                 ),
               ),
-              cYM(20),
-              new  FlatButton(
-                color: Colors.blue,
-                highlightColor: Colors.blue[700],
-                colorBrightness: Brightness.dark,
-                splashColor: Colors.grey,
-                child: Container(
+              cYM(ScreenUtil().setHeight(30)),
+              new Container(
+                height: ScreenUtil().setHeight(12),
+                color: Color(0xFFF5F5F5),
+              ),
+              cYM(ScreenUtil().setHeight(80)),
+             new InkWell(
+                child:     new  Container(
+                  margin:EdgeInsets.fromLTRB(ScreenUtil().setWidth(248), 0, ScreenUtil().setWidth(248), 0),
+                  width: ScreenUtil().setWidth(585),
+                  height: ScreenUtil().setHeight(100),
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)],begin: Alignment.topCenter,end: Alignment.bottomCenter),
+                      borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43)))
+                  ),
                   alignment: Alignment.center,
-                  height: 50,
-                  child: Text("提交",style: TextStyle(color: Colors.white,fontSize: 16),),
-                ),
-                shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                onPressed: () {
+                  child: Text("提 交",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),),
 
+
+                ),
+                onTap: (){
                   if((_formKey.currentState as FormState).validate()){
                     _formKey.currentState.save();
                     //验证通过提交数据
-                 NetworkUtils. requestFeedback(UserUtils.getUserInfo().userId,_str,_phone)
-                    .then((res){
+                    NetworkUtils. requestFeedback(UserUtils.getUserInfo().userId,_str,_phone)
+                        .then((res){
 
-                     showToast(res.message);
+                      showToast(res.message);
 
-                     if(res.status=="9999"){
+                      if(res.status=="9999"){
 
-                       // 延时1s执行返回
-                       Future.delayed(Duration(seconds: 1), (){
-                         Navigator.of(context).pop();
-                       });
-                     }
-                  });
+                        // 延时1s执行返回
+                        Future.delayed(Duration(seconds: 1), (){
+                          Navigator.of(context).pop();
+                        });
+                      }
+                    });
 
 
                   }
                 },
               )
 
+
             ],
 
-          ),)
+          ),
         )
 
     );
