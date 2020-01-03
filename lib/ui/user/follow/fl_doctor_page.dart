@@ -60,19 +60,12 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
                             child: Text("呼吸内科",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
                           )
 
-
                         ],
 
                       ),
                       cYM(ScreenUtil().setHeight(16)),
                       Text("山东省第二人民医院第三附属医院",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
-
-
-
-
-
                     ],
-
 
                   )
               ),
@@ -87,8 +80,6 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
                 ),
                 child: Text("已关注",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
               )
-
-
 
             ],
           ),

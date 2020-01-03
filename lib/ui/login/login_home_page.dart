@@ -19,6 +19,38 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
   bool  pwdShow = false ;// 是否显示密码输入框
 
+  TextEditingController _phoneController = new TextEditingController();
+
+
+  TextEditingController _pwdController = new TextEditingController();
+
+  String pwd; // 密码
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    initControllerListener();
+
+  }
+
+  void initControllerListener() {
+
+
+    _pwdController.addListener((){
+
+     setState(() {
+       pwd = _phoneController.text;
+     });
+
+    });
+
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return  new  Scaffold(
@@ -78,7 +110,9 @@ class _LoginHomePageState extends State<LoginHomePage> {
           child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(56),height: ScreenUtil().setWidth(60),fit: BoxFit.fill,),
         ),
         cXM(ScreenUtil().setWidth(42)),
-        Expanded(child: TextFormField(
+        Expanded(
+            child: TextFormField(
+              controller: _phoneController,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
@@ -93,12 +127,20 @@ class _LoginHomePageState extends State<LoginHomePage> {
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
           style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(50)),
         )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(135), 0),
-          width:   ScreenUtil().setWidth(40),
-          height:   ScreenUtil().setWidth(40),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
-        ),
+        InkWell(
+          onTap: (){
+            setState(() {
+              _phoneController.text="";
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(135), 0),
+            width:   ScreenUtil().setWidth(40),
+            height:   ScreenUtil().setWidth(40),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+          ),
+
+        )
 
       ],
 
@@ -117,7 +159,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
   }
 
   buildBtnLoginView(BuildContext context) {
-    return Container(
+    return loginType==0? Container(
           width: ScreenUtil().setWidth(861),
           height: ScreenUtil().setHeight(120),
           decoration: BoxDecoration(
@@ -137,6 +179,29 @@ class _LoginHomePageState extends State<LoginHomePage> {
              )
 
            )
+    ):Container(
+        width: ScreenUtil().setWidth(861),
+        height: ScreenUtil().setHeight(120),
+        decoration:pwd==null?
+        BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43))),
+            color: Colors.black26
+        ):BoxDecoration(
+            gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)]),
+            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43)))
+        ),
+        alignment: Alignment.center,
+        child: FlatButton(
+            onPressed: (){
+              RRouter.push(context ,Routes.loginSendSmsPage,{},transition:TransitionType.cupertino);
+            },
+            child:  Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              height: double.infinity,
+              child: Text("登录",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),  ),
+            )
+        )
     );
 
   }
@@ -158,7 +223,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
         ),
         cXM(ScreenUtil().setWidth(42)),
         Expanded(child: TextFormField(
-          keyboardType: TextInputType.phone,
+          keyboardType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
           obscureText: !pwdShow,
@@ -203,6 +268,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
   }
 
 
+
   buildPwdLoginView(BuildContext context) {
     return Container(
         alignment: Alignment.centerLeft,
@@ -239,5 +305,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
     );
 
   }
+
+
 
 }

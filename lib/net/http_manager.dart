@@ -41,7 +41,6 @@ class HttpManager {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     params["version"] = packageInfo.version;
 
-
     var type = contentType == null
         ? ContentType.parse(ContentTypeURLEncoded)
         : contentType;

@@ -45,7 +45,6 @@ class _FollowHomePageState extends State<FollowHomePage> with SingleTickerProvid
 
         appBar: AppBar(
           title: Text("我的关注"),
-
         ),
         body: Column(
 
@@ -73,9 +72,6 @@ class _FollowHomePageState extends State<FollowHomePage> with SingleTickerProvid
                   children: tabBarViewList,
                 ),
             ),
-
-
-
 
           ],
         )

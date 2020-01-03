@@ -27,10 +27,7 @@ class _AboutPageState extends State<AboutPage> {
 
   }
 
-
-
   loadData () async{
-
 
     NetworkUtils.requestAbout(UserUtils.getUserInfo().userId)
         .then((res) {
@@ -38,7 +35,6 @@ class _AboutPageState extends State<AboutPage> {
       int statusCode = int.parse(res.status);
 
       if(statusCode==9999){
-
         _aboutInfo = AboutInfo.fromJson(res.info);
         setState(() {
 
