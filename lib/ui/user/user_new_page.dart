@@ -229,7 +229,7 @@ class _NewUserPageState extends State<NewUserPage> {
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
-
+                     RRouter.push(context ,Routes.loginHomePage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),

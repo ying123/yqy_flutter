@@ -105,6 +105,11 @@ class Routes {
 
   //
 
+  static String  loginHomePage = "/loginHomePage"; //  登陆首页
+
+
+  static String  loginSendSmsPage = "/loginSendSmsPage"; //  发送短信页面
+
   static String specialDetailPage = "/specialDetailPage"; //  新的主题二级页面详情
 
   static String liveNoticePage = "/liveNoticePage"; //  新的直播预告
@@ -124,6 +129,9 @@ class Routes {
   static String followHomePage = "/followHomePage"; //  关注首页
 
   static String collectHomePage = "/collectHomePage"; //  收藏首页
+
+
+
 
 
   static void configureRoutes(Router router) {
@@ -182,6 +190,10 @@ class Routes {
     router.define(realNameNewPage, handler:realNameNewPageHandler);
     router.define(followHomePage, handler:followHomePageHandler);
     router.define(collectHomePage, handler:collectHomePageHandler);
+    router.define(loginHomePage, handler:loginHomePageHandler);
+    router.define(loginSendSmsPage, handler:loginSendSmsPageHandler);
+
+
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

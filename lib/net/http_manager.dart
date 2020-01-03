@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:package_info/package_info.dart';
 import 'package:yqy_flutter/bean/base_result.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'interceptors/logs_interceptor.dart';
@@ -32,6 +33,14 @@ class HttpManager {
     if(UserUtils.isLogin()){
       params["token"] = UserUtils.getUserInfo().token ?? "";
     }
+
+    //	设备
+    params["device"] = Platform.isAndroid?"android":"ios";
+    //	版本号
+    //获取当前版本
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    params["version"] = packageInfo.version;
+
 
     var type = contentType == null
         ? ContentType.parse(ContentTypeURLEncoded)

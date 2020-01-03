@@ -20,7 +20,9 @@ import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/live/live_ing_page.dart';
 import 'package:yqy_flutter/ui/live/live_notice_page.dart';
 import 'package:yqy_flutter/ui/live/live_playback_page.dart';
+import 'package:yqy_flutter/ui/login/login_home_page.dart';
 import 'package:yqy_flutter/ui/login/login_page.dart';
+import 'package:yqy_flutter/ui/login/login_send_sms_page.dart';
 import 'package:yqy_flutter/ui/login/register_new_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
@@ -377,6 +379,15 @@ var followHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<Stri
 var collectHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return CollectHomePage();
 });
+
+var loginHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LoginHomePage();
+});
+
+var loginSendSmsPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LoginSendSmsPage();
+});
+
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
