@@ -385,7 +385,8 @@ var loginHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<Strin
 });
 
 var loginSendSmsPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LoginSendSmsPage();
+  String phone = params["phone"]?.first;
+  return LoginSendSmsPage(phone);
 });
 
 

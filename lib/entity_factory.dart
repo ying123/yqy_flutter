@@ -11,6 +11,7 @@ import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
+import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_banner_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_cate_entity.dart';
@@ -19,6 +20,7 @@ import 'package:yqy_flutter/ui/special/bean/special_video_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/task_list_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/task_question_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/task_video_entity.dart';
+import 'package:yqy_flutter/ui/task/bean/upload_naire_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/about_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_details_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
@@ -56,6 +58,8 @@ class EntityFactory {
       return LiveDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LoginEntity") {
       return LoginEntity.fromJson(json) as T;
+    } else if (T.toString() == "SendSmsEntity") {
+      return SendSmsEntity.fromJson(json) as T;
     } else if (T.toString() == "ShopHomeEntity") {
       return ShopHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialBannerEntity") {
@@ -72,6 +76,8 @@ class EntityFactory {
       return TaskQuestionEntity.fromJson(json) as T;
     } else if (T.toString() == "TaskVideoEntity") {
       return TaskVideoEntity.fromJson(json) as T;
+    } else if (T.toString() == "UploadQuestionBean") {
+      return UploadQuestionBean.fromJson(json) as T;
     } else if (T.toString() == "AboutEntity") {
       return AboutEntity.fromJson(json) as T;
     } else if (T.toString() == "IntegralDetailsEntity") {

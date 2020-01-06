@@ -4,16 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/cell_input.dart';
 
 class LoginSendSmsPage extends StatefulWidget {
+
+  String phone;
+
+
+  LoginSendSmsPage(this.phone);
+
   @override
   _LoginSendSmsPageState createState() => _LoginSendSmsPageState();
 }
 
 class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
+
+  SendSmsInfo _smsInfo,_loginInfo;
+
+
+   String    userStatus;  // 当前登录的用户状态  1已注册直接登录 2未注册完善资料
 
   Timer _timer;
 
@@ -21,8 +35,11 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
   var countdownTime = 0;
   GlobalKey<TextWidgetState> textKey = GlobalKey();
 
+  StreamSubscription changeSubscription;  //验证码输入完成通知
+  StreamSubscription changeSubscription2;  // 重新获取验证码通知
   //倒计时方法
   startCountdown() {
+    requestSendSmsData();
     //倒计时时间
     countdownTime = 60;
     final call = (timer) {
@@ -50,8 +67,10 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
     super.initState();
     if(mounted){
       startCountdown();
+      initEventLoginListener();
     }
   }
+
 
 
   @override
@@ -61,17 +80,8 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
     if(_timer!=null){
       _timer.cancel();
     }
-  }
-
-  ///
-  /// 发送短信验证请求
-  ///
-  void sendSmsRequest() {
-   /* NetworkUtils.requestLoginSms("")
-        .then((res) {
-      showToast(res.message);
-
-    });*/
+    changeSubscription.cancel();
+    changeSubscription2.cancel();
   }
 
 
@@ -80,18 +90,29 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
 
 
     return Scaffold(
-
+      appBar: AppBar(
+        brightness: Brightness.light,
+        titleSpacing: 0,
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back_ios,color: Colors.black54,),
+          onTap: (){
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Container(
         margin: EdgeInsets.only(top: ScreenUtil().setHeight(100)),
         padding: EdgeInsets.only(left: ScreenUtil().setWidth(80)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-
-            cYM(ScreenUtil().setHeight(200)),
+            cYM(ScreenUtil().setHeight(40)),
             Text("输入验证码",style: TextStyle(color: Colors.black87,fontSize: ScreenUtil().setSp(75)),),
             cYM(ScreenUtil().setHeight(15)),
-            Text("验证码已发送至 +86 178 6593 7635",style: TextStyle(color: Colors.black87,fontSize: ScreenUtil().setSp(35)),),
+            Text("验证码已发送至 +86 "+widget.phone,style: TextStyle(color: Colors.black87,fontSize: ScreenUtil().setSp(35)),),
             cYM(ScreenUtil().setHeight(80)),
             new  CellInput(
                 key: UniqueKey(),
@@ -100,7 +121,10 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
                 solidColor: Color(0xFFF5F6FB),
                 borderRadius: BorderRadius.circular(4),
                 inputCompleteCallback: (v) {
-                  print(v);
+
+                  // 发起登陆请求
+                  eventBus.fire(new EventBusChange(v));
+
                 }),
             cYM(ScreenUtil().setHeight(80)),
             TextWidget(textKey),
@@ -160,6 +184,81 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
     );
 
   }
+
+  ///
+  ///  发送短信
+  ///
+  void requestSendSmsData() {
+
+    NetUtils.requestSmsCode(widget.phone)
+        .then((res){
+          if(res.code==200){
+            
+            _smsInfo = SendSmsInfo.fromJson(res.info);
+
+              userStatus = _smsInfo.status.toString();
+          }else{
+            
+            showToast(res.msg);
+          }
+
+    });
+
+
+
+  }
+  ///
+  ///  登录请求
+  ///
+  void requestLoginData(BuildContext context,String phone, String code,String status) {
+
+    print(code+phone+status);
+
+    NetUtils.requestSmsLogin(phone,code,status)
+        .then((res){
+
+
+        if(res.code==200){
+
+          _loginInfo = SendSmsInfo.fromJson(res.info);
+
+          showToast(_loginInfo.token);
+
+          //已注册直接登录
+          if(userStatus==1){
+
+
+         // 未注册完善资料
+          }else{
+
+          }
+
+
+
+        }else{
+
+          showToast(res.message);
+        }
+
+
+    });
+
+  }
+
+  void initEventLoginListener() {
+
+
+    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+
+      requestLoginData(context,widget.phone,event.url,userStatus);
+
+    });
+
+    changeSubscription2 =  eventBus2.on<EventBusChange2>().listen((event) {
+        startCountdown();
+    });
+
+  }
 }
 
 
@@ -177,7 +276,12 @@ class TextWidgetState extends State<TextWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(_text,style: TextStyle(color: Colors.black87,fontSize: ScreenUtil().setSp(35)),);
+    return  InkWell(
+      onTap: (){
+        eventBus2.fire(EventBusChange2(""));
+      },
+      child: Text(_text,style: TextStyle(color: Colors.black87,fontSize: ScreenUtil().setSp(35)),),
+    );
   }
 
   void onPressed(String count) {

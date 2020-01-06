@@ -11,6 +11,8 @@ import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:sharesdk_plugin/sharesdk_plugin.dart';
+import 'package:sharesdk_plugin/sharesdk_register.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_home_page.dart';
@@ -28,7 +30,7 @@ import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'ui/live/live_page.dart';
-
+import 'package:fluwx/fluwx.dart' as fluwx;
 
 
 
@@ -53,6 +55,7 @@ class MainHomePage extends StatelessWidget {
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
     initUMeng();
+   initWxSDK();
     requestPermission();
 
   }
@@ -104,7 +107,8 @@ class MainHomePage extends StatelessWidget {
                  backgroundColor: Colors.white,
 
         ),
-              home: UserUtils.isLogin()?HomeMainPage():LoginPage() ,
+              home: HomeMainPage() ,
+            //  home: UserUtils.isLogin()?HomeMainPage():LoginPage() ,
               onGenerateRoute: RRouter.router().generator,
             )
         )
@@ -121,6 +125,32 @@ class MainHomePage extends StatelessWidget {
     );
 
   }
+
+  ///
+  ///  初始化微信sdk相关
+  ///
+  void initWxSDK() {
+    fluwx.registerWxApi(appId:"wx86155ed3e169e37a",universalLink:"https://shuiyanmed.com/");
+
+    ShareSDKRegister register = ShareSDKRegister();
+    register.setupWechat(
+        "wx86155ed3e169e37a", "246339deaf46d36e66719b3ad524d40f", "https://shuiyanmed.com/");
+    SharesdkPlugin.regist(register);
+    SharesdkPlugin.addRestoreReceiver(_onEvent, _onError);
+  }
+}
+void _onEvent(Object event) {
+  print('>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+  Map resMap_t = event;
+  Map<String, dynamic> resMap = Map<String, dynamic>.from(resMap_t);
+  String path = resMap['path'];
+  Map<String, dynamic> params = Map<String, dynamic>.from(resMap['params']);
+  print(">>>>>>>>>>>>>>>>>>>>>>>>>>> path:$path,params:$params");
+
+}
+
+void _onError(Object event) {
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>onError:' + event.toString());
 }
 
 class HomeMainPage extends StatefulWidget {

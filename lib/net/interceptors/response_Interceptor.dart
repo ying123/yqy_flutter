@@ -28,7 +28,10 @@ class ResponseInterceptor extends InterceptorsWrapper {
     // RequestOptions options = response.request;
     try {
       if (response.statusCode == 200 || response.statusCode == 201) { //http code
-        BaseResult result = BaseResult.fromJsonMap(json.decode(response.data));
+
+
+
+        BaseResult result = BaseResult.fromJsonMap(response.data);
 
 
         //token 过期
