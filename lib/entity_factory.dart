@@ -12,6 +12,7 @@ import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
+import 'package:yqy_flutter/ui/login/bean/wx_info_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_banner_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_cate_entity.dart';
@@ -60,6 +61,8 @@ class EntityFactory {
       return LoginEntity.fromJson(json) as T;
     } else if (T.toString() == "SendSmsEntity") {
       return SendSmsEntity.fromJson(json) as T;
+    } else if (T.toString() == "WxInfoEntity") {
+      return WxInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "ShopHomeEntity") {
       return ShopHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialBannerEntity") {

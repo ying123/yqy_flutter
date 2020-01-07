@@ -11,14 +11,12 @@ import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:sharesdk_plugin/sharesdk_plugin.dart';
-import 'package:sharesdk_plugin/sharesdk_register.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_page.dart';
 import 'package:yqy_flutter/ui/home/video_page.dart';
-import 'package:yqy_flutter/ui/login/login_new_page.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/task/task_page_new.dart';
 import 'package:yqy_flutter/ui/user/user_new_page.dart';
@@ -130,27 +128,8 @@ class MainHomePage extends StatelessWidget {
   ///  初始化微信sdk相关
   ///
   void initWxSDK() {
-    fluwx.registerWxApi(appId:"wx86155ed3e169e37a",universalLink:"https://shuiyanmed.com/");
-
-    ShareSDKRegister register = ShareSDKRegister();
-    register.setupWechat(
-        "wx86155ed3e169e37a", "246339deaf46d36e66719b3ad524d40f", "https://shuiyanmed.com/");
-    SharesdkPlugin.regist(register);
-    SharesdkPlugin.addRestoreReceiver(_onEvent, _onError);
+    fluwx.registerWxApi(appId:APPConfig.WX_APP_ID,universalLink:"https://shuiyanmed.com/");
   }
-}
-void _onEvent(Object event) {
-  print('>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-  Map resMap_t = event;
-  Map<String, dynamic> resMap = Map<String, dynamic>.from(resMap_t);
-  String path = resMap['path'];
-  Map<String, dynamic> params = Map<String, dynamic>.from(resMap['params']);
-  print(">>>>>>>>>>>>>>>>>>>>>>>>>>> path:$path,params:$params");
-
-}
-
-void _onError(Object event) {
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>onError:' + event.toString());
 }
 
 class HomeMainPage extends StatefulWidget {

@@ -130,6 +130,9 @@ class Routes {
 
   static String collectHomePage = "/collectHomePage"; //  收藏首页
 
+  static String bindPhonePage = "/bindPhonePage"; //  绑定手机页面
+
+  static String perfectInfoPage = "/perfectInfoPage"; //  完善资料页面
 
 
 
@@ -192,8 +195,8 @@ class Routes {
     router.define(collectHomePage, handler:collectHomePageHandler);
     router.define(loginHomePage, handler:loginHomePageHandler);
     router.define(loginSendSmsPage, handler:loginSendSmsPageHandler);
-
-
+    router.define(bindPhonePage, handler:bindPhonePageeHandler);
+    router.define(perfectInfoPage, handler:perfectInfoPageHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

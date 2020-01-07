@@ -52,4 +52,21 @@ class NetUtils {
     return result;
   }
 
+
+
+  ///
+  ///   密码登录
+  ///     phone	是	string	手机号
+  /// opentype	否	string	第三方登录类型
+  /// openid	否	string	微信openid(仅H5注册、绑定时需要)
+  /// unionid	否	string	微信unionid
+  /// device	是	string	登录设备类型
+  /// pass	是	string	登录密码
+  ///
+  static Future<BaseResult> requestPassLogin(String phone,String pass) async {
+    String url = APPConfig.Server + "login/pass_login";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone,"passwd":pass});
+    return result;
+  }
+
 }

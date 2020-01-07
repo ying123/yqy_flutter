@@ -110,6 +110,12 @@ class Constant {
 
 class APPConfig {
 
+
+  static const WX_APP_ID = "wx86155ed3e169e37a";
+
+  static const WX_APP_SECRET = "246339deaf46d36e66719b3ad524d40f";
+
+
   static const APK_PATH = "/storage/emulated/0/shuiyan.apk";
 
 

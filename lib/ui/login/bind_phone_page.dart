@@ -18,12 +18,20 @@ import 'package:yqy_flutter/utils/regex_utils.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
 
 
-class LoginHomePage extends StatefulWidget {
+class BindPhonePage extends StatefulWidget {
+
+  String unionid;// 	微信unionid
+
+  String opentype = "wx";
+
+  BindPhonePage(this.unionid); // 	第三方登录类型 默认微信
+
+
   @override
-  _LoginHomePageState createState() => _LoginHomePageState();
+  _BindPhonePageState createState() => _BindPhonePageState();
 }
 
-class _LoginHomePageState extends State<LoginHomePage> {
+class _BindPhonePageState extends State<BindPhonePage> {
 
   int loginType = 0;// 当前的登陆方式 0 获取验证码  1 密码  默认0
 
@@ -39,7 +47,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
   TextEditingController _pwdController = new TextEditingController();
 
-  String pwd = ""; // 密码
+  String pwd; // 密码
 
 
   @override
@@ -55,9 +63,9 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
     _pwdController.addListener((){
 
-     setState(() {
-       pwd = _pwdController.text;
-     });
+      setState(() {
+        pwd = _phoneController.text;
+      });
 
     });
 
@@ -84,43 +92,48 @@ class _LoginHomePageState extends State<LoginHomePage> {
   @override
   Widget build(BuildContext context) {
     return  new  Scaffold(
-    backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        brightness: Brightness.light,
+        titleSpacing: 0,
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back_ios,color: Colors.black54,),
+          onTap: (){
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Stack(
 
         children: <Widget>[
 
-        Form(
-            key: _formKey,
-            child:  new   ListView(
+          Form(
+              key: _formKey,
+              child:  new   ListView(
 
-          children: <Widget>[
-            new  Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                cYM(ScreenUtil().setHeight(260)),
-                Text("欢迎来到药企源",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(65),fontWeight: FontWeight.bold),),
-                cYM(ScreenUtil().setHeight(160)),
-                // 手机号输入
-                buildMobileInputView(context),
-                buildLine(),
-                cYM(ScreenUtil().setHeight(36)),
-                buildPwdInputView(),
-                Visibility(visible: loginType==0?false:true,child:    buildLine()),
-                cYM(ScreenUtil().setHeight(73)),
-                buildBtnLoginView(context),
-                cYM(ScreenUtil().setHeight(10)),
-                buildPwdLoginView(context),
-                cYM(ScreenUtil().setHeight(330)),
-                buildTipView2(),
-                cYM(ScreenUtil().setHeight(46)),
-                // 其他登陆方式
-                buildOtherLoginView(context),
-              ],
-            )
+                children: <Widget>[
+                  new  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      cYM(ScreenUtil().setHeight(260)),
+                      Text("绑定手机号码",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(65),fontWeight: FontWeight.bold),),
+                      cYM(ScreenUtil().setHeight(160)),
+                      // 手机号输入
+                      buildMobileInputView(context),
+                      buildLine(),
+                      Visibility(visible: loginType==0?false:true,child:    buildLine()),
+                      cYM(ScreenUtil().setHeight(73)),
+                      buildBtnLoginView(context),
+                      cYM(ScreenUtil().setHeight(10)),
+                    ],
+                  )
 
-          ],
+                ],
 
-        ))
+              ))
 
 
         ],
@@ -144,36 +157,36 @@ class _LoginHomePageState extends State<LoginHomePage> {
         cXM(ScreenUtil().setWidth(42)),
         Expanded(
             child: TextFormField(
-          inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
-          controller: _phoneController,
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.start,
-          maxLines: 1,
-          maxLength: 11,
-          decoration: InputDecoration(
-            hintText: "输入手机号",
-            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(46)),
-            border: InputBorder.none, // 去除下划线
-            counterText: "",//此处控制最大字符是否显示
-          ),
+              inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
+              controller: _phoneController,
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.next,
+              textAlign: TextAlign.start,
+              maxLines: 1,
+              maxLength: 11,
+              decoration: InputDecoration(
+                hintText: "输入手机号",
+                hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(46)),
+                border: InputBorder.none, // 去除下划线
+                counterText: "",//此处控制最大字符是否显示
+              ),
               onSaved: (v){
                 _phone = v;
               },
-         validator: (String value) {
-           if(value.length==0){
-             showToast("请输入手机号");
-             return null;
-             }
-           if(!RegexUtils.isChinaPhoneLegal(value)){
-             showToast("手机号码格式不正确");
-             return null;
-           }
-             return null;
-         },
-          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
-          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(50)),
-        )),
+              validator: (String value) {
+                if(value.length==0){
+                  showToast("请输入手机号");
+                  return null;
+                }
+                if(!RegexUtils.isChinaPhoneLegal(value)){
+                  showToast("手机号码格式不正确");
+                  return null;
+                }
+                return null;
+              },
+              cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+              style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(50)),
+            )),
         InkWell(
           onTap: (){
             setState(() {
@@ -207,38 +220,40 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
   buildBtnLoginView(BuildContext context) {
     return loginType==0? Container(
-          width: ScreenUtil().setWidth(861),
-          height: ScreenUtil().setHeight(120),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)]),
-              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43)))
-          ),
-          alignment: Alignment.center,
-           child: FlatButton(
-             onPressed: (){
-               if (_formKey.currentState.validate()) {
-                 ///只有输入的内容符合要求通过才会到达此处
-                 _formKey.currentState.save();
-                 if(RegexUtils.isChinaPhoneLegal(_phone)){
+        width: ScreenUtil().setWidth(861),
+        height: ScreenUtil().setHeight(120),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)]),
+            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43)))
+        ),
+        alignment: Alignment.center,
+        child: FlatButton(
+            onPressed: (){
+              if (_formKey.currentState.validate()) {
+                ///只有输入的内容符合要求通过才会到达此处
+                _formKey.currentState.save();
+                if(RegexUtils.isChinaPhoneLegal(_phone)){
 
-                   RRouter.push(context ,Routes.loginSendSmsPage,{"phone":_phone},transition:TransitionType.cupertino);
+                  RRouter.push(context ,Routes.loginSendSmsPage,{"phone":_phone},transition:TransitionType.cupertino);
 
-                 }
-               }
+                }
 
-             },
-             child:  Container(
-               alignment: Alignment.center,
-               width: double.infinity,
-               height: double.infinity,
-               child: Text("获取验证码",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),  ),
-             )
+              }
 
-           )
+
+            },
+            child:  Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              height: double.infinity,
+              child: Text("获取验证码",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),  ),
+            )
+
+        )
     ):Container(
         width: ScreenUtil().setWidth(861),
         height: ScreenUtil().setHeight(120),
-        decoration:pwd==null||pwd.length==0?
+        decoration:pwd==null?
         BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43))),
             color: Colors.black26
@@ -249,23 +264,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
         alignment: Alignment.center,
         child: FlatButton(
             onPressed: (){
-              // 当密码输入的时候 才能够点击效果
-              if(pwd!=null&&pwd.length>0) {
-                if (pwd != null && pwd.length > 0) {
-                  if (_formKey.currentState.validate()) {
-                    ///只有输入的内容符合要求通过才会到达此处
-                    _formKey.currentState.save();
-                    if (RegexUtils.isChinaPhoneLegal(_phone)) {
-
-                      // 发起密码登录的请求
-                      requestPwdLogin(context,_phone,pwd);
-
-                    }
-                  }
-                }
-              }
-
-
+              RRouter.push(context ,Routes.loginSendSmsPage,{},transition:TransitionType.cupertino);
             },
             child:  Container(
               alignment: Alignment.center,
@@ -278,12 +277,12 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
   }
 
-  buildPwdInputView() {
+  buildTipView() {
 
     return  loginType==0?Container(
-      alignment: Alignment.centerLeft,
+        alignment: Alignment.centerLeft,
         margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(135), 0, 0, 0),
-      child: Text("未注册的手机号验证后即自动注册",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(36)),)
+        child: Text("未注册的手机号验证后即自动注册",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(36)),)
     ): new Row(
       children: <Widget>[
         Container(
@@ -295,7 +294,6 @@ class _LoginHomePageState extends State<LoginHomePage> {
         ),
         cXM(ScreenUtil().setWidth(42)),
         Expanded(child: TextFormField(
-          controller: _pwdController,
           keyboardType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
@@ -314,10 +312,10 @@ class _LoginHomePageState extends State<LoginHomePage> {
         InkWell(
           onTap: (){
 
-              setState(() {
-                pwdShow?pwdShow = false : pwdShow = true;
+            setState(() {
+              pwdShow?pwdShow = false : pwdShow = true;
 
-              });
+            });
 
           },
           child:   Container(
@@ -357,51 +355,6 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
   }
 
-  buildOtherLoginView(BuildContext context) {
-
-    return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-
-        InkWell(
-          onTap: (){
-            sendAuth(onAuthResp: (data){
-             int errorCode =  data.errCode;
-
-              if(errorCode==0){
-                // 获取微信的个人信息
-                requestWxUserInfoData(data.code).then((res){
-                    // 发起微信登陆的请求
-                    requestWxLogin(res);
-
-                });
-              }else if(errorCode==-4){
-                showToast("拒绝授权");
-              }else{
-                showToast("取消登录");
-              }
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.all(ScreenUtil().setHeight(20)),
-            child:     new  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(wrapAssets("login/ic_wx.png"),width:  ScreenUtil().setWidth(100),height: ScreenUtil().setWidth(100),fit: BoxFit.fill,),
-                cYM(ScreenUtil().setHeight(10)),
-                Text("微信登录",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),)
-
-
-              ],
-            ),
-          ),
-        )
-
-
-      ],
-    );
-
-  }
 
 
   ///
@@ -411,7 +364,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
     Dio _dio = Dio();
     String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+APPConfig.WX_APP_ID
-                  +"&secret="+ APPConfig.WX_APP_SECRET+"&code="+code+"&grant_type=authorization_code";
+        +"&secret="+ APPConfig.WX_APP_SECRET+"&code="+code+"&grant_type=authorization_code";
     Response  response = await _dio.get(url);
 
     WxInfoEntity wxInfoEntity = WxInfoEntity.fromJson(json.decode(response.data));
@@ -429,15 +382,18 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
     NetUtils.requestQuickLogin("wx", unionid)
         .then((res){
-     // SendSmsInfo _loginInfo = SendSmsInfo.fromJson(res.info);
+      SendSmsInfo _loginInfo = SendSmsInfo.fromJson(res.info);
 
-        if(res.code==200){ // 直接登录
-          RRouter.push(context ,Routes.homePage,{},transition:TransitionType.cupertino,clearStack: true);
-        }else if(res.code==1501){ // 去绑定手机号码
-          RRouter.push(context ,Routes.bindPhonePage,{"unionid":unionid},transition:TransitionType.cupertino);
-        }else{ //错误信息
-          showToast(res.msg);
-        }
+
+      if(res.code==200){ // 直接登录
+
+
+      }else if(res.code==1501){ // 去绑定手机号码
+
+
+      }else{ //错误信息
+        showToast(res.msg);
+      }
 
 
     });
@@ -445,24 +401,6 @@ class _LoginHomePageState extends State<LoginHomePage> {
   }
 
 
-  ///
-  ///  密码登录请求
-  ///
-  void requestPwdLogin(BuildContext context, String phone, String pwd) {
-      
-    NetUtils.requestPassLogin(phone,pwd)
-        .then((res){
-       RRouter.push(context, Routes.perfectInfoPage, {},clearStack: false);
-          if(res.code==200){
-
-           RRouter.push(context, Routes.homePage, {},clearStack: true);
-
-          }else{
-            showToast(res.msg);
-          }
-
-    });
-  }
 
 
 

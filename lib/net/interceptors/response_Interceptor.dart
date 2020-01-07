@@ -7,7 +7,6 @@ import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
-import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'dart:convert';
 
 import 'package:yqy_flutter/utils/user_utils.dart';

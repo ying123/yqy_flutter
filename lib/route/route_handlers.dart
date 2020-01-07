@@ -20,10 +20,10 @@ import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/live/live_ing_page.dart';
 import 'package:yqy_flutter/ui/live/live_notice_page.dart';
 import 'package:yqy_flutter/ui/live/live_playback_page.dart';
+import 'package:yqy_flutter/ui/login/bind_phone_page.dart';
 import 'package:yqy_flutter/ui/login/login_home_page.dart';
-import 'package:yqy_flutter/ui/login/login_page.dart';
 import 'package:yqy_flutter/ui/login/login_send_sms_page.dart';
-import 'package:yqy_flutter/ui/login/register_new_page.dart';
+import 'package:yqy_flutter/ui/login/perfect_info_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_home_page.dart';
@@ -80,11 +80,11 @@ var webHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<St
 
 
 var loginHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LoginPage();
+  return LoginHomePage();
 });
 
 var registerHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return RegisterPage();
+  return PerfectInfoPage();
 });
 
 var homeDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -388,6 +388,17 @@ var loginSendSmsPageHandler = Handler(handlerFunc: (BuildContext context, Map<St
   String phone = params["phone"]?.first;
   return LoginSendSmsPage(phone);
 });
+
+var bindPhonePageeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String unionid = params["unionid"]?.first;
+  return BindPhonePage(unionid);
+});
+
+var perfectInfoPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  //String unionid = params["unionid"]?.first;
+  return PerfectInfoPage();
+});
+
 
 
 /*

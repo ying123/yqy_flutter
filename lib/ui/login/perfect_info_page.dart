@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/utils/city_picker.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
-
-class RegisterPage extends StatefulWidget {
+///
+///   完善资料
+///
+class PerfectInfoPage extends StatefulWidget {
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _PerfectInfoPageState createState() => _PerfectInfoPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderStateMixin {
+class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProviderStateMixin {
+  GlobalKey _addressKey= new GlobalKey<FormState>();
+  String _userName,_userCard,_address = "选择地区";
 
+  int seleType = 0; // 当前选择角色  0 医生   1推广经理
+
+  String _provinceId,_cityId,_areaId; //省市区 ID
+  String _province,_city,_area; // 省市区 字符串
 
   TabController _tabController;
 
@@ -24,6 +33,14 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: tabTitle.length);
+    _tabController.addListener((){
+
+      setState(() {
+        _tabController.previousIndex==0?seleType=1:seleType=0;
+      });
+
+
+    });
   }
 
 
@@ -32,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return new  Scaffold(
 
-
+      resizeToAvoidBottomPadding: false,//防止键盘谈起的时候导致背景视图升起*********
       body: Stack(
 
         children: <Widget>[
@@ -48,15 +65,15 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
           ),
           //logo
           new Positioned(
-              top:ScreenUtil().setHeight(160),left: ScreenUtil().setWidth(492),
-              child: Text("注册",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(52)),)
+              top:ScreenUtil().setHeight(300),left: ScreenUtil().setWidth(438),
+              child: Text("完善资料",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(52)),)
           ),
 
           // 选项卡
           new Positioned(
               child: Container(
                 height: ScreenUtil().setHeight(80),
-                margin: EdgeInsets.only(top: ScreenUtil().setHeight(300)),
+                margin: EdgeInsets.only(top: ScreenUtil().setHeight(450)),
                 alignment: Alignment.center,
                 child: TabBar(
                   controller: _tabController,
@@ -74,34 +91,22 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
 
           // 选项内容
           new  Positioned(
-              top: ScreenUtil().setHeight(450),
-              left: ScreenUtil().setWidth(109),
+              top: ScreenUtil().setHeight(550),
+              left: ScreenUtil().setWidth(115),
               child:  Container(
                 width: ScreenUtil().setWidth(861),
-                height: ScreenUtil().setHeight(1277),
+                height: ScreenUtil().setHeight(900),
                 child:   buildContainerHosLogin(context),//医生登录
+
               )
           ),
+          // logo
+         new Positioned(
+           bottom: ScreenUtil().setHeight(100),
+             left: ScreenUtil().setWidth(450),
+            child: Image.asset(wrapAssets("logo_login.png"),width:  ScreenUtil().setWidth(180),height: ScreenUtil().setHeight(230),fit: BoxFit.fill,),
+         )
 
-          // 微信登陆
-          new Positioned(
-              bottom: ScreenUtil().setHeight(79),
-              left: ScreenUtil().setWidth(400),
-              child: Container(
-                child: Text.rich(
-                    TextSpan(
-                  text: "已有账号？",
-                  style: TextStyle(color: Color(0xFFFEFEFE),fontSize: ScreenUtil().setSp(32)),
-                      children: [TextSpan(
-                        text: "立即登录",
-                        style: TextStyle(color: Color(0xFFFFFFFF),fontSize: ScreenUtil().setSp(32)),
-
-                      )]
-                   )
-
-                )
-              )
-          )
 
         ],
       ),
@@ -135,17 +140,30 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
           // 姓名输入
           buildNameInputView(context),
           buildLine(),
-          // 医院名称输入
-          buildHosInputView(context),
+
+          // 地区选择
+          buildAddressView(context),
           buildLine(),
-          // 手机号输入
-          buildDepartmentInputView(context),
-          buildLine(),
-          buildCheckBoxAgreementView(context),
+
+          Visibility(visible: seleType==0?true:false,child:  // 医院名称输入
+          buildHosInputView(context),),
+
+          Visibility(visible: seleType==0?true:false,child:
+          buildLine(),),
+
+
+          Visibility(visible: seleType==0?true:false,child:  // 科室输入
+          buildDepartmentInputView(context),),
+
+          Visibility(visible: seleType==0?true:false,child:
+          buildLine(),),
+
+
           cYM(ScreenUtil().setHeight(40)),
+          buildCheckBoxAgreementView(context),
+          cYM(ScreenUtil().setHeight(20)),
           //注册按钮
           buildBtnRegisterView(context),
-          cYM(ScreenUtil().setHeight(43)),
 
         ],
       ),
@@ -273,14 +291,14 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43)))
         ),
         alignment: Alignment.center,
-        child: Text("立即注册",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),),
+        child: Text("完成",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),),
       ),
     );
 
   }
 
   buildNameInputView(BuildContext context) {
-    return Row(
+    return new Row(
       children: <Widget>[
         Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
@@ -290,7 +308,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
           child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
         Expanded(child: TextFormField(
-          keyboardType: TextInputType.phone,
+          keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
           maxLines: 1,
@@ -348,10 +366,11 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
       ],
 
     );
-
-
   }
 
+  ///
+  ///  密码输入框
+  ///
   buildPwdContinueInputView(BuildContext context) {
     return Row(
       children: <Widget>[
@@ -389,7 +408,11 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
 
   }
 
+  ///
+  ///  科室选择
+  ///
   buildDepartmentInputView(BuildContext context) {
+
 
     return  new Row(
       children: <Widget>[
@@ -439,6 +462,64 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
 
 
     );
+
+
+  }
+
+  buildAddressView(BuildContext context) {
+
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("user/ic_address.png"),width:  ScreenUtil().setWidth(40),height: ScreenUtil().setHeight(60),fit: BoxFit.fill,),
+        ),
+        Expanded(child: InkWell(
+          onTap: (){
+            CityPicker.showCityPicker(
+              context,
+              selectProvince: (province) {
+                _province = province["name"];
+                _provinceId = province["code"];
+              },
+              selectCity: (city) {
+
+                _city = city["name"];
+                _cityId = city["code"];
+
+              },
+              selectArea: (area) {
+
+                _area = area["name"];
+                _areaId = area["code"];
+
+                setState(() {
+                  _address = _province+" - "+_city+" - "+_area;
+                });
+
+              },
+            );
+          },
+          child: Container(
+            alignment: Alignment.centerLeft,
+              height: ScreenUtil().setHeight(120),
+            child: Text(_address,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+          )
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width: ScreenUtil().setWidth(60),
+          height:   ScreenUtil().setWidth(60),
+          child:   Icon(Icons.keyboard_arrow_down,color: Colors.black26,size: ScreenUtil().setWidth(80),)
+        ),
+
+      ],
+
+    );
+
 
 
   }
