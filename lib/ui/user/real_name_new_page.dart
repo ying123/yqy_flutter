@@ -1,5 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/utils/city_picker.dart';
+import 'package:yqy_flutter/utils/department_picker.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,6 +14,31 @@ class RealNameNewPage extends StatefulWidget {
 }
 
 class _RealNameNewPageState extends State<RealNameNewPage> {
+
+  ///
+  ///   需要上传的字段
+  //------------------------------------
+  String realName;// 	真实姓名
+
+  String IdCard;// 身份证号码
+
+  String address = "选在所在地区";// 地区
+
+  String hos_name;// 医院名称
+
+  String hos_id;// 医院id
+
+  String depart_id;// 选择的科室id
+
+  String depart_ids;// 二级科室id
+
+  String job_id;// 职称id
+
+  String job_number;// 证书号码
+
+  //-----------------------------------
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +50,6 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
 
       body: ListView(
         children: <Widget>[
-
 
         new Container(
           
@@ -46,7 +74,7 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
                 buildIDCardInputView(context),
                 buildLine(),
                 // 医院地区选择
-                buildHosAddressInputView(context),
+                buildAddressView(context),
                 buildLine(),
                 // 医院名称
                 buildHosNameInputView(context),
@@ -187,6 +215,9 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
           ),
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
           style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+          onChanged: (v){
+            realName = v;
+          },
         )),
         Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
@@ -203,9 +234,13 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
 
 
 
+  ///
+  ///  科室选择
+  ///
   buildDepartmentInputView(BuildContext context) {
 
-    return  new Row(
+
+    return new Row(
       children: <Widget>[
         Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
@@ -213,25 +248,36 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
           height:   ScreenUtil().setWidth(50),
           alignment: Alignment.center,
         ),
-        Expanded(child: TextFormField(
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.start,
-          maxLines: 1,
-          decoration: InputDecoration(
-            hintText: "请选择科室",
-            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
-            border: InputBorder.none, // 去除下划线
-          ),
-          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
-          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        Expanded(child: InkWell(
+            onTap: (){
+              DepartmentPicker.showDepartmentPicker(
+                context,
+                selectProvince: (province) {
+                 // _department1 = province["name"];
+                 // _department1Id = province["code"];
+                },
+                selectCity: (city) {
+
+                //  _department2 = city["name"];
+                //  _department2Id = city["code"];
+                  setState(() {
+                  //  _department = _department1+" - "+_department2;
+                  });
+                },
+
+              );
+            },
+            child: Container(
+              alignment: Alignment.centerLeft,
+              height: ScreenUtil().setHeight(120),
+              child: Text("选择科室",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+            )
         )),
         Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(50),
-          height:   ScreenUtil().setWidth(50),
-          child: Icon(Icons.keyboard_arrow_down,color: Color(0xff999999),),
-         // child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width: ScreenUtil().setWidth(60),
+            height:   ScreenUtil().setWidth(60),
+            child:   Icon(Icons.keyboard_arrow_down,color: Colors.black26,size: ScreenUtil().setWidth(80),)
         ),
 
       ],
@@ -295,7 +341,8 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
   }
 
 
-  buildHosAddressInputView(BuildContext context) {
+  buildAddressView(BuildContext context) {
+
     return new Row(
       children: <Widget>[
         Container(
@@ -303,32 +350,53 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
           width:   ScreenUtil().setWidth(50),
           height:   ScreenUtil().setWidth(50),
           alignment: Alignment.center,
-          child:  Image.asset(wrapAssets("user/ic_address.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+          child:  Image.asset(wrapAssets("user/ic_address.png"),width:  ScreenUtil().setWidth(40),height: ScreenUtil().setHeight(60),fit: BoxFit.fill,),
         ),
-        Expanded(child: TextFormField(
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.start,
-          maxLines: 1,
-          decoration: InputDecoration(
-            hintText: "请选择医院所在地区",
-            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
-            border: InputBorder.none, // 去除下划线
-          ),
-          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
-          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        Expanded(child: InkWell(
+            onTap: (){
+              CityPicker.showCityPicker(
+                context,
+                selectProvince: (province) {
+               //   _province = province["name"];
+                //  _provinceId = province["code"];
+                },
+                selectCity: (city) {
+
+                  //_city = city["name"];
+                 // _cityId = city["code"];
+
+                },
+                selectArea: (area) {
+
+                //  _area = area["name"];
+                //  _areaId = area["code"];
+
+                  setState(() {
+                  //  _address = _province+" - "+_city+" - "+_area;
+                  });
+
+                },
+              );
+            },
+            child: Container(
+              alignment: Alignment.centerLeft,
+              height: ScreenUtil().setHeight(120),
+              child: Text(address,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+            )
         )),
         Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(50),
-          height:   ScreenUtil().setWidth(50),
-          child: Icon(Icons.keyboard_arrow_down,color: Color(0xff999999),),
-          // child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width: ScreenUtil().setWidth(60),
+            height:   ScreenUtil().setWidth(60),
+            child:   Icon(Icons.keyboard_arrow_down,color: Colors.black26,size: ScreenUtil().setWidth(80),)
         ),
 
       ],
 
     );
+
+
+
   }
 
 
@@ -441,4 +509,52 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
   }
 
 
+  ///
+  ///   上传资料
+  ///
+  void uploadInfoData(BuildContext context) {
+    Map<String, dynamic> map = new Map();
+
+    if(realName.isEmpty){
+      showToast("请先输入姓名");
+      return;
+    }
+    map["realName"] = realName;
+
+
+    // 医院
+    if(hos_name.isEmpty){
+      showToast("请先输入医院名称");
+      return;
+    }
+    map["hospital_name"] = hos_name;
+    map["hospital_id"] = 0;
+
+    // 地区
+    if(address.isEmpty||address=="选择地区"){
+      showToast("请先选择地区");
+      return;
+    }
+
+    // 科室
+    if(depart_ids.isEmpty||depart_ids=="选择科室"){
+      showToast("请先选择地区");
+      return;
+    }
+    map["depart_id"] = depart_id;
+    map["depart_ids"] = depart_ids;
+
+
+    NetUtils.requestFinishInfo(map)
+        .then((res){
+
+      if(res.code==200){
+        print(res.toString());
+      }else{
+        showToast(res.msg);
+      }
+
+    });
+
+  }
 }

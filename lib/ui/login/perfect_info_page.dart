@@ -1,26 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
+import 'package:yqy_flutter/utils/department_picker.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 ///
 ///   完善资料
 ///
 class PerfectInfoPage extends StatefulWidget {
+
+
+  String phone;// 手机号
+
+  String code;
+
+  PerfectInfoPage(this.phone, this.code); // 	短信验证码
+
+
   @override
   _PerfectInfoPageState createState() => _PerfectInfoPageState();
 }
 
 class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProviderStateMixin {
-  GlobalKey _addressKey= new GlobalKey<FormState>();
-  String _userName,_userCard,_address = "选择地区";
 
-  int seleType = 0; // 当前选择角色  0 医生   1推广经理
+
+  ///
+  ///  需要上传的字段
+  ///
+  int seleType = 1; // 当前选择角色  1 医生   2推广经理
+
+  String realName;// 	真实姓名
+
+  String hospital_name; // 	医院名称（当医生用户的hospital_id为0时必传）
+
+  String hospital_id; // 		医院编号
+
+  GlobalKey _addressKey= new GlobalKey<FormState>();
+  String _address = "选择地区",_department = "选择科室";
+
 
   String _provinceId,_cityId,_areaId; //省市区 ID
   String _province,_city,_area; // 省市区 字符串
 
+
+  String _department1Id,_department2Id; //一二级科室 ID
+  String _department1,_department2; // 一二级科室 字符串
+
+
   TabController _tabController;
+
+
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _hosController = new TextEditingController();
 
   var tabTitle = [
     '我是医生',
@@ -34,13 +67,12 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     super.initState();
     _tabController = TabController(vsync: this, length: tabTitle.length);
     _tabController.addListener((){
-
       setState(() {
-        _tabController.previousIndex==0?seleType=1:seleType=0;
+        _tabController.previousIndex==0?seleType=2:seleType=1;
       });
 
-
     });
+    initTextControllerListener();
   }
 
 
@@ -68,7 +100,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
               top:ScreenUtil().setHeight(300),left: ScreenUtil().setWidth(438),
               child: Text("完善资料",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(52)),)
           ),
-
           // 选项卡
           new Positioned(
               child: Container(
@@ -145,17 +176,20 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           buildAddressView(context),
           buildLine(),
 
-          Visibility(visible: seleType==0?true:false,child:  // 医院名称输入
+          Visibility(visible: seleType==1?true:false,child:  // 医院名称输入
           buildHosInputView(context),),
 
-          Visibility(visible: seleType==0?true:false,child:
+
+
+          Visibility(visible: seleType==1?true:false,child:
           buildLine(),),
 
 
-          Visibility(visible: seleType==0?true:false,child:  // 科室输入
+
+          Visibility(visible: seleType==1?true:false,child:  // 科室输入
           buildDepartmentInputView(context),),
 
-          Visibility(visible: seleType==0?true:false,child:
+          Visibility(visible: seleType==1?true:false,child:
           buildLine(),),
 
 
@@ -164,7 +198,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           cYM(ScreenUtil().setHeight(20)),
           //注册按钮
           buildBtnRegisterView(context),
-
         ],
       ),
 
@@ -219,68 +252,16 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
   }
 
-  buildPwdInputView(BuildContext context,int type) {
-
-    return Row(
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(50),
-          height:   ScreenUtil().setWidth(50),
-          alignment: Alignment.center,
-          child:  Image.asset(wrapAssets(type==1?"login/ic_pwd.png":"login/ic_sms.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
-        ),
-        Expanded(child: TextFormField(
-          keyboardType: TextInputType.visiblePassword,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.start,
-          maxLines: 1,
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: type==1?"请输入登陆密码":"请输入验证码",
-            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
-            border: InputBorder.none, // 去除下划线
-          ),
-          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
-          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
-        )),
-        type==1?Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(50),
-          height:   ScreenUtil().setWidth(50),
-          alignment: Alignment.center,
-          child:  Icon(Icons.visibility_off,color: Color(0xFFAAAAAA),),
-        ):Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(0), 0),
-          width:   ScreenUtil().setWidth(200),
-          height:   ScreenUtil().setWidth(50),
-          alignment: Alignment.center,
-          child:  Text("获取验证码",style: TextStyle(color: Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),),
-        ),
-      ],
-
-    );
-  }
 
 
-  buildForgetPwdView(BuildContext context) {
-
-    return Container(
-      margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
-      padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-      alignment: Alignment.centerRight,
-      child: Text("忘记密码?",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
-
-
-    );
-
-  }
 
 
   buildBtnRegisterView(BuildContext context) {
 
     return  InkWell(
       onTap: (){
+
+        uploadInfoData(context);
 
       },
       child: Container(
@@ -308,6 +289,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
         Expanded(child: TextFormField(
+          controller: _nameController,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
@@ -344,7 +326,8 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           child:  Image.asset(wrapAssets("login/ic_hos.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
         Expanded(child: TextFormField(
-          keyboardType: TextInputType.phone,
+          controller: _hosController,
+          keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
           maxLines: 1,
@@ -414,7 +397,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
   buildDepartmentInputView(BuildContext context) {
 
 
-    return  new Row(
+    return new Row(
       children: <Widget>[
         Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
@@ -422,24 +405,36 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           height:   ScreenUtil().setWidth(50),
           alignment: Alignment.center,
         ),
-        Expanded(child: TextFormField(
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.start,
-          maxLines: 1,
-          decoration: InputDecoration(
-            hintText: "请选择科室",
-            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
-            border: InputBorder.none, // 去除下划线
-          ),
-          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
-          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        Expanded(child: InkWell(
+            onTap: (){
+              DepartmentPicker.showDepartmentPicker(
+                context,
+                selectProvince: (province) {
+                  _department1 = province["name"];
+                  _department1Id = province["code"];
+                },
+                selectCity: (city) {
+
+                  _department2 = city["name"];
+                  _department2Id = city["code"];
+                  setState(() {
+                    _department = _department1+" - "+_department2;
+                  });
+                },
+
+              );
+            },
+            child: Container(
+              alignment: Alignment.centerLeft,
+              height: ScreenUtil().setHeight(120),
+              child: Text(_department,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+            )
         )),
         Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(40),
-          height:   ScreenUtil().setWidth(40),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width: ScreenUtil().setWidth(60),
+            height:   ScreenUtil().setWidth(60),
+            child:   Icon(Icons.keyboard_arrow_down,color: Colors.black26,size: ScreenUtil().setWidth(80),)
         ),
 
       ],
@@ -456,7 +451,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
         Checkbox(value: true, onChanged: null,tristate: true,focusColor: Colors.red,),
         Text("我已阅读并同意",style: TextStyle(color:  Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
         Text("《用户服务协议》",style: TextStyle(color:  Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),)
-
 
       ],
 
@@ -521,6 +515,75 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     );
 
 
+
+  }
+
+  void initTextControllerListener() {
+
+    _nameController.addListener((){
+      realName = _nameController.text;
+    });
+    _hosController.addListener((){
+      hospital_name = _hosController.text;
+    });
+
+
+
+  }
+
+
+  ///
+  ///   上传资料
+  ///
+  void uploadInfoData(BuildContext context) {
+    Map<String, dynamic> map = new Map();
+
+    if(realName.isEmpty){
+      showToast("请先输入姓名");
+      return;
+    }
+    map["regtype"] = seleType.toString();
+    map["phone"] = widget.phone;
+    map["code"] = widget.code;
+    map["realName"] = realName;
+
+
+    // 医院
+    if(hospital_name.isEmpty){
+      showToast("请先输入医院名称");
+      return;
+    }
+    map["hospital_name"] = hospital_name;
+    map["hospital_id"] = 0;
+
+    // 地区
+    if(_address.isEmpty||_address=="选择地区"){
+      showToast("请先选择地区");
+      return;
+    }
+    map["provinceId"] = _provinceId;
+    map["cityId"] = _cityId;
+    map["areaId"] = _areaId;
+
+    // 科室
+    if(_department.isEmpty||_department=="选择科室"){
+      showToast("请先选择地区");
+      return;
+    }
+    map["depart_id"] = _department1Id;
+    map["depart_ids"] = _department2Id;
+
+
+    NetUtils.requestFinishInfo(map)
+        .then((res){
+
+       if(res.code==200){
+         print(res.toString());
+       }else{
+         showToast(res.msg);
+       }
+
+    });
 
   }
 

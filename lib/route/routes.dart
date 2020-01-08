@@ -143,7 +143,6 @@ class Routes {
        return null;
     });
     router.define(loginPage, handler:loginHandler);
-    router.define(registerPage, handler:registerHandler);
     router.define(homePage, handler: homeDetailsHandler);
     router.define(videoDetailsPage, handler: videoDetailsHandler);
     router.define(liveMeeting, handler: liveHandler);

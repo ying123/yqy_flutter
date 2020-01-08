@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
@@ -212,7 +214,7 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
   ///
   void requestLoginData(BuildContext context,String phone, String code,String status) {
 
-    print(code+phone+status);
+  //  print(code+phone+status);
 
     NetUtils.requestSmsLogin(phone,code,status)
         .then((res){
@@ -225,12 +227,11 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
           showToast(_loginInfo.token);
 
           //已注册直接登录
-          if(userStatus==1){
-
-
+          if(status == "1"){
+            RRouter.push(context, Routes.homePage, {"phone":phone,"code":code},clearStack: false);
          // 未注册完善资料
           }else{
-
+            RRouter.push(context, Routes.perfectInfoPage, {"phone":phone,"code":code},clearStack: false);
           }
 
 

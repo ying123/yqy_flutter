@@ -144,6 +144,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
         cXM(ScreenUtil().setWidth(42)),
         Expanded(
             child: TextFormField(
+        autofocus: true,
           inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
           controller: _phoneController,
           keyboardType: TextInputType.phone,
@@ -452,7 +453,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
       
     NetUtils.requestPassLogin(phone,pwd)
         .then((res){
-       RRouter.push(context, Routes.perfectInfoPage, {},clearStack: false);
+
           if(res.code==200){
 
            RRouter.push(context, Routes.homePage, {},clearStack: true);

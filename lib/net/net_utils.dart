@@ -56,7 +56,7 @@ class NetUtils {
 
   ///
   ///   密码登录
-  ///     phone	是	string	手机号
+  /// phone	是	string	手机号
   /// opentype	否	string	第三方登录类型
   /// openid	否	string	微信openid(仅H5注册、绑定时需要)
   /// unionid	否	string	微信unionid
@@ -68,5 +68,32 @@ class NetUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone,"passwd":pass});
     return result;
   }
+
+
+  ///
+  ///  完善资料
+  ///
+  ///  regtype	是	string	用户类型 1医生 2推广经理（代表）
+  ///  phone	是	string	手机号
+  ///  code	是	string	短信验证码
+  ///  realName	是	string	真实姓名
+  ///  hospital_name	否	string	医院名称（当医生用户的hospital_id为0时必传）
+  ///  hospital_id	否	string	医院编号
+  ///  provinceId	是	string	省份编号（代表必填，医生hospital_id为0时必填）
+  ///  cityId	是	string	地市编号（代表必填，医生hospital_id为0时必填）
+  ///  areaId	是	string	区县编号（代表必填，医生hospital_id为0时必填）
+  ///  depart_id	是	string	一级科室编号（医生必填）
+  ///  depart_ids	是	string	二级科室编号（医生必填）
+  ///  device	是	string	登录设备类型
+  ///  opentype	否	string	第三方登录类型
+  ///  openid	否	string	微信openid(仅H5注册、绑定时需要)
+  ///  unionid	否	string	微信unionid
+  ///
+  static Future<BaseResult> requestFinishInfo(Map<String, dynamic> map) async {
+    String url = APPConfig.Server + "login/finish_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
 
 }

@@ -83,10 +83,6 @@ var loginHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<
   return LoginHomePage();
 });
 
-var registerHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return PerfectInfoPage();
-});
-
 var homeDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return HomeMainPage();
 });
@@ -395,8 +391,9 @@ var bindPhonePageeHandler = Handler(handlerFunc: (BuildContext context, Map<Stri
 });
 
 var perfectInfoPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  //String unionid = params["unionid"]?.first;
-  return PerfectInfoPage();
+  String phone = params["phone"]?.first;
+  String code = params["code"]?.first;
+  return PerfectInfoPage(phone,code);
 });
 
 

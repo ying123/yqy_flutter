@@ -6,16 +6,19 @@ import 'dart:convert';
 typedef void ChangeData(Map<String, dynamic> map);
 typedef List<Widget> CreateWidgetList();
 
-class CityPicker {
+class DepartmentPicker {
 
 
-  static void showCityPicker(
-    BuildContext context, {
-    ChangeData selectProvince,
-    ChangeData selectCity,
-    ChangeData selectArea,
-  }) {
-    rootBundle.loadString('data/province.json').then((v) {
+
+  ///
+  ///  科室选择
+  ///
+  static void showDepartmentPicker(
+      BuildContext context, {
+        ChangeData selectProvince,
+        ChangeData selectCity,
+      }) {
+    rootBundle.loadString('data/department.json').then((v) {
       List data = json.decode(v);
       Navigator.push(
         context,
@@ -23,14 +26,12 @@ class CityPicker {
             data: data,
             selectProvince: selectProvince,
             selectCity: selectCity,
-            selectArea: selectArea,
             theme: Theme.of(context, shadowThemeOnly: true),
             barrierLabel:
-                MaterialLocalizations.of(context).modalBarrierDismissLabel),
+            MaterialLocalizations.of(context).modalBarrierDismissLabel),
       );
     });
   }
-
 
 }
 
@@ -40,7 +41,6 @@ class _CityPickerRoute<T> extends PopupRoute<T> {
   final List data;
   final ChangeData selectProvince;
   final ChangeData selectCity;
-  final ChangeData selectArea;
 
   _CityPickerRoute({
     this.theme,
@@ -48,7 +48,6 @@ class _CityPickerRoute<T> extends PopupRoute<T> {
     this.data,
     this.selectProvince,
     this.selectCity,
-    this.selectArea,
   });
 
   @override
@@ -82,7 +81,6 @@ class _CityPickerRoute<T> extends PopupRoute<T> {
         data: data,
         selectProvince: selectProvince,
         selectCity: selectCity,
-        selectArea: selectArea,
       ),
     );
     if (theme != null) {
@@ -97,7 +95,6 @@ class _CityPickerWidget extends StatefulWidget {
   final List data;
   final ChangeData selectProvince;
   final ChangeData selectCity;
-  final ChangeData selectArea;
 
   _CityPickerWidget(
       {Key key,
@@ -105,7 +102,7 @@ class _CityPickerWidget extends StatefulWidget {
       this.data,
       this.selectProvince,
       this.selectCity,
-      this.selectArea});
+      });
 
   @override
   State createState() {
@@ -116,22 +113,18 @@ class _CityPickerWidget extends StatefulWidget {
 class _CityPickerState extends State<_CityPickerWidget> {
   FixedExtentScrollController provinceController;
   FixedExtentScrollController cityController;
-  FixedExtentScrollController areaController;
-  int provinceIndex = 0, cityIndex = 0, areaIndex = 0;
+  int provinceIndex = 0, cityIndex = 0;
   List province = new List();
   List city = new List();
-  List area = new List();
 
   @override
   void initState() {
     super.initState();
     provinceController = new FixedExtentScrollController();
     cityController = new FixedExtentScrollController();
-    areaController = new FixedExtentScrollController();
     setState(() {
       province = widget.data;
       city = widget.data[provinceIndex]['sub'];
-      area = widget.data[provinceIndex]['sub'][cityIndex]['sub'];
     });
   }
 
@@ -168,20 +161,11 @@ class _CityPickerState extends State<_CityPickerWidget> {
                         "name": province[provinceIndex]['sub'][cityIndex]
                             ['name']
                       };
-                      Map<String, dynamic> areaMap = {
-                        "code": province[provinceIndex]['sub'][cityIndex]['sub']
-                            [areaIndex]['code'],
-                        "name": province[provinceIndex]['sub'][cityIndex]['sub']
-                            [areaIndex]['name']
-                      };
                       if (widget.selectProvince != null) {
                         widget.selectProvince(provinceMap);
                       }
                       if (widget.selectCity != null) {
                         widget.selectCity(cityMap);
-                      }
-                      if (widget.selectArea != null) {
-                        widget.selectArea(areaMap);
                       }
                       Navigator.pop(context);
                     },
@@ -219,12 +203,8 @@ class _CityPickerState extends State<_CityPickerWidget> {
                     setState(() {
                       provinceIndex = index;
                       cityIndex = 0;
-                      areaIndex = 0;
                       cityController.jumpToItem(0);
-                      areaController.jumpToItem(0);
                       city = widget.data[provinceIndex]['sub'];
-                      area =
-                          widget.data[provinceIndex]['sub'][cityIndex]['sub'];
                     });
                   },
                 ),
@@ -245,30 +225,6 @@ class _CityPickerState extends State<_CityPickerWidget> {
                   changed: (index) {
                     setState(() {
                       cityIndex = index;
-                      areaIndex = 0;
-                      areaController.jumpToItem(0);
-                      area =
-                          widget.data[provinceIndex]['sub'][cityIndex]['sub'];
-                    });
-                  },
-                ),
-                new _MyCityPicker(
-                  key: Key('area'),
-                  controller: areaController,
-                  createWidgetList: () {
-                    return area.map((v) {
-                      return new Align(
-                        child: new Text(
-                          v['name'],
-                          textScaleFactor: 0.8,
-                        ),
-                        alignment: Alignment.center,
-                      );
-                    }).toList();
-                  },
-                  changed: (index) {
-                    setState(() {
-                      areaIndex = index;
                     });
                   },
                 ),
