@@ -3,17 +3,34 @@ import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import './local_storage_utils.dart';
 import 'package:yqy_flutter/bean/user_info.dart';
 class UserUtils {
+
+
+  static const USER_TOKEN_KEY = "USER_TOKEN__KEY";
   static const USER_INFO_KEY = "USER_INFO_KEY";
 
   static const USER_NAME_KEY = "USER_NAME_KEY";
 
 
+  static  saveToken(String token) {
+    if (token != null) {
+      LocalStorage.putObject(USER_TOKEN_KEY,token);
+    }
+  }
 
+
+  static removeToken() {
+    LocalStorage.remove(USER_TOKEN_KEY);
+  }
 
   static  saveUserInfo(LoginEntity userInfo) {
     if (userInfo != null) {
       LocalStorage.putObject(USER_INFO_KEY, userInfo.toJson());
     }
+  }
+
+
+  static removeUserInfo() {
+    LocalStorage.remove(USER_INFO_KEY);
   }
 
   static saveUserName(String username) {
@@ -22,9 +39,7 @@ class UserUtils {
     }
   }
 
-  static removeUserInfo() {
-    LocalStorage.remove(USER_INFO_KEY);
-  }
+
 
   static LoginEntity getUserInfo() {
     Map userJson = LocalStorage.getObject(USER_INFO_KEY);
@@ -35,9 +50,13 @@ class UserUtils {
     return LocalStorage.getString(USER_NAME_KEY);
   }
 
+  static String getToken() {
+    return LocalStorage.getString(USER_TOKEN_KEY).replaceAll("\"", "");
+  }
+
   static bool isLogin() {
 
-    var res = getUserInfo()== null ? false : true;
+    var res = getToken()== null ? false : true;
     return res;
   }
 }

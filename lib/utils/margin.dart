@@ -39,6 +39,11 @@ double setSP(double sp){
 }
 
 
+Widget buildText(String v,{String color="#FF333333",double size,FontWeight fontWeight=FontWeight.w400}){
+
+  return  Text(v,style: TextStyle(color: Color(int.parse(color.replaceAll("#", "0x"))),fontSize: ScreenUtil().setSp(size),fontWeight: fontWeight),);
+
+}
 
 
 ///  普通列表标题的样式

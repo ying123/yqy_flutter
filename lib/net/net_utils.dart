@@ -96,4 +96,13 @@ class NetUtils {
   }
 
 
+  ///
+  ///  个人中心接口
+  ///
+  static Future<BaseResult> requestIndex() async {
+    String url = APPConfig.Server + "users/index_doctor";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
 }

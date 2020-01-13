@@ -1,15 +1,15 @@
 class BaseResult{
 
 
-  dynamic info;
-  dynamic code;
-  dynamic msg;
+  var info;
+  int code;
+  String msg;
 
-  dynamic status;
-  dynamic message;
+  var status;
+  var message;
 
 
-  bool get tokenCancel => "0000" == code;
+  bool get tokenCancel => 300 == code;
 
   @override
   String toString() {
@@ -23,7 +23,6 @@ class BaseResult{
     BaseResult articleBean = BaseResult(map['info'],map['code'],map['msg']);
     return articleBean;
   }
-
 
 
 

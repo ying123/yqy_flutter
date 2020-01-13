@@ -1,9 +1,12 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
 
 class NewUserPage extends StatefulWidget {
   @override
@@ -11,6 +14,18 @@ class NewUserPage extends StatefulWidget {
 }
 
 class _NewUserPageState extends State<NewUserPage> {
+
+  UserInfoInfo _info;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initData();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
@@ -92,7 +107,7 @@ class _NewUserPageState extends State<NewUserPage> {
                 child:  Material(
                   child:  InkWell(
                       onTap: (){},
-                        child: Image.asset(wrapAssets("user/avatar.png"),width: ScreenUtil().setWidth(196),height: ScreenUtil().setWidth(196),),
+                          child: wrapImageUrl(_info==null?"":_info.userPhoto, ScreenUtil().setWidth(196), ScreenUtil().setWidth(196)),
 
                   ),
                 )),
@@ -100,12 +115,12 @@ class _NewUserPageState extends State<NewUserPage> {
             Positioned(
                 top: ScreenUtil().setHeight(290),
                 left: ScreenUtil().setWidth(256),
-                child:  Text("按时的",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),)
+                child:  Text(_info==null?"":_info.realName,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),)
             ),
             Positioned(
                 top: ScreenUtil().setHeight(370),
                 left: ScreenUtil().setWidth(261),
-                child:  Text("国家级医药专家",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
+                child:  Text(_info==null?"":_info.userInfo,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
             ),
 
           new  Positioned(
@@ -165,9 +180,8 @@ class _NewUserPageState extends State<NewUserPage> {
                          child:  Column(
                            mainAxisAlignment: MainAxisAlignment.center,
                            children: <Widget>[
-                             Text("0",style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
+                             Text(_info==null?"0":_info.fabu.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
                              Text("发布",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
-
 
                            ],
                          ),
@@ -190,12 +204,11 @@ class _NewUserPageState extends State<NewUserPage> {
                      child:  Column(
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: <Widget>[
-                         Text("235",style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
-                         Text("收藏",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
+                         Text(_info==null?"0":_info.collect.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
+                          buildText("收藏",size: 29,color: "#FF333333"),
 
                        ],
                      ),
-
 
                    ),
                  ),
@@ -213,9 +226,8 @@ class _NewUserPageState extends State<NewUserPage> {
                      child:  Column(
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: <Widget>[
-                         Text("220",style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
-                         Text("关注",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
-
+                         Text(_info==null?"0":_info.follow.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
+                         buildText("关注",size: 29,color: "#FF333333")
 
                        ],
                      ),
@@ -237,10 +249,8 @@ class _NewUserPageState extends State<NewUserPage> {
                      child:  Column(
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: <Widget>[
-                         Text("6666",style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
-                         Text("粉丝",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
-
-
+                         Text(_info==null?"0":_info.fen.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
+                         buildText("粉丝",size: 29,color: "#FF333333")
                        ],
                      ),
 
@@ -411,6 +421,26 @@ class _NewUserPageState extends State<NewUserPage> {
         ),
       ),
     );
+
+  }
+
+  void initData() {
+
+    NetUtils.requestIndex()
+        .then((res){
+
+          print("个人信息返回："+res.toString());
+
+        if(res.code==200){
+
+          setState(() {
+            _info = UserInfoInfo.fromJson(res.info);
+          });
+
+        }else{
+          showToast(res.msg);
+        }
+    });
 
   }
 

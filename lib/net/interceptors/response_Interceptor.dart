@@ -26,11 +26,11 @@ class ResponseInterceptor extends InterceptorsWrapper {
   onResponse(Response response) {
     // RequestOptions options = response.request;
     try {
-      if (response.statusCode == 200 || response.statusCode == 201) { //http code
+      if (response.statusCode!=500) { //http code
 
 
 
-        BaseResult result = BaseResult.fromJsonMap(response.data);
+         BaseResult   result = BaseResult.fromJsonMap(response.data);
 
 
         //token 过期
@@ -52,7 +52,8 @@ class ResponseInterceptor extends InterceptorsWrapper {
        if (APPConfig.DEBUG) {
           print("ResponseInterceptor: $e.toString() + options.path");
         }
-        return BaseResult(response.data, response.statusCode, e.toString());
+       /* return BaseResult(response.data, response.statusCode, e.toString());*/
+       return BaseResult.fromJsonMap(response.data);
     }
   }
 }

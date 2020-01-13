@@ -15,6 +15,9 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
   int viewTypeMy = 1;// 当前的排列方式  我的预约排列   0 gridview  1  listview
 
+  bool haveVideo = false;// 直播结束的页面  当前直播视频是否有录播
+
+
   ScrollController _scrollController = new ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
           //主要内容布局
           buildContextView(context),
           // 底部点击评论的布局
-          buildBottomView(context)
+          buildBottomView(context),
 
 
         ],
@@ -150,10 +153,34 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
   // 视频view
   buildContentVideo(BuildContext context) {
 
-    return Container(
+    return haveVideo?Container(
 
       height: ScreenUtil().setHeight(600),
       color: Colors.blue,
+
+    ):Container(
+      height: ScreenUtil().setHeight(600),
+      color: Color(0xFF333333),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+
+           wrapImageUrl("", ScreenUtil().setWidth(228), ScreenUtil().setHeight(279)),
+           cXM(ScreenUtil().setWidth(84)),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("直播已结束",style: TextStyle(fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500,color: Colors.white),),
+                cYM(ScreenUtil().setHeight(37)),
+                Text("本视频不提供回看功能请您谅解~",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(29)),)
+
+              ],
+            )
+
+
+        ],
+      ),
 
     );
 

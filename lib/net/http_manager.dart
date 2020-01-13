@@ -31,9 +31,8 @@ class HttpManager {
     Map<String, dynamic> header;
 
     if(UserUtils.isLogin()){
-      params["token"] = UserUtils.getUserInfo().token ?? "";
+      params["token"] = UserUtils.getToken()?? "";
     }
-
     //	设备
     params["device"] = Platform.isAndroid?"android":"ios";
     //	版本号
@@ -45,7 +44,7 @@ class HttpManager {
         ? ContentType.parse(ContentTypeURLEncoded)
         : contentType;
     if (UserUtils.isLogin()) {
-      header = {'token': UserUtils.getUserInfo().token ?? ""};
+      header = {'token': UserUtils.getToken()?? ""};
     }
     if (method == HttpMethod.GET) {
       _options = Options(
@@ -89,11 +88,11 @@ class HttpManager {
 
   upload(String url, File data) async {
     UploadFileInfo file = UploadFileInfo(data, 'fileName');
-    FormData formData = FormData.from({'image': file,"token":UserUtils.getUserInfo().token,"userId":UserUtils.getUserInfo().userId});
+    FormData formData = FormData.from({'image': file,"token": UserUtils.getToken(),"userId":UserUtils.getUserInfo().userId});
 
 
     Map<String, dynamic> header = {
-      'token': UserUtils.getUserInfo().token ?? ""
+      'token':  UserUtils.getToken() ?? ""
     };
 
     Response response;

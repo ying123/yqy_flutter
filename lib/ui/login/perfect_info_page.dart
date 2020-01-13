@@ -194,6 +194,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
 
           cYM(ScreenUtil().setHeight(40)),
+          // 用户协议的按钮
           buildCheckBoxAgreementView(context),
           cYM(ScreenUtil().setHeight(20)),
           //注册按钮
@@ -308,12 +309,11 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           height:   ScreenUtil().setWidth(40),
           child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
-
       ],
-
     );
-
   }
+
+
 
   buildHosInputView(BuildContext context) {
     return  new Row(
@@ -396,7 +396,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
   ///
   buildDepartmentInputView(BuildContext context) {
 
-
     return new Row(
       children: <Widget>[
         Container(
@@ -414,7 +413,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
                   _department1Id = province["code"];
                 },
                 selectCity: (city) {
-
                   _department2 = city["name"];
                   _department2Id = city["code"];
                   setState(() {
@@ -442,6 +440,10 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     );
   }
 
+
+  ///
+  ///  用户协议相关
+  ///
   buildCheckBoxAgreementView(BuildContext context) {
 
     return Row(
@@ -450,13 +452,19 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
         Checkbox(value: true, onChanged: null,tristate: true,focusColor: Colors.red,),
         Text("我已阅读并同意",style: TextStyle(color:  Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
-        Text("《用户服务协议》",style: TextStyle(color:  Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),)
+
+        InkWell(
+
+          onTap: (){
+              //弹出用户协议弹窗
+            showAgreementDialog(context);
+          },
+          child: Text("《用户服务协议》",style: TextStyle(color:  Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),) ,
+
+        ),
 
       ],
-
-
     );
-
 
   }
 
@@ -584,6 +592,62 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
        }
 
     });
+
+  }
+
+
+  ///
+  ///  用户协议弹窗
+  ///
+  void showAgreementDialog(BuildContext context) {
+
+    showDialog(context: context,
+
+        builder: (_)=> Material(
+        color: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(setW(55)))
+            ),
+
+            margin: EdgeInsets.fromLTRB(setW(80), setH(260), setW(80), setH(300)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                cYM(setH(40),),
+                buildText("药企源用户协议",size: 52),
+                cYM(setH(40),),
+                Container(
+                  color: Colors.black,
+                  height: setH(800),
+                ),
+                cYM(setH(80),),
+                FlatButton(onPressed: (){
+
+                  Navigator.pop(_);
+
+                }, child: Container(
+                  width: setW(585),
+                  height: setH(98),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(setW(43))),
+                    color: Colors.white,
+                    border: Border.all(color: Color(0xFF999999),width: setW(1))
+                  ),
+                  child: buildText("阅读同意",size: 52,color: "#FF999999"),
+
+                ))
+
+              ],
+
+            ),
+
+          ),
+        )
+    );
+
 
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 import 'package:yqy_flutter/widgets/cell_input.dart';
 
 class LoginSendSmsPage extends StatefulWidget {
@@ -29,7 +31,7 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
   SendSmsInfo _smsInfo,_loginInfo;
 
 
-   String    userStatus;  // 当前登录的用户状态  1已注册直接登录 2未注册完善资料
+   int    userStatus;  // 当前登录的用户状态  1已注册直接登录 2未注册完善资料
 
   Timer _timer;
 
@@ -195,10 +197,9 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
     NetUtils.requestSmsCode(widget.phone)
         .then((res){
           if(res.code==200){
-            
-            _smsInfo = SendSmsInfo.fromJson(res.info);
 
-              userStatus = _smsInfo.status.toString();
+              userStatus =  res.info["status"];
+
           }else{
             
             showToast(res.msg);
@@ -212,11 +213,11 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
   ///
   ///  登录请求
   ///
-  void requestLoginData(BuildContext context,String phone, String code,String status) {
+  void requestLoginData(BuildContext context,String phone, String code,int status) {
 
-  //  print(code+phone+status);
+      print(code+phone+status.toString());
 
-    NetUtils.requestSmsLogin(phone,code,status)
+    NetUtils.requestSmsLogin(phone,code,status.toString())
         .then((res){
 
 
@@ -224,21 +225,18 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
 
           _loginInfo = SendSmsInfo.fromJson(res.info);
 
-          showToast(_loginInfo.token);
-
           //已注册直接登录
-          if(status == "1"){
+          if(status == 1){
+            UserUtils.saveToken(_loginInfo.token.toString());
             RRouter.push(context, Routes.homePage, {"phone":phone,"code":code},clearStack: false);
          // 未注册完善资料
           }else{
             RRouter.push(context, Routes.perfectInfoPage, {"phone":phone,"code":code},clearStack: false);
           }
 
-
-
         }else{
 
-          showToast(res.message);
+          showToast(res.msg);
         }
 
 
