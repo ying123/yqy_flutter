@@ -355,69 +355,81 @@ class _TaskNewPageState extends State<TaskNewPage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
 
-        new  Container(
-          padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(75), 0, ScreenUtil().setWidth(75), 0),
-          width: ScreenUtil().setWidth(500),
-          height: ScreenUtil().setHeight(680),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
-            boxShadow: [BoxShadow(color: Color(0x4D50909B), offset: Offset(0.0, 1.0),    blurRadius: 10.0, spreadRadius: 0.0)],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(300),fit: BoxFit.fill,),
-              Text("中医药适宜技术培训班学分证书",style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
-              Text("100积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
-              FlatButton(onPressed: (){
+        InkWell(
+          onTap: (){
+            RRouter.push(context ,Routes.shopDetailsPage,{},transition:TransitionType.cupertino);
+          },
+          child:    new  Container(
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(75), 0, ScreenUtil().setWidth(75), 0),
+            width: ScreenUtil().setWidth(500),
+            height: ScreenUtil().setHeight(680),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
+              boxShadow: [BoxShadow(color: Color(0x4D50909B), offset: Offset(0.0, 1.0),    blurRadius: 10.0, spreadRadius: 0.0)],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(300),fit: BoxFit.fill,),
+                Text("中医药适宜技术培训班学分证书",style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
+                Text("100积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
+                FlatButton(onPressed: (){
 
-              }, child:  Container(
-                alignment: Alignment.center,
-                width: ScreenUtil().setWidth(311),
-                height: ScreenUtil().setHeight(98),
-                decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                        colors: [Color(0xFFFFEB7D),Color(0xFFF6C643)]),
-                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(49)))
-                ),
-                child: Text("立即兑换",style: TextStyle(color: Color(0xFF863C0B),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
-              ),)
-            ],
+                }, child:  Container(
+                  alignment: Alignment.center,
+                  width: ScreenUtil().setWidth(311),
+                  height: ScreenUtil().setHeight(98),
+                  decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                          colors: [Color(0xFFFFEB7D),Color(0xFFF6C643)]),
+                      borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(49)))
+                  ),
+                  child: Text("立即兑换",style: TextStyle(color: Color(0xFF863C0B),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
+                ),)
+              ],
+            ),
           ),
+
         ),
-        new  Container(
-          padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(75), 0, ScreenUtil().setWidth(75), 0),
-          width: ScreenUtil().setWidth(500),
-          height: ScreenUtil().setHeight(680),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
-            boxShadow: [BoxShadow(color: Color(0x4D50909B), offset: Offset(0.0, 1.0),    blurRadius: 10.0, spreadRadius: 0.0)],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(300),fit: BoxFit.fill,),
-              Text("中医药适宜技术培训班学分证书",style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
-              Text("100积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
-              FlatButton(onPressed: (){
+        InkWell(
+          onTap: (){
+            RRouter.push(context ,Routes.shopDetailsPage,{},transition:TransitionType.cupertino);
+          },
+          child:    new  Container(
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(75), 0, ScreenUtil().setWidth(75), 0),
+            width: ScreenUtil().setWidth(500),
+            height: ScreenUtil().setHeight(680),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
+              boxShadow: [BoxShadow(color: Color(0x4D50909B), offset: Offset(0.0, 1.0),    blurRadius: 10.0, spreadRadius: 0.0)],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(300),fit: BoxFit.fill,),
+                Text("中医药适宜技术培训班学分证书",style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
+                Text("100积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
+                FlatButton(onPressed: (){
 
-              }, child:  Container(
-                alignment: Alignment.center,
-                width: ScreenUtil().setWidth(311),
-                height: ScreenUtil().setHeight(98),
-                decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                        colors: [Color(0xFFFFEB7D),Color(0xFFF6C643)]),
-                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(49)))
-                ),
-                child: Text("立即兑换",style: TextStyle(color: Color(0xFF863C0B),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
-              ),)
-            ],
+                }, child:  Container(
+                  alignment: Alignment.center,
+                  width: ScreenUtil().setWidth(311),
+                  height: ScreenUtil().setHeight(98),
+                  decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                          colors: [Color(0xFFFFEB7D),Color(0xFFF6C643)]),
+                      borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(49)))
+                  ),
+                  child: Text("立即兑换",style: TextStyle(color: Color(0xFF863C0B),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
+                ),)
+              ],
+            ),
           ),
+
         ),
 
 

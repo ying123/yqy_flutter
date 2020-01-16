@@ -18,6 +18,8 @@ import 'package:yqy_flutter/ui/home/tab/tab_home.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_medical.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_news.dart';
 import 'package:yqy_flutter/common/constant.dart' as AppColors;
+import 'package:yqy_flutter/widgets/dialog/notice_dialog.dart';
+import 'package:yqy_flutter/widgets/dialog/real_name_dialog.dart';
 import 'package:yqy_flutter/widgets/dialog/update_dialog.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,6 +75,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // 判断当前用户是否需要去实名认证
     _tabController = TabController(vsync: this, length: tabBarList.length)
       ..addListener(() {
         if (_tabController.index.toDouble() == _tabController.animation.value) {
@@ -94,6 +97,13 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       initUpdateAppVersion();
     }
 
+
+    Future.delayed(Duration.zero, () {
+      requestIsRZ(context);
+    });
+
+
+
   }
 
 
@@ -107,6 +117,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+
         return Scaffold(
 
           appBar: AppBar(
@@ -502,6 +513,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
 
   }
+
+
+
+
 }
 
 

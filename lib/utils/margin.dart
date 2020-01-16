@@ -39,7 +39,7 @@ double setSP(double sp){
 }
 
 
-Widget buildText(String v,{String color="#FF333333",double size,FontWeight fontWeight=FontWeight.w400}){
+Text buildText(String v,{String color="#FF333333",double size=40,FontWeight fontWeight=FontWeight.w400}){
 
   return  Text(v,style: TextStyle(color: Color(int.parse(color.replaceAll("#", "0x"))),fontSize: ScreenUtil().setSp(size),fontWeight: fontWeight),);
 

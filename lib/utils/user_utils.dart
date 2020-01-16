@@ -1,7 +1,7 @@
+import 'package:yqy_flutter/bean/user_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import './local_storage_utils.dart';
-import 'package:yqy_flutter/bean/user_info.dart';
 class UserUtils {
 
 
@@ -22,7 +22,7 @@ class UserUtils {
     LocalStorage.remove(USER_TOKEN_KEY);
   }
 
-  static  saveUserInfo(LoginEntity userInfo) {
+  static  saveUserInfo(UserInfo userInfo) {
     if (userInfo != null) {
       LocalStorage.putObject(USER_INFO_KEY, userInfo.toJson());
     }

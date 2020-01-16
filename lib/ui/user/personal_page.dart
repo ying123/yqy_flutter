@@ -79,9 +79,10 @@ class _PersonalPageState extends State<PersonalPage> {
 
       ),
 
-
-
     );
+
+
+
   }
 
  Widget buildAvatarView(BuildContext context) {

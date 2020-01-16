@@ -1,6 +1,7 @@
 import 'package:yqy_flutter/bean/banner_entity.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/bean/update_version_entity.dart';
+import 'package:yqy_flutter/bean/user_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/laws_deails_entity.dart';
@@ -40,6 +41,8 @@ class EntityFactory {
       return PersonalEntity.fromJson(json) as T;
     } else if (T.toString() == "UpdateVersionEntity") {
       return UpdateVersionEntity.fromJson(json) as T;
+    } else if (T.toString() == "UserEntity") {
+      return UserEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorInfoEntity") {
       return DoctorInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "HomeDataEntity") {

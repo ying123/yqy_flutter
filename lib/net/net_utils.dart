@@ -105,4 +105,15 @@ class NetUtils {
     return result;
   }
 
+
+  ///
+  ///  用户信息
+  ///
+  static Future<BaseResult> requestUserInfo() async {
+    String url = APPConfig.Server + "users/user_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
 }

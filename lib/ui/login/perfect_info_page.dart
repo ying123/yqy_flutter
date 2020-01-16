@@ -456,7 +456,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
         InkWell(
 
           onTap: (){
-              //弹出用户协议弹窗
+            //弹出用户协议弹窗
             showAgreementDialog(context);
           },
           child: Text("《用户服务协议》",style: TextStyle(color:  Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),) ,
@@ -610,7 +610,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(setW(55)))
             ),
-
             margin: EdgeInsets.fromLTRB(setW(80), setH(260), setW(80), setH(300)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -632,9 +631,11 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
                   height: setH(98),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
+
                     borderRadius: BorderRadius.all(Radius.circular(setW(43))),
                     color: Colors.white,
                     border: Border.all(color: Color(0xFF999999),width: setW(1))
+
                   ),
                   child: buildText("阅读同意",size: 52,color: "#FF999999"),
 

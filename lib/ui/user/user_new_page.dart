@@ -381,7 +381,21 @@ class _NewUserPageState extends State<NewUserPage> {
       color: Colors.white,
       child: InkWell(
         onTap: (){
-          RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
+
+          switch(value){
+
+            case"用户反馈":
+              RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
+              break;
+            case"积分专区":
+              RRouter.push(context ,Routes.taskNewPage,{});
+              break;
+
+          }
+
+
+
+
         },
         child: Container(
           height: ScreenUtil().setHeight(140),
