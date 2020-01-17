@@ -74,7 +74,6 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
           )),
 
 
-
         new  Container(
             color: Colors.white,
             height: setH(161),
@@ -118,10 +117,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
                 cXM(setW(60))
 
-
-
               ],
-
 
             ),
 
@@ -152,6 +148,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
   }
 
 
+
   buildContentTitleView(BuildContext context) {
 
     return  Container(
@@ -172,8 +169,6 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
       ),
 
-
-
     );
 
   }
@@ -187,9 +182,6 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
       child: Html(data: unescape.convert("")),
 
     );
-
-
-
 
   }
 
@@ -210,7 +202,6 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(setW(12)))
           ),
-          
           margin: EdgeInsets.fromLTRB(setW(100), setW(800), setW(100), setW(850)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -245,20 +236,17 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                     child:  Container(
                       alignment: Alignment.center,
                       child: buildText("确定"),
-
                     ),
                     onTap: (){
                       Navigator.pop(_);
                       // 前去拨打电话
                       _launchPhone();
-
                     },
                   )),
                   Expanded(child: InkWell(
                     child:  Container(
                       alignment: Alignment.center,
                       child: buildText("取消"),
-
                     ),
                     onTap: (){
                       Navigator.pop(_);
@@ -286,12 +274,11 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
   }
 
 
-
-
 }
 
 _launchPhone() async {
   const url = 'tel:17865937635';
+
   if (await canLaunch(url)) {
     await launch(url);
   } else {

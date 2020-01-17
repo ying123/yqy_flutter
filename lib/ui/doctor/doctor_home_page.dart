@@ -24,6 +24,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
   int viewType = 0;// 当前的排列方式  我的预约排列   0 gridview  1  listvie
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,7 +60,6 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
          buildListView(new List())
 
        ],
-
 
       ),
 

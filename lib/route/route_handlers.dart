@@ -25,6 +25,7 @@ import 'package:yqy_flutter/ui/login/login_home_page.dart';
 import 'package:yqy_flutter/ui/login/login_send_sms_page.dart';
 import 'package:yqy_flutter/ui/login/perfect_info_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
+import 'package:yqy_flutter/ui/shop/shop_buy_order_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_home_page.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
@@ -397,6 +398,9 @@ var perfectInfoPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
 });
 
 
+var shopBuyOrderPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return ShopBuyOrderPage();
+});
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

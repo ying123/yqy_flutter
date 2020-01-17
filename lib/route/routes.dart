@@ -134,6 +134,9 @@ class Routes {
 
   static String perfectInfoPage = "/perfectInfoPage"; //  完善资料页面
 
+  static String shopBuyOrderPage = "/shopBuyOrderPage"; //  提交订单页面
+
+
 
 
 
@@ -196,6 +199,7 @@ class Routes {
     router.define(loginSendSmsPage, handler:loginSendSmsPageHandler);
     router.define(bindPhonePage, handler:bindPhonePageeHandler);
     router.define(perfectInfoPage, handler:perfectInfoPageHandler);
+    router.define(shopBuyOrderPage, handler:shopBuyOrderPageHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
