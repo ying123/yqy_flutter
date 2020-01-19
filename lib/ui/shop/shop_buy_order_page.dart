@@ -177,14 +177,12 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
            onTap: (){
 
               showPayFailDialog(context);
-
            },
            child: new  Container(
              width: setW(334),
              height: setH(105),
              alignment: Alignment.center,
              decoration: BoxDecoration(
-
                borderRadius: BorderRadius.all(Radius.circular(setW(53))),
 
              ),
@@ -195,7 +193,6 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
          ),
           
         buildText("合计：",color: "#FF999999")
-
 
         ],
       ),
@@ -212,12 +209,10 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
   void showPayFailDialog(BuildContext context) {
 
     showDialog(context: context,
-
         builder: (_)=>Material(
           color: Colors.transparent,
           child: Container(
             alignment: Alignment.center,
-
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(setW(12)))

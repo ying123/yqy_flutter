@@ -25,6 +25,9 @@ Widget cYMW(double y) {
 }
 
 
+
+
+
  double setW(double w){
   return ScreenUtil.getInstance().setWidth(w);
  }
@@ -45,6 +48,20 @@ Text buildText(String v,{String color="#FF333333",double size=40,FontWeight font
 
 }
 
+
+
+///
+///  统一标题栏抽取
+///
+AppBar getCommonAppBar(String v){
+
+  return AppBar(
+
+    title: Text(v),
+
+  );
+
+}
 
 ///  普通列表标题的样式
 Widget getTitleText(String str){

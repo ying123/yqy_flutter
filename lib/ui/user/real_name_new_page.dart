@@ -7,7 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/bean/upload_image_entity.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
 import 'package:yqy_flutter/utils/department_picker.dart';
 import 'package:yqy_flutter/utils/margin.dart';
@@ -51,7 +53,8 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
   //-----------------------------------
 
   var jids = [99,100,101,102];
-
+  
+  UploadImageInfo _uploadImageInfo;
 
   File _imageFile;
 
@@ -61,34 +64,29 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
     _imageFile = image;
 
 
-  /*  NetworkUtils.requestEditUserPhoto(_imageFile)
+    NetUtils.requestUploadsImages(_imageFile,"certification")
         .then((res){
       setState(() {
-        showToast(res.message);
-        if(res.status=="9999"){
-          eventBus.fire(EventBusChange(_imageFile.path));
-          // 延时1s执行返回
-          Future.delayed(Duration(seconds: 1), (){
-            Navigator.of(context).pop();
-          });
+        if(res.status==200){
+          _uploadImageInfo = UploadImageInfo.fromJson(res.info);
         }
 
       });
-    });*/
-
-
+    });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       appBar: AppBar(
-
         title: Text("实名认证"),
       ),
 
       body: ListView(
+
         children: <Widget>[
 
         new Container(
@@ -535,9 +533,8 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
 
          onTap: (){
            getImage();
-
            },
-         child:  new  DottedBorder(
+         child: _uploadImageInfo==null?new  DottedBorder(
            padding: EdgeInsets.all(1),
            color: Color(0xFF2CAAEE),
            radius: Radius.circular(ScreenUtil().setWidth(14)),
@@ -561,7 +558,7 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
 
            ),
 
-         ),
+         ):wrapImageUrl(_uploadImageInfo.cdn.substring(0,_uploadImageInfo.cdn.length)+_uploadImageInfo.src, setW(461), setH(328)),
 
        ),
       cXM(setW(30)),

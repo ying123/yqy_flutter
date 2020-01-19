@@ -1,7 +1,10 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -101,20 +104,24 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                    ),
                  )
                 ),
+               InkWell(
+                 onTap: (){
+                   RRouter.push(context ,Routes.shopBuyOrderPage,{},transition:TransitionType.cupertino);
+                 },
+                 child:   Container(
+                   width: setW(340),
+                   height: setH(105),
+                   alignment: Alignment.center,
+                   decoration: BoxDecoration(
 
-                Container(
-                  width: setW(340),
-                  height: setH(105),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
+                       color: Color(0xFFFE6017),
+                       borderRadius: BorderRadius.all(Radius.circular(setW(53)))
 
-                    color: Color(0xFFFE6017),
-                    borderRadius: BorderRadius.all(Radius.circular(setW(53)))
+                   ),
+                   child: Text("立即兑换",style: TextStyle(color: Color(0xFFFEFEFE),fontSize: setW(40)),),
+                 ),
 
-                  ),
-                  child: Text("立即兑换",style: TextStyle(color: Color(0xFFFEFEFE),fontSize: setW(40)),),
-                ),
-
+               ),
                 cXM(setW(60))
 
               ],

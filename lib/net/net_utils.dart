@@ -71,6 +71,18 @@ class NetUtils {
 
 
   ///
+  ///  获取用户协议
+  ///
+  static Future<BaseResult> requestAgreements() async {
+    String url = APPConfig.Server + "login/agreements";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, { });
+    return result;
+  }
+
+
+
+
+  ///
   ///  完善资料
   ///
   ///  regtype	是	string	用户类型 1医生 2推广经理（代表）
@@ -114,6 +126,17 @@ class NetUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
     return result;
   }
+
+
+  ///
+  ///  上传图片
+  ///
+  static Future<BaseResult> requestUploadsImages(File data,String path) async {
+    String url = APPConfig.Server + "uploads/image";
+    BaseResult result = await httpManager.upload(url, data,path: path);
+    return result;
+  }
+
 
 
 }

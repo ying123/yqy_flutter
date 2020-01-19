@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
 import 'package:yqy_flutter/utils/department_picker.dart';
@@ -61,6 +63,8 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
   ];
   
 
+  String _agreementsContent; // 用户协议的内容
+
   @override
   void initState() {
     // TODO: implement initState
@@ -73,6 +77,9 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
     });
     initTextControllerListener();
+
+    // 获取 用户协议的内容
+    initAgreementsData();
   }
 
 
@@ -602,7 +609,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
   void showAgreementDialog(BuildContext context) {
 
     showDialog(context: context,
-
         builder: (_)=> Material(
         color: Colors.transparent,
           child: Container(
@@ -618,10 +624,20 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
                 buildText("药企源用户协议",size: 52),
                 cYM(setH(40),),
                 Container(
-                  color: Colors.black,
-                  height: setH(800),
+                  height: setH(900),
+                  child: ListView(
+
+                    children: <Widget>[
+                      Html(
+
+                        padding: EdgeInsets.all(setW(26)),
+                        data: _agreementsContent,
+
+                      ),
+                    ],
+                  )
                 ),
-                cYM(setH(80),),
+                cYM(setH(40),),
                 FlatButton(onPressed: (){
 
                   Navigator.pop(_);
@@ -648,6 +664,22 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           ),
         )
     );
+  }
+
+  void initAgreementsData() {
+
+    NetUtils.requestAgreements()
+        .then((res){
+
+       if(res.code==200){
+
+       _agreementsContent =   res.info["content"];
+
+
+       }
+
+
+    });
 
 
   }

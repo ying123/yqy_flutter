@@ -48,7 +48,6 @@ class _PersonalPageState extends State<PersonalPage> {
             });
           }
 
-
       });
     });
 

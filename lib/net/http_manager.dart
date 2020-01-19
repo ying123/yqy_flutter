@@ -86,9 +86,10 @@ class HttpManager {
     return response.data;
   }
 
-  upload(String url, File data) async {
-    UploadFileInfo file = UploadFileInfo(data, 'fileName');
-    FormData formData = FormData.from({'image': file,"token": UserUtils.getToken(),"userId":UserUtils.getUserInfo().userId});
+  upload(String url, File data,{String path}) async {
+    UploadFileInfo file = UploadFileInfo(data, data.path);
+    FormData formData = FormData.from({'image': file,"token": UserUtils.getToken()??"","path":path??""});
+
 
 
     Map<String, dynamic> header = {
@@ -112,7 +113,7 @@ class HttpManager {
         response.statusMessage = "请求超时,请稍后再试!";
       }
       response.data =
-          BaseResult(null, response.statusCode, response.data.message);
+          BaseResult(null, response.statusCode, response.statusMessage);
     }
 
     return response.data;
