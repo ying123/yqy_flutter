@@ -109,6 +109,17 @@ class NetUtils {
 
 
   ///
+  ///  获取医生的职称列表
+  ///
+  static Future<BaseResult> requestJobList() async {
+    String url = APPConfig.Server + "label/job_list";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+
+  ///
   ///  个人中心接口
   ///
   static Future<BaseResult> requestIndex() async {

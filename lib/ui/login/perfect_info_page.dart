@@ -187,7 +187,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           buildHosInputView(context),),
 
 
-
           Visibility(visible: seleType==1?true:false,child:
           buildLine(),),
 
@@ -459,13 +458,13 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
         Checkbox(value: true, onChanged: null,tristate: true,focusColor: Colors.red,),
         Text("我已阅读并同意",style: TextStyle(color:  Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
-
         InkWell(
 
           onTap: (){
             //弹出用户协议弹窗
             showAgreementDialog(context);
-          },
+
+           },
           child: Text("《用户服务协议》",style: TextStyle(color:  Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),) ,
 
         ),
@@ -675,13 +674,9 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
        _agreementsContent =   res.info["content"];
 
-
        }
 
-
     });
-
-
   }
 
 }

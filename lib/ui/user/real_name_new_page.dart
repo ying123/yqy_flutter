@@ -76,6 +76,18 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
   }
 
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // 获取职称数据
+    initJobNameData();
+
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -662,6 +674,21 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
       }
 
     });
+
+  }
+
+  void initJobNameData() {
+
+    NetUtils.requestJobList()
+        .then((res){
+
+          if(res.code==200){
+
+
+          }
+
+    });
+
 
   }
 }
