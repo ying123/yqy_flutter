@@ -25,29 +25,29 @@ class LiveDetailsEntity {
 class LiveDetailsInfo {
 	LiveDetailsInfoBroadcast broadcast;
 	String introduces;
-	String pv;
+	int pv;
 	String title;
 	String content;
 	String playUrl;
-	String points;
-	String youinshCateId;
-	String ifCollect;
+	var points;
+	var youinshCateId;
+	var ifCollect;
 	var isPlay;
-	String startTime;
-	String id;
-	String image;
-	String courseId;
-	String address;
-	String isPay;
-	String introduce;
-	String author;
-	String dataFlag;
-	String isShow;
+	var startTime;
+	var id;
+	var image;
+	var courseId;
+	var address;
+	var isPay;
+	var introduce;
+	var author;
+	var dataFlag;
+	var isShow;
 	List<LiveDetailsInfoLiveList> liveList;
-	String createTime;
-	String contents;
-	String isTop;
-	String endTime;
+	var createTime;
+	var contents;
+	var isTop;
+	var endTime;
 
 	LiveDetailsInfo({this.broadcast, this.introduces, this.pv, this.title, this.content, this.playUrl, this.points, this.youinshCateId, this.ifCollect, this.isPlay, this.startTime, this.id, this.image, this.courseId, this.address, this.isPay, this.introduce, this.author, this.dataFlag, this.isShow, this.liveList, this.createTime, this.contents, this.isTop, this.endTime});
 
@@ -189,7 +189,7 @@ class LiveDetailsInfoBroadcastInfoAliyunChannel {
 
 class LiveDetailsInfoBroadcastInfoChannelUrl {
 	String urlFlv;
-	String liveChannelId;
+	var liveChannelId;
 	String urlRtmp;
 	String pulishUrl;
 	String status;

@@ -10,6 +10,7 @@ import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_details_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
 import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
@@ -60,6 +61,8 @@ class EntityFactory {
       return NewsListEntity.fromJson(json) as T;
     } else if (T.toString() == "NoticeHomeEntity") {
       return NoticeHomeEntity.fromJson(json) as T;
+    } else if (T.toString() == "LiveEntity") {
+      return LiveEntity.fromJson(json) as T;
     } else if (T.toString() == "HdDetailsEntity") {
       return HdDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LiveDetailsEntity") {

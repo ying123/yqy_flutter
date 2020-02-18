@@ -6,6 +6,10 @@ import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
+///
+///  学会页面
+///
+///
 
 class LearnHomePage extends StatefulWidget {
 
@@ -115,16 +119,46 @@ class _LearnHomePageState extends State<LearnHomePage> with SingleTickerProvider
                     color: Colors.white,
                   ),
                   Container(
-                    height: 20,
-                    child: Text("暂无数据"),
+                    child: Column(
+                      
+                      children: <Widget>[
+                        
+                          buildText("全部视频（4）"),
+                          ListView(
+
+                            children: <Widget>[
+
+                              getVideoTabView(context),
+                              getVideoTabView(context),
+
+                            ],
+                          )
+                        
+                      ],
+                    ),
                   ),
                   Container(
                     height: 20,
                     child: Text("暂无数据"),
                   ),
                   Container(
-                    height: 20,
-                    child: Text("暂无数据"),
+                    child: Column(
+
+                      children: <Widget>[
+
+                        buildText("全部会员（4）"),
+                        ListView(
+
+                          children: <Widget>[
+
+                            getMemberTabView(context),
+                            getMemberTabView(context),
+
+                          ],
+                        )
+
+                      ],
+                    ),
                   ),
 
                 ],
@@ -135,6 +169,10 @@ class _LearnHomePageState extends State<LearnHomePage> with SingleTickerProvider
     );
   }
 
+
+
+
+  
   Container buildTopContainer(BuildContext context) {
     return Container(
       child: new Stack(
@@ -493,6 +531,126 @@ class _LearnHomePageState extends State<LearnHomePage> with SingleTickerProvider
                 ],
               )
           )
+
+        ],
+      ),
+
+    );
+
+  }
+
+
+  ///
+  ///  视频 选项卡的页面
+  ///
+  getVideoTabView(BuildContext context) {
+
+    return  Container(
+      padding: EdgeInsets.all(setW(30)),
+      child:  new Column(
+
+        children: <Widget>[
+
+          Row(
+
+            children: <Widget>[
+
+              Icon(Icons.account_box,size: 40,),
+              cXM(setW(15)),
+              buildText("医生名字",size: 35,color: "#4AB1F2"),
+              cXM(setW(28)),
+              buildText("2019-10-12  15:35:58",size: 32),
+
+            ],
+          ),
+          cYM(setH(28)),
+          Container(
+            color: Colors.blue,
+            height: setH(576),
+          ),
+          cYM(setH(28)),
+          buildText("关于糖尿病足溃疡药在临床上的应用",size: 43,color: "#333333"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+
+              buildText("112次播放"),
+
+              buildText("收藏"),
+
+              buildText("点赞"),
+              
+
+
+
+            ],
+          )
+
+        ],
+      ),
+
+    );
+
+
+
+  }
+
+
+  ///
+  ///  会员 选项卡的页面
+  ///
+  getMemberTabView(BuildContext context) {
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(setW(30), 0, setW(30), 0),
+      height: setH(256),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+
+          Icon(Icons.save,size: 190,),
+
+          cXM(setW(62)),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              
+              buildText("李英爱",size: 40,color: "#333333"),
+              cYM(setH(15)),
+              buildText("中医大师",size: 35,color: "#999999"),
+              
+            ],
+            
+          ),
+
+          Expanded(child: Container(
+
+            alignment: Alignment.centerRight,
+            child: InkWell(
+
+              child: Container(
+                width: setW(135),
+                height: setH(50),
+                decoration: BoxDecoration(
+                  
+                  gradient: LinearGradient(colors: [Color(0xff1DD5E6),Color(0xff46AEF7)]),
+                  borderRadius: BorderRadius.all(Radius.circular(setW(24)))
+                  
+                ),
+                child: Text("+关注",style: TextStyle(color: Colors.white,fontSize: setSP(35)),),
+
+              ),
+            ),
+
+
+
+          ))
+
+
+
+
 
         ],
       ),

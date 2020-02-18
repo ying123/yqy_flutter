@@ -139,4 +139,56 @@ class NetUtils {
 
 
 
+
+  ///
+  ///  会议预告详情
+  ///
+  ///   id	是	string	会议编号
+  ///
+  static Future<BaseResult> requestMeetingAdvance(String id) async {
+    String url = APPConfig.Server + "/meeting/advance";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
+
+  ///
+  ///  会议直播详情-正在直播
+  ///
+  ///   id	是	string	会议ID
+  ///  token	是	string	用户token 仅app
+  ///
+  static Future<BaseResult> requestMeetingInfo(String id) async {
+    String url = APPConfig.Server + "/meeting/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
+
+  ///
+  ///  会议直播状态查询
+  ///
+  ///
+  ///  id	是	string	会议编号
+  ///  token	是	string	用户token(仅APP)
+  ///
+  static Future<BaseResult> requestMeetinggGetStatus(String id) async {
+    String url = APPConfig.Server + "/meeting/get_status";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
+
+  ///
+  ///  单个会场信息及其日程信息
+  ///
+  ///
+  ///  id	是	string	会议编号
+  ///  token	是	string	用户token(仅APP)
+  ///
+  static Future<BaseResult> requestMeetinggGetMeetingInfo(String id) async {
+    String url = APPConfig.Server + "/meeting/get_meeting_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
 }

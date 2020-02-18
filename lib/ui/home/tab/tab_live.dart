@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -38,7 +39,12 @@ class _TabLivePageState extends State<TabLivePage> {
 
  Widget buildBanner(BuildContext context) {
 
-    return Image.asset(wrapAssets("tab/tab_live_banner.png"),width: double.infinity,height: ScreenUtil().setHeight(403),fit: BoxFit.fill,);
+    return InkWell(
+      child: Image.asset(wrapAssets("tab/tab_live_banner.png"),width: double.infinity,height: ScreenUtil().setHeight(403),fit: BoxFit.fill,),
+      onTap: (){
+        RRouter.push(context ,Routes.liveIngPage,{},transition:TransitionType.cupertino);
+      },
+    );
 
 
   }
