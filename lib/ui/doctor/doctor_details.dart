@@ -125,8 +125,18 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
                     color: Colors.white,
                   ),
                   Container(
-                    height: 20,
-                    child: Text("暂无数据"),
+                    height: double.infinity,
+                    child:ListView(
+
+                      shrinkWrap: true,
+                      children: <Widget>[
+
+                        getVideoTabView(context),
+                        getVideoTabView(context)
+
+                      ],
+
+                    ),
                   ),
                   Container(
                     height: 20,
@@ -244,6 +254,9 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
     );
 
   }
+
+
+
 
   ///
   ///  相关学会布局
@@ -433,7 +446,61 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
 
   }
 
+  ///
+  ///  视频选项卡的页面
+  ///
+  getVideoTabView(BuildContext context) {
 
+    return  Container(
+      padding: EdgeInsets.all(setW(30)),
+      child:  new Column(
+
+        children: <Widget>[
+
+          Row(
+
+            children: <Widget>[
+
+              Icon(Icons.account_box,size: 40,),
+              cXM(setW(15)),
+              buildText("医生名字",size: 35,color: "#4AB1F2"),
+              cXM(setW(28)),
+              buildText("2019-10-12  15:35:58",size: 32),
+
+            ],
+          ),
+          cYM(setH(28)),
+          Container(
+            color: Colors.blue,
+            height: setH(576),
+          ),
+          cYM(setH(28)),
+          buildText("关于糖尿病足溃疡药在临床上的应用",size: 43,color: "#333333"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+
+              buildText("112次播放"),
+
+              buildText("收藏"),
+
+              buildText("点赞"),
+
+
+
+
+            ],
+          )
+
+        ],
+      ),
+
+    );
+
+
+
+  }
   ///
   ///  主页 选项卡
   ///

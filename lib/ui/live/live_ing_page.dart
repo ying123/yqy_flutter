@@ -1,8 +1,16 @@
+import 'dart:async';
+
+import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
 class LiveIngPage extends StatefulWidget {
   @override
@@ -16,22 +24,80 @@ class _LiveIngPageState extends State<LiveIngPage> {
   int viewTypeMy = 1;// 当前的排列方式  我的预约排列   0 gridview  1  listview
 
   ScrollController _scrollController = new ScrollController();
+//页面加载状态，默认为加载中
+  LoadState _layoutState = LoadState.State_Loading;
+
+  LiveInfo _liveDetailsInfo;
+
+  final FijkPlayer player = FijkPlayer();
+  StreamSubscription changeSubscription;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+      setState(() {
+        player.reset().then((_){
+          player.setDataSource(event.url, autoPlay: true);
+        });
+
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    //  FlutterUmplus.endPageView(runtimeType.toString());
+    super.dispose();
+    player.release();
+    changeSubscription.cancel();
+  }
+
+
+
+  void loadData() async{
+
+    NetUtils.requestMeetingInfo("166")
+        .then((res) {
+
+      if(res.code==200){
+
+        _liveDetailsInfo = LiveInfo.fromJson(res.info);
+      }
+      setState(() {
+        player.setDataSource(_liveDetailsInfo.playUrl, autoPlay: true);
+        _layoutState = loadStateByCode(res.code);
+
+      });
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: <Widget>[
-          //主要内容布局
-          buildContextView(context),
-          // 底部点击评论的布局
-          buildBottomView(context)
+      body:  LoadStateLayout(
+        state: _layoutState,
+        errorRetry: () {
+          setState(() {
+            _layoutState = LoadState.State_Loading;
+          });
+          this.loadData();
+        },
+        successWidget:_liveDetailsInfo==null?Container(): Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            //主要内容布局
+            buildContextView(context),
+            // 底部点击评论的布局
+            buildBottomView(context)
+          ],
+        ),
 
+      )
 
-        ],
-      ),
 
 
     );
@@ -155,6 +221,12 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
       height: ScreenUtil().setHeight(600),
       color: Colors.blue,
+      child: FijkView(
+        color: Colors.black,
+        width: double.infinity,
+        height: double.infinity,
+        player: player,
+      ),
 
     );
 
@@ -175,47 +247,24 @@ class _LiveIngPageState extends State<LiveIngPage> {
             margin: EdgeInsets.all(ScreenUtil().setWidth(30)),
             padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0,0, 0),
             height: ScreenUtil().setHeight(120),
-            child:  ListView(
+            child:  ListView.builder(
               shrinkWrap: true,
+              itemCount: _liveDetailsInfo.meeting.length,
               padding: EdgeInsets.all(0),
               scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                 new Container(
+              itemBuilder: (context,page){
+                return    new Container(
                   width: ScreenUtil().setWidth(461),
                   height: ScreenUtil().setHeight(104),
                   margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10))),
-                      color: Color(0xFFFF934C)
+                      color: page==0?Color(0xFFFF934C):Color(0xFF209CFF)
                   ),
-                  child: Text("第一会场",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
-                ),
-                   new  Container(
-                  width: ScreenUtil().setWidth(461),
-                  height: ScreenUtil().setHeight(75),
-                     margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10))),
-                    color: Color(0xFF209CFF)
-                  ),
-                  child: Text("第一会场",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
-                  
-                ),
-                   new Container(
-                     width: ScreenUtil().setWidth(461),
-                     height: ScreenUtil().setHeight(75),
-                     alignment: Alignment.center,
-                     decoration: BoxDecoration(
-                         borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10))),
-                         color: Color(0xFF209CFF)
-                     ),
-                     child: Text("第一会场",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
-
-                   ),
-
-              ],
+                  child: Text(_liveDetailsInfo.meeting[page].title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
+                );
+              },
             )
           ),
 
@@ -226,7 +275,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  child: Text("关于糖尿病足神病症手临床医学是是的病足神病症应用", style: TextStyle(color: Color(0xFF333333),
+                  child: Text(_liveDetailsInfo.title??"", style: TextStyle(color: Color(0xFF333333),
                       fontSize: ScreenUtil().setSp(40),
                       fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.start,),
                   width: ScreenUtil().setWidth(1000),
@@ -351,13 +400,13 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
           Text("关键词",style: TextStyle(color: Colors.black,fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
 
-          ListView(
+         ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.only(left: ScreenUtil().setWidth(40)),
             scrollDirection: Axis.horizontal,
-            children: <Widget>[
-
-              new  Container(
+            itemCount: _liveDetailsInfo.keywords.length,
+          itemBuilder: (context,page){
+              return    new  Container(
                 width: ScreenUtil().setWidth(200),
                 height: ScreenUtil().setHeight(40),
                 alignment: Alignment.center,
@@ -365,34 +414,10 @@ class _LiveIngPageState extends State<LiveIngPage> {
                     color: Color(0xFFF5F5F5),
                     borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
                 ),
-                child: Text("烧伤",style: TextStyle(color: Colors.black45,fontSize: ScreenUtil().setSp(35)),),
+                child: Text(_liveDetailsInfo.keywords[page],style: TextStyle(color: Colors.black45,fontSize: ScreenUtil().setSp(35)),),
                 margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
-              ),
-              new  Container(
-                width: ScreenUtil().setWidth(200),
-                height: ScreenUtil().setHeight(40),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Color(0xFFF5F5F5),
-                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
-                ),
-                child: Text("烧伤",style: TextStyle(color: Colors.black45,fontSize: ScreenUtil().setSp(35)),),
-                margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
-              ),
-              new  Container(
-                width: ScreenUtil().setWidth(200),
-                height: ScreenUtil().setHeight(40),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Color(0xFFF5F5F5),
-                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12)))
-                ),
-                child: Text("烧伤",style: TextStyle(color: Colors.black45,fontSize: ScreenUtil().setSp(35)),),
-                margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
-              )
-
-
-            ],
+              );
+          },
 
           )
 
@@ -660,10 +685,10 @@ class _LiveIngPageState extends State<LiveIngPage> {
       height: ScreenUtil().setHeight(300),
       child: ListView.builder(
           scrollDirection:Axis.horizontal,
-          itemCount: 8,
+          itemCount: _liveDetailsInfo.authors.length,
           itemBuilder: (context,index){
 
-            return buildItemDoctorView();
+            return buildItemDoctorView(context,_liveDetailsInfo.authors[index]);
           }
       ),
 
@@ -674,7 +699,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
   }
 
-  Widget buildItemDoctorView() {
+  Widget buildItemDoctorView(BuildContext context,LiveInfoAuthor bean) {
 
     return Container(
       margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
@@ -684,9 +709,9 @@ class _LiveIngPageState extends State<LiveIngPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
 
-          Image.asset(wrapAssets("tab/tab_me_sele.png"),width: ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(200),fit: BoxFit.fill,),
-          Text("李英爱",style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
-          Text("中医大师",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+          wrapImageUrl(bean.userPhoto, setW(200), setW(200)),
+          Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
+          Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
 
         ],

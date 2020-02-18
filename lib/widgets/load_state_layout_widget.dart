@@ -17,6 +17,9 @@ LoadState loadStateByCode(int code) {
     case 9999: //成功
       state = LoadState.State_Success;
       break;
+    case 200: //成功
+      state = LoadState.State_Success;
+      break;
     case 401: //token 过期
       state = LoadState.State_Token_Exprie;
       break;
