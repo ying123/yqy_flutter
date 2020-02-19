@@ -171,16 +171,11 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
             Divider(height: 1,color: Colors.black26,)
 
 
-
           ],
-
-
         ),
 
       ),
     );
-
-
 
   }
 

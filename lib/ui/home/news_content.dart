@@ -8,7 +8,8 @@ import 'package:like_button/like_button.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yqy_flutter/common/constant.dart';
-import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_news_info_entity.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
@@ -37,7 +38,7 @@ class NewsContentPage extends StatefulWidget {
 class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAliveClientMixin{
 
 
-  NewsDetailsEntity _detailsEntity;
+  TabNewsInfoInfo _detailsEntity;
 
   String htmlStr;
 
@@ -54,14 +55,11 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
 
    loadData() {
 
-     NetworkUtils.requestNewsDetail(widget.id)
+     NetUtils.requestNewsInfo(widget.id)
       .then((res){
 
-       int statusCode = int.parse(res.status);
-
-       if(statusCode==9999) {
-         _detailsEntity = NewsDetailsEntity.fromJson(res.info);
-         isCollect = _detailsEntity.ifCollect=="0"?false:true;
+       if(res.code==200) {
+         _detailsEntity = TabNewsInfoInfo.fromJson(res.info);
          String subTitle = "<h3>" + _detailsEntity.title + "<\/h3>";
          String soure = "<p><span style=\"float:left;font-size:12px;color:#999999\">" +
              "来源:  " + _detailsEntity.source +
@@ -89,7 +87,7 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
 
 
     return  _detailsEntity==null?Container():WebviewScaffold(
-      url: _detailsEntity.content.startsWith("http")?_detailsEntity.content:new Uri.dataFromString(getHtmlData(_detailsEntity.content), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+      url: _detailsEntity.content.startsWith("http")?_detailsEntity.content:new Uri.dataFromString(getHtmlData(htmlStr), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
       appBar: AppBar(
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.black,),

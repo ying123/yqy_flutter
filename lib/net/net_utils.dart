@@ -330,7 +330,37 @@ class NetUtils {
     return result;
   }
 
+  ///
+  ///   首页的 医药资讯（包括轮播图的数据）
+  ///
+  static Future<BaseResult> requestNewsIndex() async {
+    String url = APPConfig.Server + "news/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
 
 
+  ///
+  ///    医药资讯列表
+  ///
+  ///    id	是	string	分类ID
+  ///  page	否	string	页码，默认1
+  ///  limit	否	string	每页显示文章数量，默认20,范围1-30
+  ///
+  static Future<BaseResult> requestNewsLists({String id,String page}) async {
+    String url = APPConfig.Server + "news/lists";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id,"page":page});
+    return result;
+  }
+
+  ///
+  ///   资讯详情
+  ///   id	是	string	文章ID
+  ///
+  static Future<BaseResult> requestNewsInfo(String id) async {
+    String url = APPConfig.Server + "news/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
 
 }

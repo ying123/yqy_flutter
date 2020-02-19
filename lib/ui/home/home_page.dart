@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
@@ -8,11 +10,14 @@ import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_news_index_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_flfg.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_gf.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_live.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_special.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_zx.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
+import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_home.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_medical.dart';
@@ -39,7 +44,7 @@ final _tabDataList = <_TabData>[
   _TabData(tab: Text('推荐'), body: TabHomePage()),
   _TabData(tab: Text('直播'), body: TabLivePage()),
   _TabData(tab: Text('医学专题'), body: TabSpecialPage()),
-  _TabData(tab: Text('医药咨询'), body:TabZxPage()),
+  _TabData(tab: Text('医药资讯'), body:TabZxPage()),
  // _TabData(tab: Text('规范解读'), body: TabGFPage())
 ];
 
@@ -71,6 +76,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   bool _showScreenView = false;// 用来判断 是否显示 筛选view
 
+  /// 用来接收 资讯新闻的筛选数据==
+  String _SeleItem; // 当前选中的筛选
+  /// =================================
+
   @override
   void initState() {
     // TODO: implement initState
@@ -101,7 +110,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     Future.delayed(Duration.zero, () {
       requestIsRZ(context);
     });
-
 
 
   }
@@ -290,7 +298,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
 
 
-
         }
 
 
@@ -421,7 +428,16 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   ///
   buildScreenView() {
 
-    List<String> list = ["全部","药品新闻","医疗新闻","学术新闻","名词说明","规范解读","法律法规","政策资讯"];
+    List<TabNewsIndexInfoCateList> list;
+
+    /// 从本地 获取数据
+    if( LocalStorage.getObject("TabNewsIndexInfoCateList")!=null){
+
+      Map json = LocalStorage.getObject("TabNewsIndexInfoCateList");
+      TabNewsIndexInfo  _newsIndexInfo  =  TabNewsIndexInfo.fromJson(json);
+      list =  _newsIndexInfo.cateList;
+    }
+
 
     return  Visibility(
         visible: _showScreenView,
@@ -429,7 +445,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
           children: <Widget>[
 
-           new Container(
+           list==null?Container(): new Container(
               color: Colors.white,
               child: Column(
 
@@ -448,7 +464,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     childAspectRatio: 2.4,
                     //子Widget宽高比例
                     //子Widget列表
-                    children: list.map((item) => buildItemView(item)).toList(),
+                    children: list.map((item) => buildItemView(item.name)).toList(),
                   )
 
 
@@ -463,24 +479,40 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               child: Row(
 
                 children: <Widget>[
-                  
-                 Container(
+                  FlatButton(
+                        padding: EdgeInsets.all(0),
+                      onPressed: (){
+                    _SeleItem = null;
+                    eventBus.fire(new EventBusChangeNew(_SeleItem));
+                    setState(() {
+                      _showScreenView=false;
+                    });
+                  }, child:  Container(
                     padding: EdgeInsets.all(0),
                     width: ScreenUtil().setWidth(540),
-                         alignment: Alignment.center,
-                          child: FlatButton(onPressed: (){
-
-                          }, child: Text("重置",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37)),),)
-                  ),
-                 Container(
-                    padding: EdgeInsets.all(0),
                     alignment: Alignment.center,
-                    color: Color(0xFF2CAAEE),
-                    width: ScreenUtil().setWidth(540),
-                    child: FlatButton(onPressed: (){
+                    child: Text("重置",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37)),),
+                  )),
+                  FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: (){
 
-                    }, child:  Text("确定",style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(37)),),)
-                  )
+                        if(_SeleItem.isEmpty){
+                          showToast("请先选择分类");
+                          return;
+                        }
+
+                        eventBus.fire(new EventBusChangeNew(_SeleItem));
+                        setState(() {
+                          _showScreenView=false;
+                        });
+                      }, child:  Container(
+                    color: Colors.blue,
+                    padding: EdgeInsets.all(0),
+                    width: ScreenUtil().setWidth(540),
+                    alignment: Alignment.center,
+                    child: Text("确定",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37)),),
+                  ))
                   
                 ],
 
@@ -499,22 +531,33 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   }
 
+
+
+
  Widget buildItemView(String item) {
 
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(14))),
-        color: Color(0xFFF5F5F5)
-      ),
-    child: Text(item,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
+    return  InkWell(
+      onTap: (){
 
+        setState(() {
+
+          _SeleItem = item;
+
+        });
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(14))),
+            color: Color( _SeleItem == item?0xFFE3F5FF:0xFFF5F5F5)
+        ),
+        child: Text(item,style: TextStyle(color: Color( _SeleItem == item?0xFF2CAAEE:0xFF333333),fontSize: ScreenUtil().setSp(32)),),
+
+      ),
     );
 
 
   }
-
-
 
 
 }
