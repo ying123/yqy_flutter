@@ -16,6 +16,7 @@ class AppColors {
 
 class AppRequest{
 
+  ///  旧版----------------------------------------------------------------------------------- 废弃
   static const  String Loading_content = "正在加载,请稍后...";
   static const String Banner_home = "9";//首页banner 类型
   static const String Banner_doctor = "10";//名医分享banner
@@ -93,9 +94,13 @@ class AppRequest{
   static const int LIVE_XS = 1;//学术会议直播列表
   static const int LIVE_HD = 2;//互动直播列表
 
+///  新版-----------------------------------------------------------------------------------
+  static const String PAGE_ROUTE_LIVE  = "4";//会议直播 类型
+
 
 
 }
+
 
 
 

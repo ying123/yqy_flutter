@@ -7,6 +7,7 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 class NewUserPage extends StatefulWidget {
   @override
@@ -449,6 +450,9 @@ class _NewUserPageState extends State<NewUserPage> {
 
           setState(() {
             _info = UserInfoInfo.fromJson(res.info);
+
+            UserUtils.saveUserInfo(_info);
+
           });
 
         }else{

@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:like_button/like_button.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/bean/status_entity.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -10,7 +14,9 @@ import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
+import 'package:yqy_flutter/ui/live/bean/comment_list_entity.dart';
 
 class LiveIngPage extends StatefulWidget {
   @override
@@ -29,8 +35,25 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
   LiveInfo _liveDetailsInfo;
 
+  ///点赞收藏相关==================================
+  bool _isLike,_isCollect; // 点赞 和 收藏 之前的状态
+  String _cancelLike,_cancelCollect;// 取消点赞和收藏的ID
+  ///=============================================
+
+
+  ///评论相关==================================
+  int _commentPage = 1;
+  CommentListInfo _commentListInfo;
+  String _content; // 评论的内容
+  ///=============================================
+
+
+
   final FijkPlayer player = FijkPlayer();
   StreamSubscription changeSubscription;
+
+  String liveId = "166"; // 当前会议的ID
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,20 +81,61 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
   void loadData() async{
 
-    NetUtils.requestMeetingInfo("166")
+    // 当前页面的数据
+    NetUtils.requestMeetingInfo(liveId)
+        .then((res) {
+
+      if(res.code==200){
+        _liveDetailsInfo = LiveInfo.fromJson(res.info);
+      }
+
+      setState(() {
+        player.setDataSource(_liveDetailsInfo.playUrl, autoPlay: true);
+        _layoutState = loadStateByCode(res.code);
+      });
+    });
+    // 收藏的状态
+    NetUtils.requestCollectCheckStatus(AppRequest.PAGE_ROUTE_LIVE,liveId)
+        .then((res) {
+
+      if(res.code==200){
+        setState(() {
+          StatusInfo   info =  StatusInfo.fromJson(res.info);
+          int  status = info.status;
+          _cancelCollect = info.id.toString();
+          status==1?_isCollect = true : _isCollect = false;
+        });
+      }
+
+    });
+
+    // 点赞的状态
+    NetUtils.requestGoodCheckStatus(AppRequest.PAGE_ROUTE_LIVE,liveId)
         .then((res) {
 
       if(res.code==200){
 
-        _liveDetailsInfo = LiveInfo.fromJson(res.info);
+        setState(() {
+          StatusInfo   info =  StatusInfo.fromJson(res.info);
+          int  status = info.status;
+          _cancelLike = info.id.toString();
+          status==1?_isLike = true : _isLike = false;
+
+        });
       }
-      setState(() {
-        player.setDataSource(_liveDetailsInfo.playUrl, autoPlay: true);
-        _layoutState = loadStateByCode(res.code);
-
-      });
     });
+    // 评论列表
+    NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_LIVE,liveId,_commentPage.toString())
+        .then((res) {
 
+      if(res.code==200){
+
+        setState(() {
+          _commentListInfo =  CommentListInfo.fromJson(res.info);
+        });
+      }
+
+    });
   }
 
   @override
@@ -97,16 +161,15 @@ class _LiveIngPageState extends State<LiveIngPage> {
         ),
 
       )
-
-
-
     );
   }
 
+  ///
+  ///  界面布局
+  ///
   buildContextView(BuildContext context) {
 
     return Container(
-
       height: double.infinity,
       child: Column(
 
@@ -115,6 +178,8 @@ class _LiveIngPageState extends State<LiveIngPage> {
           buildContentVideo(context),
           // 视频简介
           buildContentInfoView(context),
+          // 观看人数 点赞收藏
+          buildBtnView(context),
           //分割线
           buildLine(),
           //下方内容为可滚动的
@@ -150,7 +215,32 @@ class _LiveIngPageState extends State<LiveIngPage> {
                 cXM(ScreenUtil().setWidth(40)),
                 Icon(Icons.border_color,color: Colors.black26,size: ScreenUtil().setWidth(50),),
                 cXM(ScreenUtil().setWidth(30)),
-                Text("发表评论",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),)
+
+                Container(
+                  width: setW(600),
+                  child:  TextFormField(
+                    controller: new TextEditingController(
+                      text: _content
+                    ),
+                    decoration: InputDecoration(
+                      hintText: "发表评论",
+                      hintStyle:  TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),
+                      border: InputBorder.none,
+                    ),
+                    textInputAction: TextInputAction.send,
+                    style:  TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(36)),
+                    onChanged: (str){
+                      _content = str;
+                    },
+                    onFieldSubmitted: (value) {
+                      _content = "";
+                      // 上传 评论的内容
+                      uploadCommentData(value);
+                    },
+
+                  ),
+
+                )
               ],
             ),
 
@@ -175,7 +265,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
                       Positioned(
                           right: 0,
                           top: 0,
-                          child:   Container(
+                          child:  Container(
                             decoration: BoxDecoration(
                                 color: Colors.red,
                                 borderRadius: BorderRadius.all(Radius.circular(30))
@@ -186,7 +276,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
                             child: Text("3",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
 
                           ))
-
                     ],
 
                   )
@@ -253,16 +342,22 @@ class _LiveIngPageState extends State<LiveIngPage> {
               padding: EdgeInsets.all(0),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context,page){
-                return    new Container(
-                  width: ScreenUtil().setWidth(461),
-                  height: ScreenUtil().setHeight(104),
-                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10))),
-                      color: page==0?Color(0xFFFF934C):Color(0xFF209CFF)
+                return   InkWell(
+                  onTap: (){
+                    eventBus.fire(new EventBusChange(_liveDetailsInfo.meeting[page].playUrl));
+                  },
+                  child:  new Container(
+                    width: ScreenUtil().setWidth(461),
+                    height: ScreenUtil().setHeight(104),
+                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10))),
+                        color: page==0?Color(0xFFFF934C):Color(0xFF209CFF)
+                    ),
+                    child: Text(_liveDetailsInfo.meeting[page].title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
                   ),
-                  child: Text(_liveDetailsInfo.meeting[page].title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
+                  
                 );
               },
             )
@@ -284,7 +379,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("6段视频    4篇文章    225人关注", style: TextStyle(
+                    Text(_liveDetailsInfo.startTimeX+"~"+_liveDetailsInfo.endTimeX, style: TextStyle(
                         color: Color(0xFF999999),
                         fontSize: ScreenUtil().setSp(35)),),
 
@@ -312,13 +407,24 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
                   ],
                 ),
+                Visibility(
+                    visible: true,
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(_liveDetailsInfo.address, style: TextStyle(
+                            color: Color(0xFF999999),
+                            fontSize: ScreenUtil().setSp(35)),),
+                      ],
+                    )
+                ),
                 cYM(ScreenUtil().setHeight(10)),
                 Visibility(
                     visible: _showTipContent,
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("6段视频    4篇文章    225人关注", style: TextStyle(
+                        Text(_liveDetailsInfo.content, style: TextStyle(
                             color: Color(0xFF999999),
                             fontSize: ScreenUtil().setSp(35)),),
                       ],
@@ -328,7 +434,9 @@ class _LiveIngPageState extends State<LiveIngPage> {
               ],
             ),
 
-          )
+          ),
+
+
 
 
         ],
@@ -766,18 +874,17 @@ class _LiveIngPageState extends State<LiveIngPage> {
   ///
   buildCommentView(BuildContext context) {
 
-    return ListView.builder(
+    return _commentListInfo==null?Container(): ListView.builder(
       controller: _scrollController,
       shrinkWrap: true,
       padding: EdgeInsets.all(ScreenUtil().setWidth(24)),
       physics: new NeverScrollableScrollPhysics(),
-      itemCount: 5,
+      itemCount: _commentListInfo.lists.length,
       itemBuilder: (context,index){
         return itemCommentView(context,index);
       },
 
     );
-
 
   }
 
@@ -790,13 +897,11 @@ class _LiveIngPageState extends State<LiveIngPage> {
         padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(30), 0),
         height: ScreenUtil().setHeight(140),
         child: Column(
-
           children: <Widget>[
             new  Expanded(child: Row(
               children: <Widget>[
-                Image.asset(wrapAssets("user/avatar.png"),width: ScreenUtil().setWidth(90),height: ScreenUtil().setHeight(90),),
+                wrapImageUrl(_commentListInfo.lists[index].userPhoto,  ScreenUtil().setWidth(90),  ScreenUtil().setWidth(90)),
                 cXM(ScreenUtil().setWidth(24)),
-
                 Expanded(child:      new  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -804,24 +909,20 @@ class _LiveIngPageState extends State<LiveIngPage> {
                     new Text.rich(TextSpan(
                         children: [
                           TextSpan(
-                              text: "王雪: ",
+                              text: _commentListInfo.lists[index].userName+": ",
                               style: TextStyle(color: Colors.blue,fontSize: ScreenUtil().setSp(35))
                           ),
                           TextSpan(
-                              text: "太精彩了！哈啊哈哈哈",
+                              text: _commentListInfo.lists[index].content,
                               style: TextStyle(color:Color(0xff333333),fontSize: ScreenUtil().setSp(35))
                           ),
                         ]
                     )),
                     cYM(ScreenUtil().setHeight(20)),
-                    Text("2019-12-15 11:25:00",style: TextStyle(fontSize: ScreenUtil().setSp(30),color: Color(0xff999999)),),
-
-
+                    Text(_commentListInfo.lists[index].createTime,style: TextStyle(fontSize: ScreenUtil().setSp(30),color: Color(0xff999999)),),
 
                   ],
                 )),
-
-
 
               ],
             ),
@@ -1034,4 +1135,158 @@ class _LiveIngPageState extends State<LiveIngPage> {
     );
   }
 
+  buildBtnView(BuildContext context) {
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(setW(30), 0, setW(30), 0),
+      height: setH(100),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+
+          Expanded(child: buildText("2296人正在观看",color: "#FF999999"),),
+
+          Row(
+
+            children: <Widget>[
+              LikeButton(
+                isLiked: _isCollect,
+                likeBuilder: (bool isLike){
+
+                  return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
+                  Icon(Icons.star,color:Colors.red,size: 30,);
+                },
+                onTap: (bool isLiked)
+                {
+                  return onCollectButtonTap(isLiked,_liveDetailsInfo.id.toString());
+                },
+
+              ),
+
+            ],
+          ),
+          cXM(setW(40)),
+          Row(
+
+            children: <Widget>[
+              LikeButton(
+                isLiked: _isLike,
+                likeBuilder: (bool isLike){
+
+                  return  !isLike?Icon(Icons.favorite_border,color:Colors.black45,size: 26,):
+                  Icon(Icons.favorite,color:Colors.red,size: 26,);
+                },
+                onTap: (bool isLiked)
+                {
+                  return onLikeButtonTap(isLiked,_liveDetailsInfo.id.toString());
+                },
+
+              ),
+
+
+            ],
+          )
+
+
+
+
+
+        ],
+      ),
+
+    );
+
+  }
+
+  ///
+  ///  点赞 的 网络请求
+  ///
+  Future<bool> onLikeButtonTap(bool isLike,var  id) {
+
+    final Completer<bool> completer = new Completer<bool>();
+
+    if(!isLike){
+
+      NetUtils.requestGoodAdd(AppRequest.PAGE_ROUTE_LIVE,id)
+          .then((res){
+        completer.complete(res.code==200?true:false);
+        showToast(res.msg);
+        setState(() {
+          _isLike = true;
+        });
+      });
+    }else{
+
+      NetUtils.requestGoodDel(_cancelLike)
+          .then((res){
+        completer.complete(res.code==200?false:true);
+        showToast(res.msg);
+        setState(() {
+          _isLike = false;
+        });
+      });
+    }
+    return completer.future;
+  }
+
+  ///
+  ///  收藏 的 网络请求
+  ///
+  Future<bool> onCollectButtonTap(bool isLike,var  id) {
+
+    final Completer<bool> completer = new Completer<bool>();
+
+    if(!isLike){
+
+      NetUtils.requestCollectAdd(AppRequest.PAGE_ROUTE_LIVE,id)
+          .then((res){
+        completer.complete(res.code==200?true:false);
+        showToast(res.msg);
+        setState(() {
+          _isCollect = true;
+        });
+      });
+    }else{
+
+      NetUtils.requestCollectDel(_cancelCollect)
+          .then((res){
+        completer.complete(res.code==200?false:true);
+        showToast(res.msg);
+        setState(() {
+          _isCollect = false;
+        });
+      });
+    }
+    return completer.future;
+  }
+
+  ///
+  ///  上传评论的内容
+  ///
+  void uploadCommentData(String value) {
+
+    NetUtils.requestCommentAdd(AppRequest.PAGE_ROUTE_LIVE, liveId, value)
+        .then((res){
+           showToast(res.msg);
+          if(res.code==200){
+
+            // 评论列表
+            NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_LIVE,liveId,_commentPage.toString())
+                .then((res) {
+
+              if(res.code==200){
+
+                setState(() {
+                  _commentListInfo =  CommentListInfo.fromJson(res.info);
+                });
+              }
+
+            });
+
+          }
+
+    });
+
+  }
 }

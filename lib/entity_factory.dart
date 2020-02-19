@@ -1,5 +1,6 @@
 import 'package:yqy_flutter/bean/banner_entity.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
+import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/bean/update_version_entity.dart';
 import 'package:yqy_flutter/bean/upload_image_entity.dart';
 import 'package:yqy_flutter/bean/user_entity.dart';
@@ -10,9 +11,10 @@ import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_details_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
 import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
-import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/comment_list_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/wx_info_entity.dart';
@@ -41,6 +43,8 @@ class EntityFactory {
       return BannerEntity.fromJson(json) as T;
     } else if (T.toString() == "PersonalEntity") {
       return PersonalEntity.fromJson(json) as T;
+    } else if (T.toString() == "StatusEntity") {
+      return StatusEntity.fromJson(json) as T;
     } else if (T.toString() == "UpdateVersionEntity") {
       return UpdateVersionEntity.fromJson(json) as T;
     } else if (T.toString() == "UploadImageEntity") {
@@ -61,12 +65,14 @@ class EntityFactory {
       return NewsListEntity.fromJson(json) as T;
     } else if (T.toString() == "NoticeHomeEntity") {
       return NoticeHomeEntity.fromJson(json) as T;
-    } else if (T.toString() == "LiveEntity") {
-      return LiveEntity.fromJson(json) as T;
+    } else if (T.toString() == "CommentListEntity") {
+      return CommentListEntity.fromJson(json) as T;
     } else if (T.toString() == "HdDetailsEntity") {
       return HdDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LiveDetailsEntity") {
       return LiveDetailsEntity.fromJson(json) as T;
+    } else if (T.toString() == "LiveEntity") {
+      return LiveEntity.fromJson(json) as T;
     } else if (T.toString() == "LoginEntity") {
       return LoginEntity.fromJson(json) as T;
     } else if (T.toString() == "SendSmsEntity") {

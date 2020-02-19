@@ -170,7 +170,7 @@ class NetUtils {
   ///  token	是	string	用户token 仅app
   ///
   static Future<BaseResult> requestMeetingInfo(String id) async {
-    String url = APPConfig.Server + "/meeting/info";
+    String url = APPConfig.Server + "meeting/info";
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
@@ -184,7 +184,7 @@ class NetUtils {
   ///  token	是	string	用户token(仅APP)
   ///
   static Future<BaseResult> requestMeetinggGetStatus(String id) async {
-    String url = APPConfig.Server + "/meeting/get_status";
+    String url = APPConfig.Server + "meeting/get_status";
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
@@ -198,8 +198,139 @@ class NetUtils {
   ///  token	是	string	用户token(仅APP)
   ///
   static Future<BaseResult> requestMeetinggGetMeetingInfo(String id) async {
-    String url = APPConfig.Server + "/meeting/get_meeting_info";
+    String url = APPConfig.Server + "meeting/get_meeting_info";
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
+
+
+  ///
+  ///   点赞
+  ///
+  ///  token	是	string	用户token app必传
+  /// member_id	是	string	用户id web必传
+  /// type	否	string	页面类型ID 参考page_route数据字典
+  /// other_id	否	string	页面内容ID
+  ///
+  static Future<BaseResult> requestGoodAdd(String type,String other_id) async {
+    String url = APPConfig.Server + "good/add";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":other_id});
+    return result;
+  }
+
+  ///
+  ///   取消点赞
+  ///
+  ///  token	是	string	用户token app必传
+  /// id	否	string	点赞ID
+  ///
+  static Future<BaseResult> requestGoodDel(String id) async {
+    String url = APPConfig.Server + "good/del";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
+
+  ///
+  ///  获取点赞状态
+  ///
+  /// token	是	string	用户token app必传
+  /// member_id	是	string	用户id web必传
+  /// type	否	string	页面类型ID 参考page_route数据字典
+  /// other_id	否	string	页面内容ID
+  static Future<BaseResult> requestGoodCheckStatus(String type,String id) async {
+    String url = APPConfig.Server + "good/check_status";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":id});
+    return result;
+  }
+
+
+
+  ///
+  ///   收藏
+  ///
+  ///  token	是	string	用户token app必传
+  /// member_id	是	string	用户id web必传
+  /// type	否	string	页面类型ID 参考page_route数据字典
+  /// other_id	否	string	页面内容ID
+  ///
+  static Future<BaseResult> requestCollectAdd(String type,String other_id) async {
+    String url = APPConfig.Server + "collect/add";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":other_id});
+    return result;
+  }
+
+  ///
+  ///   取消收藏
+  ///
+  ///  token	是	string	用户token app必传
+  /// id	否	string	点赞ID
+  ///
+  static Future<BaseResult> requestCollectDel(String id) async {
+    String url = APPConfig.Server + "collect/del";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
+  ///
+  ///  获取收藏状态
+  ///
+  /// token	是	string	用户token app必传
+  /// member_id	是	string	用户id web必传
+  /// type	否	string	页面类型ID 参考page_route数据字典
+  /// other_id	否	string	页面内容ID
+  static Future<BaseResult> requestCollectCheckStatus(String type,String id) async {
+    String url = APPConfig.Server + "collect/check_status";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":id});
+    return result;
+  }
+
+
+  ///
+  ///   评论列表
+  ///
+  /// token	是	string	用户token
+  /// member_id	是	string	用户ID
+  /// type	否	string	页面类型ID
+  /// other_id	否	string	页面内容ID
+  /// page	否	string	评论页码，默认1
+  ///
+  static Future<BaseResult> requestCommentLists(String member_id,String type,String other_id,String page) async {
+    String url = APPConfig.Server + "comment/lists";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"member_id":member_id,"other_id":other_id,"page":page});
+    return result;
+  }
+
+
+  ///
+  ///   添加评论
+  ///
+  /// token	是	string	用户token，APP、小程序必填
+  /// type	是	string	页面类型ID，参考数据字典 page_route页面路由
+  /// other_id	是	string	页面内容ID
+  /// fid	否	string	回复ID,仅回复他人时需要携带
+  /// content	是	string	评论内容，100字以内
+  ///
+  static Future<BaseResult> requestCommentAdd(String type,String other_id,String content) async {
+    String url = APPConfig.Server + "comment/add";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":other_id,"content":content});
+    return result;
+  }
+
+
+  ///
+  ///   删除评论
+  /// token	是	string	用户token，APP、小程序必填
+  /// member_id	是	string	web必填
+  /// id	是	string	评论ID
+  ///
+  static Future<BaseResult> requestCommentDel(String type,String other_id,String content) async {
+    String url = APPConfig.Server + "comment/del";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":other_id,"content":content});
+    return result;
+  }
+
+
+
+
 }

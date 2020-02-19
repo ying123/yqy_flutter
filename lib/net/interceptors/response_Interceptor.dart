@@ -38,7 +38,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
 
           UserUtils.removeUserInfo();
           showToast(result.message);
-        //  RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
+         RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
           MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
         //  MainHomePage.navigatorKey.currentState.pushNamed("/login");
         }
