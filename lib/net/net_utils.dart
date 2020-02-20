@@ -140,6 +140,16 @@ class NetUtils {
 
 
   ///
+  ///  获取是否需要实名认证
+  ///
+  static Future<BaseResult> requestGetCertification() async {
+    String url = APPConfig.Server + "users/get_certification";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+  ///
   ///  上传图片
   ///
   static Future<BaseResult> requestUploadsImages(File data,String path) async {
@@ -362,5 +372,56 @@ class NetUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
     return result;
   }
+
+
+
+  ///
+  ///   文献指南首页
+  ///
+  static Future<BaseResult> requestDocumentIndex() async {
+    String url = APPConfig.Server + "document/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+
+
+  ///
+  ///   文献指南首页
+  ///   id	是	string	分类ID
+  ///  page	否	string	页码，默认1
+  ///  limit	否	string	每页显示文章数量，默认20,范围1-30
+  ///
+  ///
+  static Future<BaseResult> requestDocumentLists(String id,String page) async {
+    String url = APPConfig.Server + "document/lists";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id,"page":page});
+    return result;
+  }
+
+
+  ///
+  ///   文献详情
+  ///   id	是	string	文献ID
+  ///
+  static Future<BaseResult> requestDocumentInfo(String id) async {
+    String url = APPConfig.Server + "document/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+
+  ///
+  ///   产品详情
+  ///  id	是	string	产品ID
+  ///
+  ///
+  static Future<BaseResult> requestGoodsInfo(String id) async {
+    String url = APPConfig.Server + "points/goods_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
 
 }

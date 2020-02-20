@@ -6,7 +6,7 @@ import 'package:yqy_flutter/utils/margin.dart';
 ///
 /// 实名认证弹窗
 ///
-void requestIsRZ(BuildContext context) async {
+void requestIsRZ(BuildContext context,String userType) async {
   //网络请求
   ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
   // 发起弹窗
@@ -24,7 +24,6 @@ void requestIsRZ(BuildContext context) async {
               Positioned(top:0,right:setW(60),child: InkWell(child:  Image.asset(wrapAssets("close.png"),width: setW(81),height: setW(81),fit: BoxFit.fill,),onTap: (){
                     Navigator.pop(_);
               },),),
-
             new  Positioned(
                   bottom: setH(60),
                   left: setW(180),

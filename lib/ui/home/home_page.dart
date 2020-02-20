@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/home/bean/is_certification_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_index_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_flfg.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_gf.dart';
@@ -21,7 +23,6 @@ import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_home.dart';
 import 'package:yqy_flutter/ui/home/tab/tab_medical.dart';
-import 'package:yqy_flutter/ui/home/tab/tab_news.dart';
 import 'package:yqy_flutter/common/constant.dart' as AppColors;
 import 'package:yqy_flutter/widgets/dialog/notice_dialog.dart';
 import 'package:yqy_flutter/widgets/dialog/real_name_dialog.dart';
@@ -80,11 +81,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   String _SeleItem; // 当前选中的筛选
   /// =================================
 
+  IsCertificationInfo _isCertificationInfo;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // 判断当前用户是否需要去实名认证
     _tabController = TabController(vsync: this, length: tabBarList.length)
       ..addListener(() {
         if (_tabController.index.toDouble() == _tabController.animation.value) {
@@ -101,19 +103,16 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         }
       });
 
-
     if(!APPConfig.DEBUG){
       initUpdateAppVersion();
     }
 
+    initEventBusListener();
 
-    Future.delayed(Duration.zero, () {
-      requestIsRZ(context);
-    });
-
+    // 判断当前用户是否需要去实名认证
+    initUserCurrentStatus();
 
   }
-
 
 
   @override
@@ -171,12 +170,11 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                     });
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.all(ScreenUtil().setHeight(10)),
                                     child:  Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Text("全部",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
-                                        cXM(ScreenUtil().setWidth(10)),
+                                        Text(_SeleItem==null?"全部":_SeleItem,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
+                                        cXM(ScreenUtil().setWidth(8)),
                                         Image.asset(wrapAssets(_showScreenView?"tab/tab_zx_up_arrow.png":"tab/tab_zx_down_arrow.png"),width: ScreenUtil().setWidth(23),height: ScreenUtil().setHeight(14),)
                                       ],
                                     ),
@@ -185,7 +183,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                             )
                         ),
                     ),
-                    cXM(ScreenUtil().setWidth(60))
+                    cXM(ScreenUtil().setWidth(10))
                   ],
                 )
               ),
@@ -363,7 +361,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                 }
 
 
-
             });
           },
 
@@ -429,15 +426,15 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   buildScreenView() {
 
     List<TabNewsIndexInfoCateList> list;
-
+    List<String> _nameList;
     /// 从本地 获取数据
-    if( LocalStorage.getObject("TabNewsIndexInfoCateList")!=null){
+    if(LocalStorage.getObject("TabNewsIndexInfoCateList")!=null){
 
       Map json = LocalStorage.getObject("TabNewsIndexInfoCateList");
       TabNewsIndexInfo  _newsIndexInfo  =  TabNewsIndexInfo.fromJson(json);
       list =  _newsIndexInfo.cateList;
+     _nameList =  list.map((item) => item.name).toList();
     }
-
 
     return  Visibility(
         visible: _showScreenView,
@@ -480,13 +477,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
                 children: <Widget>[
                   FlatButton(
-                        padding: EdgeInsets.all(0),
+                     padding: EdgeInsets.all(0),
                       onPressed: (){
-                    _SeleItem = null;
-                    eventBus.fire(new EventBusChangeNew(_SeleItem));
-                    setState(() {
-                      _showScreenView=false;
-                    });
+                    eventBus.fire(new EventBusChangeNew(null));
+
                   }, child:  Container(
                     padding: EdgeInsets.all(0),
                     width: ScreenUtil().setWidth(540),
@@ -501,8 +495,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                           showToast("请先选择分类");
                           return;
                         }
-
-                        eventBus.fire(new EventBusChangeNew(_SeleItem));
+                        eventBus.fire(new EventBusChangeNew(list[_nameList.indexOf(_SeleItem)].id.toString()));
                         setState(() {
                           _showScreenView=false;
                         });
@@ -519,8 +512,19 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               ),
               
             ),
-           new Expanded(child: Container(color: Colors.black38,))
+           new Expanded(
+               child: InkWell(
 
+                 onTap: (){
+                   setState(() {
+                     _showScreenView=false;
+                   });
+                 },
+                 child: Container(
+                   color: Colors.black38,
+                 ),
+               )
+           )
 
           ],
 
@@ -560,8 +564,56 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   }
 
 
-}
 
+  ///
+  ///  判断是否需要实名认证
+  ///
+  void initUserCurrentStatus() {
+
+
+    NetUtils.requestGetCertification()
+        .then((res){
+
+      if(res.code==200){
+
+        _isCertificationInfo =   IsCertificationInfo.fromJson(res.info);
+
+        if(_isCertificationInfo.isCert==0){
+
+            //  1 医生    2 推广经理  根据角色类型调换不同的实名认证页面
+            requestIsRZ(context,_isCertificationInfo.regType.toString());
+        }
+
+
+      /*  Future.delayed(Duration.zero, () {
+          requestIsRZ(context);
+        });*/
+     }
+
+    });
+
+  }
+
+  StreamSubscription changeSubscription;
+  void initEventBusListener() {
+
+      changeSubscription =  eventBus.on<EventBusChangeNew>().listen((event) {
+
+        // 重置数据
+        if(event.v==null){
+
+          setState(() {
+            _SeleItem = null;
+            _showScreenView=false;
+          });
+
+        }
+
+      });
+
+  }
+
+}
 
 // 安装
 Future<Null> _installApk() async {

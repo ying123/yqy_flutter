@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/guide/bean/guide_lists_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_news_index_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 
-class TabNewsPage extends StatefulWidget {
+class TabGuidePage extends StatefulWidget {
+
+  String id; // 当前页面分类ID
+
+
+  TabGuidePage(this.id);
+
   @override
-  _TabNewsPageState createState() => _TabNewsPageState();
+  _TabGuidePageState createState() => _TabGuidePageState();
 }
 
-class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClientMixin{
+class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClientMixin{
 
 
 
@@ -23,7 +32,7 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
   int page = 1;
 
-  NewsListEntity  _newsListEntity ;
+  GuideListsInfo  _newsListEntity ;
 
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
@@ -56,28 +65,27 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
   }
 
   loadData () async{
-    NetworkUtils.requestNewsListData(page)
+    NetUtils.requestDocumentLists(widget.id,page.toString())
         .then((res) {
-      int statusCode = int.parse(res.status);
-      if(statusCode==9999){
+      if(res.code==200){
         if(page>1){
-          if (NewsListEntity
+          if (GuideListsInfo
               .fromJson(res.info)
-              .xList.length == 0) {
+              .lists.length == 0) {
             _refreshController.loadNoData();
           } else {
-            _newsListEntity.xList.addAll(NewsListEntity.fromJson(res.info).xList);
+            _newsListEntity.lists.addAll(GuideListsInfo.fromJson(res.info).lists);
             _refreshController.loadComplete();
           }
 
         }else{
-          _newsListEntity = NewsListEntity.fromJson(res.info);
+          _newsListEntity = GuideListsInfo.fromJson(res.info);
           _refreshController.refreshCompleted();
           _refreshController.resetNoData();
         }
       }
       setState(() {
-        _layoutState = loadStateByCode(statusCode);
+        _layoutState = loadStateByCode(res.code);
       });
     });
 
@@ -104,10 +112,10 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
         onRefresh: _onRefresh,
         onLoading: _onLoading,
         child:  ListView.builder(
-            itemCount:_newsListEntity==null?1:_newsListEntity.xList.length+1,
+            itemCount:_newsListEntity==null?1:_newsListEntity.lists.length+1,
             itemBuilder: (context,index) {
 
-              return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.xList[index-1]);
+              return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.lists[index-1]);
 
             }
 
@@ -121,19 +129,17 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
     );
   }
 
-  Widget getLiveItemView(BuildContext context,NewListList xlist) {
-
-
+  Widget getLiveItemView(BuildContext context,GuideListsInfoList xlist) {
     return GestureDetector(
 
       onTap: (){
-      RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});
-    },
+        RRouter.push(context, Routes.guideContentPage, {"id":xlist.id});
+      },
       child: new Container(
 
         color: Colors.white,
 
-        height: 90,
+        height: setH(200),
 
         child: new Column(
 
@@ -142,43 +148,65 @@ class _TabNewsPageState extends State<TabNewsPage> with AutomaticKeepAliveClient
 
           children: <Widget>[
 
-            new   Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child:   getTitleText(xlist.title),
+
+            Row(
+
+              children: <Widget>[
+
+                Expanded(child:   Column(
+
+                  children: <Widget>[
+
+                    new   Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Text(xlist.title,style: TextStyle(color: Color(0xFF333333),fontSize: setSP(42),fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                    ),
+
+                    cYM(setH(20)),
+
+                    new  Container(
+
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+
+                      child:  new  Row(
+
+
+                        children: <Widget>[
+
+                          getContentText(xlist.createTime),
+
+                          cXM(setW(100)),
+
+                          getContentText(xlist.pv.toString()+"次阅读"),
+
+                        ],
+
+
+                      ),
+                    ),
+
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                ),
+
+                xlist.image.isEmpty?Container():wrapImageUrl(xlist.image, setW(200), setH(120))
+
+              ],
             ),
-
-            new  Container(
-
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-
-              child:  new  Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                children: <Widget>[
-
-                  getContentText("来源："+xlist.source),
-
-                  getContentText(xlist.createTime),
-
-                ],
-
-
-              ),
-            ),
-
-
             Divider(height: 1,color: Colors.black26,)
 
 
+
           ],
+
+
         ),
 
       ),
     );
 
   }
-
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;

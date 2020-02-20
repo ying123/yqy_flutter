@@ -72,7 +72,6 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
        if(res.code==200){
 
-
          setState(() {
            _newsIndexInfo = TabNewsIndexInfo.fromJson(res.info);
            // 保存筛选数据到本地 用来提供给上级页面实现功能
@@ -80,6 +79,9 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
            _refreshController.refreshCompleted();
            _refreshController.resetNoData();
            _layoutState = loadStateByCode(res.code);
+
+           // 通知上级页面  重置数据 显示全部分类
+           eventBus.fire(new EventBusChangeNew(null));
          });
 
 
@@ -282,7 +284,13 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
     changeSubscription =  eventBus.on<EventBusChangeNew>().listen((event) {
 
-      _seleID = event.v;
+      if(event==null){
+        _seleID = null;
+      }else{
+        _seleID = event.v;
+      }
+
+
       _newsIndexInfo.newsLists.clear();
       loadMoreData();
 

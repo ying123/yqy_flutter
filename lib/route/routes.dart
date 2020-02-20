@@ -136,7 +136,7 @@ class Routes {
 
   static String shopBuyOrderPage = "/shopBuyOrderPage"; //  提交订单页面
 
-
+  static String guideContentPage = "/guideContentPage"; //  文献详情页面
 
 
   static void configureRoutes(Router router) {
@@ -199,6 +199,7 @@ class Routes {
     router.define(bindPhonePage, handler:bindPhonePageeHandler);
     router.define(perfectInfoPage, handler:perfectInfoPageHandler);
     router.define(shopBuyOrderPage, handler:shopBuyOrderPageHandler);
+    router.define(guideContentPage, handler:guideContentPageHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

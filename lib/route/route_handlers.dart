@@ -7,6 +7,7 @@ import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_details.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_home_page.dart';
+import 'package:yqy_flutter/ui/guide/guide_content.dart';
 import 'package:yqy_flutter/ui/home/flfg_content.dart';
 import 'package:yqy_flutter/ui/home/gf_content.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
@@ -400,6 +401,12 @@ var perfectInfoPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
 
 var shopBuyOrderPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return ShopBuyOrderPage();
+});
+
+
+var guideContentPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return GuideContentPage(id);
 });
 
 /*

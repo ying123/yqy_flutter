@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:yqy_flutter/ui/home/tab/tab_news.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/ui/guide/bean/guide_index_entity.dart';
+import 'package:yqy_flutter/ui/guide/tab_guide.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 
@@ -10,14 +12,16 @@ class _TabData {
   _TabData({this.tab, this.body});
 }
 
+/*
 final _tabDataList = <_TabData>[
-  _TabData(tab: Text('推荐'), body: TabNewsPage()),
-  _TabData(tab: Text('指南'), body: TabNewsPage()),
-  _TabData(tab: Text('共识'), body: TabNewsPage()),
-  _TabData(tab: Text('规范'), body:TabNewsPage()),
-  _TabData(tab: Text('建议'), body:TabNewsPage()),
+  _TabData(tab: Text(''), body: TabGuidePage()),
+  _TabData(tab: Text(''), body: TabGuidePage()),
+  _TabData(tab: Text(''), body: TabGuidePage()),
+  _TabData(tab: Text(''), body:TabGuidePage()),
+  _TabData(tab: Text('建议'), body:TabGuidePage()),
   // _TabData(tab: Text('规范解读'), body: TabGFPage())
 ];
+*/
 
 
 
@@ -28,16 +32,20 @@ class GuidePage extends StatefulWidget {
 
 class _GuidePageState extends State<GuidePage> with SingleTickerProviderStateMixin {
 
+  GuideIndexInfo _guideIndexInfo; // 选项卡数据
 
-  final tabBarList = _tabDataList.map((item) => item.tab).toList();
-  final tabBarViewList = _tabDataList.map((item) => item.body).toList();
+
+ /* var tabBarList = _tabDataList.map((item) => item.tab).toList();
+  var tabBarViewList = _tabDataList.map((item) => item.body).toList();*/
+  var tabBarList;
+  var tabBarViewList;
   TabController _tabController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = TabController(vsync: this, length: tabBarList.length);
+    initTabData();
   }
 
   @override
@@ -48,7 +56,7 @@ class _GuidePageState extends State<GuidePage> with SingleTickerProviderStateMix
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: TabBar(
+        title:_guideIndexInfo==null?Container(): TabBar(
           controller: _tabController,
           tabs:tabBarList,
           indicatorColor: Colors.white, //指示器颜色 如果和标题栏颜色一样会白色
@@ -75,11 +83,41 @@ class _GuidePageState extends State<GuidePage> with SingleTickerProviderStateMix
           SizedBox(width: ScreenUtil().setWidth(10),),
         ],
       ),
-      body: TabBarView(
+      body:_guideIndexInfo==null?Container(): TabBarView(
           controller: _tabController,
           children: tabBarViewList,
       ),
 
     );
+  }
+
+
+  ///
+  ///  请求导航栏选项卡的数据
+  ///
+  void initTabData() {
+
+    NetUtils.requestDocumentIndex()
+        .then((res){
+
+          if(res.code==200){
+
+           _guideIndexInfo =   GuideIndexInfo.fromJson(res.info);
+
+            setState(() {
+
+              _guideIndexInfo.cateList.insert(0,new GuideIndexInfoCateList(name: "推荐"));
+              tabBarList = _guideIndexInfo.cateList.map((item)=>Text(item.name)).toList();
+              tabBarViewList = _guideIndexInfo.cateList.map((item)=>TabGuidePage(item.id.toString())).toList();
+              _tabController = TabController(vsync: this, length: tabBarList.length);
+
+
+            });
+          }
+
+
+    });
+
+
   }
 }
