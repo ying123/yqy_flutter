@@ -139,6 +139,9 @@ class Routes {
   static String guideContentPage = "/guideContentPage"; //  文献详情页面
 
 
+  static String addAddressPage = "/addAddressPage"; //  添加收货地址页面
+
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
@@ -200,6 +203,8 @@ class Routes {
     router.define(perfectInfoPage, handler:perfectInfoPageHandler);
     router.define(shopBuyOrderPage, handler:shopBuyOrderPageHandler);
     router.define(guideContentPage, handler:guideContentPageHandler);
+    router.define(addAddressPage, handler:addAddressPageHandler);
+
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

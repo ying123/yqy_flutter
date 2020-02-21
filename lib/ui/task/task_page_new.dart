@@ -357,7 +357,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
         InkWell(
           onTap: (){
-            RRouter.push(context ,Routes.shopDetailsPage,{},transition:TransitionType.cupertino);
+            RRouter.push(context ,Routes.shopDetailsPage,{"id":6},transition:TransitionType.cupertino);
           },
           child:    new  Container(
             padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(75), 0, ScreenUtil().setWidth(75), 0),

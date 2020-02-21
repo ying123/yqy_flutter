@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -9,6 +10,7 @@ import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:yqy_flutter/ui/shop/bean/shop_details_entity.dart';
 
 
 class ShopDetailsPage extends StatefulWidget {
@@ -24,12 +26,14 @@ class ShopDetailsPage extends StatefulWidget {
 class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
 
+  ShopDetailsInfo _shopDetailsInfo;
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    initData();
   }
 
 
@@ -46,7 +50,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
         title: Text("商品详情"),
       ),
 
-      body: Column(
+      body:_shopDetailsInfo==null?Container(): Column(
 
         children: <Widget>[
           Expanded(child: ListView(
@@ -60,19 +64,20 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    buildText("中医药适宜技术培训班学分证书",size: 46),
+                    buildText(_shopDetailsInfo.title,size: 46),
                     cYM(setH(46)),
-                    buildText("100积分",size: 40,color: "#FFFA994C"),
+                    buildText(_shopDetailsInfo.points+"积分",size: 40,color: "#FFFA994C"),
                     cYM(setH(46)),
-                    buildText("已兑350笔",size: 40,color: "#FF999999"),
+                    buildText("剩余库存："+_shopDetailsInfo.nums,size: 40,color: "#FF999999"),
                     cYM(setH(46)),
-                    buildText("剩余库存335件",size: 40,color: "#FF999999"),
+                    buildText("截止时间："+_shopDetailsInfo.closeTime,size: 40,color: "#FF999999"),
                     cYM(setH(25)),
 
                   ],
                 ),
               ),
             buildContentTitleView(context),
+              buildContentView(context),
             ],
           )),
 
@@ -106,7 +111,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                 ),
                InkWell(
                  onTap: (){
-                   RRouter.push(context ,Routes.shopBuyOrderPage,{},transition:TransitionType.cupertino);
+                   RRouter.push(context ,Routes.shopBuyOrderPage,{"id":_shopDetailsInfo.id.toString()},transition:TransitionType.cupertino);
                  },
                  child:   Container(
                    width: setW(340),
@@ -148,8 +153,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
       return Container(
         height: setH(600),
-        child: wrapImageUrl("",double.infinity,ScreenUtil().setHeight(500)),
-        color: Colors.red,
+        child: wrapImageUrl(_shopDetailsInfo.image,double.infinity,ScreenUtil().setHeight(500)),
       );
 
   }
@@ -186,7 +190,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
     return Container(
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(25), ScreenUtil().setWidth(5), ScreenUtil().setWidth(25), ScreenUtil().setWidth(25)),
       color: Colors.white,
-      child: Html(data: unescape.convert("")),
+      child: Html(data: unescape.convert(_shopDetailsInfo.content)),
 
     );
 
@@ -277,6 +281,25 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
       )
     );
+
+  }
+
+  void initData() {
+
+    NetUtils.requestGoodsInfo(widget.id)
+        .then((res){
+
+        if(res.code==200){
+
+         setState(() {
+           _shopDetailsInfo =   ShopDetailsInfo.fromJson(res.info);
+         });
+
+        }
+
+
+    });
+
 
   }
 

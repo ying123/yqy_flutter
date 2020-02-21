@@ -424,4 +424,84 @@ class NetUtils {
   }
 
 
+
+  ///
+  ///   提交订单详情
+  ///
+  ///
+  static Future<BaseResult> requestOrderInfo(String id) async {
+    String url = APPConfig.Server + "points/order_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+  ///
+  /// 收货地址列表
+  ///
+  static Future<BaseResult> requestAddressLists() async {
+    String url = APPConfig.Server + "points/address_lists";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+
+  ///
+  ///   新增收货地址
+  ///
+  ///   name	是	string	收件人姓名
+  ///  tel	否	string	联系电话
+  ///  pro_id	否	string	省份编号
+  ///  city_id	否	string	城市编号
+  ///  area_id	否	string	区县编号
+  ///  address	否	string	详细地址
+  ///
+  ///
+  static Future<BaseResult> requestAdAddress(Map map) async {
+    String url = APPConfig.Server + "points/add_address";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
+    return result;
+  }
+
+  ///
+  ///   设为默认收货地址
+  ///
+  ///   id	是	string	收件地址ID
+  ///
+  static Future<BaseResult> requestSetDefaultAddress() async {
+    String url = APPConfig.Server + "points/set_default_address";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+
+  ///
+  ///   修改收货地址
+  ///
+  ///    id	是	string	收货地址ID
+  ///   name	是	string	收件人姓名
+  ///   tel	否	string	联系电话
+  ///   pro_id	否	string	省份编号
+  ///   city_id	否	string	城市编号
+  ///   area_id	否	string	区县编号
+  ///   address	否	string	详细地址
+  ///
+  ///
+  static Future<BaseResult> requestEditAddress() async {
+    String url = APPConfig.Server + "points/edit_address";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+
+  ///
+  ///   获取收货地址详情
+  ///
+  ///    id	是	string	收货地址ID
+  ///
+  static Future<BaseResult> requestGetAddress(String id) async {
+    String url = APPConfig.Server + "points/get_address";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
 }

@@ -560,16 +560,13 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       ),
     );
 
-
   }
-
 
 
   ///
   ///  判断是否需要实名认证
   ///
   void initUserCurrentStatus() {
-
 
     NetUtils.requestGetCertification()
         .then((res){
@@ -585,9 +582,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         }
 
 
-      /*  Future.delayed(Duration.zero, () {
-          requestIsRZ(context);
-        });*/
      }
 
     });
@@ -601,7 +595,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
         // 重置数据
         if(event.v==null){
-
           setState(() {
             _SeleItem = null;
             _showScreenView=false;

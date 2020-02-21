@@ -25,6 +25,7 @@ import 'package:yqy_flutter/ui/login/bind_phone_page.dart';
 import 'package:yqy_flutter/ui/login/login_home_page.dart';
 import 'package:yqy_flutter/ui/login/login_send_sms_page.dart';
 import 'package:yqy_flutter/ui/login/perfect_info_page.dart';
+import 'package:yqy_flutter/ui/shop/add_address_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_buy_order_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
@@ -400,13 +401,19 @@ var perfectInfoPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
 
 
 var shopBuyOrderPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return ShopBuyOrderPage();
+  String id = params["id"]?.first;
+  return ShopBuyOrderPage(id);
 });
 
 
 var guideContentPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String id = params["id"]?.first;
   return GuideContentPage(id);
+});
+
+
+var addAddressPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return AddAddressPage();
 });
 
 /*
