@@ -34,6 +34,8 @@ import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
 import 'package:yqy_flutter/ui/special/special_web_details.dart';
+import 'package:yqy_flutter/ui/task/integral_list_page.dart';
+import 'package:yqy_flutter/ui/task/task_list_page.dart';
 import 'package:yqy_flutter/ui/task/task_question_naire_page.dart';
 import 'package:yqy_flutter/ui/task/task_video_page.dart';
 import 'package:yqy_flutter/ui/user/about_page.dart';
@@ -415,6 +417,19 @@ var guideContentPageHandler = Handler(handlerFunc: (BuildContext context, Map<St
 var addAddressPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return AddAddressPage();
 });
+
+
+
+var taskListPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return TaskListPage();
+});
+
+var integralListPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return IntegralListPage();
+});
+
+
+
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

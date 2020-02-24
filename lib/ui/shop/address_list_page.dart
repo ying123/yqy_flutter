@@ -47,7 +47,7 @@ class _AddressListPageState extends State<AddressListPage> {
 
     );
   }
-  
+
   void initData() {
 
       NetUtils.requestAddressLists()

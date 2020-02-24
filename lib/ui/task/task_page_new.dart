@@ -139,7 +139,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
         children: <Widget>[
           Image.asset(wrapAssets("task/task_bg.png"),width:double.infinity ,height: double.infinity,fit: BoxFit.fill,),
 
-
            Visibility(
              visible: appBarAlpha==0,
              child:  new Positioned(
@@ -227,7 +226,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
                       icon: Image.asset(wrapAssets("task/task_ic_detail.png"),width: ScreenUtil().setWidth(84),height: ScreenUtil().setWidth(84),),
                       label: Text("积分明细",style: TextStyle(color: Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40)),),
                       onPressed: (){
-
+                        RRouter.push(context ,Routes.integralListPage,{},transition:TransitionType.cupertino);
                       },
                     ),
 
@@ -280,61 +279,136 @@ class _TaskNewPageState extends State<TaskNewPage> {
   buildItemTask(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.all(0),
+      padding: EdgeInsets.all(setW(30)),
       margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(42),0 , ScreenUtil().setWidth(42), ScreenUtil().setHeight(42)),
       width: ScreenUtil().setWidth(1022),
-      height: ScreenUtil().setHeight(260),
+      height: ScreenUtil().setHeight(280),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
         boxShadow: [BoxShadow(color: Color(0x4D50909B), offset: Offset(1.0, 1.0),    blurRadius: 10, spreadRadius: 2.0)],
       ),
-      child: Stack(
+      child:  new Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
 
         children: <Widget>[
-          new Positioned(bottom: 0,child:  Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(220),height: ScreenUtil().setWidth(200),fit: BoxFit.fill,),),
-         new Positioned(
-              left: ScreenUtil().setWidth(270),
-              child:Container(
-                height: ScreenUtil().setHeight(260),
-                child:  Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          
+          wrapImageUrl("", setW(173), setH(173)),
+
+
+        Expanded(child:
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            new  Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                cXM(setW(50)),
+                Expanded(child:  Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
 
-                    Text("临床应用病例征集",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
-                    cYM(ScreenUtil().setHeight(10)),
-                    Text("完成任务可获得10积分",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
-                    cYM(ScreenUtil().setHeight(16)),
-                    Text("+10积分",style: TextStyle(color: Color(0xFFFA994C),fontSize: ScreenUtil().setSp(46)),)
+                    buildText("新手任务",color: "#FF333333",size: 40,fontWeight: FontWeight.bold),
+                    buildText("有效期至 2020-3-1",color: "#FF999999",size: 29,fontWeight: FontWeight.w400),
 
                   ],
-                ),
-              )
-          ),
+                ),),
+                FlatButton(
+                  padding: EdgeInsets.all(0),
+                    onPressed: (){
+                      RRouter.push(context ,Routes.taskListPage,{"id":6},transition:TransitionType.cupertino);
+                    },
+                    child:   Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(right: setW(20)),
+                      width: setW(207),
+                      height: setH(66),
+                      decoration: BoxDecoration(
 
-          new Positioned(
-              right: 0,
-              child: Container(
-                width: ScreenUtil().setWidth(272),
-                height: ScreenUtil().setHeight(101),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
+                          border: Border.all(color: Color(0xFFE57C36),width: setW(1)),
+                          borderRadius: BorderRadius.all(Radius.circular(setW(33)))
 
-                    Image.asset(wrapAssets("task/task_item_l.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
-                    Text("领取任务",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),)
-                  ],
-                ),
-
-
-              )
-
-          ),
+                      ),
+                      child: Text("去完成",style: TextStyle(color: Color(0xFFE88747),fontSize: setSP(35)),),
 
 
+                    ))
+
+              ],
+            ),
+
+           Container(
+              margin: EdgeInsets.only(left: setW(50)),
+             child:    buildText("+500积分",size: 40,color: "#FFFA994C"),
+           ),
+
+
+            // 任务的进度条
+            Container(
+              margin: EdgeInsets.only(left: setW(50)),
+              child: Row(
+                children: <Widget>[
+
+                  Container(
+                    width: setW(470),
+                    height: setH(15),
+                    decoration: BoxDecoration(
+
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(setW(6))),
+                      border: Border.all(color: Color(0xFF999999),width: setW(1))
+
+                    ),
+
+                    // 为了优化UI美观   当有未完成的任务使用listview实现布局  当都完成时使用Row 实现布局
+                    // 目前的方案  待优化
+                    child: 0==1? ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+
+                        buildPgBarView(context,setW((470-((5)*4))/5)),
+                        buildPgBarView(context,setW((470-((5)*4))/5)),
+                        buildPgBarView(context,setW((470-((5)*4))/5)),
+                      ],
+
+                    ):Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        buildPgBarView2(context,setW((470-((5)*8))/5)),
+                        buildPgBarView2(context,setW((470-((5)*8))/5)),
+                        buildPgBarView2(context,setW((470-((5)*8))/5)),
+                        buildPgBarView2(context,setW((470-((5)*8))/5)),
+                        buildPgBarView2(context,setW((470-((5)*8))/5)),
+                      ],
+                    )
+
+                  ),
+
+                  cXM(setW(20)),
+
+                  buildText("已完成0 / 5",size: 32,color: "#FF999999")
+
+                ],
+              ),
+
+            )
+
+
+
+
+          ],
+        ))
+
+
+          
+          
+          
         ],
-
-      ),
+        
+      )
     );
 
   }
@@ -441,4 +515,32 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
 
   }
+
+
+  ///
+  ///  任务进度单一view
+  ///
+  buildPgBarView(BuildContext context,double width) {
+
+      return Container(
+      //  padding: EdgeInsets.all(setW(6)),
+         margin: EdgeInsets.fromLTRB(setW(4), setW(3),0,  setW(3)),
+         width: width,
+         height: setH(15),
+         color: Color(0xFFFA994C),
+       );
+
+  }
+
+  buildPgBarView2(BuildContext context,double width) {
+
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, setW(3),0,  setW(3)),
+      width: width,
+      height: setH(15),
+      color: Color(0xFFFA994C),
+    );
+
+  }
+
 }
