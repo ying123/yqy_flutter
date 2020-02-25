@@ -25,6 +25,8 @@ import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/wx_info_entity.dart';
+import 'package:yqy_flutter/ui/shop/bean/order_detail_entity.dart';
+import 'package:yqy_flutter/ui/shop/bean/order_list_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_address_list_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_buy_order_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_details_entity.dart';
@@ -43,7 +45,9 @@ import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_list_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
+import 'package:yqy_flutter/ui/video/bean/video_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
+import 'package:yqy_flutter/ui/video/bean/video_page_entity.dart';
 
 class EntityFactory {
   static T generateOBJ<T>(json) {
@@ -103,6 +107,10 @@ class EntityFactory {
       return SendSmsEntity.fromJson(json) as T;
     } else if (T.toString() == "WxInfoEntity") {
       return WxInfoEntity.fromJson(json) as T;
+    } else if (T.toString() == "OrderDetailEntity") {
+      return OrderDetailEntity.fromJson(json) as T;
+    } else if (T.toString() == "OrderListEntity") {
+      return OrderListEntity.fromJson(json) as T;
     } else if (T.toString() == "ShopAddressListEntity") {
       return ShopAddressListEntity.fromJson(json) as T;
     } else if (T.toString() == "ShopBuyOrderEntity") {
@@ -139,8 +147,12 @@ class EntityFactory {
       return UserInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoDetailsEntity") {
       return VideoDetailsEntity.fromJson(json) as T;
+    } else if (T.toString() == "VideoInfoEntity") {
+      return VideoInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoListEntity") {
       return VideoListEntity.fromJson(json) as T;
+    } else if (T.toString() == "VideoPageEntity") {
+      return VideoPageEntity.fromJson(json) as T;
     } else {
       return null;
     }

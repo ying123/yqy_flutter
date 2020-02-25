@@ -1,16 +1,22 @@
+import 'dart:async';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/shop/bean/shop_address_list_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_buy_order_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
 class ShopBuyOrderPage extends StatefulWidget {
@@ -28,13 +34,62 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
   ShopBuyOrderInfo _orderInfo;
 
+  String _name;// 姓名
+
+  String _tel;// 电话
+
+  String _address;// 收件人地址，省市区和详细地址拼接到一起后的地址
+
+  String _gid;// 	产品编号
+
+  String _nums = "1";// 	购买数量
+
+  String _content; // 备注
+
+  StreamSubscription changeSubscription;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initData();
+    initEventBusListener();
   }
+
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    initData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    changeSubscription.cancel();
+  }
+
+
+
+  ///
+  ///  监听  收货地址的切换
+  ///
+  void initEventBusListener() {
+
+    changeSubscription =  eventBus.on<ShopAddressListInfoList>().listen((event) {
+
+
+            showToast("监听  收货地址的切换");
+
+
+            setState(() {
+              _orderInfo.address =   ShopBuyOrderInfo.fromJson(event.toJson()).address;
+            });
+
+    });
+
+}
 
 
 
@@ -87,8 +142,20 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
         return Container();
       }
 
-      // 如果id 等于null 表示之前没有添加过地址
 
+      if(_orderInfo.address.id!=null){
+
+        UserUtils.saveAddress(_orderInfo.address);
+
+      }
+
+      if(UserUtils.getAddress()!=null){
+
+        _orderInfo.address = UserUtils.getAddress();
+      }
+
+
+      // 如果id 等于null 表示之前没有添加过地址
       return _orderInfo.address.id==null? Container(
         color: Colors.white,
         padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
@@ -122,37 +189,45 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
             )
           ],
         ),
-      ):Container( // 显示之前填写的地址信息
+      ):InkWell(
 
-        color: Colors.white,
-        padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
-        margin: EdgeInsets.only(bottom: setH(40)),
-        height: setH(180),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+        onTap: (){
+          RRouter.push(context ,Routes.addressListPage,{},transition:TransitionType.cupertino);
 
-            Icon(Icons.place,color: Colors.deepOrangeAccent,size: setW(70),),
-            cXM(setW(40)),
-            Expanded(child:  Container(
-              alignment: Alignment.centerLeft,
-              child:  Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+        },
+        child: Container( // 显示之前填写的地址信息
 
-                  buildText(_orderInfo.address.name+"   "+_orderInfo.address.tel,size: 40),
-                  cYM(setH(5)),
-                  buildText(_orderInfo.address.pro+" "+_orderInfo.address.city+" "+_orderInfo.address.area+" "+_orderInfo.address.address,size: 40),
+          color: Colors.white,
+          padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
+          margin: EdgeInsets.only(bottom: setH(40)),
+          height: setH(180),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+
+              Icon(Icons.place,color: Colors.deepOrangeAccent,size: setW(70),),
+              cXM(setW(40)),
+              Expanded(child:  Container(
+                alignment: Alignment.centerLeft,
+                child:  Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+
+                    buildText(_orderInfo.address.name+"   "+_orderInfo.address.tel,size: 40),
+                    cYM(setH(5)),
+                    buildText(_orderInfo.address.pro+" "+_orderInfo.address.city+" "+_orderInfo.address.area+" "+_orderInfo.address.address,size: 40),
 
 
-                ],
-              ),
-            )),
+                  ],
+                ),
+              )),
 
-            Icon(Icons.arrow_forward_ios,size: setW(50),color: Colors.black26,),
+              Icon(Icons.arrow_forward_ios,size: setW(50),color: Colors.black26,),
 
-          ],
+            ],
+          ),
+
         ),
 
       );
@@ -184,11 +259,8 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                         buildText(_orderInfo.title.toString(),size: 42),
                         cYM(20),
                         buildText(_orderInfo.points.toString()+"积分",size: 33,color: "#FF999999")
-
                   ],
                 ),
-
-
               ],
             ),
 
@@ -202,22 +274,39 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                new  Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: <Widget>[
-                     buildText("购买数量",size: 38),
+                     buildText("购买数量",size: 42),
                      buildText("1",size: 38),
                    ],
                  ),
                new  Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: <Widget>[
-                   buildText("配送方式",size: 38),
+                   buildText("配送方式",size: 42),
                    buildText(_orderInfo.sendWay??"",size: 38),
                  ],
                ),
                new  Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: <Widget>[
-                   buildText("备注",size: 38),
-                   buildText("请填写学历，例：本科",size: 38,color: "#FF999999"),
+                   buildText("备注",size: 42),
+
+                   Expanded(
+                       child: TextFormField(
+                     keyboardType: TextInputType.text,
+                     textInputAction: TextInputAction.next,
+                     textAlign: TextAlign.end,
+                     maxLines: 1,
+                     decoration: InputDecoration(
+                       hintText: "请填写学历，例：本科",
+                       hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+                       border: InputBorder.none, // 去除下划线
+                     ),
+                     cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+                     style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+                     onChanged: (v){
+                       _content = v;
+                     },
+                   )),
                  ],
                ),
                new  Row(
@@ -245,7 +334,6 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
   buildBottomView(BuildContext context) {
 
-
     return Container(
       color: Colors.white,
       height: setH(150),
@@ -257,6 +345,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
            onTap: (){
 
               showPayFailDialog(context);
+              uploadOrderData();
            },
            child: new  Container(
              width: setW(334),
@@ -273,8 +362,6 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
          ),
           cXM(setW(40))
           
-
-
         ],
       ),
 
@@ -377,6 +464,34 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
     });
 
 
+  }
+
+
+  ///
+  ///  提交订单数据
+  ///
+  void uploadOrderData() {
+
+
+
+    Map<String,String> map = new Map();
+
+    map["name"] = _orderInfo.address.name;
+    map["tel"] = _orderInfo.address.tel;
+    map["address"] = _orderInfo.address.pro+" "+_orderInfo.address.city+" "+_orderInfo.address.area+" "+_orderInfo.address.address;
+    map["gid"] = _orderInfo.id.toString();
+    map["nums"] = _nums;
+    map["content"] = _content;
+
+    NetUtils.requestAddOrder(map)
+        .then((res){
+
+        if(res.code==200){
+
+
+        }
+
+    });
   }
 
 

@@ -426,11 +426,55 @@ class NetUtils {
 
 
   ///
-  ///   提交订单详情
+  ///   下单详情  （此接口不是向后台提交数据的）
   ///
   ///
   static Future<BaseResult> requestOrderInfo(String id) async {
     String url = APPConfig.Server + "points/order_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+  ///
+  ///   提交订单  （向后台提交数据的）
+  ///
+  ///
+  static Future<BaseResult> requestAddOrder(Map map) async {
+    String url = APPConfig.Server + "points/add_order";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
+    return result;
+  }
+
+
+
+  ///
+  ///   我的订单列表
+  ///  page	是	string	页码，默认1
+  ///
+  static Future<BaseResult> requestMyOrderLists(String page) async {
+    String url = APPConfig.Server + "points/my_order_list";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return result;
+  }
+
+  ///
+  ///   我的订单详情
+  ///  id	是	string	订单ID
+  ///
+  static Future<BaseResult> requestMyOrderInfo(String id) async {
+    String url = APPConfig.Server + "points/my_order_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+  ///
+  ///   确认收货
+  ///  id	是	string	订单ID
+  ///
+  static Future<BaseResult> requestMyOrderConfirm(String id) async {
+    String url = APPConfig.Server + "points/confirm";
     BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
     return result;
   }
@@ -486,9 +530,9 @@ class NetUtils {
   ///   address	否	string	详细地址
   ///
   ///
-  static Future<BaseResult> requestEditAddress() async {
+  static Future<BaseResult> requestEditAddress(Map map) async {
     String url = APPConfig.Server + "points/edit_address";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
     return result;
   }
 
@@ -503,5 +547,26 @@ class NetUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
     return result;
   }
+
+
+  ///
+  ///    视频首页（移动端）
+  ///
+  static Future<BaseResult> requestVideosIndex() async {
+    String url = APPConfig.Server + "videos/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+
+  ///
+  ///   视频详情
+  ///
+  static Future<BaseResult> requestVideosInfo() async {
+    String url = APPConfig.Server + "videos/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
 
 }

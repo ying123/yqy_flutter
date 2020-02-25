@@ -26,10 +26,13 @@ import 'package:yqy_flutter/ui/login/login_home_page.dart';
 import 'package:yqy_flutter/ui/login/login_send_sms_page.dart';
 import 'package:yqy_flutter/ui/login/perfect_info_page.dart';
 import 'package:yqy_flutter/ui/shop/add_address_page.dart';
+import 'package:yqy_flutter/ui/shop/address_list_page.dart';
+import 'package:yqy_flutter/ui/shop/order_detail_page.dart';
 import 'package:yqy_flutter/ui/shop/order_list_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_buy_order_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_home_page.dart';
+import 'package:yqy_flutter/ui/shop/update_address_page.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
@@ -429,8 +432,22 @@ var integralListPageHandler = Handler(handlerFunc: (BuildContext context, Map<St
 });
 
 
+var orderDetailPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return OrderDetailPage(id);
+});
 
 
+var addressListPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return AddressListPage();
+});
+
+
+
+var updateAddressPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return UpdateAddressPage(id);
+});
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

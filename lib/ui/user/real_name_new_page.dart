@@ -252,7 +252,8 @@ class _RealNameNewPageState extends State<RealNameNewPage> {
           alignment: Alignment.center,
           child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
-        Expanded(child: TextFormField(
+        Expanded(
+            child: TextFormField(
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,

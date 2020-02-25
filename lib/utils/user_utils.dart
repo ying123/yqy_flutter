@@ -1,5 +1,6 @@
 import 'package:yqy_flutter/bean/user_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
+import 'package:yqy_flutter/ui/shop/bean/shop_buy_order_entity.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import './local_storage_utils.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
@@ -8,7 +9,7 @@ class UserUtils {
 
   static const USER_TOKEN_KEY = "USER_TOKEN__KEY";
   static const USER_INFO_KEY = "USER_INFO_KEY";
-
+  static const USER_ADDRESS_KEY = "USER_ADDRESS_KEY";
   static const USER_NAME_KEY = "USER_NAME_KEY";
 
 
@@ -51,6 +52,20 @@ class UserUtils {
   static UserInfoInfo getUserInfoX() {
     Map userJson = LocalStorage.getObject(USER_INFO_KEY);
     return userJson == null ? null : UserInfoInfo.fromJson(userJson);
+  }
+
+
+  ///
+  ///  当前 收货地址
+  ///
+  static  saveAddress(ShopBuyOrderInfoAddress orderInfoAddress) {
+    if (orderInfoAddress != null) {
+      LocalStorage.putObject(USER_ADDRESS_KEY, orderInfoAddress.toJson());
+    }
+  }
+  static ShopBuyOrderInfoAddress getAddress() {
+    Map orderInfoAddress = LocalStorage.getObject(USER_ADDRESS_KEY);
+    return orderInfoAddress == null ? null : ShopBuyOrderInfoAddress.fromJson(orderInfoAddress);
   }
 
 

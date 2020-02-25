@@ -142,12 +142,17 @@ class Routes {
   static String addAddressPage = "/addAddressPage"; //  添加收货地址页面
 
 
+  static String addressListPage = "/addressListPage"; //  收货地址列表管理页面
+
   static String taskListPage = "/taskListPage"; //  积分任务列表
 
   static String integralListPage = "/integralListPage"; //  积分明细列表
 
 
+  static String orderDetailPage = "/orderDetailPage"; //  订单详情页面
 
+
+  static String updateAddressPage = "/updateAddressPage"; //  修改地址页面
 
 
   static void configureRoutes(Router router) {
@@ -214,8 +219,9 @@ class Routes {
     router.define(addAddressPage, handler:addAddressPageHandler);
     router.define(taskListPage, handler:taskListPageHandler);
     router.define(integralListPage, handler:integralListPageHandler);
-
-
+    router.define(orderDetailPage, handler:orderDetailPageHandler);
+    router.define(addressListPage, handler:addressListPageHandler);
+    router.define(updateAddressPage, handler:updateAddressPageHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);
