@@ -1,14 +1,14 @@
-class VideoPageEntity {
+class DoctorVideoInfoEntity {
 	String msg;
 	int code;
-	VideoPageInfo info;
+	DoctorVideoInfoInfo info;
 
-	VideoPageEntity({this.msg, this.code, this.info});
+	DoctorVideoInfoEntity({this.msg, this.code, this.info});
 
-	VideoPageEntity.fromJson(Map<String, dynamic> json) {
+	DoctorVideoInfoEntity.fromJson(Map<String, dynamic> json) {
 		msg = json['msg'];
 		code = json['code'];
-		info = json['info'] != null ? new VideoPageInfo.fromJson(json['info']) : null;
+		info = json['info'] != null ? new DoctorVideoInfoInfo.fromJson(json['info']) : null;
 	}
 
 	Map<String, dynamic> toJson() {
@@ -22,7 +22,7 @@ class VideoPageEntity {
 	}
 }
 
-class VideoPageInfo {
+class DoctorVideoInfoInfo {
 	String image;
 	int uid;
 	String createTime;
@@ -31,14 +31,14 @@ class VideoPageInfo {
 	int pv;
 	int id;
 	String title;
-	VideoPageInfoUsers users;
+	DoctorVideoInfoInfoUsers users;
 	String desc;
 	String videoId;
-	List<VideoPageInfoVideoList> videoList;
+	List<DoctorVideoInfoInfoVideoList> videoList;
 
-	VideoPageInfo({this.image, this.uid, this.createTime, this.keywords, this.playUrl, this.pv, this.id, this.title, this.users, this.desc, this.videoId, this.videoList});
+	DoctorVideoInfoInfo({this.image, this.uid, this.createTime, this.keywords, this.playUrl, this.pv, this.id, this.title, this.users, this.desc, this.videoId, this.videoList});
 
-	VideoPageInfo.fromJson(Map<String, dynamic> json) {
+	DoctorVideoInfoInfo.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
 		uid = json['uid'];
 		createTime = json['create_time'];
@@ -47,11 +47,11 @@ class VideoPageInfo {
 		pv = json['pv'];
 		id = json['id'];
 		title = json['title'];
-		users = json['users'] != null ? new VideoPageInfoUsers.fromJson(json['users']) : null;
+		users = json['users'] != null ? new DoctorVideoInfoInfoUsers.fromJson(json['users']) : null;
 		desc = json['desc'];
 		videoId = json['video_id'];
 		if (json['video_list'] != null) {
-			videoList = new List<VideoPageInfoVideoList>();(json['video_list'] as List).forEach((v) { videoList.add(new VideoPageInfoVideoList.fromJson(v)); });
+			videoList = new List<DoctorVideoInfoInfoVideoList>();(json['video_list'] as List).forEach((v) { videoList.add(new DoctorVideoInfoInfoVideoList.fromJson(v)); });
 		}
 	}
 
@@ -77,23 +77,23 @@ class VideoPageInfo {
 	}
 }
 
-class VideoPageInfoUsers {
+class DoctorVideoInfoInfoUsers {
 	String realName;
 	String userPhoto;
 	int id;
-	VideoPageInfoUsersHospital hospital;
-	VideoPageInfoUsersJob job;
-	VideoPageInfoUsersDeparts departs;
+	DoctorVideoInfoInfoUsersHospital hospital;
+	DoctorVideoInfoInfoUsersJob job;
+	DoctorVideoInfoInfoUsersDeparts departs;
 
-	VideoPageInfoUsers({this.realName, this.userPhoto, this.id, this.hospital, this.job, this.departs});
+	DoctorVideoInfoInfoUsers({this.realName, this.userPhoto, this.id, this.hospital, this.job, this.departs});
 
-	VideoPageInfoUsers.fromJson(Map<String, dynamic> json) {
+	DoctorVideoInfoInfoUsers.fromJson(Map<String, dynamic> json) {
 		realName = json['realName'];
 		userPhoto = json['userPhoto'];
 		id = json['id'];
-		hospital = json['hospital'] != null ? new VideoPageInfoUsersHospital.fromJson(json['hospital']) : null;
-		job = json['job'] != null ? new VideoPageInfoUsersJob.fromJson(json['job']) : null;
-		departs = json['departs'] != null ? new VideoPageInfoUsersDeparts.fromJson(json['departs']) : null;
+		hospital = json['hospital'] != null ? new DoctorVideoInfoInfoUsersHospital.fromJson(json['hospital']) : null;
+		job = json['job'] != null ? new DoctorVideoInfoInfoUsersJob.fromJson(json['job']) : null;
+		departs = json['departs'] != null ? new DoctorVideoInfoInfoUsersDeparts.fromJson(json['departs']) : null;
 	}
 
 	Map<String, dynamic> toJson() {
@@ -114,12 +114,12 @@ class VideoPageInfoUsers {
 	}
 }
 
-class VideoPageInfoUsersHospital {
+class DoctorVideoInfoInfoUsersHospital {
 	String name;
 
-	VideoPageInfoUsersHospital({this.name});
+	DoctorVideoInfoInfoUsersHospital({this.name});
 
-	VideoPageInfoUsersHospital.fromJson(Map<String, dynamic> json) {
+	DoctorVideoInfoInfoUsersHospital.fromJson(Map<String, dynamic> json) {
 		name = json['name'];
 	}
 
@@ -130,12 +130,12 @@ class VideoPageInfoUsersHospital {
 	}
 }
 
-class VideoPageInfoUsersJob {
+class DoctorVideoInfoInfoUsersJob {
 	String name;
 
-	VideoPageInfoUsersJob({this.name});
+	DoctorVideoInfoInfoUsersJob({this.name});
 
-	VideoPageInfoUsersJob.fromJson(Map<String, dynamic> json) {
+	DoctorVideoInfoInfoUsersJob.fromJson(Map<String, dynamic> json) {
 		name = json['name'];
 	}
 
@@ -146,12 +146,12 @@ class VideoPageInfoUsersJob {
 	}
 }
 
-class VideoPageInfoUsersDeparts {
+class DoctorVideoInfoInfoUsersDeparts {
 	String name;
 
-	VideoPageInfoUsersDeparts({this.name});
+	DoctorVideoInfoInfoUsersDeparts({this.name});
 
-	VideoPageInfoUsersDeparts.fromJson(Map<String, dynamic> json) {
+	DoctorVideoInfoInfoUsersDeparts.fromJson(Map<String, dynamic> json) {
 		name = json['name'];
 	}
 
@@ -162,16 +162,16 @@ class VideoPageInfoUsersDeparts {
 	}
 }
 
-class VideoPageInfoVideoList {
+class DoctorVideoInfoInfoVideoList {
 	String image;
 	String createTime;
 	int pv;
 	int id;
 	String title;
 
-	VideoPageInfoVideoList({this.image, this.createTime, this.pv, this.id, this.title});
+	DoctorVideoInfoInfoVideoList({this.image, this.createTime, this.pv, this.id, this.title});
 
-	VideoPageInfoVideoList.fromJson(Map<String, dynamic> json) {
+	DoctorVideoInfoInfoVideoList.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
 		createTime = json['create_time'];
 		pv = json['pv'];

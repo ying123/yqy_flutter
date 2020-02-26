@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_details.dart';
+import 'package:yqy_flutter/ui/doctor/doctor_video_info.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_content.dart';
@@ -60,7 +61,6 @@ import 'package:yqy_flutter/ui/user/real_name_represent_page.dart';
 import 'package:yqy_flutter/ui/user/setting_page.dart';
 import 'package:yqy_flutter/ui/user/update_explain.dart';
 import 'package:yqy_flutter/ui/video/video_details.dart';
-import 'package:yqy_flutter/ui/video/video_page.dart';
 
 import 'package:yqy_flutter/ui/web/webview_page.dart';
 import '../utils/user_utils.dart';
@@ -102,9 +102,9 @@ var liveHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<S
 });
 
 
-var videoHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+/*var videoHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return VideoHomePage();
-});
+});*/
 
 
 var tabMedicalHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -448,6 +448,14 @@ var updateAddressPageHandler = Handler(handlerFunc: (BuildContext context, Map<S
   String id = params["id"]?.first;
   return UpdateAddressPage(id);
 });
+
+
+var doctorVideoInfoPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return DoctorVideoInfoPage(id);
+});
+
+
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

@@ -42,7 +42,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
   String _gid;// 	产品编号
 
-  String _nums = "1";// 	购买数量
+  int _nums = 1;// 	购买数量  默认为1
 
   String _content; // 备注
 
@@ -56,20 +56,11 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
     initEventBusListener();
   }
 
-
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-    initData();
-  }
-
   @override
   void dispose() {
     super.dispose();
     changeSubscription.cancel();
   }
-
 
 
   ///
@@ -79,13 +70,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
     changeSubscription =  eventBus.on<ShopAddressListInfoList>().listen((event) {
 
-
-            showToast("监听  收货地址的切换");
-
-
-            setState(() {
-              _orderInfo.address =   ShopBuyOrderInfo.fromJson(event.toJson()).address;
-            });
+          initData();
 
     });
 
@@ -266,18 +251,90 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
            Container(
              margin: EdgeInsets.all(setW(32)),
-             height: setH(300),
+             height: setH(330),
              child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
                children: <Widget>[
 
                new  Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: <Widget>[
-                     buildText("购买数量",size: 42),
-                     buildText("1",size: 38),
+                     Expanded(child: buildText("购买数量",size: 42)),
+                     Container(
+                       width: setW(273),
+                       height: setH(58),
+                       decoration: BoxDecoration(
+                         border: Border.all(color: Color(0xFFEEEEEE),width: setW(1))
+                       ),
+                       child: Row(
+
+
+                         children: <Widget>[
+                          Material(
+                            color: Colors.transparent,
+                            child:  InkWell(
+                              onTap: (){
+
+                                if(_nums>1){
+                                  setState(() {
+                                    _nums--;
+                                  });
+                                }else{
+                                  showToast("数量最小为1");
+                                }
+
+
+                              },
+                              child:   Container(
+                                width: setW(90),
+                                height: double.infinity,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: Border(right: BorderSide(color: Color(0xFFEEEEEE),width: setW(1)) ),
+                                ),
+                                child: Text("-",style: TextStyle(color: Color(0xFF999999),fontSize: setSP(40)),),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: setW(90),
+                            height: double.infinity,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border(right: BorderSide(color: Color(0xFFEEEEEE),width: setW(1)) ),
+                            ),
+                            child: Text(_nums.toString(),style: TextStyle(color: Color(0xFF333333),fontSize: setSP(40)),),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child:  InkWell(
+                              onTap: (){
+                                setState(() {
+                                  _nums++;
+                                });
+                              },
+                              child:   Container(
+                                width: setW(90),
+                                height: double.infinity,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: Border(right: BorderSide(color: Color(0xFFEEEEEE),width: setW(1)) ),
+                                ),
+                                child: Text("+",style: TextStyle(color: Color(0xFF999999),fontSize: setSP(40)),),
+                              ),
+                            ),
+                          ),
+
+                         ],
+
+                       ),
+
+                     )
+
+
                    ],
                  ),
+               cYM(setH(30)),
                new  Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: <Widget>[
@@ -312,7 +369,9 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                new  Row(
                  mainAxisAlignment: MainAxisAlignment.end,
                  children: <Widget>[
-                   buildText("共1件商品，合计",size: 38,color: "#FF999999"),
+                   buildText("共"+_nums.toString()+"件商品，合计 ",size: 38,color: "#FF999999"),
+                   buildText((_nums*int.parse(_orderInfo.points)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
+                   buildText(" 积分",size: 38,color: "#FF999999"),
                  ],
                )
 
@@ -340,7 +399,9 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
       child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          buildText("合计：",color: "#FF999999"),
+          buildText("合计: ",size: 38,color: "#FF999999"),
+          buildText((_nums*int.parse(_orderInfo.points)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
+          buildText(" 积分  ",size: 38,color: "#FF999999"),
          InkWell(
            onTap: (){
 
@@ -395,8 +456,8 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                 wrapImageUrl("", setW(127), setH(127)),
 
                 buildText("支付失败！"),
-
-                buildText("您的积分不足，快去做任务赚取积分吧",size: 29,color: "#FF999999"),
+                cYM(setH(10)),
+                buildText("您的积分不足，快去做任务赚取积分吧",size: 32,color: "#FF999999"),
 
                 Container(
                   alignment: Alignment.bottomCenter,
@@ -422,6 +483,8 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                         ),
                         onTap: (){
                           Navigator.pop(_);
+                          Navigator.pop(context);
+                          RRouter.push(context ,Routes.taskNewPage,{});
                         },
                       )),
 
@@ -480,7 +543,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
     map["tel"] = _orderInfo.address.tel;
     map["address"] = _orderInfo.address.pro+" "+_orderInfo.address.city+" "+_orderInfo.address.area+" "+_orderInfo.address.address;
     map["gid"] = _orderInfo.id.toString();
-    map["nums"] = _nums;
+    map["nums"] = _nums.toString();
     map["content"] = _content;
 
     NetUtils.requestAddOrder(map)

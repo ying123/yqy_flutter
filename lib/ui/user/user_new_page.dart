@@ -391,7 +391,9 @@ class _NewUserPageState extends State<NewUserPage> {
             case"积分专区":
               RRouter.push(context ,Routes.taskNewPage,{});
               break;
-
+            case"我的订单":
+               RRouter.push(context ,Routes.orderListPage,{},transition:TransitionType.cupertino);
+             break;
           }
 
 

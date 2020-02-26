@@ -97,7 +97,7 @@ class AppRequest{
 ///  新版-----------------------------------------------------------------------------------
   static const String PAGE_ROUTE_LIVE  = "4";//会议直播 类型
 
-
+  static const String PAGE_ROUTE_DOCTOR_VIDEO_INFO  = "20";//专家视频详情类型
 
 }
 

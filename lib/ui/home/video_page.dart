@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/home/bean/video_page_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,12 +29,16 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
   int viewType = 0;// 当前的排列方式  我的预约排列   0 gridview  1  listview
 
+
+  VideoPageInfo _videoPageInfo;
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
-
+      initData();
 
   }
 
@@ -40,7 +49,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
     key: _globalKey,
     backgroundColor: Colors.white,
 
-      body: Column(
+      body: _videoPageInfo==null?Container(): Column(
 
         children: <Widget>[
           Container(
@@ -52,7 +61,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
           buildAdView(context),
           cYM(ScreenUtil().setHeight(40)),
           buildScreenView(context),
-          Expanded(child: buildListView(new List()))
+          Expanded(child: buildListView(context))
 
         ]
       ),
@@ -65,10 +74,22 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
 
   Widget buildBannerView(BuildContext context) {
-
-    return Image.asset(wrapAssets("tab/tab_live_banner.png"),width: double.infinity,height: ScreenUtil().setHeight(420),fit: BoxFit.fill,);
-
+   return Container(
+     height: setH(420),
+     width: double.infinity,
+     child:new Swiper(
+       itemBuilder: (BuildContext context,int index){
+         return new Image.network(_videoPageInfo.bannerList[index].img,fit: BoxFit.fill,);
+       },
+       itemCount: _videoPageInfo.bannerList.length,
+       autoplay: true,
+       autoplayDelay: 5000,
+       layout: SwiperLayout.DEFAULT,
+     )
+   );
   }
+
+
 
   buildAdView(BuildContext context) {
 
@@ -76,8 +97,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
       alignment: Alignment.center,
       width: double.infinity,
       height: ScreenUtil().setHeight(173),
-      child: Image.asset(wrapAssets("ad_bg.png"),width: ScreenUtil().setWidth(1022),height: ScreenUtil().setHeight(173),fit: BoxFit.fill,),
-
+      child: Image.network(_videoPageInfo.ad[0].img,width: ScreenUtil().setWidth(1022),height: ScreenUtil().setHeight(173),fit: BoxFit.fill,),
     );
 
   }
@@ -150,15 +170,9 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
 
 
-  Widget buildListView(List  list){
+  Widget buildListView(BuildContext context){
 
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    return list==null?Container():viewType==0? GridView.count(
+    return _videoPageInfo.videoList==null?Container():viewType==0? GridView.count(
       shrinkWrap: true ,
       //水平子Widget之间间距
       crossAxisSpacing: ScreenUtil().setWidth(20),
@@ -170,24 +184,25 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
       crossAxisCount: 2,
       //子Widget宽高比例
       //子Widget列表
-      children: list.map((item) => buildItemView(item)).toList(),
+      children: _videoPageInfo.videoList.map((item) => buildItemView(item)).toList(),
     ): ListView.builder(
         shrinkWrap: true ,
        padding: EdgeInsets.all(0),
        // physics: new NeverScrollableScrollPhysics(),
-        itemCount: list.length,
+        itemCount: _videoPageInfo.videoList.length,
         itemBuilder: (context,index){
-          return getLiveItemView(context,list);
+          return getLiveItemView(context,_videoPageInfo.videoList[index]);
         }
     );
   }
 
-  Widget buildItemView(String string) {
+  Widget buildItemView(VideoPageInfoVideoList bean) {
 
 
     return  InkWell(
-      onTap: (){
 
+      onTap: (){
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
 
       },
       child: Container(
@@ -197,18 +212,18 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            wrapImageUrl("http:\/\/cdn2.yaoqiyuan.com\/upload\/adspic\/2019-12\/5dea039ac27a0.JPG", ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
+            wrapImageUrl(bean.image, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14), ScreenUtil().setHeight(26), ScreenUtil().setWidth(14), 0),
-              child: Text("中西医结合联合微创技术治疗普通外科疾病进展学习班暨安徽省中医药学会外科专业委员会2019年学术年会",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
+              child: Text(bean.title,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14),0, ScreenUtil().setWidth(14), 0),
               child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("2019-09-20",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
-                  Text("2269次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
+                  Text(bean.createTime,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
+                //  Text("2269次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
                 ],
               ),
             )
@@ -218,7 +233,6 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
       ),
     );
-
 
 
   }
@@ -426,12 +440,12 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
   ///
   ///   列表item
   ///
-  Widget getLiveItemView(context,List listBean){
+  Widget getLiveItemView(context,VideoPageInfoVideoList bean){
 
     return  GestureDetector(
 
       onTap: (){
-        //  RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.id});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
       },
 
       child: new Container(
@@ -442,7 +456,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
           children: <Widget>[
             // Icon(Icons.apps,size: 110,color: Colors.blueAccent,),
             //  wrapImageUrl(listBean.image,110.0, 110.0),
-            Image.asset(wrapAssets("tab/tab_live_img.png"),fit: BoxFit.fill,height: ScreenUtil().setHeight(215),width:ScreenUtil().setWidth(288)),
+            Image.network(bean.image,fit: BoxFit.fill,height: ScreenUtil().setHeight(215),width:ScreenUtil().setWidth(288)),
             //  new Image(image: new CachedNetworkImageProvider("http://via.placeholder.com/350x150"),width: 110,height: 110,color: Colors.black,),
             cXM(ScreenUtil().setHeight(20)),
             new Container(
@@ -452,7 +466,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      child: Text("湖南湘中医联盟肛肠疾病高峰论坛学术交流会",style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(37)),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                      child: Text(bean.title,style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(37)),maxLines: 2,overflow: TextOverflow.ellipsis,),
 
                     ),
                     new Row(
@@ -478,7 +492,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
                           children: <Widget>[
                             Icon(Icons.access_time,size: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text("2019-12-01  03:33:00",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                            Text(bean.createTime,style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
                           ],
 
                         ),
@@ -504,6 +518,25 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
 
     );
+
+  }
+
+  void initData() {
+
+    NetUtils.requestVideosIndex()
+        .then((res){
+
+         if(res.code==200){
+
+          setState(() {
+            _videoPageInfo = VideoPageInfo.fromJson(res.info);
+          });
+
+         }
+
+
+    });
+
 
   }
 }

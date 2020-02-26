@@ -5,6 +5,7 @@ import 'package:yqy_flutter/bean/update_version_entity.dart';
 import 'package:yqy_flutter/bean/upload_image_entity.dart';
 import 'package:yqy_flutter/bean/user_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
+import 'package:yqy_flutter/ui/doctor/bean/doctor_video_info_entity.dart';
 import 'package:yqy_flutter/ui/guide/bean/guide_index_entity.dart';
 import 'package:yqy_flutter/ui/guide/bean/guide_info_entity.dart';
 import 'package:yqy_flutter/ui/guide/bean/guide_lists_entity.dart';
@@ -14,6 +15,7 @@ import 'package:yqy_flutter/ui/home/bean/laws_deails_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_details_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
+import 'package:yqy_flutter/ui/home/bean/video_page_entity.dart';
 import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_index_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_info_entity.dart';
@@ -47,7 +49,6 @@ import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
-import 'package:yqy_flutter/ui/video/bean/video_page_entity.dart';
 
 class EntityFactory {
   static T generateOBJ<T>(json) {
@@ -67,6 +68,8 @@ class EntityFactory {
       return UserEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorInfoEntity") {
       return DoctorInfoEntity.fromJson(json) as T;
+    } else if (T.toString() == "DoctorVideoInfoEntity") {
+      return DoctorVideoInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "GuideIndexEntity") {
       return GuideIndexEntity.fromJson(json) as T;
     } else if (T.toString() == "GuideInfoEntity") {
@@ -85,6 +88,8 @@ class EntityFactory {
       return NewsDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "NewsListEntity") {
       return NewsListEntity.fromJson(json) as T;
+    } else if (T.toString() == "DoctorVideoInfoEntity") {
+      return DoctorVideoInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "NoticeHomeEntity") {
       return NoticeHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "TabNewsIndexEntity") {

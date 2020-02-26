@@ -511,9 +511,9 @@ class NetUtils {
   ///
   ///   id	是	string	收件地址ID
   ///
-  static Future<BaseResult> requestSetDefaultAddress() async {
+  static Future<BaseResult> requestSetDefaultAddress(String id) async {
     String url = APPConfig.Server + "points/set_default_address";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
     return result;
   }
 
@@ -535,6 +535,8 @@ class NetUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
     return result;
   }
+
+
 
 
   ///
@@ -560,11 +562,11 @@ class NetUtils {
 
 
   ///
-  ///   视频详情
+  ///   专家视频详情
   ///
-  static Future<BaseResult> requestVideosInfo() async {
+  static Future<BaseResult> requestVideosInfo(String id) async {
     String url = APPConfig.Server + "videos/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
     return result;
   }
 

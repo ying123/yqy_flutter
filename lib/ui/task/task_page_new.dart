@@ -186,7 +186,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
                     ],
                   ),
 
-
                 )
 
             ),
@@ -218,8 +217,8 @@ class _TaskNewPageState extends State<TaskNewPage> {
                       color: Color(0xFF999999),
                       width: ScreenUtil().setWidth(3),
                       height: ScreenUtil().setHeight(46),
-
                     ),
+
 
                     FlatButton.icon(
                       color: Colors.white,
@@ -420,7 +419,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
       child:   Text("兑换礼品",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(45),fontWeight: FontWeight.bold)),
     );
-    
+
   }
 
   buildBottomShopView(BuildContext context) {
@@ -450,7 +449,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
                 Text("中医药适宜技术培训班学分证书",style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
                 Text("100积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
                 FlatButton(onPressed: (){
-
+                  RRouter.push(context ,Routes.shopBuyOrderPage,{"id":"6"},transition:TransitionType.cupertino);
                 }, child:  Container(
                   alignment: Alignment.center,
                   width: ScreenUtil().setWidth(311),

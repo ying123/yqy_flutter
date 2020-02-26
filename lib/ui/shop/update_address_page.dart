@@ -380,7 +380,6 @@ class _UpdateAddressPageState extends State<UpdateAddressPage> {
 
         if(res.code==200){
 
-
             Navigator.pop(context);
 
         }

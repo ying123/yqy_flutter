@@ -83,9 +83,15 @@ class _AddressListPageState extends State<AddressListPage> {
             if(res.code==200){
 
 
-             setState(() {
-               _addressListInfo =   ShopAddressListInfo.fromJson(res.info);
-             });
+              if(mounted){
+
+                setState(() {
+                  _addressListInfo =   ShopAddressListInfo.fromJson(res.info);
+                });
+
+              }
+
+
 
             }
 
@@ -158,9 +164,8 @@ class _AddressListPageState extends State<AddressListPage> {
        onTap: (){
 
             // 发送消息   更换收货地址
-            eventBus.fire(list);
+            getUpdateAddressData(context,list);
 
-            Navigator.pop(context);
 
        },
 
@@ -232,6 +237,29 @@ class _AddressListPageState extends State<AddressListPage> {
         },
         child: buildText("+  添加新地址",size: 50,color: "#FF999999"),
       );
+
+  }
+
+  void getUpdateAddressData(BuildContext context,ShopAddressListInfoList bean) {
+
+
+
+    NetUtils.requestSetDefaultAddress(bean.id.toString())
+          .then((res){
+
+            if(res.code==200){
+              eventBus.fire(bean);
+              Navigator.pop(context);
+
+            }else{
+
+              showToast(res.msg);
+
+            }
+
+    });
+
+
 
   }
 }
