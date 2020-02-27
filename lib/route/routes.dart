@@ -154,7 +154,11 @@ class Routes {
 
   static String updateAddressPage = "/updateAddressPage"; //  修改地址页面
 
-  static String doctorVideoInfoPage = "/doctorVideoInfoPage"; //  专家视频页面
+
+  static String doctorVideoListPage = "/doctorVideoListPage"; //  专家视频列表页面
+
+
+  static String doctorVideoInfoPage = "/doctorVideoInfoPage"; //  专家视频详情页面
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -224,6 +228,7 @@ class Routes {
     router.define(addressListPage, handler:addressListPageHandler);
     router.define(updateAddressPage, handler:updateAddressPageHandler);
     router.define(doctorVideoInfoPage, handler:doctorVideoInfoPageHandler);
+    router.define(doctorVideoListPage, handler:doctorVideoListPageHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

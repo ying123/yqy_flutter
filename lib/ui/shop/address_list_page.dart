@@ -67,7 +67,6 @@ class _AddressListPageState extends State<AddressListPage> {
           cYM(setH(20)),
           buildAddTextView(context)
 
-
         ],
 
       )
@@ -211,7 +210,9 @@ class _AddressListPageState extends State<AddressListPage> {
              InkWell(
 
                onTap: (){
-                 RRouter.push(context ,Routes.updateAddressPage,{"id":list.id.toString()},transition:TransitionType.cupertino);
+
+                  RRouter.push(context ,Routes.updateAddressPage,{"id":list.id.toString()},transition:TransitionType.cupertino);
+
                },
                child: buildText("编辑",size: 42,color: "#FFFB7D39"),
              )

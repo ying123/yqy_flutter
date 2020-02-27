@@ -243,7 +243,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                   children: <Widget>[
                         buildText(_orderInfo.title.toString(),size: 42),
                         cYM(20),
-                        buildText(_orderInfo.points.toString()+"积分",size: 33,color: "#FF999999")
+                        buildText(_orderInfo.points==null?0:_orderInfo.points+"积分",size: 33,color: "#FF999999")
                   ],
                 ),
               ],
@@ -370,7 +370,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                  mainAxisAlignment: MainAxisAlignment.end,
                  children: <Widget>[
                    buildText("共"+_nums.toString()+"件商品，合计 ",size: 38,color: "#FF999999"),
-                   buildText((_nums*int.parse(_orderInfo.points)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
+                   buildText((_nums*int.parse(_orderInfo.points??0)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
                    buildText(" 积分",size: 38,color: "#FF999999"),
                  ],
                )
@@ -385,10 +385,10 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
           ],
         ),
 
-
     );
 
   }
+
 
 
   buildBottomView(BuildContext context) {
@@ -400,7 +400,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
       mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           buildText("合计: ",size: 38,color: "#FF999999"),
-          buildText((_nums*int.parse(_orderInfo.points)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
+          buildText((_nums*int.parse(_orderInfo.points??0)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
           buildText(" 积分  ",size: 38,color: "#FF999999"),
          InkWell(
            onTap: (){

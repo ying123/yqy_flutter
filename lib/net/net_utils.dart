@@ -571,4 +571,17 @@ class NetUtils {
   }
 
 
+
+  ///
+  ///   移动端首页接口
+  ///
+  static Future<BaseResult> requestIndexIndex() async {
+    String url = APPConfig.Server + "index/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+
+
+
 }

@@ -2,9 +2,11 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/home/bean/home_data_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/live_list_entity.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_home_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
@@ -39,12 +41,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   List<String> marqueeList ;
 
 
-  HomeDataEntity _homeDataEntity;
-
-  LiveListInfo _liveListEntity;
-
-  VideoListEntity _videoListEntity;
-
+  HomeIndexInfo _homeIndexInfo;
 
   ScrollController _scrollController = new ScrollController(); // 解决嵌套滑动冲突  设置统一滑动
 
@@ -67,32 +64,27 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   loadData () async{
 
-    Future.wait([
+      NetUtils.requestIndexIndex()
+          .then((res){
 
-    NetworkUtils.requestHomeData(), //轮播图 新闻
-    NetworkUtils.requestHosListData(1), // 热门
-    NetworkUtils.requestVideoListData(1),  // 往期
+            if(res.code==200){
 
-    ]).then((results){
+              _homeIndexInfo = HomeIndexInfo.fromJson(res.info);
 
-      int statusCode = int.parse(results[0].status);
+            }
 
+        setState(() {
+          _layoutState = loadStateByCode(res.code);
+        });
 
-      _homeDataEntity = HomeDataEntity.fromJson(results[0].info);
+      }).catchError((err){
 
-      _liveListEntity = LiveListInfo.fromJson(results[1].info);
+        setState(() {
+          _layoutState = loadStateByCode(-2);
+        });
 
-      _videoListEntity = VideoListEntity.fromJson(results[2].info);
-
-
-      setState(() {
-        _layoutState = loadStateByCode(statusCode);
       });
-      }).catchError((e){
-      setState(() {
-        _layoutState = loadStateByCode(-2);
-      });
-    });
+
 
   }
 
@@ -134,7 +126,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       this.loadData();
     },
     successWidget:
-    _homeDataEntity==null?Container():SmartRefresher(
+    _homeIndexInfo==null?Container():SmartRefresher(
           enablePullDown: true,
           enablePullUp: true,
           controller: _refreshController,
@@ -149,20 +141,17 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
             cYM(ScreenUtil().setHeight(25)),
 
-            getBannerView(_homeDataEntity.banner), //轮播图
-
-
-           getMarqueeView(_homeDataEntity.medicalNews),//跑马灯
-
+            getBannerView(_homeIndexInfo.bannerList), //轮播图
+            getMarqueeView(new List()),//跑马灯
             cYM(ScreenUtil().setHeight(80)),
             getGridBtnView(), //图片按钮
             cYM(ScreenUtil().setHeight(90)),
             getRowTextView("热门视频"),//热门会议标题栏
-            getHotVideo(_liveListEntity.xList??new List()),//热门会议视频横向列表
+            getHotVideo(_homeIndexInfo.hotVideo),//热门会议视频横向列表
             cYM(ScreenUtil().setHeight(12)),
             getRowTextView("特约专家"),//往期会议标题栏
             cYM(ScreenUtil().setHeight(12)),
-            getDocViews(_homeDataEntity.user??new List()),
+            getDocViews(_homeIndexInfo.recomDoctor),
             cYM(ScreenUtil().setHeight(12)),
             getRowTextView("最新资讯"),//往期会议标题栏
             cYM(ScreenUtil().setHeight(12)),
@@ -177,7 +166,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-  Widget getBannerView(List<HomeDataBanner> data) {
+  Widget getBannerView(List<HomeIndexInfoBannerList> data) {
 
 
   //  print("getBannerView:"+data.length.toString());
@@ -197,17 +186,17 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       getwidget: (index) {
         return new GestureDetector(
             child:  Image.network(
-              data[index % data.length].adFile,
+              data[index % data.length].img,
               fit: BoxFit.fill,
             ),
 
             onTap: () {
-              switch( data[index % data.length].adv_type){
-                case "broadcast":  //会议直播
-                  RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId": data[index % data.length].art_id},transition:TransitionType.cupertino);
+              switch(data[index % data.length].advType){
+                case 1:  //会议直播
+               //   RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId": data[index % data.length].art_id},transition:TransitionType.cupertino);
                   break;
-                case "period":  //视频会议
-                  RRouter.push(context, Routes.videoDetailsPage,{"reviewId": data[index % data.length].art_id});
+                case 0:  //视频会议
+               //   RRouter.push(context, Routes.videoDetailsPage,{"reviewId": data[index % data.length].art_id});
                   break;
               }
 
@@ -217,44 +206,9 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     );
   }
 
- /* Widget   getMarqueeView(List<HomeDatamedicalNews> data){
-
-    if(data==null){
-      return Container();
-    }else{
-      return  new Container(
-        padding: EdgeInsets.all(20),
-        height: ScreenUtil().setHeight(75),
-        alignment: Alignment.bottomLeft,
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            Image.asset(wrapAssets("home/icon_iv1.png"),width: ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(43),),
-            cXM(ScreenUtil().setWidth(27)),
-            Container(
-              width:  ScreenUtil().setWidth(452),
-              height: double.infinity,
-              child:  MyNoticeVecAnimation(
-                  duration: const Duration(milliseconds: 6000),
-                  messages: data.map((e)=>(e.title)).toList(),
-                  data: data,
-              ),
-            ),
-            cXM(ScreenUtil().setWidth(49)),
-            Text("2019-11-23 08:30:00",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
-            
-
-          ],
-
-        ),
-
-      );
-    }
-
-
-  }*/
 
   Widget   getMarqueeView(List<HomeDatamedicalNews> data){
+
 
     if(data==null){
       return Container();
@@ -310,7 +264,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             Expanded(
                 child: InkWell(
                   onTap: (){
-                      RRouter.push(context ,Routes.drugsCompanyHomePage,{});
+                      RRouter.push(context ,Routes.doctorVideoListPage,{});
                   },
                   child: Image.asset(wrapAssets("home/bg_doctor_video.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
                 )
@@ -374,7 +328,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   }
 
-  Widget getHotVideo(List<LiveListInfoList>  list){
+  Widget getHotVideo(List<HomeIndexInfoHotVideo>  list){
 
     return list==null?Container(): GridView.count(
       controller: _scrollController,
@@ -390,7 +344,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       crossAxisCount: 2,
       //子Widget宽高比例
       //子Widget列表
-      children: list.getRange(0,4).map((item) => itemVideoView(item)).toList(),
+      children: list.getRange(0,list.length).map((item) => itemVideoView(item)).toList(),
     );
   }
 
@@ -455,25 +409,25 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-  Widget getDocView(HomeDataUser bean){
+  Widget getDocView(HomeIndexInfoRecomDoctor bean){
     return InkWell(
 
       onTap: (){
-        RRouter.push(context, Routes.doctorHomePage,{"userId":bean.userId});
+       // RRouter.push(context, Routes.doctorHomePage,{"userId":bean.userId});
       },
       child: new Container(
             child: Row(
               children: <Widget>[
-                wrapImageUrl(bean.userPhoto, ScreenUtil().setWidth(220), ScreenUtil().setHeight(245)),
+                wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(220), ScreenUtil().setHeight(245)),
                 cXM(ScreenUtil().setWidth(29)),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
 
-                    Text(bean.realname,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),),
-                    Text(bean.tName??"外科",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35)),),
-                    Text(bean.jName??"主任中医师",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
+                    Text(bean.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),),
+                    Text(bean.departs==null?"":bean.departs.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35)),),
+                    Text(bean.job==null?"":bean.job.name,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
 
 
                   ],
@@ -495,12 +449,14 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   ///
   ///  热门视频 item
   ///
-  Widget itemVideoView(LiveListInfoList list) {
+  Widget itemVideoView(HomeIndexInfoHotVideo bean) {
+
 
 
     return  InkWell(
       onTap: (){
-        RRouter.push(context, Routes.livePaybackPage, {});
+     //   RRouter.push(context, Routes.livePaybackPage, {});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
       },
       child: Container(
         width: double.infinity,
@@ -509,18 +465,18 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            wrapImageUrl(list.image, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
+            wrapImageUrl(bean.image, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14), ScreenUtil().setHeight(26), ScreenUtil().setWidth(14), 0),
-              child: Text(list.title,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
+              child: Text(bean.title,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14),0, ScreenUtil().setWidth(14), 0),
               child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("2019-09-20",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
-                  Text("2269次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
+                  Text(bean.createTime,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
+                  Text(bean.pv.toString()+"次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
                 ],
               ),
             )
@@ -538,7 +494,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   ///
   ///  特约专家布局
   ///
- Widget getDocViews(List<HomeDataUser> list) {
+ Widget getDocViews(List<HomeIndexInfoRecomDoctor> list) {
 
    return list==null?Container(): GridView.builder(
        controller: _scrollController,
@@ -567,79 +523,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
 
 
-  ///
-  ///  资讯布局
-  ///
-  Widget getNewsItemView(BuildContext context,List xlist) {
-
-
-    return GestureDetector(
-
-      onTap: (){
-       // RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});
-      },
-      child: new Container(
-
-        color: Colors.white,
-
-        height: 90,
-
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-          children: <Widget>[
-            new Column(
-
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-              children: <Widget>[
-
-                new   Container(
-                    padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(40), 0),
-                    child:   Text("哪些范畴已扎堆？细数国际“高程度反复”...",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.w500),)
-                ),
-
-                new  Container(
-
-                  width: ScreenUtil().setWidth(600),
-
-                  padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0,0, 0),
-
-                  child:  new  Row(
-
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                    children: <Widget>[
-
-                      Text("2019-11-12  09:60:37",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
-
-                      Text("2690次阅读",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
-
-                    ],
-
-
-                  ),
-                ),
-
-
-                Divider(height: 1,color:Color(0xFFEEEEEE),)
-
-
-
-              ],
-
-
-            ),
-            Image.asset(wrapAssets("home/bg_doctor.png"),width: ScreenUtil().setWidth(202),height: ScreenUtil().setHeight(144),)
-          ],
-        )
-      ),
-    );
-
-
-
-  }
 
  Widget getNewsListView() {
 
@@ -647,10 +530,10 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
         controller: _scrollController,
         shrinkWrap: true ,
         physics: new NeverScrollableScrollPhysics(),
-        itemCount:10,
+        itemCount:_homeIndexInfo.newsList.length,
         itemBuilder: (context,index) {
 
-          return  getNewsItemView(context,null);
+          return  getNewsItemView(context,_homeIndexInfo.newsList[index]);
 
         }
 
@@ -658,7 +541,86 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   }
 
-  
+  ///
+  ///  资讯布局
+  ///
+  Widget getNewsItemView(BuildContext context,HomeIndexInfoNewsList xlist) {
+    return GestureDetector(
+
+      onTap: (){
+        RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});
+      },
+      child: new Container(
+
+        color: Colors.white,
+
+        height: setH(200),
+
+        child: new Column(
+
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+          children: <Widget>[
+
+
+            Row(
+
+              children: <Widget>[
+
+                Expanded(child:   Column(
+
+                  children: <Widget>[
+
+                    new   Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Text(xlist.title,style: TextStyle(color: Color(0xFF333333),fontSize: setSP(42),fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                    ),
+
+                    cYM(setH(20)),
+
+                    new  Container(
+
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+
+                      child:  new  Row(
+
+
+                        children: <Widget>[
+
+                          getContentText(xlist.createTime??""),
+
+                          xlist.createTime==null?Container():cXM(setW(100)),
+
+                          getContentText(xlist.pv.toString()+"次阅读"),
+
+                        ],
+
+                      ),
+                    ),
+
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                ),
+
+                xlist.image==null?Container():wrapImageUrl(xlist.image, setW(200), setH(120))
+
+              ],
+            ),
+            Divider(height: 1,color: Colors.black26,)
+
+
+
+          ],
+
+
+        ),
+
+      ),
+    );
+
+  }
 
 }
 

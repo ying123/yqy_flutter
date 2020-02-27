@@ -59,8 +59,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
   ///=============================================
 
 
-
-  final FijkPlayer player = FijkPlayer();
+  /// 播放器设置
+    final FijkPlayer player = FijkPlayer();
   StreamSubscription changeSubscription;
 
 
@@ -116,7 +116,6 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
           status==1?_isCollect = true : _isCollect = false;
         });
       }
-
     });
 
     // 点赞的状态

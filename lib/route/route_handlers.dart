@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_details.dart';
-import 'package:yqy_flutter/ui/doctor/doctor_video_info.dart';
+import 'package:yqy_flutter/ui/doctor/doctor_video_info_page.dart';
+import 'package:yqy_flutter/ui/doctor/doctor_video_list_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_content.dart';
@@ -453,6 +454,11 @@ var updateAddressPageHandler = Handler(handlerFunc: (BuildContext context, Map<S
 var doctorVideoInfoPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String id = params["id"]?.first;
   return DoctorVideoInfoPage(id);
+});
+
+
+var doctorVideoListPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return DoctorVideoListPage();
 });
 
 

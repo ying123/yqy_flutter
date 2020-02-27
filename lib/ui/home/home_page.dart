@@ -473,7 +473,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
               color: Colors.white,
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
               height: ScreenUtil().setHeight(105),
-              child: Row(
+              child:  new Row(
 
                 children: <Widget>[
                   FlatButton(
