@@ -117,6 +117,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return InkWell(
 
       onTap: (){
+
       },
       child: new  Container(
         padding: EdgeInsets.all(setW(40)),
@@ -149,7 +150,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   children: <Widget>[
 
                     buildText(bean.goods.title),
-                    buildText(bean.points+"积分"+"x"+bean.nums.toString(),size: 32,color: "#FF999999"),
+                    buildText(bean.points??""+"积分"+"x"+bean.nums.toString(),size: 32,color: "#FF999999"),
 
 
                   ],
@@ -160,7 +161,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
             new Container(
               alignment: Alignment.centerRight,
-              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points)).toString(),size: 26,color: "#FF999999"),
+              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 26,color: "#FF999999"),
 
             ),
 
@@ -283,7 +284,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             ),
           )),
 
-          Icon(Icons.arrow_forward_ios,size: setW(50),color: Colors.black26,),
+        //  Icon(Icons.arrow_forward_ios,size: setW(50),color: Colors.black26,),
 
         ],
       ),
@@ -299,7 +300,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       color: Colors.white,
       height: setH(288),
       child: Column(
-
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
 
           new  Row(

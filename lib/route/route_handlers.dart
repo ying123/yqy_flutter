@@ -10,6 +10,7 @@ import 'package:yqy_flutter/ui/doctor/doctor_video_list_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_content.dart';
+import 'package:yqy_flutter/ui/guide/pdf_view_page.dart';
 import 'package:yqy_flutter/ui/home/flfg_content.dart';
 import 'package:yqy_flutter/ui/home/gf_content.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
@@ -219,7 +220,7 @@ var hdDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, L
 
 var doctorHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String id = params["userId"]?.first;
-  return DoctorHomePage(userId: id,);
+  return DoctorDetailsPage(userId: id,);
 });
 
 
@@ -385,9 +386,6 @@ var collectHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
   return CollectHomePage();
 });
 
-var loginHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LoginHomePage();
-});
 
 var loginSendSmsPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String phone = params["phone"]?.first;
@@ -461,6 +459,15 @@ var doctorVideoListPageHandler = Handler(handlerFunc: (BuildContext context, Map
   return DoctorVideoListPage();
 });
 
+
+var loginPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LoginHomePage();
+});
+
+
+var pdfViewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return PdfViewPage();
+});
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

@@ -165,7 +165,7 @@ class HomeIndexInfoRecomDoctor {
 	int tIds;
 	String recomImage;
 	int id;
-	HomeIndexInfoRecomDoctorJob job;
+	String job;
 	HomeIndexInfoRecomDoctorDeparts departs;
 
 	HomeIndexInfoRecomDoctor({this.realName, this.jId, this.tIds, this.recomImage, this.id, this.job, this.departs});
@@ -176,7 +176,7 @@ class HomeIndexInfoRecomDoctor {
 		tIds = json['t_ids'];
 		recomImage = json['recom_image'];
 		id = json['id'];
-		job = json['job'] != null ? new HomeIndexInfoRecomDoctorJob.fromJson(json['job']) : null;
+		job = json['job'];
 		departs = json['departs'] != null ? new HomeIndexInfoRecomDoctorDeparts.fromJson(json['departs']) : null;
 	}
 
@@ -188,7 +188,7 @@ class HomeIndexInfoRecomDoctor {
 		data['recom_image'] = this.recomImage;
 		data['id'] = this.id;
 		if (this.job != null) {
-      data['job'] = this.job.toJson();
+      data['job'] = this.job;
     }
 		if (this.departs != null) {
       data['departs'] = this.departs.toJson();

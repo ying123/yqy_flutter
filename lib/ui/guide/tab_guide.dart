@@ -133,7 +133,8 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
     return GestureDetector(
 
       onTap: (){
-        RRouter.push(context, Routes.guideContentPage, {"id":xlist.id});
+       // RRouter.push(context, Routes.guideContentPage, {"id":xlist.id});
+        RRouter.push(context, Routes.pdfViewPage, {"id":xlist.id});
       },
       child: new Container(
 

@@ -83,6 +83,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return  new  Scaffold(
     backgroundColor: Colors.white,
       body: Stack(

@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:yqy_flutter/bean/base_result.dart';
+import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/route/r_router.dart';
@@ -26,23 +27,23 @@ class ResponseInterceptor extends InterceptorsWrapper {
   onResponse(Response response) {
     // RequestOptions options = response.request;
     try {
+
+
       if (response.statusCode!=500) { //http code
 
-
-
-         BaseResult   result = BaseResult.fromJsonMap(response.data);
-
+         BaseResult   result = BaseResult.fromJson(response.data);
 
         //token 过期
-        if(result.tokenCancel&&UserUtils.isLogin()){
-
+        if(result.code==4001){
           UserUtils.removeUserInfo();
-          showToast(result.message);
+          EasyLoading.showError(result.msg);
          RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
           MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
         //  MainHomePage.navigatorKey.currentState.pushNamed("/login");
         }
-        return result;
+          return result;
+
+
       }else {
         if (APPConfig.DEBUG) {
           print("ResponseInterceptor: $response.statusCode");
@@ -52,8 +53,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
        if (APPConfig.DEBUG) {
           print("ResponseInterceptor: $e.toString() + options.path");
         }
-       /* return BaseResult(response.data, response.statusCode, e.toString());*/
-       return BaseResult.fromJsonMap(response.data);
+         return BaseResult.fromJson(response.data);
     }
   }
 }

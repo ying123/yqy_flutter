@@ -5,24 +5,24 @@ import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DoctorHomePage extends StatefulWidget {
+class DoctorDetailsPage extends StatefulWidget {
 
   final String userId;
 
-  const DoctorHomePage({Key key, this.userId}) : super(key: key);
+  const DoctorDetailsPage({Key key, this.userId}) : super(key: key);
 
 
   @override
-  _DoctorHomePageState createState() => _DoctorHomePageState();
+  _DoctorDetailsPageState createState() => _DoctorDetailsPageState();
 }
 
-class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProviderStateMixin {
+class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTickerProviderStateMixin {
 
 
   var tabTitle = [
     '主页',
-    '文章',
     '视频',
+    '文章',
     '相关',
   ];
 
@@ -35,7 +35,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: 4);
-    loadData();
+   // loadData();
   }
   void loadData() {
 
@@ -60,7 +60,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
       body:  new DefaultTabController(
           length: tabTitle.length,
           child: Scaffold(
-            body: _doctorInfoInfo==null?Container():new NestedScrollView(
+            body: new NestedScrollView(
               headerSliverBuilder: (context, bool) {
                 return [
                   SliverAppBar(
@@ -159,7 +159,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
     return Container(
                 child: new Stack(
                   children: <Widget>[
-                    Image.network(_doctorInfoInfo.background,width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
+                    wrapImageUrl("",double.infinity,double.infinity),
                     Container(width: double.infinity,height: double.infinity,decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [Color(0xFF1DD5E6),Color(0xFF46AEF7)])
                     ),),
@@ -169,11 +169,11 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
                           SizedBox(
                             height: ScreenUtil().setHeight(240),
                           ),
-                          Image.network(_doctorInfoInfo.userPhoto,width: 80,height: 80,fit: BoxFit.fill,),
+                          wrapImageUrl("", setW(160), setW(160)),
                           cYM( ScreenUtil().setHeight(20)),
-                          Text(_doctorInfoInfo.realName,style: TextStyle(color: Colors.white,fontSize: 18),),
+                          Text("占位",style: TextStyle(color: Colors.white,fontSize: 18),),
                           cYM( ScreenUtil().setHeight(20)),
-                          Text(_doctorInfoInfo.hName,style: TextStyle(color: Colors.white,fontSize: 14),),
+                          Text("占位",style: TextStyle(color: Colors.white,fontSize: 14),),
                           cYM( ScreenUtil().setHeight(20)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -452,7 +452,9 @@ class _DoctorHomePageState extends State<DoctorHomePage> with SingleTickerProvid
   getVideoTabView(BuildContext context) {
 
     return  Container(
+      margin: EdgeInsets.fromLTRB(0, setH(0), 0, setH(20)),
       padding: EdgeInsets.all(setW(30)),
+      color: Colors.white,
       child:  new Column(
 
         children: <Widget>[

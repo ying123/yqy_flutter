@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -62,6 +63,7 @@ class _AddressListPageState extends State<AddressListPage> {
         children: <Widget>[
 
           buildDefaultAddress(context),
+          buildLine(),
           cYM(setH(30)),
           _addressListInfo==null?Container():buildAddressListView(context),
           cYM(setH(20)),
@@ -244,22 +246,35 @@ class _AddressListPageState extends State<AddressListPage> {
   void getUpdateAddressData(BuildContext context,ShopAddressListInfoList bean) {
 
 
-
+    EasyLoading.show();
     NetUtils.requestSetDefaultAddress(bean.id.toString())
           .then((res){
 
             if(res.code==200){
               eventBus.fire(bean);
+              EasyLoading.dismiss();
               Navigator.pop(context);
-
             }else{
 
-              showToast(res.msg);
+              EasyLoading.showError(res.msg);
 
             }
 
+    }).catchError((){
+      EasyLoading.dismiss();
     });
 
+
+
+  }
+
+  buildLine() {
+
+    return  Container(
+
+
+      child: Image.asset(wrapAssets("shop/address_line.png"),width: double.infinity,height: setH(6),fit: BoxFit.fill,),
+    );
 
 
   }

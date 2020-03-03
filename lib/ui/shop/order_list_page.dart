@@ -115,7 +115,7 @@ class _OrderListPageState extends State<OrderListPage> {
     return InkWell(
 
       onTap: (){
-         RRouter.push(context ,Routes.orderDetailPage,{"id":bean.id.toString},transition:TransitionType.cupertino);
+         RRouter.push(context ,Routes.orderDetailPage,{"id":bean.id},transition:TransitionType.cupertino);
       },
       child: new  Container(
         padding: EdgeInsets.all(setW(40)),
@@ -159,7 +159,7 @@ class _OrderListPageState extends State<OrderListPage> {
 
             new Container(
               alignment: Alignment.centerRight,
-              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 26,color: "#FF999999"),
+              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 30,color: "#FF999999"),
 
             ),
 

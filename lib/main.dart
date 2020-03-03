@@ -5,6 +5,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
@@ -17,6 +18,7 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_page.dart';
 import 'package:yqy_flutter/ui/home/video_page.dart';
+import 'package:yqy_flutter/ui/login/login_home_page.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/task/task_page_new.dart';
 import 'package:yqy_flutter/ui/user/user_new_page.dart';
@@ -83,32 +85,36 @@ class MainHomePage extends StatelessWidget {
           canLoadingText: "加载更多数据",
         ) ,
         child: OKToast( // Toast 全局配置
-            child:  MaterialApp(
-              title: "水燕Med",
-              navigatorKey: navigatorKey,
-              debugShowCheckedModeBanner: false,//不显示debug
-                localizationsDelegates: [
-                  ChineseCupertinoLocalizations.delegate, // 这里加上这个,是自定义的delegate
-                  DefaultCupertinoLocalizations.delegate, // 这个截止目前只包含英文
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                ],
-                supportedLocales: [
-                  const Locale("en", "US"),
-                  const Locale("zh", "CH"),
-                ],
-              theme: ThemeData(
-                  appBarTheme: AppBarTheme(
-                    brightness: Brightness.light,
-                  ),
-                  primaryColor: Colors.blue,
-                 backgroundColor: Colors.white,
+            child: FlutterEasyLoading(
 
-        ),
-              home: HomeMainPage() ,
-            //  home: UserUtils.isLogin()?HomeMainPage():LoginPage() ,
-              onGenerateRoute: RRouter.router().generator,
-            )
+                  child:  MaterialApp(
+                    title: "水燕Med",
+                    navigatorKey: navigatorKey,
+                    debugShowCheckedModeBanner: false,//不显示debug
+                    localizationsDelegates: [
+                      ChineseCupertinoLocalizations.delegate, // 这里加上这个,是自定义的delegate
+                      DefaultCupertinoLocalizations.delegate, // 这个截止目前只包含英文
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                    ],
+                    supportedLocales: [
+                      const Locale("en", "US"),
+                      const Locale("zh", "CH"),
+                    ],
+                    theme: ThemeData(
+                      appBarTheme: AppBarTheme(
+                        brightness: Brightness.light,
+                      ),
+                      primaryColor: Colors.blue,
+                      backgroundColor: Colors.white,
+
+                    ),
+                  //  home: HomeMainPage() ,
+                   home: UserUtils.isLogin()?HomeMainPage():LoginHomePage() ,
+                    onGenerateRoute: RRouter.router().generator,
+                  ),
+
+              )
         )
     );
   }

@@ -160,6 +160,9 @@ class Routes {
 
   static String doctorVideoInfoPage = "/doctorVideoInfoPage"; //  专家视频详情页面
 
+
+  static String pdfViewPage = "/pdfViewPage"; //  pdf页面
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");
@@ -215,7 +218,7 @@ class Routes {
     router.define(realNameNewPage, handler:realNameNewPageHandler);
     router.define(followHomePage, handler:followHomePageHandler);
     router.define(collectHomePage, handler:collectHomePageHandler);
-    router.define(loginHomePage, handler:loginHomePageHandler);
+    router.define(loginHomePage, handler:loginPageHandler);
     router.define(loginSendSmsPage, handler:loginSendSmsPageHandler);
     router.define(bindPhonePage, handler:bindPhonePageeHandler);
     router.define(perfectInfoPage, handler:perfectInfoPageHandler);
@@ -229,6 +232,8 @@ class Routes {
     router.define(updateAddressPage, handler:updateAddressPageHandler);
     router.define(doctorVideoInfoPage, handler:doctorVideoInfoPageHandler);
     router.define(doctorVideoListPage, handler:doctorVideoListPageHandler);
+    router.define(pdfViewPage, handler:pdfViewPageHandler);
+
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:yqy_flutter/bean/base_result.dart';
+import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -12,6 +12,9 @@ import 'dart:typed_data';
 ///
 ///
 class NetUtils {
+
+
+
   ///
   ///   获取验证码接口
   ///

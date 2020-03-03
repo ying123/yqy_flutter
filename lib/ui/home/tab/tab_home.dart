@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
@@ -33,8 +34,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
 
   //页面加载状态，默认为加载中
-  LoadState _layoutState ;
-
+  LoadState _layoutState = LoadState.State_Loading;
 
   RefreshController _refreshController ;
 
@@ -49,9 +49,9 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   void initState() {
     // TODO: implement initState
     super.initState();
-    _layoutState = LoadState.State_Loading;
-    _refreshController  = RefreshController(initialRefresh: false);
     loadData();
+    _refreshController  = RefreshController(initialRefresh: false);
+
   }
 
 
@@ -62,28 +62,26 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     _refreshController.dispose();
   }
 
-  loadData () async{
+ void loadData () async{
 
-      NetUtils.requestIndexIndex()
-          .then((res){
 
-            if(res.code==200){
+    NetUtils.requestIndexIndex()
+        .then((res){
 
+
+          if(res.code==200){
+
+            setState(() {
               _homeIndexInfo = HomeIndexInfo.fromJson(res.info);
+              _layoutState = loadStateByCode(res.code);
+            });
 
-            }
+          }
 
-        setState(() {
-          _layoutState = loadStateByCode(res.code);
-        });
+    }).catchError((err){
+      _layoutState = loadStateByCode(-2);
+    });
 
-      }).catchError((err){
-
-        setState(() {
-          _layoutState = loadStateByCode(-2);
-        });
-
-      });
 
 
   }
@@ -115,7 +113,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
 
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
-    return Scaffold(
+    return  new Scaffold(
       backgroundColor: Colors.white,
       body: LoadStateLayout(
         state: _layoutState,
@@ -413,7 +411,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     return InkWell(
 
       onTap: (){
-       // RRouter.push(context, Routes.doctorHomePage,{"userId":bean.userId});
+         RRouter.push(context, Routes.doctorHomePage,{"userId":bean.id});
       },
       child: new Container(
             child: Row(
@@ -427,7 +425,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
                     Text(bean.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),),
                     Text(bean.departs==null?"":bean.departs.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35)),),
-                    Text(bean.job==null?"":bean.job.name,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
+                    Text(bean.job==null?"":bean.job,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
 
 
                   ],
@@ -604,7 +602,8 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                 ),
                 ),
 
-                xlist.image==null?Container():wrapImageUrl(xlist.image, setW(200), setH(120))
+                xlist.image==null?Container():wrapImageUrl(xlist.image, setW(200), setH(120)),
+                cXM(setW(20))
 
               ],
             ),

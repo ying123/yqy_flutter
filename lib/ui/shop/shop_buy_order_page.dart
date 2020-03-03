@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -63,6 +64,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
   }
 
 
+
   ///
   ///  监听  收货地址的切换
   ///
@@ -77,13 +79,12 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+
       appBar: AppBar(
-        
+
         title: Text("提交订单"),
       ),
 
@@ -91,14 +92,14 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
         children: <Widget>[
 
-
           Expanded(child:  ListView(
             shrinkWrap: true,
             children: <Widget>[
 
               // 添加地址
               buildAddAddressView(context),
-
+              buildLine(),
+              cYM(setH(40)),
               // 商品信息
               buildShopInfoView(context),
             ],
@@ -110,8 +111,8 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
       )
 
-      
-      
+
+
     );
   }
 
@@ -139,12 +140,10 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
         _orderInfo.address = UserUtils.getAddress();
       }
 
-
       // 如果id 等于null 表示之前没有添加过地址
       return _orderInfo.address.id==null? Container(
         color: Colors.white,
         padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
-        margin: EdgeInsets.only(bottom: setH(40)),
         height: setH(173),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +158,6 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                 RRouter.push(context ,Routes.addAddressPage,{},transition:TransitionType.cupertino);
 
               },
-
               child:   Container(
                 width: setW(288),
                 height: setH(86),
@@ -181,10 +179,8 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
         },
         child: Container( // 显示之前填写的地址信息
-
           color: Colors.white,
           padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
-          margin: EdgeInsets.only(bottom: setH(40)),
           height: setH(180),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -219,7 +215,16 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
   }
 
+  buildLine() {
 
+    return  Container(
+
+
+      child: Image.asset(wrapAssets("shop/address_line.png"),width: double.infinity,height: setH(6),fit: BoxFit.fill,),
+    );
+
+
+  }
   ///
   ///  商品信息
   ///
@@ -231,19 +236,18 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
         child: Column(
 
           children: <Widget>[
-
           new  Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
 
-                wrapImageUrl(_orderInfo.image, setW(260), setH(210)),
+                wrapImageUrl(_orderInfo.image??"", setW(260), setH(210)),
                 cXM(setW(40)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                        buildText(_orderInfo.title.toString(),size: 42),
+                        buildText(_orderInfo.title.toString()??"",size: 42),
                         cYM(20),
-                        buildText(_orderInfo.points==null?0:_orderInfo.points+"积分",size: 33,color: "#FF999999")
+                        buildText((_orderInfo.points??"0")+"积分",size: 33,color: "#FF999999")
                   ],
                 ),
               ],
@@ -303,7 +307,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                             decoration: BoxDecoration(
                               border: Border(right: BorderSide(color: Color(0xFFEEEEEE),width: setW(1)) ),
                             ),
-                            child: Text(_nums.toString(),style: TextStyle(color: Color(0xFF333333),fontSize: setSP(40)),),
+                            child: Text(_nums.toString()??"0",style: TextStyle(color: Color(0xFF333333),fontSize: setSP(40)),),
                           ),
                           Material(
                             color: Colors.transparent,
@@ -370,7 +374,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                  mainAxisAlignment: MainAxisAlignment.end,
                  children: <Widget>[
                    buildText("共"+_nums.toString()+"件商品，合计 ",size: 38,color: "#FF999999"),
-                   buildText((_nums*int.parse(_orderInfo.points??0)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
+                   buildText((_nums*int.parse(_orderInfo.points??"0")).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
                    buildText(" 积分",size: 38,color: "#FF999999"),
                  ],
                )
@@ -393,19 +397,17 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
   buildBottomView(BuildContext context) {
 
-    return Container(
+    return _orderInfo==null?Container(): Container(
       color: Colors.white,
       height: setH(150),
       child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           buildText("合计: ",size: 38,color: "#FF999999"),
-          buildText((_nums*int.parse(_orderInfo.points??0)).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
+          buildText((_nums*int.parse(_orderInfo.points??"0")).toString(),size: 46,color: "#FFFA994C",fontWeight: FontWeight.w500),
           buildText(" 积分  ",size: 38,color: "#FF999999"),
          InkWell(
            onTap: (){
-
-              showPayFailDialog(context);
               uploadOrderData();
            },
            child: new  Container(
@@ -422,7 +424,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
          ),
           cXM(setW(40))
-          
+
         ],
       ),
 
@@ -433,7 +435,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
 
   ///
-  ///
+  ///  支付失败的弹窗
   ///
   void showPayFailDialog(BuildContext context) {
 
@@ -447,16 +449,15 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                 borderRadius: BorderRadius.all(Radius.circular(setW(12)))
             ),
             margin: EdgeInsets.fromLTRB(setW(100), setW(800), setW(100), setW(850)),
-            child: Column(
+            child:  new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                cYM(setH(40)),
+                cYM(setH(20)),
 
-                wrapImageUrl("", setW(127), setH(127)),
-
+                Image.asset(wrapAssets("pay/error.png"),width: double.infinity,height:setH(127),),
                 buildText("支付失败！"),
-                cYM(setH(10)),
+                cYM(setH(15)),
                 buildText("您的积分不足，快去做任务赚取积分吧",size: 32,color: "#FF999999"),
 
                 Container(
@@ -505,8 +506,58 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
         )
     );
-    
+
   }
+
+
+  ///
+  ///  支付成功的弹窗
+  ///
+  void showPaySuccessDialog(BuildContext context) {
+
+
+    showDialog(context: context,
+        builder: (_)=>Material(
+          color: Colors.transparent,
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(setW(12)))
+            ),
+            margin: EdgeInsets.fromLTRB(setW(100), setW(800), setW(100), setW(850)),
+            child:  new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                cYM(setH(20)),
+
+                Image.asset(
+                  wrapAssets("pay/success.png"), width: double.infinity,
+                  height: setH(127),),
+                buildText("支付成功", color: "#FFFA994C", size: 40),
+                cYM(setH(15)),
+                buildText("您的订单会尽快发货，请耐心等待", size: 35, color: "#FF999999"),
+
+              ],
+
+            ),
+
+
+          ),
+
+        )
+    );
+
+    // 延迟两秒 关闭
+     Future.delayed(Duration(seconds: 2),(){
+       Navigator.pop(context);
+       Navigator.pop(context);
+     });
+
+
+  }
+
 
   void initData() {
 
@@ -550,7 +601,14 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
         .then((res){
 
         if(res.code==200){
+          showPaySuccessDialog(context);
+        }else if(res.code==400){
 
+           showPayFailDialog(context);
+
+        }else{
+
+          EasyLoading.showError(res.msg);
 
         }
 

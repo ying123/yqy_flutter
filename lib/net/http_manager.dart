@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:package_info/package_info.dart';
-import 'package:yqy_flutter/bean/base_result.dart';
+import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'interceptors/logs_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
@@ -70,7 +70,7 @@ class HttpManager {
       if (e.response != null) {
         response = e.response;
       } else {
-        response = Response(statusCode: 999, statusMessage: "请求失败,稍后再试！");
+        response = Response(statusCode: 4001, statusMessage: "请求失败,稍后再试！");
       }
 
       if (e.type == DioErrorType.CONNECT_TIMEOUT ||
@@ -79,7 +79,7 @@ class HttpManager {
         response.statusMessage = "请求超时,请稍后再试!";
       }
       response.data =
-          BaseResult(null, response.statusCode, response.statusMessage);
+          BaseResult(msg: response.statusMessage,code: response.statusCode);
     }
 
 
@@ -104,7 +104,7 @@ class HttpManager {
       if (e.response != null) {
         response = e.response;
       } else {
-        response = Response(statusCode: 999, statusMessage: "请求失败,稍后再试！");
+        response = Response(statusCode: 4001, statusMessage: "请求失败,稍后再试！");
       }
 
       if (e.type == DioErrorType.CONNECT_TIMEOUT ||
@@ -113,7 +113,7 @@ class HttpManager {
         response.statusMessage = "请求超时,请稍后再试!";
       }
       response.data =
-          BaseResult(null, response.statusCode, response.statusMessage);
+          BaseResult(msg: response.statusMessage,code: response.statusCode);
     }
 
     return response.data;

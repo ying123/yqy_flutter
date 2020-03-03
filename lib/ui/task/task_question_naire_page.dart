@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:yqy_flutter/bean/base_result.dart';
+import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/task/bean/task_question_entity.dart';
@@ -297,7 +297,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
 
     Response response =  await _dio.post(APPConfig.Server + "task/complete_question_task",data: questionBean.toJson());
 
-    BaseResult fromJsonMap = BaseResult.fromJsonMap(response.data);
+    BaseResult fromJsonMap = BaseResult.fromJson(response.data);
 
     showToast(fromJsonMap.message);
 

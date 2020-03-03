@@ -80,7 +80,7 @@ class UserUtils {
 
   static bool isLogin() {
 
-    var res = getToken()== null ? false : true;
+    var res = getToken()== "" ? false : true;
     return res;
   }
 }

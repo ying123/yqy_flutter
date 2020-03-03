@@ -133,6 +133,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             title:  buildTopView(),
             elevation: 0,
             titleSpacing: 0,
+            automaticallyImplyLeading: false,
           ),
 
           body: new Column(

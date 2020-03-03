@@ -61,6 +61,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
 
   /// 播放器设置
     final FijkPlayer player = FijkPlayer();
+
   StreamSubscription changeSubscription;
 
 
@@ -68,12 +69,12 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadData();
-    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+    loadData(widget.id);
+    changeSubscription =  eventBus.on<DoctorVideoInfoInfoVideoList>().listen((event) {
       setState(() {
-        player.reset().then((_){
-          player.setDataSource(event.url, autoPlay: true);
-        });
+
+          loadData(event.id.toString());
+
 
       });
     });
@@ -89,62 +90,62 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
 
 
 
-  void loadData() async{
+  void loadData(String id) async{
 
-    // 当前页面的数据
-    NetUtils.requestVideosInfo(widget.id)
-        .then((res) {
 
-      if(res.code==200){
-        _doctorVideoInfoInfo = DoctorVideoInfoInfo.fromJson(res.info);
+
+    Future.wait([
+
+      // 当前页面的数据
+      NetUtils.requestVideosInfo(id),
+      // 收藏的状态
+      NetUtils.requestCollectCheckStatus(AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id),
+      // 点赞的状态
+      NetUtils.requestGoodCheckStatus(AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id),
+      // 评论列表
+      NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id,_commentPage.toString())
+
+    ]).then((results){
+
+      if(results[0].code==200){
+        _doctorVideoInfoInfo = DoctorVideoInfoInfo.fromJson(results[0].info);
+        if(player.state==FijkState.idle){
+          player.setDataSource(_doctorVideoInfoInfo.playUrl, autoPlay: true);
+        }else{
+          player.reset().then((_){
+            player.setDataSource(_doctorVideoInfoInfo.playUrl, autoPlay: true);
+          });
+        }
       }
+
+      if(results[1].code==200){
+        StatusInfo   info =  StatusInfo.fromJson((results[1].info));
+        int  status = info.status;
+        _cancelCollect = info.id.toString();
+        status==1?_isCollect = true : _isCollect = false;
+      }
+
+
+      if(results[2].code==200){
+        StatusInfo   info =  StatusInfo.fromJson(results[2].info);
+        int  status = info.status;
+        _cancelLike = info.id.toString();
+        status==1?_isLike = true : _isLike = false;
+      }
+
+
+      if(results[3].code==200){
+        _commentListInfo =  CommentListInfo.fromJson(results[3].info);
+      }
+
 
       setState(() {
-        player.setDataSource(_doctorVideoInfoInfo.playUrl, autoPlay: true);
-        _layoutState = loadStateByCode(res.code);
+        _layoutState = loadStateByCode(results[0].code);
       });
-    });
-    // 收藏的状态
-    NetUtils.requestCollectCheckStatus(AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id)
-        .then((res) {
-
-      if(res.code==200){
-        setState(() {
-          StatusInfo   info =  StatusInfo.fromJson(res.info);
-          int  status = info.status;
-          _cancelCollect = info.id.toString();
-          status==1?_isCollect = true : _isCollect = false;
-        });
-      }
-    });
-
-    // 点赞的状态
-    NetUtils.requestGoodCheckStatus(AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id)
-        .then((res) {
-
-      if(res.code==200){
-
-        setState(() {
-          StatusInfo   info =  StatusInfo.fromJson(res.info);
-          int  status = info.status;
-          _cancelLike = info.id.toString();
-          status==1?_isLike = true : _isLike = false;
-
-        });
-      }
-    });
-    // 评论列表
-    NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id,_commentPage.toString())
-        .then((res) {
-
-      if(res.code==200){
-
-        setState(() {
-          _commentListInfo =  CommentListInfo.fromJson(res.info);
-        });
-      }
 
     });
+
+
   }
 
   @override
@@ -160,7 +161,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
           setState(() {
             _layoutState = LoadState.State_Loading;
           });
-          this.loadData();
+          this.loadData(widget.id);
         },
         successWidget:_doctorVideoInfoInfo==null?Container(): Stack(
           alignment: Alignment.bottomCenter,
@@ -665,6 +666,12 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
 
       onTap: (){
         //  RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.id});
+
+     //   RRouter.push(context, Routes.doctorVideoInfoPage,{"id": listBean.id.toString()});
+
+        eventBus.fire(listBean);
+
+
       },
 
       child: new Container(

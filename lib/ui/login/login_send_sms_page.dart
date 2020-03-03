@@ -228,7 +228,7 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
           //已注册直接登录
           if(status == 1){
             UserUtils.saveToken(_loginInfo.token.toString());
-            RRouter.push(context, Routes.homePage, {"phone":phone,"code":code},clearStack: false);
+            RRouter.push(context, Routes.homePage, {"phone":phone,"code":code},clearStack: true);
          // 未注册完善资料
           }else{
             RRouter.push(context, Routes.perfectInfoPage, {"phone":phone,"code":code},clearStack: false);

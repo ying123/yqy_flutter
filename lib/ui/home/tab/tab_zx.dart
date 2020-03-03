@@ -69,7 +69,6 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
     
     NetUtils.requestNewsIndex()
         .then((res){
-
        if(res.code==200){
 
          setState(() {
@@ -83,8 +82,6 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
            // 通知上级页面  重置数据 显示全部分类
            eventBus.fire(new EventBusChangeNew(null));
          });
-
-
 
 
        }
@@ -216,7 +213,9 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
                  ),
                  ),
 
-                xlist.image.isEmpty?Container():wrapImageUrl(xlist.image, setW(200), setH(120))
+                xlist.image.isEmpty?Container():wrapImageUrl(xlist.image, setW(200), setH(120)),
+
+                cXM(setW(20))
 
               ],
             ),
