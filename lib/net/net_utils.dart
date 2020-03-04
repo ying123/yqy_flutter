@@ -110,6 +110,23 @@ class NetUtils {
     return result;
   }
 
+  ///
+  ///   医生实名认证
+  ///
+  static Future<BaseResult> requestCertificationDoctor(Map<String, dynamic> map) async {
+    String url = APPConfig.Server + "users/certification_doctor";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
+
+  ///
+  ///   代表实名认证
+  ///
+  static Future<BaseResult> requestCertificationStaff(Map<String, dynamic> map) async {
+    String url = APPConfig.Server + "users/certification_staff";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    return result;
+  }
 
   ///
   ///  获取医生的职称列表
@@ -123,10 +140,11 @@ class NetUtils {
 
 
   ///
-  ///  个人中心接口
+  ///  个人中心接口(医生和代表  合为一个)
+  ///  regType   用户类型 1医生 2推广经理（代表）
   ///
-  static Future<BaseResult> requestIndex() async {
-    String url = APPConfig.Server + "users/index_doctor";
+  static Future<BaseResult> requestIndex(int regType) async {
+    String url = APPConfig.Server + (regType==1?"users/index_doctor":"users/index_staff");
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
     return result;
   }

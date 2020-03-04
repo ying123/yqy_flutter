@@ -58,7 +58,6 @@ import 'package:yqy_flutter/ui/user/my_integral_detail_page.dart';
 import 'package:yqy_flutter/ui/user/my_integral_page.dart';
 import 'package:yqy_flutter/ui/user/personal_page.dart';
 import 'package:yqy_flutter/ui/user/real_name_doctor_page.dart';
-import 'package:yqy_flutter/ui/user/real_name_new_page.dart';
 import 'package:yqy_flutter/ui/user/real_name_represent_page.dart';
 import 'package:yqy_flutter/ui/user/setting_page.dart';
 import 'package:yqy_flutter/ui/user/update_explain.dart';
@@ -224,10 +223,6 @@ var doctorHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, 
 });
 
 
-var realNameHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  String id = params["userId"]?.first;
-  return RealNamePage();
-});
 
 var feedBackHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String id = params["userId"]?.first;
@@ -375,7 +370,7 @@ var drugsCompanyDetailPageHandler = Handler(handlerFunc: (BuildContext context, 
 
 
 var realNameNewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return RealNameNewPage();
+  return RealNameDoctorPage();
 });
 
 var followHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

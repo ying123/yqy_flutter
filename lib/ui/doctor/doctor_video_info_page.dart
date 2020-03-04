@@ -70,6 +70,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
     // TODO: implement initState
     super.initState();
     loadData(widget.id);
+    initPlayerSetting();
     changeSubscription =  eventBus.on<DoctorVideoInfoInfoVideoList>().listen((event) {
       setState(() {
 
@@ -105,7 +106,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
       // 评论列表
       NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id,_commentPage.toString())
 
-    ]).then((results){
+    ]).then((results) async {
 
       if(results[0].code==200){
         _doctorVideoInfoInfo = DoctorVideoInfoInfo.fromJson(results[0].info);
@@ -1288,6 +1289,28 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
           }
 
     });
+
+  }
+
+
+  ///
+  ///  设置参数  优化视频播放加载速度
+  ///
+  Future<void> initPlayerSetting() async {
+
+    await player.applyOptions(
+        FijkOption()
+          ..setFormatOption('flush_packets', 1)
+          ..setFormatOption('analyzemaxduration', 100)
+          ..setFormatOption('analyzeduration', 1)
+          ..setCodecOption('skip_loop_filter', 48)
+          ..setPlayerOption('start-on-prepared', 1)
+          ..setPlayerOption('packet-buffering', 0)
+          ..setPlayerOption('framedrop', 1)
+          ..setPlayerOption('enable-accurate-seek', 1)
+          ..setPlayerOption('find_stream_info', 0)
+          ..setPlayerOption('render-wait-start', 1)
+    );
 
   }
 }

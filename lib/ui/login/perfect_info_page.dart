@@ -562,14 +562,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     map["realName"] = realName;
 
 
-    // 医院
-    if(hospital_name.isEmpty){
-      showToast("请先输入医院名称");
-      return;
-    }
-    map["hospital_name"] = hospital_name;
-    map["hospital_id"] = 0;
-
     // 地区
     if(_address.isEmpty||_address=="选择地区"){
       showToast("请先选择地区");
@@ -578,6 +570,18 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     map["provinceId"] = _provinceId;
     map["cityId"] = _cityId;
     map["areaId"] = _areaId;
+
+
+    // 医院
+    if(hospital_name.isEmpty){
+      showToast("请先输入医院名称");
+      return;
+    }
+    map["hospital_name"] = hospital_name;
+    map["hospital_id"] = 0;
+
+
+
 
     // 科室
     if(_department.isEmpty||_department=="选择科室"){

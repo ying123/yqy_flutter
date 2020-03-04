@@ -3,9 +3,11 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/ui/home/bean/video_page_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class VideoPage extends StatefulWidget {
   @override
@@ -46,12 +48,13 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return Scaffold(
+
     key: _globalKey,
     backgroundColor: Colors.white,
-
       body: _videoPageInfo==null?Container(): Column(
 
         children: <Widget>[
+
           Container(
             height: ScreenUtil().setHeight(80),
             color: Colors.blue[300],
@@ -59,7 +62,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
           buildBannerView(context),
           cYM(ScreenUtil().setHeight(20)),
           buildAdView(context),
-          cYM(ScreenUtil().setHeight(40)),
+          cYM(ScreenUtil().setHeight(20)),
           buildScreenView(context),
           Expanded(child: buildListView(context))
 
@@ -90,7 +93,6 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
   }
 
 
-
   buildAdView(BuildContext context) {
 
     return Container(
@@ -101,6 +103,8 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
     );
 
   }
+
+
 
   Widget buildScreenView(BuildContext context) {
 
@@ -539,4 +543,36 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
 
   }
+}
+
+
+///
+///  悬停布局
+///
+class PersistentDelegate extends SliverPersistentHeaderDelegate {
+  final Widget widget;
+  final Color color;
+
+  const PersistentDelegate(this.widget, {this.color})
+      : assert(widget != null);
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset,
+      bool overlapsContent) {
+    return new Container(
+      child: widget,
+      color: color,
+    );
+  }
+
+  @override
+  bool shouldRebuild(SliverTabBarDelegate oldDelegate) {
+    return false;
+  }
+
+  @override
+  double get maxExtent => setH(420);
+
+  @override
+  double get minExtent => setH(420);
 }

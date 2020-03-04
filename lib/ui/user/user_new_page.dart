@@ -4,6 +4,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/user/bean/user_home_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
@@ -16,7 +17,10 @@ class NewUserPage extends StatefulWidget {
 
 class _NewUserPageState extends State<NewUserPage> {
 
-  UserInfoInfo _info;
+
+  UserInfoInfo _userInfoInfo; // 用户的信息 包含角色类型
+
+  UserHomeInfo _info; // 用户首页的信息 根据用户信息返回的角色类型 请求相应的数据
 
 
   @override
@@ -96,7 +100,6 @@ class _NewUserPageState extends State<NewUserPage> {
                   child:  InkWell(
                       onTap: (){},
                       child: Padding(padding: EdgeInsets.all(10),
-
                         child: Image.asset(wrapAssets("user/msg.png"),width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),),
                       )
 
@@ -109,7 +112,6 @@ class _NewUserPageState extends State<NewUserPage> {
                   child:  InkWell(
                       onTap: (){},
                           child: wrapImageUrl(_info==null?"":_info.userPhoto, ScreenUtil().setWidth(196), ScreenUtil().setWidth(196)),
-
                   ),
                 )),
 
@@ -118,43 +120,14 @@ class _NewUserPageState extends State<NewUserPage> {
                 left: ScreenUtil().setWidth(256),
                 child:  Text(_info==null?"":_info.realName,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),)
             ),
+
             Positioned(
                 top: ScreenUtil().setHeight(370),
                 left: ScreenUtil().setWidth(261),
                 child:  Text(_info==null?"":_info.userInfo,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
             ),
 
-          new  Positioned(
-                top: ScreenUtil().setHeight(320),
-                right: ScreenUtil().setWidth(30),
-                child: Container(padding: EdgeInsets.all(ScreenUtil().setWidth(20),),
-                      child:  Material(
-                        color: Color(0XFF609CFB),
-                        child: InkWell(
-                          onTap: (){
-                            RRouter.push(context ,Routes.realNameNewPage,{},transition:TransitionType.cupertino);
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.center,
-                                width: ScreenUtil().setWidth(156),
-                                height: ScreenUtil().setHeight(52),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(26))),
-                                    border: Border.all(color: Colors.white,width: ScreenUtil().setWidth(3))
-                                ),
-                                child: Text("认证医生",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(29)),),
-                              ),
-                              cXM(ScreenUtil().setWidth(30)),
-                              Image.asset(wrapAssets("user/arrow.png"),width: ScreenUtil().setWidth(20),height: ScreenUtil().setHeight(35),)
-                            ],
-
-                          ),
-                        ),
-                      )
-                )
-            ),
+          buildUserInfoStatusView(context,_userInfoInfo.regType,_userInfoInfo.userInfoStatus),
 
           new Positioned(
               bottom: 0,
@@ -443,24 +416,138 @@ class _NewUserPageState extends State<NewUserPage> {
 
   void initData() {
 
-    NetUtils.requestIndex()
+
+    NetUtils.requestUserInfo()
         .then((res){
 
-          print("个人信息返回："+res.toString());
+      if(res.code==200){
+          _userInfoInfo = UserInfoInfo.fromJson(res.info);
+          UserUtils.saveUserInfo(_userInfoInfo);
+       }
+
+
+    }).then((_){
+
+      NetUtils.requestIndex(_userInfoInfo.regType)
+          .then((res){
 
         if(res.code==200){
 
           setState(() {
-            _info = UserInfoInfo.fromJson(res.info);
-
-            UserUtils.saveUserInfo(_info);
+            _info = UserHomeInfo.fromJson(res.info);
 
           });
 
         }else{
           showToast(res.msg);
         }
+      });
+
+
     });
+
+
+
+  }
+
+
+  ///
+  ///  根据角色类型和实名状态  展示
+  ///
+  ///     regType 1医生   2代表
+  ///
+  ///   认证状态status  0未认证 1成功 2待审核 3认证失败 4需要补充资料
+  ///
+  buildUserInfoStatusView(BuildContext context, int regType,int status) {
+
+    return new  Positioned(
+        top: ScreenUtil().setHeight(320),
+        right: ScreenUtil().setWidth(30),
+        child: Container(padding: EdgeInsets.all(ScreenUtil().setWidth(20),),
+            child:  Material(
+              color: Color(0XFF609CFB),
+              child: InkWell(
+                onTap: (){
+                //  RRouter.push(context ,Routes.realNameRepresentPage,{},transition:TransitionType.cupertino);
+                 RRouter.push(context ,regType==1?Routes.realNameNewPage:Routes.realNameRepresentPage,{},transition:TransitionType.cupertino);
+                },
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.center,
+                      width: ScreenUtil().setWidth(156),
+                      height: ScreenUtil().setHeight(52),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(26))),
+                          border: Border.all(color:getStatusColor(status),width: ScreenUtil().setWidth(3))
+                      ),
+                      child: Text(getStatusValue(status),style: TextStyle(color:getStatusColor(status),fontSize: ScreenUtil().setSp(29)),),
+                    ),
+                    cXM(ScreenUtil().setWidth(30)),
+                    Image.asset(wrapAssets("user/arrow.png"),width: ScreenUtil().setWidth(20),height: ScreenUtil().setHeight(35),color: getStatusColor(status),)
+                  ],
+
+                ),
+              ),
+            )
+        )
+    );
+
+  }
+
+
+  ///
+  /// 认证状态status  0未认证 1成功 2待审核 3认证失败 4需要补充资料
+  ///
+  String getStatusValue(int status) {
+
+    switch(status){
+
+      case 0:
+
+        return "0未认证";
+      case 1:
+
+        return "已认证";
+      case 2:
+
+        return "待审核";
+      case 3:
+
+        return "认证失败";
+      case 4:
+
+        return "补充资料";
+
+    }
+
+
+  }
+
+  ///
+  /// 认证状态status  0未认证 1成功 2待审核 3认证失败 4需要补充资料
+  ///
+  getStatusColor(int status) {
+
+    switch(status){
+
+      case 0:
+
+        return Colors.red;
+      case 1:
+
+        return Colors.white;
+      case 2:
+
+        return Colors.white;
+      case 3:
+
+        return Colors.red;
+      case 4:
+        return Colors.red;
+
+    }
+
 
   }
 

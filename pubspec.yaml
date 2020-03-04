@@ -71,6 +71,7 @@ dependencies:
   share: 0.6.3+1 # 分享
   flutter_swiper: 1.1.6 # 轮播图
   flutter_plugin_pdf_viewer: 1.0.7   # PDF 查看器
+  sticky_headers: ^0.1.8 # 悬停布局
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git
 dev_dependencies:

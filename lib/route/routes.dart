@@ -186,7 +186,6 @@ class Routes {
     router.define(flfgContentPage, handler: flfgDetailsHandler);
     router.define(gfContentPage, handler: gfDetailsHandler);
     router.define(doctorHomePage, handler: doctorHomeHandler);
-    router.define(realNamePage, handler: realNameHomeHandler);
     router.define(feedBackPage, handler: feedBackHandler);
     router.define(personalPage, handler: personalHandler);
     router.define(updateExplainPage, handler: updateExplainHandler);

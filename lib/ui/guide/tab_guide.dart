@@ -71,7 +71,9 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
         if(page>1){
           if (GuideListsInfo
               .fromJson(res.info)
-              .lists.length == 0) {
+              .lists.length == 0||GuideListsInfo
+              .fromJson(res.info)
+              .lists==null) {
             _refreshController.loadNoData();
           } else {
             _newsListEntity.lists.addAll(GuideListsInfo.fromJson(res.info).lists);
@@ -133,8 +135,9 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
     return GestureDetector(
 
       onTap: (){
-       // RRouter.push(context, Routes.guideContentPage, {"id":xlist.id});
-        RRouter.push(context, Routes.pdfViewPage, {"id":xlist.id});
+
+        RRouter.push(context, Routes.guideContentPage, {"id":xlist.id});
+    //    RRouter.push(context, Routes.pdfViewPage, {"id":xlist.id});
       },
       child: new Container(
 
@@ -191,7 +194,7 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
                 ),
                 ),
 
-                xlist.image.isEmpty?Container():wrapImageUrl(xlist.image, setW(200), setH(120))
+                xlist.image==null?Container():wrapImageUrl(xlist.image, setW(200), setH(120))
 
               ],
             ),

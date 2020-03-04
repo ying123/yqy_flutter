@@ -46,6 +46,7 @@ import 'package:yqy_flutter/ui/user/bean/about_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_details_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_list_entity.dart';
+import 'package:yqy_flutter/ui/user/bean/user_home_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_info_entity.dart';
@@ -151,6 +152,8 @@ class EntityFactory {
       return IntegralEntity.fromJson(json) as T;
     } else if (T.toString() == "IntegralListEntity") {
       return IntegralListEntity.fromJson(json) as T;
+    } else if (T.toString() == "UserHomeEntity") {
+      return UserHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "UserInfoEntity") {
       return UserInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoDetailsEntity") {

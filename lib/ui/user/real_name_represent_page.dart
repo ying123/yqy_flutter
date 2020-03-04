@@ -1,13 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_picker/flutter_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:yqy_flutter/bean/personal_entity.dart';
+import 'package:yqy_flutter/bean/upload_image_entity.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
+import 'package:yqy_flutter/utils/department_picker.dart';
 import 'package:yqy_flutter/utils/margin.dart';
-import 'package:flutter_picker/flutter_picker.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 
 
@@ -18,393 +24,407 @@ class RealNameRepresentPage extends StatefulWidget {
 
 class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
 
-  TextEditingController _nameController,_cardController,_hosController,_jobController;
+  ///
+  ///   需要上传的字段
+  //------------------------------------
+  String realName;// 	真实姓名
 
-  String _userName,_userCard,_address = "选择地区";
+  String IdCard;// 身份证号码
 
-  String _hName,_jobNumber;
+  String address = "选择所在地区";// 地区
 
-  String _province,_city,_area;
 
   String _provinceId,_cityId,_areaId; //省市区 ID
+  String _province,_city,_area; // 省市区 字符串
 
-  String _department = "选择科室",_job = "选择职称";
+  String hos_name;// 医院名称
 
-  String _tId,_tIds,_jId; // 科室 和 职称 ID
+  String hos_id;// 医院id
 
-  var jids = [99,100,101,102];
 
-  var tids = [1304,1156,1170,1185,1211,1216,1288,1237,1265,1273,1299,1284,1231,1287,1281,1225,1240];
 
-  GlobalKey _formKey= new GlobalKey<FormState>();
-  GlobalKey _addressKey= new GlobalKey<FormState>();
-
-  GlobalKey  _scaffoldKey= new GlobalKey<FormState>();
-
-  PersonalInfo _personalInfo;
-
-  bool isVisible = true;// 是否显示提交审核按钮  当审核成功的时候  为false
-
-  // 创建 focusNode
-  FocusNode focusNode = new FocusNode();//获取焦点  是否获取焦点  之前填写过 为 false
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadData();
-
-    //initTextControllerListener();
-
-  }
-
-  void loadData() {
-
-    NetworkUtils.requestUserIndex(UserUtils.getUserInfo().userId)
-        .then((res) {
-
-      int statusCode = int.parse(res.status);
-
-      if(statusCode==9999){
-
-        _personalInfo = PersonalInfo.fromJson(res.info);
-
-
-        initPageData(_personalInfo);
-
-      }
-      setState(() {
-
-
-      });
-    });
 
 
 
   }
+
 
 
   @override
   Widget build(BuildContext context) {
-    return  new Scaffold(
-      key: _scaffoldKey,
+    return Scaffold(
+
       appBar: AppBar(
         title: Text("实名认证"),
-        centerTitle: true,
       ),
-      body: Builder(
-          builder: (context) => Padding(
-              padding: EdgeInsets.all(20),
 
-              child: Form(
-                  key: _formKey,
-                  //  autovalidate: true, //开启自动校验,
-                  child:  new ListView(
+      body: ListView(
 
-                    children: <Widget>[
+        children: <Widget>[
 
-                      TextFormField(
-                          focusNode: focusNode,
-                          controller: _nameController,
-                          decoration: InputDecoration(
-                            labelText: "姓名",
-                            hintText: "输入您的姓名",
-                          ),
-                          // 校验用户名
-                          onSaved: (v){
-                            _userName = v;
-                            },
-                          validator: (v) {
-                            return v
-                                .trim()
-                                .length > 0 ? null : "姓名不能为空";
-                          }
+          new Container(
 
-                      ),
-                      TextFormField(
-                          keyboardType: TextInputType.number,
-                          controller: _cardController,
-                          maxLength: 18,
-                          inputFormatters:[WhitelistingTextInputFormatter.digitsOnly],//只允许输入数字
-                          decoration: InputDecoration(
-                            labelText: "身份证",
-                            hintText: "输入您的身份证号",
-                          ),
-                          // 校验用户名
-                          onSaved: (v){
-                            _userCard = v;
-                          },
-                          validator: (v) {
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58),  ScreenUtil().setHeight(60), 0, 0),
+            child:  new Row(
+              children: <Widget>[
+                Image.asset(wrapAssets("user/ic_prove.png"),width:  ScreenUtil().setWidth(49),height: ScreenUtil().setWidth(49),fit: BoxFit.fill,),
+                cXM(ScreenUtil().setWidth(16)),
+                Text("认证信息",style: TextStyle(color: Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(46))),
+              ],
+            ),
+          ),
 
-                            if( v
-                                .trim()
-                                .length == 0){
-                              return "身份证号不能为空";
-                            }
-
-                            if( v
-                                .trim()
-                                .length >0&& v
-                                .trim()
-                                .length<18){
-
-                              return "身份证号位数不正确";
-                            }
-
-                            return null;
-                          }
-
-                      ),
-
-                      cYM(10),
-                      new  InkWell(
-                        child: Container(
-                          height: 50,
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                  child: Center(
-                                      child:  InkWell(
-                                        child: Text(_address,style: TextStyle(fontSize: 16),key: _addressKey,),
-                                        onTap: (){
-                                          CityPicker.showCityPicker(
-                                            context,
-                                            selectProvince: (province) {
-                                              _province = province["name"];
-                                              _provinceId = province["code"];
-                                            },
-                                            selectCity: (city) {
-                                              _city = city["name"];
-                                              _cityId = city["code"];
-                                            },
-                                            selectArea: (area) {
-                                              _area = area["name"];
-                                              _areaId = area["code"];
-                                              setState(() {
-                                                _address = _province+_city+_area;
-                                              });
-
-                                            },
-                                          );
-                                        },
-                                      )
-                                  )
-                              ),
-                              IconButton(
-                                onPressed: (){
-                                  CityPicker.showCityPicker(
-                                    context,
-                                    selectProvince: (province) {
-                                      _province = province["name"];
-                                      _provinceId = province["code"];
-                                    },
-                                    selectCity: (city) {
-                                      _city = city["name"];
-                                      _cityId = city["code"];
-                                    },
-                                    selectArea: (area) {
-                                      _area = area["name"];
-                                      _areaId = area["code"];
-                                      setState(() {
-                                        _address = _province+_city+_area;
-                                      });
-
-                                    },
-                                  );
-                                },
-                                icon: Icon(Icons.add,color: Colors.blueAccent,),
-
-                              )
-                            ],
-
-                          ),
-
-                        ),
-                      ),
-                      Divider(height: 1,color: Colors.black,),
-                      cYM(10),
-                      TextFormField(
-                          controller: _hosController,
-                          decoration: InputDecoration(
-                            labelText: "企业名称",
-                            hintText: "请填写您的企业名称",
-                          ),
-                          // 校验用户名
-                          onSaved: (v){
-                            _hName = v;
-                          },
-                          validator: (v) {
-                            return v
-                                .trim()
-                                .length > 0 ? null : "企业名称不能为空";
-                          }
-                      ),
-                      cYM(10),
-                      TextFormField(
-                          controller: _jobController,
-                          decoration: InputDecoration(
-                            labelText: "企业代码",
-                            hintText: "请输入统一社会信用代码",
-                          ),
-                          // 校验用户名
-                          onSaved: (v){
-                            _jobNumber = v;
-                          },
-                          validator: (v) {
-                            return v
-                                .trim()
-                                .length > 0 ? null : "企业代码不能为空";
-                          }
-
-                      ),
-                      cYM(60),
-
-                      Visibility(
-                          visible: isVisible,
-                          child: FlatButton(
-                            color: Colors.blue,
-                            highlightColor: Colors.blue[700],
-                            colorBrightness: Brightness.dark,
-                            splashColor: Colors.grey,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              child: Text("提交审核",style: TextStyle(color: Colors.white,fontSize: 16),),
-
-                            ),
-                            shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                            onPressed: () {
-                              if((_formKey.currentState as FormState).validate()){
-
-                                (_formKey.currentState as FormState).save();
-
-                                uploadData();
+          new  Container(
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(20), ScreenUtil().setHeight(40), ScreenUtil().setWidth(20), 0),
+            child: Column(
+              children: <Widget>[
+                // 姓名输入
+                buildNameInputView(context),
+                buildLine(),
+                // 身份证输入
+                buildIDCardInputView(context),
+                buildLine(),
+                // 医院地区选择
+                buildAddressView(context),
+                buildLine(),
+                // 医院名称
+                buildHosNameInputView(context),
+                buildLine(),
+                //提交按钮
+                cYM(ScreenUtil().setHeight(100)),
+                buildBtnRegisterView(context),
+                cYM(ScreenUtil().setHeight(60)),
+                buildBottomTipView(),
+                cYM(ScreenUtil().setHeight(60)),
 
 
-                                //验证通过提交数据
-                              }
+              ],
+            ),
 
+          ),
 
-                            },
-                          ))
-
-
-                    ],
-                  )
-              )
-
-
-          )
-
-
+        ],
       ),
+
+    );
+  }
+
+  buildLine() {
+
+    return Container(
+      width: ScreenUtil().setWidth(962),
+      color: Color(0xFF2CAAEE),
+      height: ScreenUtil().setWidth(1),
+    );
+
+  }
+
+
+  buildBtnRegisterView(BuildContext context) {
+
+    return  InkWell(
+      onTap: (){
+
+      },
+      child: Container(
+        width: ScreenUtil().setWidth(585),
+        height: ScreenUtil().setHeight(98),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)]),
+            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(43)))
+        ),
+        alignment: Alignment.center,
+        child: Text("提交审核",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),),
+      ),
+    );
+
+  }
+
+
+  buildIDCardInputView(BuildContext context) {
+
+    return  new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("user/ic_card.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请输入身份证号码",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          onChanged: (v){
+            IdCard = v;
+          },
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+
+      ],
+
+    );
+
+  }
+
+
+  buildNameInputView(BuildContext context) {
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(
+            child: TextFormField(
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              textAlign: TextAlign.start,
+              maxLines: 1,
+              decoration: InputDecoration(
+                hintText: "请输入姓名",
+                hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+                border: InputBorder.none, // 去除下划线
+              ),
+              cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+              style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+              onChanged: (v){
+                realName = v;
+              },
+            )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+        ),
+
+      ],
+
+    );
+
+  }
+
+
+
+  buildHosNameInputView(BuildContext context) {
+
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("user/ic_hos.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请输入医院全称",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+          onChanged: (v){
+            hos_name = v;
+          },
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+        ),
+
+      ],
+
     );
   }
 
 
-  void uploadData() {
+
+  buildAddressView(BuildContext context) {
+
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("user/ic_address.png"),width:  ScreenUtil().setWidth(40),height: ScreenUtil().setHeight(60),fit: BoxFit.fill,),
+        ),
+        Expanded(child: InkWell(
+            onTap: (){
+              CityPicker.showCityPicker(
+                context,
+                selectProvince: (province) {
+                  _province = province["name"];
+                  _provinceId = province["code"];
+                },
+                selectCity: (city) {
+
+                  _city = city["name"];
+                  _cityId = city["code"];
+
+                },
+                selectArea: (area) {
+
+                  _area = area["name"];
+                  _areaId = area["code"];
+
+                  setState(() {
+                    address  = _province+" - "+_city+" - "+_area;
+                  });
+
+                },
+              );
+            },
+            child: Container(
+              alignment: Alignment.centerLeft,
+              height: ScreenUtil().setHeight(120),
+              child: Text(address,style: TextStyle(color: Color(address=="选择所在地区"?0xFF999999:0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),),
+            )
+        )),
+        Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width: ScreenUtil().setWidth(60),
+            height:   ScreenUtil().setWidth(60),
+            child:   Icon(Icons.keyboard_arrow_down,color: Colors.black26,size: ScreenUtil().setWidth(80),)
+        ),
+
+      ],
+
+    );
+
+  }
 
 
-    if(_areaId==null){
-      showToast("地区不能为空！");
-      return;
-    }
-
-    Map<String, dynamic> map  =  new Map();
-
-    map["realName"] = _userName;//姓名
-    map["idCard"] = _userCard;//身份证号
-
-    map["provinceId"] = _provinceId;//省
-    map["cityId"] = _cityId;//市
-    map["areaId"] = _areaId;//区
 
 
-    map["company_name"] = _hName;// 公司名称
-    map["company_code"] = _jobNumber;//公司信用号码
 
-   // map["t_id"] = _tId;//科室一级ID
-    //  map["t_ids"] = _tIds;//科室二级ID
-  //  map["j_id"] = _jId;//职称ID
+  buildJobNumberInputView(BuildContext context) {
+    return new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("user/ic_id.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          keyboardType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请输入医师执业证书号",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        )),
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(36),
+          height:   ScreenUtil().setWidth(36),
+          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+        ),
+      ],
+    );
+  }
 
-  //  map["h_id"] = "0";//医院id
-    map["userId"] = UserUtils.getUserInfo().userId;
 
-    NetworkUtils.requestEditInfo(map)
-        .then((res){
 
-      showToast(res.message);
-      print(res.toString());
-      int statusCode= int.parse(res.status.toString());
+  buildBottomTipView() {
 
-      if(statusCode==9999){
+    return Container(
 
-        // 延时1s执行返回
-        Future.delayed(Duration(seconds: 1), (){
-          Navigator.of(context).pop();
-        });
+      child: Text("*请务必填写真实的个人信息，一经发现作假，将做封号处理！",style: TextStyle(color: Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),),
 
-      }
-    });
+    );
 
   }
 
 
   ///
-  ///  初始化页面数据
+  ///   上传资料
   ///
-  void initPageData(PersonalInfo personalInfo) {
+  void uploadInfoData(BuildContext context) {
+    Map<String, dynamic> map = new Map();
 
-
-    String status =   personalInfo.userInfoStatus;
-
-
-    _nameController = new TextEditingController();
-    _cardController = new TextEditingController();
-    _hosController = new TextEditingController();
-    _jobController = new TextEditingController();
-
-
-    //认证成功 隐藏提交按钮
-    if(status=="1"){
-      isVisible = false;
+    if(realName.isEmpty){
+      showToast("请先输入姓名");
+      return;
     }
+    map["realName"] = realName;
 
-    //是否自动获取焦点
-    if(status!="1"&&status!="2"&&status!="3"){
-
-      FocusScope.of(context).requestFocus(focusNode);
-
+    if(IdCard.isEmpty){
+      showToast("请先输入身份证号");
+      return;
     }
+    map["idCard"] = IdCard;
+
+    // 医院
+    if(hos_name.isEmpty){
+      showToast("请先输入医院名称");
+      return;
+    }
+    map["hospital_name"] = hos_name;
+    map["hospital_id"] = 0;
+
+    // 地区
+    if(address.isEmpty||address=="选择地区"){
+      showToast("请先选择地区");
+      return;
+    }
+    map["provinceId"] = _provinceId;
+    map["cityId"] = _cityId;
+    map["areaId"] = _areaId;
+
+    // 认证的状态
+    map["userInfoStatus"] = UserUtils.getUserInfoX().userInfoStatus;
 
 
+    NetUtils.requestCertificationStaff(map)
+        .then((res){
 
+      if(res.code==200){
+        print(res.toString());
+      }else{
+        showToast(res.msg);
+      }
 
-    _nameController.text = personalInfo.realName;
-
-    _cardController.text = personalInfo.idCard;
-
-    _address = personalInfo.provinceidName+personalInfo.cityidName+personalInfo.areaidName;
-
-    _hosController.text = personalInfo.companyName;
-
-   // _department = personalInfo.tName;
-
-   // _job = personalInfo.jName;
-
-   _jobController.text = personalInfo.companyCode;
-
-
-    _provinceId = personalInfo.provinceId;
-    _cityId = personalInfo.cityId;
-    _areaId = personalInfo.areaId;
-
-
-   // _tId = personalInfo.tId;
-   // _jId = personalInfo.jId;
-
-    setState(() {
     });
 
   }
