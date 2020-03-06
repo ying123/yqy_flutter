@@ -1,185 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
-import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
-import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/ui/home/notice/tab/tab_hd_page.dart';
+import 'package:yqy_flutter/ui/home/notice/tab/tab_notice_page.dart';
+import 'package:yqy_flutter/ui/home/notice/tab/tab_system_page.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+
+
+class _TabData {
+  final Widget tab;
+  final Widget body;
+  _TabData({this.tab, this.body});
+}
+
+final _tabDataList = <_TabData>[
+  _TabData(tab: Text('系统消息'), body: TabSystemPage()),
+  _TabData(tab: Text('公告通知'), body: TabNoticePage()),
+  _TabData(tab: Text('互动'), body: TabHDPage()),
+  // _TabData(tab: Text('规范解读'), body: TabGFPage())
+];
+
+
 
 class NoticeHomePage extends StatefulWidget {
   @override
   _NoticeHomePageState createState() => _NoticeHomePageState();
 }
 
-class _NoticeHomePageState extends State<NoticeHomePage> {
+class _NoticeHomePageState extends State<NoticeHomePage> with SingleTickerProviderStateMixin {
 
+  final tabBarList = _tabDataList.map((item) => item.tab).toList();
+  final tabBarViewList = _tabDataList.map((item) => item.body).toList();
 
-
-
-  //页面加载状态，默认为加载中
-  LoadState _layoutState = LoadState.State_Loading;
-
-  int page = 1;
-
-  NoticeHomeEntity  _noticeHomeEntity ;
-
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
-
+  TabController _tabController;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadData();
-  }
-
-
-
-  void _onRefresh() async{
-    // monitor network fetch
-    //   await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    page = 1;
-    loadData();
-  }
-
-  void _onLoading() async{
-    page ++;
-    loadData();
-  }
-
-
-
-  loadData() {
-    NetworkUtils.requestMessageList(page.toString())
-        .then((res){
-
-      int statusCode = int.parse(res.status);
-
-      if(statusCode==9999){
-
-        if(page>1){
-
-          if (NoticeHomeEntity
-              .fromJson(res.info)
-              .page=="0") {
-            _refreshController.loadNoData();
-          } else {
-            _noticeHomeEntity.list.addAll(NoticeHomeEntity.fromJson(res.info).list);
-            _refreshController.loadComplete();
-          }
-
-        }else{
-          _noticeHomeEntity = NoticeHomeEntity.fromJson(res.info);
-
-          print("打印的结果："+_noticeHomeEntity.toJson().toString());
-
-          _refreshController.refreshCompleted();
-          _refreshController.resetNoData();
-        }
-
-      }
-
-      setState(() {
-
-        _layoutState = loadStateByCode(statusCode);
-      });
-
-
-
-
-    });
-
+    _tabController = TabController(vsync: this, length: tabBarList.length);
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
+      appBar: getCommonAppBar("消息"),
 
-        appBar: AppBar(
+      body: Column(
 
-          title: Text("系统通知"),
-          centerTitle: true,
+        children: <Widget>[
 
-        ),
-      body:  LoadStateLayout(
-      state: _layoutState,
-      errorRetry: () {
-        setState(() {
-          _layoutState = LoadState.State_Loading;
-        });
-        this.loadData();
-      },
-      successWidget:
-      _noticeHomeEntity==null||_noticeHomeEntity.list==null?Center(child: Text("暂无消息"),):AnimationLimiter(
-        child:SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: ListView.builder(
-            //  itemCount: _noticeHomeEntity.list.length,
-              itemCount: 5,
-              itemBuilder: (context,index){
-                return  AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 1000),
-                  child: FadeInAnimation(
-                    child: getNoticeItemView(context,_noticeHomeEntity.list[index]),
+          Container(
+            color: Colors.white,
+            width: double.infinity,
+            alignment: Alignment.center,
+            child:  TabBar(
+              controller: _tabController,
+              tabs:tabBarList,
+              indicatorColor: Colors.white, //指示器颜色 如果和标题栏颜色一样会白色
+              isScrollable: true, //是否可以滑动
+              labelPadding: EdgeInsets.all(setW(40)),
+              labelColor: Color(0xFF333333) ,
+              unselectedLabelColor: Color(0xFF999999),
+              indicatorSize: TabBarIndicatorSize.label,
+              unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(37)), //防止字体抖动 不用此方法
+              labelStyle: TextStyle(fontSize: ScreenUtil().setSp(45),fontWeight: FontWeight.bold),  //防止字体抖动 不用此方法
+            ),
+          ),
+          Expanded(
+              child:  Stack(
+                children: <Widget>[
+                  TabBarView(
+                    controller: _tabController,
+                    children: tabBarViewList,
                   ),
-
-                );
-
-              }
+                ],
+              )
           ),
 
-        ),
+
+        ],
       ),
 
-    ),
-
-
+      
     );
-  }
-
-  getNoticeItemView(BuildContext context, NoticeHomeList bean) {
-
-    return bean==null?Container(): Container(
-        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(50), ScreenUtil().setHeight(30), ScreenUtil().setWidth(50), 0),
-        padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(25), 0, 0, ScreenUtil().setWidth(25)),
-        width: double.infinity,
-        height: ScreenUtil().setHeight(400),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(18))),
-          color: Colors.white
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(bean.title,style: TextStyle(fontSize: ScreenUtil().setSp(45),color: Colors.black54),),
-            Text(bean.msgContent),
-            Container(
-              margin: EdgeInsets.only(right: ScreenUtil().setWidth(25)),
-              alignment: Alignment.centerRight,
-              width: double.infinity,
-              child: Text(bean.createTime,style: TextStyle(color: Colors.black26),),
-
-            )
-          ],
-          
-        ),
-        
-
-
-    );
-
-
   }
 }
-

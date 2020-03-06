@@ -330,7 +330,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
 
 
 
-
   buildJobNumberInputView(BuildContext context) {
     return new Row(
       children: <Widget>[

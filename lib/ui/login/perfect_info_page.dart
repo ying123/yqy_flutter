@@ -152,7 +152,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
   }
 
 
-
   buildContainerHosLogin(BuildContext context) {
 
     return new Container(
@@ -175,6 +174,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           cYM(ScreenUtil().setHeight(30)),
+
           // 姓名输入
           buildNameInputView(context),
           buildLine(),
@@ -186,11 +186,8 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           Visibility(visible: seleType==1?true:false,child:  // 医院名称输入
           buildHosInputView(context),),
 
-
           Visibility(visible: seleType==1?true:false,child:
           buildLine(),),
-
-
 
           Visibility(visible: seleType==1?true:false,child:  // 科室输入
           buildDepartmentInputView(context),),
@@ -198,13 +195,14 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           Visibility(visible: seleType==1?true:false,child:
           buildLine(),),
 
-
           cYM(ScreenUtil().setHeight(40)),
           // 用户协议的按钮
           buildCheckBoxAgreementView(context),
           cYM(ScreenUtil().setHeight(20)),
           //注册按钮
           buildBtnRegisterView(context),
+
+
         ],
       ),
 
@@ -309,12 +307,22 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
           style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
         )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(40),
-          height:   ScreenUtil().setWidth(40),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
-        ),
+
+        InkWell(
+          onTap: (){
+            setState(() {
+              _nameController.text = "";
+
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width:   ScreenUtil().setWidth(36),
+            height:   ScreenUtil().setWidth(36),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+          ),
+        )
+
       ],
     );
   }
@@ -345,12 +353,20 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
           style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
         )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(40),
-          height:   ScreenUtil().setWidth(40),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
-        ),
+        InkWell(
+          onTap: (){
+            setState(() {
+              _hosController.text = "";
+
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width:   ScreenUtil().setWidth(36),
+            height:   ScreenUtil().setWidth(36),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+          ),
+        )
 
       ],
 
@@ -528,8 +544,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
     );
 
-
-
   }
 
   void initTextControllerListener() {
@@ -540,7 +554,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     _hosController.addListener((){
       hospital_name = _hosController.text;
     });
-
 
 
   }

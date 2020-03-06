@@ -163,6 +163,13 @@ class Routes {
 
   static String pdfViewPage = "/pdfViewPage"; //  pdf页面
 
+
+  static String hdCollectionPage = "/hdCollectionPage"; //  互动消息  收藏的消息
+
+  static String hdCommentPage = "/hdCommentPage"; //  互动消息  评论的消息
+
+  static String hdFollowPage = "/hdFollowPage"; //  互动消息  关注的消息
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");

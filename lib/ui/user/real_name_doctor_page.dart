@@ -4,12 +4,14 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/upload_image_entity.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
 import 'package:yqy_flutter/utils/department_picker.dart';
 import 'package:yqy_flutter/utils/margin.dart';
@@ -24,9 +26,7 @@ class RealNameDoctorPage extends StatefulWidget {
 
 class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
-  ///
   ///   需要上传的字段
-  //------------------------------------
   String realName;// 	真实姓名
 
   String IdCard;// 身份证号码
@@ -50,26 +50,51 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
   String job_number;// 证书号码
 
-
-  //-----------------------------------
+  ///-----------------------------------
 
   var jids = [99,100,101,102];
+
+  TextEditingController _nameC = new TextEditingController();
+  TextEditingController _idCardC = new TextEditingController();
+  TextEditingController _hosNameC = new TextEditingController();
+  TextEditingController _jobCodeC = new TextEditingController();
+
+
   
   UploadImageInfo _uploadImageInfo;
 
   File _imageFile;
 
-  Future getImage() async {
 
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  String _urlImage1,_urlImage2;
+
+
+
+  Future getImage(int type) async {
+
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     _imageFile = image;
 
 
     NetUtils.requestUploadsImages(_imageFile,"certification")
         .then((res){
       setState(() {
-        if(res.status==200){
+        if(res.code==200){
           _uploadImageInfo = UploadImageInfo.fromJson(res.info);
+
+          if(type==1){
+            setState(() {
+              _urlImage1 = _uploadImageInfo.cdn+_uploadImageInfo.src;
+            });
+
+
+
+          }else{
+            _urlImage2 = _uploadImageInfo.cdn+_uploadImageInfo.src;
+          }
+
+
+
         }
 
       });
@@ -82,9 +107,10 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
     // TODO: implement initState
     super.initState();
 
-    // 获取职称数据
-  //  initJobNameData();
 
+    // 判断当前用户是否 之前上传过数据  如果审核过 显示之前填写的数据
+    // 成功 和 需要补充资料
+    initCurrentPageData();
 
   }
 
@@ -151,17 +177,26 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
                         ],
                       ),
                     ),
+
                     cYM(ScreenUtil().setHeight(43)),
                     buildImageView(),
 
                   ],
                 )),
                 //提交按钮
-                cYM(ScreenUtil().setHeight(100)),
-                buildBtnRegisterView(context),
-                cYM(ScreenUtil().setHeight(60)),
-                buildBottomTipView(),
-                cYM(ScreenUtil().setHeight(60)),
+
+                Visibility(visible: UserUtils.getUserInfoX().userInfoStatus!=1,child: Column(
+
+                  children: <Widget>[
+
+                    cYM(ScreenUtil().setHeight(100)),
+                    buildBtnRegisterView(context),
+                    cYM(ScreenUtil().setHeight(60)),
+                    buildBottomTipView(),
+                    cYM(ScreenUtil().setHeight(60)),
+                  ],
+                ))
+
 
 
               ],
@@ -190,7 +225,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
     return  InkWell(
       onTap: (){
-
+            uploadInfoData(context);
       },
       child: Container(
         width: ScreenUtil().setWidth(585),
@@ -219,6 +254,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           child:  Image.asset(wrapAssets("user/ic_card.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
         Expanded(child: TextFormField(
+          controller: _idCardC,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
@@ -234,12 +270,20 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
           style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
         )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(36),
-          height:   ScreenUtil().setWidth(36),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
-        ),
+        InkWell(
+          onTap: (){
+            setState(() {
+              _idCardC.text = "";
+
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width:   ScreenUtil().setWidth(36),
+            height:   ScreenUtil().setWidth(36),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+          ),
+        )
 
       ],
 
@@ -260,6 +304,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
         ),
         Expanded(
             child: TextFormField(
+              controller: _nameC,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
@@ -275,12 +320,20 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
             realName = v;
           },
         )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(36),
-          height:   ScreenUtil().setWidth(36),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
-        ),
+        InkWell(
+          onTap: (){
+            setState(() {
+              _nameC.text = "";
+
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width:   ScreenUtil().setWidth(36),
+            height:   ScreenUtil().setWidth(36),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+          ),
+        )
 
       ],
 
@@ -371,6 +424,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           child:  Image.asset(wrapAssets("user/ic_hos.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
         Expanded(child: TextFormField(
+          controller: _hosNameC,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
@@ -386,12 +440,20 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
             hos_name = v;
           },
         )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(36),
-          height:   ScreenUtil().setWidth(36),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
-        ),
+        InkWell(
+          onTap: (){
+            setState(() {
+              _hosNameC.text = "";
+
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width:   ScreenUtil().setWidth(36),
+            height:   ScreenUtil().setWidth(36),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+          ),
+        )
 
       ],
 
@@ -520,6 +582,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           child:  Image.asset(wrapAssets("user/ic_id.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
         ),
         Expanded(child: TextFormField(
+          controller: _jobCodeC,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
@@ -532,12 +595,20 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
           style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
         )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(36),
-          height:   ScreenUtil().setWidth(36),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
-        ),
+        InkWell(
+          onTap: (){
+            setState(() {
+              _jobCodeC.text = "";
+
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width:   ScreenUtil().setWidth(36),
+            height:   ScreenUtil().setWidth(36),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+          ),
+        )
       ],
     );
   }
@@ -551,9 +622,9 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
        new InkWell(
 
          onTap: (){
-           getImage();
+           getImage(1);
            },
-         child: _uploadImageInfo==null?new  DottedBorder(
+         child: new  DottedBorder(
            padding: EdgeInsets.all(1),
            color: Color(0xFF2CAAEE),
            radius: Radius.circular(ScreenUtil().setWidth(14)),
@@ -561,7 +632,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
            child: Container(
              width: ScreenUtil().setWidth(461),
              height: ScreenUtil().setHeight(328),
-             child: Column(
+             child: _urlImage1==null?  Column(
                mainAxisAlignment: MainAxisAlignment.center,
                crossAxisAlignment: CrossAxisAlignment.center,
                children: <Widget>[
@@ -573,11 +644,11 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
                  Text("请上传医师执业证 \r\n(头像页)", style: TextStyle(color: Color(0xFF999999),
                      fontSize: ScreenUtil().setSp(35)),)
                ],
-             ),
+             ):wrapImageUrl(_urlImage1, setW(450), setH(320)),
 
            ),
 
-         ):wrapImageUrl(_uploadImageInfo.cdn.substring(0,_uploadImageInfo.cdn.length)+_uploadImageInfo.src, setW(461), setH(328)),
+         )
 
        ),
       cXM(setW(30)),
@@ -585,7 +656,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
         onTap: (){
 
-          getImage();
+          getImage(2);
         },
         child: DottedBorder(
           padding: EdgeInsets.all(1),
@@ -596,7 +667,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
             width: ScreenUtil().setWidth(461),
             height: ScreenUtil().setHeight(328),
             alignment: Alignment.center,
-            child: Column(
+            child: _urlImage2==null? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -608,7 +679,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
                 Text("请上传医师执业证 \r\n(资料页)", style: TextStyle(color: Color(0xFF999999),
                     fontSize: ScreenUtil().setSp(35)),)
               ],
-            ),
+            ):wrapImageUrl(_urlImage2, setW(450), setH(320)),
 
           ),
 
@@ -641,20 +712,27 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
   void uploadInfoData(BuildContext context) {
     Map<String, dynamic> map = new Map();
 
-    if(realName.isEmpty){
+    if(_nameC.text.isEmpty){
       showToast("请先输入姓名");
       return;
     }
-    map["realName"] = realName;
+    map["realName"] = _nameC.text;
+
+
+    if(_idCardC.text.isEmpty){
+      showToast("请先输入身份证号");
+      return;
+    }
+    map["idCard"] = _idCardC.text;
 
 
     // 医院
-    if(hos_name.isEmpty){
+    if(_hosNameC.text.isEmpty){
       showToast("请先输入医院名称");
       return;
     }
-    map["hospital_name"] = hos_name;
-    map["hospital_id"] = 0;
+    map["hospital_name"] = _hosNameC.text;
+    map["h_id"] = 0;
 
     // 地区
     if(address.isEmpty||address=="选择地区"){
@@ -678,15 +756,36 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
       showToast("选择科室");
       return;
     }
-    map["depart_id"] = _department1Id;
-    map["depart_ids"] = _department2Id;
+    map["t_id"] = _department1Id;
+    map["t_ids"] = _department2Id;
 
+
+    // 职业编号
+    if(_jobCodeC.text.isEmpty){
+      showToast("请先填写职业证书号");
+      return;
+    }
+    map["job_code"] = _jobCodeC.text;
 
 
     // 当前表示 之前提交过资料 但是需要补充图片资料
     if(UserUtils.getUserInfoX().userInfoStatus==4){
 
-      
+
+        if(_urlImage1==null){
+
+          EasyLoading.showError("请上传执业证书正面");
+          return;
+
+        }
+      if(_urlImage2==null){
+        EasyLoading.showError("请上传执业证书背面");
+        return;
+      }
+      map["job_img1"] = _urlImage1;
+      map["job_img2"] = _urlImage2;
+
+
 
     }
 
@@ -700,9 +799,9 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
         .then((res){
 
       if(res.code==200){
-        print(res.toString());
+        EasyLoading.showSuccess(res.msg);
       }else{
-        showToast(res.msg);
+        EasyLoading.showError(res.msg);
       }
 
     });
@@ -721,6 +820,53 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
     });
 
+
+  }
+
+
+  ///
+  ///  认证状态 0未认证 1成功 2待审核 3认证失败 4需要补充资料
+  ///
+  void initCurrentPageData() {
+
+    UserInfoInfo info =  UserUtils.getUserInfoX();
+
+    if(info.userInfoStatus!=0){
+
+
+        setState(() {
+
+          _nameC.text = info.realName ;
+
+          _idCardC.text = info.idCard;
+
+          address = info.proName.toString()??""+"-"+info.cityName.toString()??""+"-"+info.areaName.toString()??"";
+
+          _provinceId = info.provinceId.toString();
+          _cityId = info.cityId.toString();
+          _areaId = info.areaId.toString();
+
+          _hosNameC.text = info.hospitalName.toString();
+
+          _department = info.departName.toString()+"-"+info.departsName.toString();
+
+          _department1Id = info.tId.toString();
+
+          _department2Id = info.tIds.toString();
+
+          job = info.jobName.toString();
+
+          job_id = info.jId.toString();
+
+          _jobCodeC.text = info.jobCode;
+
+
+
+        });
+
+
+
+    }
 
   }
 }

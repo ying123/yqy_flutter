@@ -146,11 +146,11 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             cYM(ScreenUtil().setHeight(90)),
             getRowTextView("热门视频"),//热门会议标题栏
             getHotVideo(_homeIndexInfo.hotVideo),//热门会议视频横向列表
-            cYM(ScreenUtil().setHeight(12)),
+            cYM(ScreenUtil().setHeight(20)),
             getRowTextView("特约专家"),//往期会议标题栏
             cYM(ScreenUtil().setHeight(12)),
             getDocViews(_homeIndexInfo.recomDoctor),
-            cYM(ScreenUtil().setHeight(12)),
+            cYM(ScreenUtil().setHeight(30)),
             getRowTextView("最新资讯"),//往期会议标题栏
             cYM(ScreenUtil().setHeight(12)),
             getNewsListView()
@@ -454,7 +454,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     return  InkWell(
       onTap: (){
      //   RRouter.push(context, Routes.livePaybackPage, {});
-        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()},transition:  TransitionType.cupertino);
       },
       child: Container(
         width: double.infinity,
@@ -500,7 +500,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
        shrinkWrap: true ,
        padding: EdgeInsets.all(ScreenUtil().setWidth(27)),
        physics: new NeverScrollableScrollPhysics(),
-
        //SliverGridDelegateWithFixedCrossAxisCount 构建一个横轴固定数量Widget
        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
          //横轴元素个数

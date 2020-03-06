@@ -64,7 +64,7 @@ dependencies:
   package_info: ^0.4.0+3
   permission_handler: ^3.3.0 # 动态权限申请
   flutter_spinkit: ^4.0.0  # 加载进度条动画效果
-  fijkplayer: ^0.2.2
+  fijkplayer: ^0.5.2
   url_launcher: ^5.2.5  # Url跳转 拨打电话
   flutter_custom_dialog: ^1.0.14 # 弹窗
   flutter_easyloading: ^1.1.1 # 弹窗

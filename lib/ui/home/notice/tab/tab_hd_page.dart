@@ -7,6 +7,10 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 
+
+///
+///  互动消息
+///
 class TabHDPage extends StatefulWidget {
   @override
   _TabHDPageState createState() => _TabHDPageState();
@@ -41,13 +45,13 @@ class _TabHDPageState extends State<TabHDPage> {
           switch(value){
 
             case"评论我的":
-              RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
+           //   RRouter.push(context ,Routes.feedBackPage,{},transition:TransitionType.cupertino);
               break;
             case"我的关注":
-              RRouter.push(context ,Routes.taskNewPage,{});
+
               break;
             case"点赞/收藏":
-              RRouter.push(context ,Routes.taskNewPage,{});
+
               break;
 
           }
@@ -57,9 +61,7 @@ class _TabHDPageState extends State<TabHDPage> {
           height: ScreenUtil().setHeight(140),
           padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58), 0, ScreenUtil().setWidth(43), 0),
           child: Column(
-
             children: <Widget>[
-
               Expanded(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

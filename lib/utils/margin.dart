@@ -56,7 +56,7 @@ Text buildText(String v,{String color="#FF333333",double size=40,FontWeight font
 AppBar getCommonAppBar(String v){
 
   return AppBar(
-
+    centerTitle: true,
     title: Text(v),
 
   );

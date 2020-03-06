@@ -45,10 +45,35 @@ class _NewUserPageState extends State<NewUserPage> {
           buildMoreView(context),
           buildVideoListView(context),
           buildLine(),
-          buildBtnView(context,"我的企业"),
-          buildBtnView(context,"积分专区"),
-          buildBtnView(context,"我的订单"),
-          buildBtnView(context,"用户反馈"),
+
+
+         // 如果当前角色是医生
+         _userInfoInfo.regType==1? Column(
+
+
+           children: <Widget>[
+
+             buildBtnView(context,"我的赞"),
+             buildBtnView(context,"积分专区"),
+             buildBtnView(context,"我的订单"),
+             buildBtnView(context,"用户反馈"),
+
+           ],
+
+           // 代表角色
+         ):Column(
+
+           children: <Widget>[
+
+             buildBtnView(context,"我的企业"),
+             buildBtnView(context,"我的任务"),
+             buildBtnView(context,"用户反馈"),
+
+           ],
+         )
+
+
+
 
 
         ],
@@ -84,7 +109,9 @@ class _NewUserPageState extends State<NewUserPage> {
                child:  Material(
              color: Colors.transparent,
              child:  InkWell(
-                 onTap: (){},
+                 onTap: (){
+                   RRouter.push(context ,Routes.settingPage,{},transition:TransitionType.cupertino);
+                 },
                  child: Padding(padding: EdgeInsets.all(10),
 
                    child: Image.asset(wrapAssets("user/setting.png"),width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),),
@@ -98,7 +125,9 @@ class _NewUserPageState extends State<NewUserPage> {
                 child:  Material(
                   color: Colors.transparent,
                   child:  InkWell(
-                      onTap: (){},
+                      onTap: (){
+                        RRouter.push(context ,Routes.noticeHomePage,{},transition:TransitionType.cupertino);
+                      },
                       child: Padding(padding: EdgeInsets.all(10),
                         child: Image.asset(wrapAssets("user/msg.png"),width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),),
                       )
@@ -141,29 +170,30 @@ class _NewUserPageState extends State<NewUserPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
 
-               new  Material(
 
-                     color: Colors.white,
-                     child: InkWell(
-                       onTap: (){
+                 new Visibility(visible: _userInfoInfo.regType==1,child: new  Material(
 
-                       },
-                       child:   new Container(
+                   color: Colors.white,
+                   child: InkWell(
+                     onTap: (){
+
+                     },
+                     child:   new Container(
                        padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
-                         alignment: Alignment.center,
-                         child:  Column(
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           children: <Widget>[
-                             Text(_info==null?"0":_info.fabu.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
-                             Text("发布",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
+                       alignment: Alignment.center,
+                       child:  Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Text(_info==null?"0":_info.fabu.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
+                           Text("发布",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
 
-                           ],
-                         ),
-
-
+                         ],
                        ),
+
+
                      ),
-                   ) ,
+                   ),
+                 ) ),
 
                new  Material(
 
@@ -367,12 +397,16 @@ class _NewUserPageState extends State<NewUserPage> {
             case"我的订单":
                RRouter.push(context ,Routes.orderListPage,{},transition:TransitionType.cupertino);
              break;
+            case"我的赞":
+            //  RRouter.push(context ,Routes.myCollectionPage,{},transition:TransitionType.cupertino);
+              break;
+            case"我的任务":
+            RRouter.push(context ,Routes.orderListPage,{},transition:TransitionType.cupertino);
+              break;
           }
 
-
-
-
         },
+
         child: Container(
           height: ScreenUtil().setHeight(140),
           padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58), 0, ScreenUtil().setWidth(43), 0),
@@ -400,13 +434,9 @@ class _NewUserPageState extends State<NewUserPage> {
 
               )
 
-
-
             ],
 
-
           ),
-
 
         ),
       ),

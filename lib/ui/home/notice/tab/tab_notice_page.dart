@@ -7,7 +7,9 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 
-
+///
+///  公告通知
+///
 class TabNoticePage extends StatefulWidget {
   @override
   _TabNoticePageState createState() => _TabNoticePageState();
@@ -57,8 +59,6 @@ class _TabNoticePageState extends State<TabNoticePage> {
         ],
 
       ),
-
-
 
     );
 

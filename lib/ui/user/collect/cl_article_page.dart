@@ -29,7 +29,7 @@ class _ClArticlePageState extends State<ClArticlePage> {
   Widget itemListView() {
 
     return Container(
-        padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setWidth(49), ScreenUtil().setWidth(59), 0),
+        padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setWidth(49), ScreenUtil().setWidth(40), 0),
         child: Column(
 
           children: <Widget>[
@@ -53,9 +53,9 @@ class _ClArticlePageState extends State<ClArticlePage> {
              padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(88), 0, ScreenUtil().setWidth(88), 0),
              child:    Text("案例分析案例分析案例分析案例分析案例分析案例分析",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35)),),
            ),
-             new Row(
+            new Row(
 
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
 
               FlatButton.icon(onPressed: (){}, icon: Icon(Icons.add_circle,size: ScreenUtil().setWidth(50),), label: Text("558",style: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999)),),padding: EdgeInsets.all(0),),
@@ -68,7 +68,6 @@ class _ClArticlePageState extends State<ClArticlePage> {
 
           ),
             Divider(height: 2,color: Color(0xFFEEEEEE),)
-
 
 
           ],

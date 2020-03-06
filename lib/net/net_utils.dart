@@ -174,7 +174,7 @@ class NetUtils {
   ///  上传图片
   ///
   static Future<BaseResult> requestUploadsImages(File data,String path) async {
-    String url = APPConfig.Server + "uploads/image";
+    String url = APPConfig.Server + "uploads/image.html";
     BaseResult result = await httpManager.upload(url, data,path: path);
     return result;
   }
