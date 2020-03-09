@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -608,7 +608,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
         }else{
 
-          EasyLoading.showError(res.msg);
+          FLToast.error(text:res.msg);
 
         }
 

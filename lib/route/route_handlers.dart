@@ -230,12 +230,12 @@ var feedBackHandler = Handler(handlerFunc: (BuildContext context, Map<String, Li
 });
 
 var personalHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  String avatarUrl = params["avatar"]?.first;
-  String userInfo = params["info"]?.first;
-  var list = List<int>();
-  jsonDecode(userInfo).forEach(list.add);
-  userInfo = Utf8Decoder().convert(list);
-  return PersonalPage(avatarUrl,userInfo);
+  //String avatarUrl = params["avatar"]?.first;
+ // String userInfo = params["info"]?.first;
+ // var list = List<int>();
+  //jsonDecode(userInfo).forEach(list.add);
+ // userInfo = Utf8Decoder().convert(list);
+  return PersonalPage();
 });
 
 var updateExplainHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

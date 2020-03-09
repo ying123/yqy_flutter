@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
@@ -36,7 +36,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
         //token 过期
         if(result.code==4001){
           UserUtils.removeUserInfo();
-          EasyLoading.showError(result.msg);
+          FLToast.error(text:result.msg);
          RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
           MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
         //  MainHomePage.navigatorKey.currentState.pushNamed("/login");

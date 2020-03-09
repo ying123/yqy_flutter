@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
@@ -65,7 +65,7 @@ class MainHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    FLToastDefaults _toastDefaults = FLToastDefaults();
     return  RefreshConfiguration( // 刷新控件全部配置
         headerTriggerDistance: 100.0,// 头部触发刷新的越界距离
         hideFooterWhenNotFull: true, // Viewport不满一屏时,禁用上拉加载更多功能
@@ -84,9 +84,9 @@ class MainHomePage extends StatelessWidget {
           failedText: "加载失败！点击重试！",
           canLoadingText: "加载更多数据",
         ) ,
-        child: OKToast( // Toast 全局配置
-            child: FlutterEasyLoading(
-
+        child: OKToast( // ---------------------------------Toast 全局配置  待删除--------------------------------------------//
+            child: FLToastProvider(  // Toast 全局配置
+                  defaults: _toastDefaults,
                   child:  MaterialApp(
                     title: "水燕Med",
                     navigatorKey: navigatorKey,

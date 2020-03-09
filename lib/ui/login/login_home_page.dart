@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ import 'package:yqy_flutter/ui/login/bean/wx_info_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/regex_utils.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 
 class LoginHomePage extends StatefulWidget {
@@ -140,7 +142,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
           width:   ScreenUtil().setWidth(50),
           height:   ScreenUtil().setWidth(50),
           alignment: Alignment.center,
-          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(56),height: ScreenUtil().setWidth(60),fit: BoxFit.fill,),
+          child:  Image.asset(wrapAssets("login/ic_mobile.png"),width:  ScreenUtil().setWidth(56),height: ScreenUtil().setWidth(60),fit: BoxFit.fill,),
         ),
         cXM(ScreenUtil().setWidth(42)),
         Expanded(
@@ -206,6 +208,10 @@ class _LoginHomePageState extends State<LoginHomePage> {
     );
 
   }
+
+
+
+
 
   buildBtnLoginView(BuildContext context) {
     return loginType==0? Container(
@@ -293,7 +299,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
           width:   ScreenUtil().setWidth(50),
           height:   ScreenUtil().setWidth(50),
           alignment: Alignment.center,
-          child:  Image.asset(wrapAssets("login/ic_user.png"),width:  ScreenUtil().setWidth(56),height: ScreenUtil().setWidth(60),fit: BoxFit.fill,),
+          child:  Image.asset(wrapAssets("login/ic_pwd.png"),width:  ScreenUtil().setWidth(56),height: ScreenUtil().setWidth(60),fit: BoxFit.fill,),
         ),
         cXM(ScreenUtil().setWidth(42)),
         Expanded(child: TextFormField(
@@ -343,7 +349,6 @@ class _LoginHomePageState extends State<LoginHomePage> {
   }
 
 
-
   buildPwdLoginView(BuildContext context) {
     return Container(
         alignment: Alignment.centerLeft,
@@ -378,32 +383,30 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
                 });
               }else if(errorCode==-4){
-                showToast("拒绝授权");
+                FLToast.text(text:"拒绝授权");
               }else{
-                showToast("取消登录");
+                FLToast.text(text:"取消登录");
               }
             });
           },
           child: Container(
-            padding: EdgeInsets.all(ScreenUtil().setHeight(20)),
+            padding: EdgeInsets.all(ScreenUtil().setHeight(30)),
             child:     new  Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(wrapAssets("login/ic_wx.png"),width:  ScreenUtil().setWidth(100),height: ScreenUtil().setWidth(100),fit: BoxFit.fill,),
-                cYM(ScreenUtil().setHeight(10)),
-                Text("微信登录",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),)
-
+                Image.asset(wrapAssets("wx_logo.png"),width:  ScreenUtil().setWidth(120),height: ScreenUtil().setWidth(120),fit: BoxFit.fill,),
+                cYM(ScreenUtil().setHeight(20)),
+                Text("微信登录",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),)
 
               ],
             ),
           ),
         )
 
-
       ],
     );
-
   }
+
 
 
   ///
@@ -427,20 +430,19 @@ class _LoginHomePageState extends State<LoginHomePage> {
   ///
   void requestWxLogin(String unionid) {
 
-
-
     NetUtils.requestQuickLogin("wx", unionid)
         .then((res){
-     // SendSmsInfo _loginInfo = SendSmsInfo.fromJson(res.info);
+
+        SendSmsInfo _loginInfo = SendSmsInfo.fromJson(res.info);
 
         if(res.code==200){ // 直接登录
+          UserUtils.saveToken(_loginInfo.token.toString());
           RRouter.push(context ,Routes.homePage,{},transition:TransitionType.cupertino,clearStack: true);
         }else if(res.code==1501){ // 去绑定手机号码
           RRouter.push(context ,Routes.bindPhonePage,{"unionid":unionid},transition:TransitionType.cupertino);
         }else{ //错误信息
-          showToast(res.msg);
+          FLToast.error(text: res.msg);
         }
-
 
     });
 
@@ -460,7 +462,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
            RRouter.push(context, Routes.homePage, {},clearStack: true);
 
           }else{
-            showToast(res.msg);
+            FLToast.error(text: res.msg);
           }
 
     });

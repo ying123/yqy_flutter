@@ -1,6 +1,6 @@
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -246,22 +246,22 @@ class _AddressListPageState extends State<AddressListPage> {
   void getUpdateAddressData(BuildContext context,ShopAddressListInfoList bean) {
 
 
-    EasyLoading.show();
+    var dismiss = FLToast.loading();
     NetUtils.requestSetDefaultAddress(bean.id.toString())
           .then((res){
 
             if(res.code==200){
               eventBus.fire(bean);
-              EasyLoading.dismiss();
+              dismiss();
               Navigator.pop(context);
             }else{
 
-              EasyLoading.showError(res.msg);
+              FLToast.error(text:res.msg);
 
             }
 
     }).catchError((){
-      EasyLoading.dismiss();
+      dismiss();
     });
 
 

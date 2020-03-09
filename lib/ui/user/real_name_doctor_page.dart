@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:oktoast/oktoast.dart';
@@ -347,7 +347,6 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
   ///
   buildDepartmentInputView(BuildContext context) {
 
-
     return new Row(
       children: <Widget>[
         Container(
@@ -403,14 +402,10 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
         Text("我已阅读并同意",style: TextStyle(color:  Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
         Text("《用户服务协议》",style: TextStyle(color:  Color(0xFF4AB1F2),fontSize: ScreenUtil().setSp(32)),)
 
-
       ],
-
-
     );
-
-
   }
+
 
   buildHosNameInputView(BuildContext context) {
 
@@ -459,7 +454,6 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
     );
   }
-
 
 
   buildAddressView(BuildContext context) {
@@ -520,6 +514,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
 
   buildJobNameInputView(BuildContext context) {
+
     return new Row(
       children: <Widget>[
         Container(
@@ -530,6 +525,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
         ),
         Expanded(child: InkWell(
             onTap: (){
+
               rootBundle.loadString('data/job.json').then((v) {
                 List data = json.decode(v);
 
@@ -568,7 +564,6 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
     );
   }
-
 
 
   buildJobNumberInputView(BuildContext context) {
@@ -771,57 +766,51 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
     // 当前表示 之前提交过资料 但是需要补充图片资料
     if(UserUtils.getUserInfoX().userInfoStatus==4){
 
-
         if(_urlImage1==null){
 
-          EasyLoading.showError("请上传执业证书正面");
+          FLToast.error(text:"请上传执业证书正面");
           return;
 
         }
       if(_urlImage2==null){
-        EasyLoading.showError("请上传执业证书背面");
+        FLToast.error(text: "请上传执业证书背面");
         return;
       }
       map["job_img1"] = _urlImage1;
       map["job_img2"] = _urlImage2;
-
-
-
     }
 
 
     // 认证的状态
     map["userInfoStatus"] = UserUtils.getUserInfoX().userInfoStatus;
 
-
-
     NetUtils.requestCertificationDoctor(map)
         .then((res){
 
       if(res.code==200){
-        EasyLoading.showSuccess(res.msg);
+        FLToast.showSuccess(text:res.msg);
       }else{
-        EasyLoading.showError(res.msg);
+        FLToast.error(text:res.msg);
       }
 
     });
 
   }
 
-  void initJobNameData() {
+
+
+ /* void initJobNameData() {
 
     NetUtils.requestJobList()
         .then((res){
 
           if(res.code==200){
 
-
           }
 
     });
 
-
-  }
+  }*/
 
 
   ///

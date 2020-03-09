@@ -1,3 +1,4 @@
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
@@ -62,7 +63,6 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
 
         centerTitle: true,
@@ -73,8 +73,9 @@ class _SettingPageState extends State<SettingPage> {
 
         children: <Widget>[
 
-
           buildMobileView(context),
+          Divider(height: 1,),
+          buildUpdateInfoView(context),
           Divider(height: 1,),
           buildServicePhoneView(context),
           Divider(height: 1,),
@@ -224,6 +225,7 @@ class _SettingPageState extends State<SettingPage> {
             color: Colors.white,
             child: FlatButton(
                 onPressed: (){
+                  UserUtils.removeToken();
                   UserUtils.removeUserInfo();
                   RRouter.push(context, Routes.loginPage,{},clearStack: true);
 
@@ -240,6 +242,42 @@ class _SettingPageState extends State<SettingPage> {
 
         )
 
+    );
+
+  }
+
+  buildUpdateInfoView(BuildContext context) {
+
+    return  InkWell(
+      onTap: (){
+        RRouter.push(context, Routes.personalPage,{});
+      },
+      child: Container(
+        height: 60,
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+        child: Row(
+
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+
+            Text("个人资料",style: TextStyle(color: Colors.black87,fontSize: 16),),
+            new Expanded(
+                child: Container(
+                    padding: EdgeInsets.only(right: 10),
+                    alignment: Alignment.centerRight,
+                    child: Text(_aboutInfo==null?"":_aboutInfo.serviceTel3,style: TextStyle(color: Colors.blueAccent,fontSize: 15),)
+                )
+
+            ),
+
+            Icon(Icons.navigate_next,size: 30,color: Colors.black26,),
+
+          ],
+        ),
+
+      ),
     );
 
   }
