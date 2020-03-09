@@ -170,6 +170,11 @@ class Routes {
 
   static String hdFollowPage = "/hdFollowPage"; //  互动消息  关注的消息
 
+
+
+
+
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
        print("ROUTE WAS NOT FOUND !!!");

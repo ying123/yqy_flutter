@@ -15,6 +15,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/route/tokenCancelRouter.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_home_page.dart';
 import 'package:yqy_flutter/ui/guide/guide_page.dart';
 import 'package:yqy_flutter/ui/home/video_page.dart';
@@ -48,7 +49,6 @@ void main()  {
 class MainHomePage extends StatelessWidget {
 
 
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   MainHomePage()  {
     final router = new Router();
@@ -89,7 +89,7 @@ class MainHomePage extends StatelessWidget {
                   defaults: _toastDefaults,
                   child:  MaterialApp(
                     title: "水燕Med",
-                    navigatorKey: navigatorKey,
+                    navigatorKey: TokenRouter.navigatorKey, //设置在这里
                     debugShowCheckedModeBanner: false,//不显示debug
                     localizationsDelegates: [
                       ChineseCupertinoLocalizations.delegate, // 这里加上这个,是自定义的delegate

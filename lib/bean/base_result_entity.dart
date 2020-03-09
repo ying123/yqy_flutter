@@ -18,7 +18,7 @@ class BaseResult {
 	BaseResult.fromJson(Map<String, dynamic> json) {
 		msg = json['msg'].toString();
 		code = json['code'];
-		info = json['info'] ;
+		json['info'] == null ? info = null : info = json['info'] ;
 	}
 
 	Map<String, dynamic> toJson() {

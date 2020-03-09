@@ -8,6 +8,7 @@ import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/route/tokenCancelRouter.dart';
 import 'dart:convert';
 
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -25,20 +26,27 @@ class ResponseInterceptor extends InterceptorsWrapper {
 
   @override
   onResponse(Response response) {
-    // RequestOptions options = response.request;
+
+
     try {
 
+      BaseResult   result = BaseResult.fromJson(jsonDecode(response.data));
 
       if (response.statusCode!=500) { //http code
 
-         BaseResult   result = BaseResult.fromJson(response.data);
-
         //token 过期
-        if(result.code==4001){
+        if(result.tokenCancel){
+          UserUtils.removeToken();
           UserUtils.removeUserInfo();
           FLToast.error(text:result.msg);
-         RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
-          MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
+
+          TokenRouter.navigatorKey.currentState.pushNamed(Routes.loginPage);
+          TokenRouter.navigatorKey.currentState.pushNamedAndRemoveUntil(Routes.loginPage,
+                  (router) => router == null);
+
+
+        //  RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
+        //  MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
         //  MainHomePage.navigatorKey.currentState.pushNamed("/login");
         }
           return result;
@@ -53,6 +61,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
        if (APPConfig.DEBUG) {
           print("ResponseInterceptor: $e.toString() + options.path");
         }
+       //token 过期
          return BaseResult.fromJson(response.data);
     }
   }

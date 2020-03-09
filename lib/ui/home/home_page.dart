@@ -576,7 +576,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
         _isCertificationInfo =   IsCertificationInfo.fromJson(res.info);
 
-        if(_isCertificationInfo.isCert==0){
+        if(_isCertificationInfo.isCert==1){  // 1 需要  0 不需要
 
             //  1 医生    2 推广经理  根据角色类型调换不同的实名认证页面
             requestIsRZ(context,_isCertificationInfo.regType.toString());

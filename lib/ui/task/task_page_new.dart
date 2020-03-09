@@ -278,10 +278,10 @@ class _TaskNewPageState extends State<TaskNewPage> {
   buildItemTask(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.all(setW(30)),
+      padding: EdgeInsets.all(setH(30)),
       margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(42),0 , ScreenUtil().setWidth(42), ScreenUtil().setHeight(42)),
       width: ScreenUtil().setWidth(1022),
-      height: ScreenUtil().setHeight(280),
+      height: ScreenUtil().setHeight(300),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
