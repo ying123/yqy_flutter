@@ -361,12 +361,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
                 }
 
-
             });
           },
 
         ));
   }
+
 
   //dio可以监听下载进度，调用此方法
   void _updateProgress(_progress) {
@@ -374,6 +374,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       _dialogKey.currentState.progress = _progress;
     });
   }
+
 
  Widget buildTopView() {
 
@@ -386,7 +387,14 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           cXM(ScreenUtil().setWidth(33)),
           buildAppbarView(),
           cXM(ScreenUtil().setWidth(10)),
-          Image.asset(wrapAssets("home/integral_btn.png"),width: ScreenUtil().setWidth(204),height: ScreenUtil().setHeight(100),),
+          InkWell(
+            onTap: (){
+              RRouter.push(context, Routes.taskNewPage,{}); // 跳转积分首页
+            },
+            child: Image.asset(wrapAssets("home/integral_btn.png"),width: ScreenUtil().setWidth(204),height: ScreenUtil().setHeight(100),),
+
+          ),
+
           InkWell(
             onTap: (){
               RRouter.push(context, Routes.noticeHomePage,{});

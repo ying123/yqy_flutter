@@ -7,7 +7,6 @@ import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/ui/home/bean/video_page_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 
 class VideoPage extends StatefulWidget {
   @override

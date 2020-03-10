@@ -459,7 +459,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
         width: double.infinity,
         height: ScreenUtil().setHeight(412),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             wrapImageUrl(bean.image, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
@@ -513,7 +513,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
          //Widget Function(BuildContext context, int index)
          return getDocView(list[index]);
        });
-
 
   }
 

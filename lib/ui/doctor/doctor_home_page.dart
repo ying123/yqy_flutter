@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'dart:math' as math;
 
 class DoctorHomePage extends StatefulWidget {
   @override
@@ -43,7 +46,9 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     return Scaffold(
       backgroundColor: Colors.white,
       endDrawer: buildDrawer(context),
-      body: ListView(
+
+
+     /* body: ListView(
         padding: EdgeInsets.all(0),
        children: <Widget>[
         Container(height: ScreenUtil().setHeight(80),color: Colors.white,),
@@ -62,6 +67,80 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
        ],
 
       ),
+*/
+
+      body: Column(
+
+        children: <Widget>[
+          Container(height: ScreenUtil().setHeight(80),color: Colors.white,),
+          buildBanner(context),
+          cYM(ScreenUtil().setHeight(30)),
+          buildBannerTitle(context),
+          cYM(ScreenUtil().setHeight(58)),
+          Expanded(child:  CustomScrollView(
+
+            shrinkWrap: true,
+            slivers: <Widget>[
+
+              new SliverToBoxAdapter(
+
+                child: Column(
+                  children: <Widget>[
+                    // 横向推荐视频
+                    buildRowRecommendView(context),
+                    cYM(ScreenUtil().setHeight(20)),
+                    buildAdView(context),
+                    cYM(ScreenUtil().setHeight(40)),
+                  ],
+                ),
+              ),
+
+              SliverStickyHeader(
+                header:  buildScreenView(context),
+                sliver: viewType==0? SliverGrid.count(
+                  //水平子Widget之间间距
+                  crossAxisSpacing: ScreenUtil().setWidth(0),
+                  //垂直子Widget之间间距
+                  mainAxisSpacing: ScreenUtil().setHeight(0),
+                  //GridView内边距
+                  //一行的Widget数量
+                  crossAxisCount: 2,
+                  //子Widget宽高比例
+                  //子Widget列表
+                  children: [
+                    buildItemView(null),
+                    buildItemView(null),
+                    buildItemView(null),
+                    buildItemView(null),
+                    buildItemView(null),
+                    buildItemView(null),
+                    buildItemView(null),
+                  ])
+                    :
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, i) =>
+                            getLiveItemView(context,null),
+                    childCount: 20,
+                  ),
+                ),
+              ),
+
+
+
+
+            ],
+
+
+
+          ),
+          )
+
+
+        ],
+      )
+
+
 
     );
   }
@@ -92,6 +171,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
   buildBannerTitle(BuildContext context) {
     
     return Container(
+      height: setH(60),
       alignment: Alignment.center,
       width: double.infinity,
       child: Text("王金义：杂交法经食管切除术",style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(40)),),
@@ -166,10 +246,18 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     
   }
 
+
+
+
+
+
+
   Widget buildScreenView(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 0, ScreenUtil().setWidth(29), 0),
+      color: Colors.white,
+      margin: EdgeInsets.fromLTRB(0, 0,0, 0),
+      padding: EdgeInsets.only(right: setW(10)),
       //  height: ScreenUtil().setHeight(40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -242,6 +330,18 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     list.add("");
     list.add("");
     list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
+    list.add("");
     return list==null?Container():viewType==0? GridView.count(
       shrinkWrap: true ,
       physics: new NeverScrollableScrollPhysics(),
@@ -278,7 +378,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
       },
       child: Container(
         width: double.infinity,
-        height: ScreenUtil().setHeight(412),
+        height: ScreenUtil().setHeight(430),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -592,4 +692,37 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     );
 
   }
+
+
 }
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    @required this.minHeight,
+    @required this.maxHeight,
+    @required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => math.max(maxHeight, minHeight);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
+  }
+}
+

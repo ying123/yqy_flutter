@@ -141,10 +141,10 @@ class MainHomePage extends StatelessWidget {
         doOnIOS: true,
         universalLink: "https://shuiyanmed.com/");
     var result = await isWeChatInstalled;
-    print("is installed $result");
+
+  //  FLToast.info(text: result.toString());
+
   }
-
-
 
 
 }

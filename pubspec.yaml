@@ -71,14 +71,14 @@ dependencies:
   share: 0.6.3+1 # 分享
   flutter_swiper: 1.1.6 # 轮播图
   flutter_plugin_pdf_viewer: 1.0.7   # PDF 查看器
-  sticky_headers: ^0.1.8 # 悬停布局
   flui: 0.8.0  # UI组件库 待完善
+  sticky_headers: ^0.1.8  # 悬停布局
+  flutter_sticky_header: 0.4.2 # 悬停布局2
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

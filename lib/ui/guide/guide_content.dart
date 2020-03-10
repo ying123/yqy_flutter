@@ -131,7 +131,7 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
           cXM(10),
           new GestureDetector(
 
-            child: Icon(Icons.share, color: Colors.black45, size: 26,),
+            child: Image.asset(wrapAssets("share.png"),width: setW(75),height: setW(75),),
 
             onTap: () {
 
@@ -180,10 +180,8 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
 
   void showShareView(BuildContext context) {
     showFLBottomSheet(context: context, builder: (BuildContext context){
-
-
-      return FLCupertinoOperationSheet(
-        backgroundColor: Colors.red,
+      return  new  FLCupertinoOperationSheet(
+        backgroundColor: Colors.white,
         sheetStyle: FLCupertinoActionSheetStyle.filled,
         cancelButton: CupertinoActionSheetAction(
           child: const Text('取消'),
