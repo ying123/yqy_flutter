@@ -44,13 +44,11 @@ class ResponseInterceptor extends InterceptorsWrapper {
           TokenRouter.navigatorKey.currentState.pushNamedAndRemoveUntil(Routes.loginPage,
                   (router) => router == null);
 
-
         //  RRouter.push(MainHomePage.navigatorKey.currentState.context, Routes.loginPage,{},clearStack: true);
         //  MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
         //  MainHomePage.navigatorKey.currentState.pushNamed("/login");
         }
           return result;
-
 
       }else {
         if (APPConfig.DEBUG) {

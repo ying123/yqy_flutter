@@ -44,12 +44,14 @@ class _LoginHomePageState extends State<LoginHomePage> {
   String pwd = ""; // 密码
 
 
+  String _result = "无"; // 微信登陆响应的结果
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initControllerListener();
-
+    initWxLoginListener();
   }
 
   void initControllerListener() {
@@ -66,22 +68,32 @@ class _LoginHomePageState extends State<LoginHomePage> {
   }
 
 
-  void sendAuth({
-    @required ValueChanged<fluwx.WeChatAuthResponse> onAuthResp,
-    String openId,
-  }) async {
-    await fluwx.sendWeChatAuth(
-      scope: 'snsapi_userinfo',
-      openId: openId,
-      state: '${DateTime.now().millisecondsSinceEpoch}',
-    );
-    StreamSubscription subscription;
-    var callback = (fluwx.WeChatAuthResponse resp) {
-      subscription?.cancel();
-      onAuthResp(resp);
-    };
-    subscription = fluwx.responseFromAuth.listen(callback);
+  void initWxLoginListener() {
+
+    fluwx.weChatResponseEventHandler.distinct((a, b) => a == b).listen((res) {
+      if (res is fluwx.WeChatAuthResponse) {
+
+        if(res.isSuccessful){
+
+          requestWxUserInfoData(res.code).then((res){
+            // 发起微信登陆的请求
+
+            requestWxLogin(res);
+
+          });
+
+        }else{
+          FLToast.error(text: "授权失败");
+        }
+
+
+      }
+    });
+
+
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,28 +109,36 @@ class _LoginHomePageState extends State<LoginHomePage> {
             child:  new   ListView(
 
           children: <Widget>[
-            new  Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                cYM(ScreenUtil().setHeight(260)),
-                Text("欢迎来到药企源",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(65),fontWeight: FontWeight.bold),),
-                cYM(ScreenUtil().setHeight(160)),
-                // 手机号输入
-                buildMobileInputView(context),
-                buildLine(),
-                cYM(ScreenUtil().setHeight(36)),
-                buildPwdInputView(),
-                Visibility(visible: loginType==0?false:true,child:    buildLine()),
-                cYM(ScreenUtil().setHeight(73)),
-                buildBtnLoginView(context),
-                cYM(ScreenUtil().setHeight(10)),
-                buildPwdLoginView(context),
-                cYM(ScreenUtil().setHeight(330)),
-                buildTipView2(),
-                cYM(ScreenUtil().setHeight(46)),
-                // 其他登陆方式
-                buildOtherLoginView(context),
-              ],
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child:   new  Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  cYM(ScreenUtil().setHeight(260)),
+                  Text("欢迎来到药企源",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(65),fontWeight: FontWeight.bold),),
+                  cYM(ScreenUtil().setHeight(160)),
+                  // 手机号输入
+                  buildMobileInputView(context),
+                  buildLine(),
+                  cYM(ScreenUtil().setHeight(36)),
+                  buildPwdInputView(),
+                  Visibility(visible: loginType==0?false:true,child:    buildLine()),
+                  cYM(ScreenUtil().setHeight(73)),
+                  buildBtnLoginView(context),
+                  cYM(ScreenUtil().setHeight(10)),
+                  buildPwdLoginView(context),
+                  cYM(ScreenUtil().setHeight(330)),
+                  buildTipView2(),
+                  cYM(ScreenUtil().setHeight(46)),
+                  // 其他登陆方式
+                  buildOtherLoginView(context),
+                ],
+              ),
+              onTap: (){
+                // 触摸收起键盘
+                FocusScope.of(context).requestFocus(FocusNode());
+
+              },
             )
 
           ],
@@ -156,7 +176,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
           maxLines: 1,
           maxLength: 11,
           decoration: InputDecoration(
-            hintText: "输入手机号",
+            hintText:  loginType==0? "输入手机号":"输入账号",
             hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(46)),
             border: InputBorder.none, // 去除下划线
             counterText: "",//此处控制最大字符是否显示
@@ -166,13 +186,14 @@ class _LoginHomePageState extends State<LoginHomePage> {
               },
          validator: (String value) {
            if(value.length==0){
-             showToast("请输入手机号");
+             showToast( loginType==0?"请输入手机号":"请输入账号");
              return null;
              }
-           if(!RegexUtils.isChinaPhoneLegal(value)){
+           if(!RegexUtils.isChinaPhoneLegal(value)&& loginType==0){
              showToast("手机号码格式不正确");
              return null;
            }
+
              return null;
          },
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
@@ -372,22 +393,12 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
         InkWell(
           onTap: (){
-            sendAuth(onAuthResp: (data){
-             int errorCode =  data.errCode;
 
-              if(errorCode==0){
-                // 获取微信的个人信息
-                requestWxUserInfoData(data.code).then((res){
-                    // 发起微信登陆的请求
-                    requestWxLogin(res);
+            fluwx
+                .sendWeChatAuth(
+                scope: "snsapi_userinfo", state: "wechat_sdk_demo_test")
+                .then((data) {});
 
-                });
-              }else if(errorCode==-4){
-                FLToast.text(text:"拒绝授权");
-              }else{
-                FLToast.text(text:"取消登录");
-              }
-            });
           },
           child: Container(
             padding: EdgeInsets.all(ScreenUtil().setHeight(30)),

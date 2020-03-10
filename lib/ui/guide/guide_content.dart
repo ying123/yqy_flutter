@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flui/flui.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:like_button/like_button.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -36,7 +39,7 @@ class GuideContentPage extends StatefulWidget {
 }
 
 
-class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepAliveClientMixin{
+class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepAliveClientMixin {
 
 
   GuideInfoInfo _detailsEntity;
@@ -50,8 +53,8 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
   ///
   ///   PDF相关
   ///
-   PDFDocument document;
-   bool _isLoading = true;
+  PDFDocument document;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -59,59 +62,47 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
     super.initState();
 
     loadData();
-
   }
 
-   loadData() {
-
-     NetUtils.requestDocumentInfo(widget.id)
-      .then((res) async {
-
-       if(res.code==200) {
-
-         _detailsEntity = GuideInfoInfo.fromJson(res.info);
-         _type = _detailsEntity.type;
+  loadData() {
+    NetUtils.requestDocumentInfo(widget.id)
+        .then((res) async {
+      if (res.code == 200) {
+        _detailsEntity = GuideInfoInfo.fromJson(res.info);
+        _type = _detailsEntity.type;
 
 
-           if(_type==0){
+        if (_type == 0) {
+          String subTitle = "<h3>" + _detailsEntity.title + "<\/h3>";
+          String soure = "<p><span style=\"float:left;font-size:12px;color:#999999\">" +
+              "来源:  " +
+              "<\/span> <span style=\"float:right;font-size:12px;color:#999999\">" +
+              _detailsEntity.createTime + "<\/span></p> <br/>";
+          if (_detailsEntity.content.startsWith("http")) {
+            htmlStr = _detailsEntity.content;
+          } else {
+            String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
+            String resultStr = "<html>" + head + "<body>" +
+                _detailsEntity.content + "<\/body></html>";
+            htmlStr = subTitle + soure + resultStr;
+          }
+        } else {
+          document = await PDFDocument.fromURL(
+              _detailsEntity.filepath);
+          _isLoading = false;
+        }
 
-             String subTitle = "<h3>" + _detailsEntity.title + "<\/h3>";
-             String soure = "<p><span style=\"float:left;font-size:12px;color:#999999\">" +
-                 "来源:  " +
-                 "<\/span> <span style=\"float:right;font-size:12px;color:#999999\">" +
-                 _detailsEntity.createTime + "<\/span></p> <br/>";
-             if (_detailsEntity.content.startsWith("http")) {
-               htmlStr = _detailsEntity.content;
-             } else {
-               String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
-               String resultStr = "<html>" + head + "<body>" +
-                   _detailsEntity.content + "<\/body></html>";
-               htmlStr = subTitle + soure + resultStr;
-             }
-
-           }else{
-
-             document = await PDFDocument.fromURL(
-                 _detailsEntity.filepath);
-             _isLoading = false;
-
-           }
-
-         setState(() {
+        setState(() {
 
 
-         });
-       }
-
-
-     });
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-    return  _detailsEntity==null?Container():Scaffold(
+    return _detailsEntity == null ? Container() : Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.black,),
@@ -126,42 +117,45 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
 
           LikeButton(
             isLiked: isCollect,
-            likeBuilder: (bool isLike){
-
-              return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
-              Icon(Icons.star,color:Colors.amber,size: 30,);
+            likeBuilder: (bool isLike) {
+              return !isLike ? Icon(
+                Icons.star_border, color: Colors.black45, size: 30,) :
+              Icon(Icons.star, color: Colors.amber, size: 30,);
             },
-            onTap: (bool isLiked)
-            {
-              return onLikeButtonTap(AppRequest.Collect_News,isLiked,_detailsEntity.id);
+            onTap: (bool isLiked) {
+              return onLikeButtonTap(
+                  AppRequest.Collect_News, isLiked, _detailsEntity.id);
             },
 
           ),
           cXM(10),
           new GestureDetector(
 
-            child: Icon(Icons.share,color: Colors.black45,size: 26,),
+            child: Icon(Icons.share, color: Colors.black45, size: 26,),
 
-            onTap: (){
-              showToast("点击分享");
+            onTap: () {
+
+              showShareView(context);
             },
           ),
           cXM(10),
 
         ],
       ),
-      body:_type==0? Container(
-        padding: EdgeInsets.all(setW(20)),
-        child: ListView(
-          children: <Widget>[
-            Html(
-              data:getHtmlData(htmlStr) ,
-            ),
-          ],
-        )
+      body: _type == 0 ? Container(
+          padding: EdgeInsets.all(setW(20)),
+          child: ListView(
+            children: <Widget>[
+              Html(
+                data: getHtmlData(htmlStr),
+              ),
+            ],
+          )
 
-      ): Container(
-        child: _isLoading?Center(child: CircularProgressIndicator()):MyPDFViewer(
+      ) : Container(
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : MyPDFViewer(
           document: document,
         ),
 
@@ -171,33 +165,98 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
   }
 
   String getHtmlData(String bodyHTML) {
- //   String subTitle = "\<h3 align=\"center\">" + widget.bean.title + "<\/h3><br/>";
-  //  String content = subTitle + bodyHTML;
+    //   String subTitle = "\<h3 align=\"center\">" + widget.bean.title + "<\/h3><br/>";
+    //  String content = subTitle + bodyHTML;
     String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
-    String resultStr = "<html>" + head + "<body>"+
+    String resultStr = "<html>" + head + "<body>" +
         bodyHTML + "<\/body></html>";
     return resultStr;
   }
 
 
-
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
-}
+
+  void showShareView(BuildContext context) {
+    showFLBottomSheet(context: context, builder: (BuildContext context){
 
 
-final _loadingContainer = Container(
-  color: Colors.white,
-  constraints: BoxConstraints.expand(),
-  child: Center(
-    child: Opacity(
-      opacity: 0.9,
-      child: SpinKitRing(
-        color: AppColors.PrimaryColor,
-        size: 50.0,
+      return FLCupertinoOperationSheet(
+        backgroundColor: Colors.red,
+        sheetStyle: FLCupertinoActionSheetStyle.filled,
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text('取消'),
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context, '取消');
+          },
+        ),
+        header: Container(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: Text('分享', style: TextStyle(color: Colors.blueGrey, fontSize: 18)),
+        ),
+        itemList: [
+          [
+            FLCupertinoOperationSheetItem(
+              imagePath: wrapAssets("wx_logo.png"),
+              title: '微信',
+              onPressed: () {
+              //  Navigator.pop(context, 'Google');
+                _shareText("测试分享的文本", WeChatScene.SESSION);
+              },
+            ),
+            FLCupertinoOperationSheetItem(
+              imagePath: wrapAssets("wx_pyq.png"),
+              title: '朋友圈',
+              onPressed: () {
+                Navigator.pop(context, 'Wechat');
+                _shareText("测试分享的文本", WeChatScene.TIMELINE);
+              },
+            ),
+            FLCupertinoOperationSheetItem(
+              imagePath: wrapAssets("qq_logo.png"),
+              title: 'QQ',
+              onPressed: () {
+                Navigator.pop(context, 'Google');
+              },
+            ),
+            FLCupertinoOperationSheetItem(
+              imagePath: wrapAssets("weibo_logo.png"),
+              title: '微博',
+              onPressed: () {
+                Navigator.pop(context, 'Wechat');
+              },
+            ),
+          ],
+
+        ],
+      );
+
+
+    });
+
+  }
+
+
+  void _shareText(String _text,WeChatScene scene) {
+    shareToWeChat(WeChatShareTextModel(_text,title: _text, scene: scene)).then((data) {
+    });
+
+  }
+
+  final _loadingContainer = Container(
+    color: Colors.white,
+    constraints: BoxConstraints.expand(),
+    child: Center(
+      child: Opacity(
+        opacity: 0.9,
+        child: SpinKitRing(
+          color: AppColors.PrimaryColor,
+          size: 50.0,
+        ),
       ),
     ),
-  ),
-);
+  );
 
+}

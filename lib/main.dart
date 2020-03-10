@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:oktoast/oktoast.dart';
@@ -133,9 +134,19 @@ class MainHomePage extends StatelessWidget {
   ///
   ///  初始化微信sdk相关
   ///
-  void initWxSDK() {
-    fluwx.registerWxApi(appId:APPConfig.WX_APP_ID,universalLink:"https://shuiyanmed.com/");
+  initWxSDK() async {
+    await registerWxApi(
+        appId: APPConfig.WX_APP_ID,
+        doOnAndroid: true,
+        doOnIOS: true,
+        universalLink: "https://shuiyanmed.com/");
+    var result = await isWeChatInstalled;
+    print("is installed $result");
   }
+
+
+
+
 }
 
 class HomeMainPage extends StatefulWidget {
@@ -174,7 +185,6 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
     ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
     return Scaffold(
 
-
       ///使用 indexedStack 防止方式页面重复绘制
       body: IndexedStack(
         index: _currentIndex,
@@ -206,7 +216,6 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   ///底部导航栏item
   btmNb(String v,Widget iconData,int pos) => BottomNavigationBarItem(icon: iconData,title: Text(v,style: TextStyle(color:pos==_currentIndex? Color(buildColorType(_currentIndex)):Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),activeIcon: Image.asset(buildseleIcon(_currentIndex),width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),));
-
 
 
   ///

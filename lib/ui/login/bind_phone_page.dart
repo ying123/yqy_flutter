@@ -50,6 +50,8 @@ class _BindPhonePageState extends State<BindPhonePage> {
   String pwd; // 密码
 
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -57,6 +59,7 @@ class _BindPhonePageState extends State<BindPhonePage> {
     initControllerListener();
 
   }
+
 
   void initControllerListener() {
 
@@ -72,22 +75,6 @@ class _BindPhonePageState extends State<BindPhonePage> {
   }
 
 
-  void sendAuth({
-    @required ValueChanged<fluwx.WeChatAuthResponse> onAuthResp,
-    String openId,
-  }) async {
-    await fluwx.sendWeChatAuth(
-      scope: 'snsapi_userinfo',
-      openId: openId,
-      state: '${DateTime.now().millisecondsSinceEpoch}',
-    );
-    StreamSubscription subscription;
-    var callback = (fluwx.WeChatAuthResponse resp) {
-      subscription?.cancel();
-      onAuthResp(resp);
-    };
-    subscription = fluwx.responseFromAuth.listen(callback);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -399,6 +386,8 @@ class _BindPhonePageState extends State<BindPhonePage> {
     });
 
   }
+
+
 
 
 
