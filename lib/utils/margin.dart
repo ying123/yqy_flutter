@@ -27,18 +27,17 @@ Widget cYMW(double y) {
 
 
 
-
  double setW(double w){
-  return ScreenUtil.getInstance().setWidth(w);
+  return ScreenUtil().setWidth(w);
  }
 
 
 double setH(double h){
-  return ScreenUtil.getInstance().setHeight(h);
+  return ScreenUtil().setHeight(h);
 }
 
 double setSP(double sp){
-  return ScreenUtil.getInstance().setSp(sp);
+  return ScreenUtil().setSp(sp);
 }
 
 

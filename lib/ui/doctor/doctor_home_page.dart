@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
@@ -42,7 +41,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
   Widget build(BuildContext context) {
 
     //设置适配尺寸 (填入设计稿中设备的屏幕尺寸) 假如设计稿是按iPhone6的尺寸设计的(iPhone6 750*1334)
-    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
       backgroundColor: Colors.white,
       endDrawer: buildDrawer(context),
@@ -149,7 +148,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
 
     return Container(
-      height: ScreenUtil().setHeight(550),
+      height: ScreenUtil().setHeight(450),
       width: double.infinity,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {

@@ -19,6 +19,7 @@ class _LivePaybackPageState extends State<LivePaybackPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
       appBar: AppBar(
         title: Text("会议录播"),
@@ -28,6 +29,7 @@ class _LivePaybackPageState extends State<LivePaybackPage> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
+
           //主要内容布局
           buildContextView(context),
           // 底部点击评论的布局

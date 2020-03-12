@@ -8,7 +8,7 @@ import 'package:yqy_flutter/utils/margin.dart';
 ///
 void requestIsRZ(BuildContext context,String userType) async {
   //网络请求
-  ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+  ScreenUtil.init(context,width: 1080, height: 1920);
   // 发起弹窗
   showDialog(context: context,
       builder: (_)=>  Material(

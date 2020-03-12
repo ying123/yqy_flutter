@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fijkplayer/fijkplayer.dart';
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:like_button/like_button.dart';
@@ -10,6 +11,7 @@ import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_meeting_list_info_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
@@ -19,6 +21,12 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:yqy_flutter/ui/live/bean/comment_list_entity.dart';
 
 class LiveIngPage extends StatefulWidget {
+
+  final  String id;
+
+
+  LiveIngPage(this.id);
+
   @override
   _LiveIngPageState createState() => _LiveIngPageState();
 }
@@ -49,15 +57,26 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
 
 
+  ///直播专家列表==================================
+  TabMeetingListInfoInfo _meetingListInfoInfo; // 直播专家列表
+  ///=============================================
+
+
+
+  ///会场相关==================================
+    int currentHC = 0; // 当前所在的会场坐标
+   ///=============================================
+
   final FijkPlayer player = FijkPlayer();
   StreamSubscription changeSubscription;
 
-  String liveId = "166"; // 当前会议的ID
+  String liveId; // 当前会议的ID
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    liveId = widget.id;
     loadData();
     changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
       setState(() {
@@ -81,67 +100,84 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
   void loadData() async{
 
-    // 当前页面的数据
-    NetUtils.requestMeetingInfo(liveId)
-        .then((res) {
 
-      if(res.code==200){
-        _liveDetailsInfo = LiveInfo.fromJson(res.info);
+    Future.wait([
+      // 当前页面的数据
+      NetUtils.requestMeetingInfo(liveId),
+     // 收藏的状态
+     NetUtils.requestCollectCheckStatus(AppRequest.PAGE_ROUTE_LIVE,liveId),
+      // 点赞的状态
+      NetUtils.requestGoodCheckStatus(AppRequest.PAGE_ROUTE_LIVE,liveId),
+      // 评论列表
+      NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_LIVE,liveId,_commentPage.toString())
+
+    ]).then((ress){
+
+
+      if(ress[0].code==200){
+        _liveDetailsInfo = LiveInfo.fromJson(ress[0].info);
+          player.setDataSource(_liveDetailsInfo.playUrl.hd, autoPlay: true);
       }
 
-      setState(() {
-        player.setDataSource(_liveDetailsInfo.playUrl, autoPlay: true);
-        _layoutState = loadStateByCode(res.code);
-      });
-    });
-    // 收藏的状态
-    NetUtils.requestCollectCheckStatus(AppRequest.PAGE_ROUTE_LIVE,liveId)
-        .then((res) {
-
-      if(res.code==200){
-        setState(() {
-          StatusInfo   info =  StatusInfo.fromJson(res.info);
+      if(ress[1].code==200){
+          StatusInfo   info =  StatusInfo.fromJson(ress[1].info);
           int  status = info.status;
           _cancelCollect = info.id.toString();
           status==1?_isCollect = true : _isCollect = false;
-        });
       }
 
-    });
+      if(ress[2].code==200){
 
-    // 点赞的状态
-    NetUtils.requestGoodCheckStatus(AppRequest.PAGE_ROUTE_LIVE,liveId)
-        .then((res) {
-
-      if(res.code==200){
-
-        setState(() {
-          StatusInfo   info =  StatusInfo.fromJson(res.info);
+          StatusInfo   info =  StatusInfo.fromJson(ress[2].info);
           int  status = info.status;
           _cancelLike = info.id.toString();
           status==1?_isLike = true : _isLike = false;
-
-        });
-      }
-    });
-    // 评论列表
-    NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_LIVE,liveId,_commentPage.toString())
-        .then((res) {
-
-      if(res.code==200){
-
-        setState(() {
-          _commentListInfo =  CommentListInfo.fromJson(res.info);
-        });
       }
 
+
+      if(ress[3].code==200){
+
+          _commentListInfo =  CommentListInfo.fromJson(ress[3].info);
+      }
+
+
+      setState(() {
+        _layoutState = loadStateByCode(200);
+      });
+
+    }).then((_){
+
+      // 请求会场专家的列表
+      NetUtils.requestMeetingGetMeetingInfo(_liveDetailsInfo.meeting[0].id.toString())
+          .then((res){
+
+
+            if(res.code==200){
+
+              _meetingListInfoInfo =    TabMeetingListInfoInfo.fromJson(res.info);
+
+              setState(() {
+
+              });
+
+            }
+
+
+      });
+
+
+
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
       backgroundColor: Colors.white,
+
+      appBar: getCommonAppBar("会议直播"),
       body:  LoadStateLayout(
         state: _layoutState,
         errorRetry: () {
@@ -308,7 +344,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
     return Container(
 
-      height: ScreenUtil().setHeight(600),
+      height: ScreenUtil().setHeight(500),
       color: Colors.blue,
       child: FijkView(
         color: Colors.black,
@@ -335,7 +371,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
           new  Container(
             margin: EdgeInsets.all(ScreenUtil().setWidth(30)),
             padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0,0, 0),
-            height: ScreenUtil().setHeight(120),
+            height: ScreenUtil().setHeight(100),
             child:  ListView.builder(
               shrinkWrap: true,
               itemCount: _liveDetailsInfo.meeting.length,
@@ -344,16 +380,25 @@ class _LiveIngPageState extends State<LiveIngPage> {
               itemBuilder: (context,page){
                 return   InkWell(
                   onTap: (){
-                    eventBus.fire(new EventBusChange(_liveDetailsInfo.meeting[page].playUrl));
+
+                    if(_liveDetailsInfo.meeting[page].isPlay==1){
+
+                      currentHC = page;
+                      eventBus.fire(new EventBusChange(_liveDetailsInfo.meeting[page].playUrl.rtmpHd));
+
+                    }else{
+                      FLToast.showError(text: "当前会场没有开启直播");
+                    }
+
                   },
                   child:  new Container(
-                    width: ScreenUtil().setWidth(461),
-                    height: ScreenUtil().setHeight(104),
+                    width: ScreenUtil().setWidth(430),
+                    height: ScreenUtil().setHeight(90),
                     margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(10))),
-                        color: page==0?Color(0xFFFF934C):Color(0xFF209CFF)
+                        color: page==currentHC?Color(0xFFFF934C):Color(0xFF209CFF)
                     ),
                     child: Text(_liveDetailsInfo.meeting[page].title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
                   ),
@@ -379,7 +424,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(_liveDetailsInfo.startTimeX+"~"+_liveDetailsInfo.endTimeX, style: TextStyle(
+                    Text(_liveDetailsInfo.startTime+"~"+_liveDetailsInfo.endTime, style: TextStyle(
                         color: Color(0xFF999999),
                         fontSize: ScreenUtil().setSp(35)),),
 
@@ -941,196 +986,16 @@ class _LiveIngPageState extends State<LiveIngPage> {
   buildLiveTab(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(20), ScreenUtil().setWidth(10), 0, 0),
+      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
         height: ScreenUtil().setHeight(340),
-        child: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-           new Container(
-              alignment: Alignment.center,
-              width: ScreenUtil().setWidth(270),
-              height: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  cYM(ScreenUtil().setHeight(20)),
-                 Container(
-                   width: ScreenUtil().setWidth(230),
-                   child:    Text("严重烧伤液体复苏有何不可",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),textAlign: TextAlign.center,maxLines: 2,),
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                   new  Row(
-                     children: <Widget>[
-                        Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-                        Container(
-                          width: ScreenUtil().setWidth(26),
-                          height: ScreenUtil().setWidth(26),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
-                            border: Border.all(color: Color(0xFF999999))
-                          ),
-                        ),
-                        Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-
-                     ],
-                   ),
-                  cYM(ScreenUtil().setHeight(20)),
-                    Image.asset(wrapAssets("user/avatar.png"),width: ScreenUtil().setWidth(81),height: ScreenUtil().setWidth(81),),
-                  cYM(ScreenUtil().setHeight(22)),
-                    Text("孙黄力",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
-
-                ],
-              ),
-            ),
-           new Container(
-             alignment: Alignment.center,
-             width: ScreenUtil().setWidth(320),
-             height: double.infinity,
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: <Widget>[
-                 cYM(ScreenUtil().setHeight(20)),
-                 Container(
-                   width: ScreenUtil().setWidth(230),
-                   child:    Text("严重烧伤液体复苏有何不可",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),textAlign: TextAlign.center,maxLines: 2,),
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 new  Row(
-                   children: <Widget>[
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-                     Container(
-                       width: ScreenUtil().setWidth(26),
-                       height: ScreenUtil().setWidth(26),
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
-                           border: Border.all(color: Color(0xFF999999))
-                       ),
-                     ),
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-
-                   ],
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 Image.asset(wrapAssets("user/avatar.png"),width: ScreenUtil().setWidth(81),height: ScreenUtil().setWidth(81),),
-                 cYM(ScreenUtil().setHeight(22)),
-                 Text("孙黄力",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
-
-               ],
-             ),
-           ),
-           new Container(
-             alignment: Alignment.center,
-             width: ScreenUtil().setWidth(320),
-             height: double.infinity,
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: <Widget>[
-                 cYM(ScreenUtil().setHeight(20)),
-                 Container(
-                   width: ScreenUtil().setWidth(230),
-                   child:    Text("严重烧伤液体复苏有何不可",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),textAlign: TextAlign.center,maxLines: 2,),
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 new  Row(
-                   children: <Widget>[
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-                     Container(
-                       width: ScreenUtil().setWidth(26),
-                       height: ScreenUtil().setWidth(26),
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
-                           border: Border.all(color: Color(0xFF999999))
-                       ),
-                     ),
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-
-                   ],
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 Image.asset(wrapAssets("user/avatar.png"),width: ScreenUtil().setWidth(81),height: ScreenUtil().setWidth(81),),
-                 cYM(ScreenUtil().setHeight(22)),
-                 Text("孙黄力",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
-
-               ],
-             ),
-           ),
-           new Container(
-             alignment: Alignment.center,
-             width: ScreenUtil().setWidth(320),
-             height: double.infinity,
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: <Widget>[
-                 cYM(ScreenUtil().setHeight(20)),
-                 Container(
-                   width: ScreenUtil().setWidth(230),
-                   child:    Text("严重烧伤液体复苏有何不可",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),textAlign: TextAlign.center,maxLines: 2,),
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 new  Row(
-                   children: <Widget>[
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-                     Container(
-                       width: ScreenUtil().setWidth(26),
-                       height: ScreenUtil().setWidth(26),
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
-                           border: Border.all(color: Color(0xFF999999))
-                       ),
-                     ),
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-
-                   ],
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 Image.asset(wrapAssets("user/avatar.png"),width: ScreenUtil().setWidth(81),height: ScreenUtil().setWidth(81),),
-                 cYM(ScreenUtil().setHeight(22)),
-                 Text("孙黄力",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
-
-               ],
-             ),
-           ),
-           new Container(
-             alignment: Alignment.center,
-             width: ScreenUtil().setWidth(320),
-             height: double.infinity,
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: <Widget>[
-                 cYM(ScreenUtil().setHeight(20)),
-                 Container(
-                   width: ScreenUtil().setWidth(230),
-                   child:    Text("严重烧伤液体复苏有何不可",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),textAlign: TextAlign.center,maxLines: 2,),
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 new  Row(
-                   children: <Widget>[
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-                     Container(
-                       width: ScreenUtil().setWidth(26),
-                       height: ScreenUtil().setWidth(26),
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
-                           border: Border.all(color: Color(0xFF999999))
-                       ),
-                     ),
-                     Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
-
-                   ],
-                 ),
-                 cYM(ScreenUtil().setHeight(20)),
-                 Image.asset(wrapAssets("user/avatar.png"),width: ScreenUtil().setWidth(81),height: ScreenUtil().setWidth(81),),
-                 cYM(ScreenUtil().setHeight(22)),
-                 Text("孙黄力",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
-
-               ],
-             ),
-           ),
-
-          ],
-        ),
-
+      child:  ListView.builder( padding: EdgeInsets.all(0), shrinkWrap: true,
+          itemCount: _meetingListInfoInfo.videoLists.length,
+          scrollDirection: Axis.horizontal,itemBuilder: (context,index){
+        
+        return tabItemView(index);
+        
+      }),
+        
 
     );
   }
@@ -1288,5 +1153,51 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
     });
 
+  }
+
+  ///
+  ///  专家播放节点
+  /// 
+  tabItemView(int pos) {
+    
+    return   Container(
+      alignment: Alignment.center,
+      width: ScreenUtil().setWidth(350),
+      height: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          cYM(ScreenUtil().setHeight(20)),
+          Container(
+            width: ScreenUtil().setWidth(280),
+            height: setH(90),
+            child:    Text(_meetingListInfoInfo.videoLists[pos].title,style: TextStyle(color:_meetingListInfoInfo.nowVideo==_meetingListInfoInfo.videoLists[pos].id?Colors.blue: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),textAlign: TextAlign.center,maxLines: 2,overflow: TextOverflow.ellipsis,),
+          ),
+          cYM(ScreenUtil().setHeight(20)),
+          new  Row(
+            children: <Widget>[
+              Expanded(child:  Divider(color: pos==0?Colors.white: Colors.black26,height: ScreenUtil().setHeight(6),)),
+              Container(
+                width: ScreenUtil().setWidth(26),
+                height: ScreenUtil().setWidth(26),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(30))),
+                    border: Border.all(color:_meetingListInfoInfo.nowVideo==_meetingListInfoInfo.videoLists[pos].id?Colors.blue: Color(0xFF999999)),
+                  color: _meetingListInfoInfo.nowVideo==_meetingListInfoInfo.videoLists[pos].id?Colors.blue: Colors.white,
+                ),
+              ),
+              Expanded(child:  Divider(color: Colors.black26,height: ScreenUtil().setHeight(6),)),
+
+            ],
+          ),
+          cYM(ScreenUtil().setHeight(20)),
+          wrapImageUrl(_meetingListInfoInfo.videoLists[pos].userPhoto,  ScreenUtil().setWidth(120),  ScreenUtil().setWidth(120)),
+          cYM(ScreenUtil().setHeight(22)),
+          Text(_meetingListInfoInfo.videoLists[pos].realName??"",style: TextStyle(color:  _meetingListInfoInfo.nowVideo==_meetingListInfoInfo.videoLists[pos].id?Colors.blue:Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
+
+        ],
+      ),
+    );
+    
   }
 }

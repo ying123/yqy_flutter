@@ -45,7 +45,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
 
     key: _globalKey,
@@ -212,7 +212,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
         width: double.infinity,
         height: ScreenUtil().setHeight(412),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             wrapImageUrl(bean.image, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),

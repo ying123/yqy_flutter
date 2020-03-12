@@ -228,8 +228,8 @@ class NetUtils {
   ///  id	是	string	会议编号
   ///  token	是	string	用户token(仅APP)
   ///
-  static Future<BaseResult> requestMeetinggGetMeetingInfo(String id) async {
-    String url = APPConfig.Server + "meeting/get_meeting_info";
+  static Future<BaseResult> requestMeetingGetMeetingInfo(String id) async {
+    String url = APPConfig.Server + "meeting/programme_list";
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
@@ -603,6 +603,12 @@ class NetUtils {
   }
 
 
-
-
+  ///
+  ///   直播首页接口
+  ///
+  static Future<BaseResult> requestMeetingIndex() async {
+    String url = APPConfig.Server + "meeting/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
 }

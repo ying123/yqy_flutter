@@ -85,7 +85,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return new  Scaffold(
 
       resizeToAvoidBottomPadding: false,//防止键盘谈起的时候导致背景视图升起*********

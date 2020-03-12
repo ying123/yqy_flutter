@@ -20,7 +20,7 @@ class TabZxPage extends StatefulWidget {
   _TabZxPageState createState() => _TabZxPageState();
 }
 
-class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixin{
+class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixin {
 
 
 
@@ -112,13 +112,13 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
     });
 
-
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      
+       backgroundColor: Colors.white,
       body:  LoadStateLayout(
       state: _layoutState,
       errorRetry: () {
@@ -159,6 +159,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
         RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});
       },
       child: new Container(
+
 
         color: Colors.white,
 
@@ -261,6 +262,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
   bannerListView(BuildContext context, List<TabNewsIndexInfoAdList> adList) {
 
    return Container(
+     margin: EdgeInsets.only(bottom: setH(40)),
      height: setH(400),
      child: new Swiper(
        itemBuilder: (BuildContext context, int index) {

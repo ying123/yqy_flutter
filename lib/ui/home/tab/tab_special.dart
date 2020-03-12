@@ -9,9 +9,10 @@ class TabSpecialPage extends StatefulWidget {
   _TabSpecialPageState createState() => _TabSpecialPageState();
 }
 
-class _TabSpecialPageState extends State<TabSpecialPage> {
+class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
 
       backgroundColor: Colors.white,
@@ -27,9 +28,6 @@ class _TabSpecialPageState extends State<TabSpecialPage> {
           buildItemView(context),
           buildItemView(context)
 
-
-          
-          
         ],
       ),
 
@@ -127,4 +125,8 @@ class _TabSpecialPageState extends State<TabSpecialPage> {
       );
 
     }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

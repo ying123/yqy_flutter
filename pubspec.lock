@@ -217,7 +217,7 @@ packages:
       name: fijkplayer
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.2"
+    version: "0.6.2"
   fixnum:
     dependency: transitive
     description:
@@ -313,7 +313,7 @@ packages:
       name: flutter_screenutil
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.3"
+    version: "1.0.2"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -744,13 +744,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.9.3"
-  sticky_headers:
-    dependency: "direct main"
-    description:
-      name: sticky_headers
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.8+1"
   stream_channel:
     dependency: transitive
     description:

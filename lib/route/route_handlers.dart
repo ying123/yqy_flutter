@@ -346,7 +346,8 @@ var liveNoticeHandler = Handler(handlerFunc: (BuildContext context, Map<String, 
 });
 
 var liveIngHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LiveIngPage();
+  String id = params["id"]?.first;
+  return LiveIngPage(id);
 });
 
 var livePaybackHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

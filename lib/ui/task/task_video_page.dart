@@ -181,13 +181,13 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
           width: double.infinity,
           height: double.infinity,
           player: player,
-          panelBuilder: (FijkPlayer player, BuildContext context, Size viewSize, Rect texturePos) {
+         /* panelBuilder: (FijkPlayer player, BuildContext context, Size viewSize, Rect texturePos) {
             return CustomFijkPanel(
                 player: player,
                 buildContext: context,
                 viewSize: viewSize,
                 texturePos: texturePos);
-          },
+          },*/
         ),
       );
 

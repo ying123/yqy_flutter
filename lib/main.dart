@@ -182,7 +182,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     //设置适配尺寸 (填入设计稿中设备的屏幕尺寸) 假如设计稿是按iPhone6的尺寸设计的(iPhone6 750*1334)
-    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
 
       ///使用 indexedStack 防止方式页面重复绘制

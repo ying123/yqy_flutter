@@ -69,16 +69,17 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     loadData(widget.id);
     initPlayerSetting();
     changeSubscription =  eventBus.on<DoctorVideoInfoInfoVideoList>().listen((event) {
       setState(() {
-
           loadData(event.id.toString());
-
-
       });
     });
+    
+    
+
   }
 
   @override
@@ -151,6 +152,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -321,8 +323,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
   buildContentVideo(BuildContext context) {
 
     return Container(
-
-      height: ScreenUtil().setHeight(600),
+      height: setH(600),
       color: Colors.blue,
       child: FijkView(
         color: Colors.black,
@@ -335,7 +336,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
   }
 
   // 视频信息 简介
-  buildContentInfoView(BuildContext context) {
+    buildContentInfoView(BuildContext context) {
 
     return Container(
 
@@ -1298,6 +1299,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
   ///
   Future<void> initPlayerSetting() async {
 
+
     await player.applyOptions(
         FijkOption()
           ..setFormatOption('flush_packets', 1)
@@ -1313,4 +1315,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
     );
 
   }
+
+
+
 }

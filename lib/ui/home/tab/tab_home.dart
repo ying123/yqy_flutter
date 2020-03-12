@@ -29,7 +29,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   @override
   // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 
 
   //页面加载状态，默认为加载中
@@ -52,7 +52,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     _refreshController  = RefreshController(initialRefresh: false);
 
   }
-
 
 
   @override
@@ -110,8 +109,8 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
-
-    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+    super.build(context);
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return  new Scaffold(
       backgroundColor: Colors.white,
       body: LoadStateLayout(
@@ -130,7 +129,55 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
           onRefresh: _onRefresh,
           onLoading: _onLoading,
         header: BezierCircleHeader(),
-           child: ListView(
+           child:
+            CustomScrollView(
+
+              slivers: <Widget>[
+
+
+                SliverToBoxAdapter(
+
+                  child: Column(
+
+                    children: <Widget>[
+                      cYM(ScreenUtil().setHeight(25)),
+
+                      getBannerView(_homeIndexInfo.bannerList), //轮播图
+                      getMarqueeView(new List()),//跑马灯
+                      cYM(ScreenUtil().setHeight(60)),
+                      getGridBtnView(), //图片按钮
+                      cYM(ScreenUtil().setHeight(70)),
+                      getRowTextView("热门视频"),//热门会议标题栏
+                      getHotVideo(_homeIndexInfo.hotVideo),//热门会议视频横向列表
+                      cYM(ScreenUtil().setHeight(20)),
+                      getRowTextView("特约专家"),//往期会议标题栏
+                      cYM(ScreenUtil().setHeight(12)),
+                      getDocViews(_homeIndexInfo.recomDoctor),
+                      cYM(ScreenUtil().setHeight(30)),
+                      getRowTextView("最新资讯"),//往期会议标题栏
+                      cYM(ScreenUtil().setHeight(12)),
+
+                    ],
+                  ),
+
+                ),
+
+
+                SliverList(  delegate: SliverChildBuilderDelegate(
+                      (context, i) =>
+                          getNewsItemView(context,_homeIndexInfo.newsList[i]),
+                  childCount: _homeIndexInfo.newsList.length,
+                ),)
+
+
+
+
+              ],
+
+            )
+
+
+      /*ListView(
           controller: _scrollController,
           padding: EdgeInsets.only(top: 0),
           children: <Widget>[
@@ -140,9 +187,9 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
             getBannerView(_homeIndexInfo.bannerList), //轮播图
             getMarqueeView(new List()),//跑马灯
-            cYM(ScreenUtil().setHeight(80)),
+            cYM(ScreenUtil().setHeight(60)),
             getGridBtnView(), //图片按钮
-            cYM(ScreenUtil().setHeight(90)),
+            cYM(ScreenUtil().setHeight(70)),
             getRowTextView("热门视频"),//热门会议标题栏
             getHotVideo(_homeIndexInfo.hotVideo),//热门会议视频横向列表
             cYM(ScreenUtil().setHeight(20)),
@@ -156,7 +203,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
           ],
 
-        ),
+        ),*/
       )
     ),
     );
@@ -292,7 +339,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     return Container(
       color: Colors.white,
       height: ScreenUtil().setHeight(55),
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(27), 0, ScreenUtil().setWidth(27), 0),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(27), 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -415,7 +462,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       child: new Container(
             child: Row(
               children: <Widget>[
-                wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(220), ScreenUtil().setHeight(245)),
+                wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(250), ScreenUtil().setHeight(245)),
                 cXM(ScreenUtil().setWidth(29)),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -509,7 +556,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
            crossAxisSpacing: ScreenUtil().setHeight(25),
            //子组件宽高长度比例
            childAspectRatio: 2),
-       itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (BuildContext context, int index) {
          //Widget Function(BuildContext context, int index)
          return getDocView(list[index]);
        });

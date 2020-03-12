@@ -75,7 +75,7 @@ loadData () async{
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: 1080, height: 1920)..init(context);
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
      body:ListView(
       padding: EdgeInsets.all(0),

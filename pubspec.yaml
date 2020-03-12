@@ -34,7 +34,7 @@ dependencies:
   extended_nested_scroll_view: ^0.3.6
   flutter_banner_swiper: ^0.1.4
   # 添加依赖屏幕适配
-  flutter_screenutil: ^0.5.3
+  flutter_screenutil: ^1.0.2
   pull_to_refresh: ^1.5.7 # 刷新控件
   oktoast: ^2.2.0
   fluttertoast: ^3.1.3
@@ -64,7 +64,7 @@ dependencies:
   package_info: ^0.4.0+3
   permission_handler: ^3.3.0 # 动态权限申请
   flutter_spinkit: ^4.0.0  # 加载进度条动画效果
-  fijkplayer: ^0.5.2
+  fijkplayer: ^0.6.2
   url_launcher: ^5.2.5  # Url跳转 拨打电话
   flutter_custom_dialog: ^1.0.14 # 弹窗
  #  flutter_easyloading: ^1.1.1 # 弹窗
@@ -72,7 +72,6 @@ dependencies:
   flutter_swiper: 1.1.6 # 轮播图
   flutter_plugin_pdf_viewer: 1.0.7   # PDF 查看器
   flui: 0.8.0  # UI组件库 待完善
-  sticky_headers: ^0.1.8  # 悬停布局
   flutter_sticky_header: 0.4.2 # 悬停布局2
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git

@@ -56,9 +56,9 @@ class _buildEmptyViewState extends State<buildEmptyView> {
         Container(
           alignment: Alignment.center,
           width: double.infinity,
-          margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(591)),
+          margin: EdgeInsets.only(top: ScreenUtil().setHeight(591)),
           child: Text("您还没有加入任何企业哦~", style: TextStyle(
-              fontSize: ScreenUtil.getInstance().setSp(45),
+              fontSize: ScreenUtil().setSp(45),
               color: Color(0xFF666666),
               fontWeight: FontWeight.w400),),
         ),

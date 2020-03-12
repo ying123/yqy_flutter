@@ -18,6 +18,8 @@ import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/video_page_entity.dart';
 import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_home_entity.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_live_entity.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_meeting_list_info_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_index_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_info_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_lists_entity.dart';
@@ -96,6 +98,10 @@ class EntityFactory {
       return NoticeHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "HomeIndexEntity") {
       return HomeIndexEntity.fromJson(json) as T;
+    } else if (T.toString() == "TabLiveEntity") {
+      return TabLiveEntity.fromJson(json) as T;
+    } else if (T.toString() == "TabMeetingListInfoEntity") {
+      return TabMeetingListInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "TabNewsIndexEntity") {
       return TabNewsIndexEntity.fromJson(json) as T;
     } else if (T.toString() == "TabNewsInfoEntity") {
