@@ -501,8 +501,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
           Image.asset(wrapAssets("tab/tab_me_sele.png"),width: ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(200),fit: BoxFit.fill,),
           Text("李英爱",style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
           Text("中医大师",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
-          
-          
+
         ],
         
 

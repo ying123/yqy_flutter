@@ -515,6 +515,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.9"
+  list_view_item_builder:
+    dependency: "direct main"
+    description:
+      name: list_view_item_builder
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.2.0"
   localstorage:
     dependency: "direct main"
     description:

@@ -155,7 +155,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                       getDocViews(_homeIndexInfo.recomDoctor),
                       cYM(ScreenUtil().setHeight(30)),
                       getRowTextView("最新资讯"),//往期会议标题栏
-                      cYM(ScreenUtil().setHeight(12)),
+                      cYM(ScreenUtil().setHeight(20)),
 
                     ],
                   ),
@@ -168,8 +168,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                           getNewsItemView(context,_homeIndexInfo.newsList[i]),
                   childCount: _homeIndexInfo.newsList.length,
                 ),)
-
-
 
 
               ],
@@ -496,7 +494,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   Widget itemVideoView(HomeIndexInfoHotVideo bean) {
 
 
-
     return  InkWell(
       onTap: (){
      //   RRouter.push(context, Routes.livePaybackPage, {});
@@ -512,15 +509,16 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             wrapImageUrl(bean.image, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14), ScreenUtil().setHeight(26), ScreenUtil().setWidth(14), 0),
-              child: Text(bean.title,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
+              child: Text(bean.title,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
             ),
+            cYM(setH(5)),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14),0, ScreenUtil().setWidth(14), 0),
               child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(bean.createTime,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
-                  Text(bean.pv.toString()+"次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
+                  Text(bean.createTime,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(32)),),
+                  Text(bean.pv.toString()+"次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(32)),),
                 ],
               ),
             )
@@ -616,7 +614,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
                     new   Container(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: Text(xlist.title,style: TextStyle(color: Color(0xFF333333),fontSize: setSP(42),fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                      child: Text(xlist.title,style: TextStyle(color: Color(0xFF333333),fontSize: setSP(38),fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
                     ),
 
                     cYM(setH(20)),
@@ -630,11 +628,12 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
                         children: <Widget>[
 
-                          getContentText(xlist.createTime??""),
+                          buildText(xlist.createTime??"",size: 32,color:"#FF7E7E7E"),
+
 
                           xlist.createTime==null?Container():cXM(setW(100)),
 
-                          getContentText(xlist.pv.toString()+"次阅读"),
+                          buildText(xlist.pv.toString()+"次阅读",size: 32,color:"#FF7E7E7E"),
 
                         ],
 

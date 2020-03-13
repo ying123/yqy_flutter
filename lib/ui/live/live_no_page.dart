@@ -23,18 +23,18 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:yqy_flutter/ui/live/bean/comment_list_entity.dart';
 
 
-class LiveIngPage extends StatefulWidget {
+class LiveNoPage extends StatefulWidget {
 
   final  String id;
 
 
-  LiveIngPage(this.id);
+  LiveNoPage(this.id);
 
   @override
-  _LiveIngPageState createState() => _LiveIngPageState();
+  _LiveNoPageState createState() => _LiveNoPageState();
 }
 
-class _LiveIngPageState extends State<LiveIngPage> {
+class _LiveNoPageState extends State<LiveNoPage> {
 
   bool _showTipContent  = false;// 是否显示简介
 
@@ -75,7 +75,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
    ///=============================================
 
   final FijkPlayer player = FijkPlayer();
-  StreamSubscription changeSubscription;
 
   String liveId; // 当前会议的ID
 
@@ -85,24 +84,13 @@ class _LiveIngPageState extends State<LiveIngPage> {
     super.initState();
     liveId = widget.id;
     loadData();
-    initGetMeetingListInfoStatus();
-    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
-      setState(() {
-        player.reset().then((_){
-          player.setDataSource(event.url, autoPlay: true);
-        });
-
-      });
-    });
   }
 
   @override
   void dispose() {
     //  FlutterUmplus.endPageView(runtimeType.toString());
     super.dispose();
-    timer.cancel();
     player.release();
-    changeSubscription.cancel();
   }
 
 
@@ -168,7 +156,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      appBar: getCommonAppBar("会议直播"),
+      appBar: getCommonAppBar("会议预告"),
       body:  LoadStateLayout(
         state: _layoutState,
         errorRetry: () {
@@ -352,52 +340,45 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
         children: <Widget>[
 
-          // 分会场
+          // 倒计时  预约
           new  Container(
-            margin: EdgeInsets.all(ScreenUtil().setWidth(30)),
-            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0,0, 0),
-            height: ScreenUtil().setHeight(100),
-            child:  ListView.builder(
-              shrinkWrap: true,
-              itemCount: _liveDetailsInfo.meeting.length,
-              padding: EdgeInsets.all(0),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context,page){
-                return   InkWell(
-                  onTap: (){
+              margin: EdgeInsets.all(ScreenUtil().setWidth(20)),
+              height: ScreenUtil().setHeight(135),
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
 
-                    if(_liveDetailsInfo.meeting[page].isPlay==1){
-                      currentHC = page;
-                      currentHCID = _liveDetailsInfo.meeting[page].id.toString();
-                      eventBus.fire(new EventBusChange(_liveDetailsInfo.meeting[page].playUrl.rtmpHd));
-                      getProgrammeListData();
+                  Image.asset(wrapAssets("live/bg_notice_time.png"),width: double.infinity,height: double.infinity,),
 
-                    }else{
-                      FLToast.showError(text: "当前会场没有开启直播");
-                    }
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
 
-                  },
-                  child:  new Container(
-                    width: ScreenUtil().setWidth(430),
-                    height: ScreenUtil().setHeight(90),
-                    margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
-                    alignment: Alignment.center,
+                      cXM(setW(1)),
 
-                    child: Stack(
-                      alignment:Alignment.center,
-                      children: <Widget>[
+                      Text("距离直播开始还有 2天1时30分00秒",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40)),),
 
-                        Image.asset(wrapAssets( page==currentHC?"live/bg_hc_sele.png":"live/bg_hc.png"),width: double.infinity,height: double.infinity,),
-                        Text(_liveDetailsInfo.meeting[page].title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
+                      Container(
+                        alignment: Alignment.center,
+                        width: ScreenUtil().setWidth(180),
+                        height: ScreenUtil().setHeight(60),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(20))),
+                            border: Border.all(color: Colors.white,width: ScreenUtil().setWidth(2))
+                        ),
+                        child: Text("立即预约",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(35)),),
 
-                      ],
+                      ),
+                      cXM(setW(1)),
 
-                    )
+                    ],
+
                   ),
-                  
-                );
-              },
-            )
+
+                ],
+
+              )
           ),
 
           new Container(
@@ -441,7 +422,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
                       ),
                     )
 
-
                   ],
                 ),
                 Visibility(
@@ -470,18 +450,13 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
               ],
             ),
-
           ),
-
-
-
 
         ],
 
       ),
 
     );
-
 
   }
 
@@ -510,11 +485,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
         // 会议日程
         buildScheduleView(context),
         buildLine(),
-        //正在播放
-        getRowTextView("正在播放"),
-        _meetingListInfoInfo==null?Container(): buildLiveTab(context),
-        buildLine(),
-
         // 关键词
         buildCruxView(context),
         buildLine(),
@@ -522,7 +492,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
         getRowTextView("相关专家"),
         buildDoctorListView(context),
         buildLine(),
-     /*   //相关学会
+        /*   //相关学会
         getRowTextView("相关学会"),
         buildLearnView(context),
         buildLine(),*/
@@ -532,7 +502,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
         //评论
         getRowTextView("全部评论"),
         buildCommentView(context),
-
 
       ],
 
@@ -841,7 +810,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
           scrollDirection:Axis.horizontal,
           itemCount: _liveDetailsInfo.authors.length,
           itemBuilder: (context,index){
-
             return buildItemDoctorView(context,_liveDetailsInfo.authors[index]);
           }
       ),
@@ -1258,7 +1226,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
     // 请求会场专家的列表
     NetUtils.requestMeetingGetMeetingInfo(currentHCID)
         .then((res){
-
 
       if(res.code==200){
 

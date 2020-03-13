@@ -40,12 +40,13 @@ class _TaskNewPageState extends State<TaskNewPage> {
     }
 
 
-
     setState(() {
       appBarAlpha = alpha;
     });
 
   }
+
+
 
 
 
@@ -71,6 +72,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
                   child: ListView(
                     children: <Widget>[
                       buildTopView(context),
+                      cYM(ScreenUtil().setHeight(40)),
                       buildItemListView(context),
                       buildTipTextView(),
                       cYM(ScreenUtil().setHeight(40)),
@@ -93,6 +95,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: <Widget>[
+
 
                       Positioned(left:ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(120),
                           child: InkWell(
@@ -134,7 +137,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
   buildTopView(BuildContext context) {
 
     return Container(
-      height: ScreenUtil().setHeight(1050),
+      height: ScreenUtil().setHeight(900),
       child: new Stack(
         children: <Widget>[
           Image.asset(wrapAssets("task/task_bg.png"),width:double.infinity ,height: double.infinity,fit: BoxFit.fill,),
@@ -241,7 +244,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
 
           new Positioned(
-              bottom: ScreenUtil().setHeight(60),
+              bottom: ScreenUtil().setHeight(10),
               left: ScreenUtil().setWidth(40),
               child: Text("做任务领积分",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(45),fontWeight: FontWeight.bold),),
 
@@ -275,6 +278,8 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
   }
 
+
+
   buildItemTask(BuildContext context) {
 
     return Container(
@@ -292,8 +297,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
         children: <Widget>[
           
-          wrapImageUrl("", setW(173), setH(173)),
-
+        wrapImageUrl("", setW(173), setW(173)),
 
         Expanded(child:
           new Column(
@@ -370,6 +374,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
                         buildPgBarView(context,setW((470-((5)*4))/5)),
                         buildPgBarView(context,setW((470-((5)*4))/5)),
                         buildPgBarView(context,setW((470-((5)*4))/5)),
+
                       ],
 
                     ):Row(

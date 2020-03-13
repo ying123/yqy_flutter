@@ -170,6 +170,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
 
+
           children: <Widget>[
 
 
@@ -183,7 +184,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
                      new   Container(
                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                     child: Text(xlist.title,style: TextStyle(color: Color(0xFF333333),fontSize: setSP(42),fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                     child: Text(xlist.title,style: TextStyle(color: Color(0xFF333333),fontSize: setSP(38),fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
                      ),
 
                      cYM(setH(20)),
@@ -197,11 +198,12 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
                          children: <Widget>[
 
-                           getContentText(xlist.createTime),
+                           buildText(xlist.createTime??"",size: 32,color:"#FF7E7E7E"),
 
-                           cXM(setW(100)),
 
-                           getContentText(xlist.pv.toString()+"次阅读"),
+                           xlist.createTime==null?Container():cXM(setW(100)),
+
+                           buildText(xlist.pv.toString()+"次阅读",size: 32,color:"#FF7E7E7E"),
 
                          ],
 

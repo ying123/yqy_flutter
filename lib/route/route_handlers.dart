@@ -22,6 +22,7 @@ import 'package:yqy_flutter/ui/home/zx_content.dart';
 import 'package:yqy_flutter/ui/live/hd_details.dart';
 import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/live/live_ing_page.dart';
+import 'package:yqy_flutter/ui/live/live_no_page.dart';
 import 'package:yqy_flutter/ui/live/live_notice_page.dart';
 import 'package:yqy_flutter/ui/live/live_playback_page.dart';
 import 'package:yqy_flutter/ui/login/bind_phone_page.dart';
@@ -342,13 +343,22 @@ var specialDetailHandler = Handler(handlerFunc: (BuildContext context, Map<Strin
 
 
 var liveNoticeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LiveNoticePage();
+  String id = params["id"]?.first;
+  return LiveNoticePage(id);
 });
+
+
+var liveNoHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return LiveNoPage(id);
+});
+
 
 var liveIngHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String id = params["id"]?.first;
   return LiveIngPage(id);
 });
+
 
 var livePaybackHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return LivePaybackPage();

@@ -114,6 +114,8 @@ class Routes {
 
   static String liveNoticePage = "/liveNoticePage"; //  新的直播预告
 
+  static String liveNoPage = "/liveNoPage"; //  新的直播预告 临时
+
   static String liveIngPage = "/liveIngPage"; //  新的正在直播
 
   static String livePaybackPage = "/livePaybackPage"; //  新的直播回放
@@ -221,6 +223,7 @@ class Routes {
     router.define(shopDetailsPage, handler:shopDetailsPageHandler);
     router.define(specialDetailPage, handler:specialDetailHandler);
     router.define(liveNoticePage, handler:liveNoticeHandler);
+    router.define(liveNoPage, handler:liveNoHandler);
     router.define(liveIngPage, handler:liveIngHandler);
     router.define(livePaybackPage, handler:livePaybackHandler);
     router.define(taskNewPage, handler:taskNewPageHandler);

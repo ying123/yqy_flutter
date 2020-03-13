@@ -175,7 +175,6 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
 
                         }
 
-
                       });
 
                     },
@@ -343,14 +342,14 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
   Widget itemLiveIngView(TabLiveInfoBannerList list,String type) {
 
 
-
     return  InkWell(
       onTap: (){
 
         switch(type){
 
           case "正在直播":
-            RRouter.push(context, Routes.liveIngPage,{"id":list.id});
+          //  RRouter.push(context, Routes.liveIngPage,{"id":list.id});
+            RRouter.push(context, Routes.liveNoticePage,{"id":list.id.toString()});
             break;
           case "我的预约":
             RRouter.push(context, Routes.liveMeeting,{"title":"11"});

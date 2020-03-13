@@ -248,7 +248,7 @@ class LiveInfoMeetingPlayurl {
 
 class LiveInfoRecommandMeeting {
 	String image;
-	int startTime;
+	var startTime;
 	int id;
 	String title;
 	List<LiveInfoRecommandMeetingAuthors> authors;
