@@ -114,7 +114,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
       if(ress[0].code==200){
         _liveDetailsInfo = LiveInfo.fromJson(ress[0].info);
-        player.setDataSource(_liveDetailsInfo.playUrl.hd, autoPlay: true);
+        player.setDataSource(_liveDetailsInfo.playUrl.rtmp.hd, autoPlay: true);
       }
 
       if(ress[1].code==200){
@@ -144,7 +144,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
       });
 
     }).then((_){
-      currentHCID = _liveDetailsInfo.meeting[0].id.toString();
+      currentHCID = _liveDetailsInfo.meetList[0].id.toString();
       getProgrammeListData();
 
     });
@@ -330,7 +330,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
     );
 
-
   }
 
   // 视频信息 简介
@@ -431,7 +430,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(_liveDetailsInfo.address, style: TextStyle(
+                        Text(_liveDetailsInfo.area, style: TextStyle(
                             color: Color(0xFF999999),
                             fontSize: ScreenUtil().setSp(35)),),
                       ],
@@ -818,8 +817,9 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
           }
       ),
     );
-
   }
+
+
 
   Widget buildItemDoctorView(BuildContext context,LiveInfoAuthor bean) {
 
@@ -836,7 +836,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
           Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
         ],
-
 
 
       ),
@@ -1185,7 +1184,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
     timer = Timer.periodic(Duration(seconds: 30), (timer) {
 
-      NetUtils.requestMeetingGetMeetingInfo(currentHCID)
+      NetUtils.requestMeetingGetProgrammeList(currentHCID)
           .then((res){
 
 
@@ -1223,7 +1222,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
   ///
   void getProgrammeListData() {
     // 请求会场专家的列表
-    NetUtils.requestMeetingGetMeetingInfo(currentHCID)
+    NetUtils.requestMeetingGetProgrammeList(currentHCID)
         .then((res){
 
       if(res.code==200){

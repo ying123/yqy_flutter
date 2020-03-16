@@ -14,6 +14,7 @@ import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
 import 'package:yqy_flutter/utils/department_picker.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -258,6 +259,10 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.start,
+          inputFormatters: <TextInputFormatter>[
+               WhitelistingTextInputFormatter.digitsOnly,//只输入数字
+               LengthLimitingTextInputFormatter(18)//限制长度
+           ],
           maxLines: 1,
           decoration: InputDecoration(
             hintText: "请输入身份证号码",
@@ -789,6 +794,11 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
       if(res.code==200){
         FLToast.showSuccess(text:res.msg);
+        eventBus.fire(EventBusChange(""));
+        // 延时1s执行返回
+        Future.delayed(Duration(seconds: 1), (){
+          Navigator.of(context).pop();
+        });
       }else{
         FLToast.error(text:res.msg);
       }
@@ -829,7 +839,16 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
           _idCardC.text = info.idCard;
 
-          address = info.proName.toString()??""+"-"+info.cityName.toString()??""+"-"+info.areaName.toString()??"";
+
+          StringBuffer stringBuffer = new StringBuffer();
+
+          stringBuffer..write(info.proName.toString())
+            ..write("-")
+            ..write(info.cityName.toString())
+            ..write("-")
+            ..write(info.areaName.toString());
+
+          address = stringBuffer.toString();
 
           _provinceId = info.provinceId.toString();
           _cityId = info.cityId.toString();

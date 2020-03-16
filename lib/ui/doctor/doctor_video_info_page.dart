@@ -776,7 +776,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
                     children: <Widget>[
                       Text(_doctorVideoInfoInfo.users.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
                       cXM(ScreenUtil().setWidth(56)),
-                      Text(_doctorVideoInfoInfo.users.job.name??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400),),
+                      Text(_doctorVideoInfoInfo.users.job==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400),),
                       cXM(ScreenUtil().setWidth(32)),
                       Container(
                         width: ScreenUtil().setWidth(153),
@@ -786,14 +786,14 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
                           color: Color(0xFF4AB1F2),
                           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(22))),
                         ),
-                        child: Text(_doctorVideoInfoInfo.users.departs.name??"",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
+                        child: Text(_doctorVideoInfoInfo.users.departs.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
                       )
 
                     ],
 
                   ),
                   cYM(ScreenUtil().setHeight(16)),
-                  Text(_doctorVideoInfoInfo.users.hospital.name??"",style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
+                  Text(_doctorVideoInfoInfo.users.hospital.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
                 ],
 
               )

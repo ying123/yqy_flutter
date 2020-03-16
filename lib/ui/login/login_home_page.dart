@@ -279,18 +279,14 @@ class _LoginHomePageState extends State<LoginHomePage> {
         child: FlatButton(
             onPressed: (){
               // 当密码输入的时候 才能够点击效果
-              if(pwd!=null&&pwd.length>0) {
-                if (pwd != null && pwd.length > 0) {
-                  if (_formKey.currentState.validate()) {
-                    ///只有输入的内容符合要求通过才会到达此处
-                    _formKey.currentState.save();
-                    if (RegexUtils.isChinaPhoneLegal(_phone)) {
+              if (pwd != null || pwd.length > 0) {
+                if (_formKey.currentState.validate()) {
+                  ///只有输入的内容符合要求通过才会到达此处
+                  _formKey.currentState.save();
 
-                      // 发起密码登录的请求
-                      requestPwdLogin(context,_phone,pwd);
+                    // 发起密码登录的请求
+                    requestPwdLogin(context,_phone,pwd);
 
-                    }
-                  }
                 }
               }
 
@@ -339,6 +335,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
           ),
           cursorColor: Color(0xFF2CAAEE),  // 光标颜色
           style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(50)),
+
         )),
         InkWell(
           onTap: (){
@@ -470,6 +467,8 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
           if(res.code==200){
 
+            SendSmsInfo  _loginInfo = SendSmsInfo.fromJson(res.info);
+            UserUtils.saveToken(_loginInfo.token.toString());
            RRouter.push(context, Routes.homePage, {},clearStack: true);
 
           }else{

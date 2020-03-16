@@ -348,8 +348,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
         switch(type){
 
           case "正在直播":
-          //  RRouter.push(context, Routes.liveIngPage,{"id":list.id});
-            RRouter.push(context, Routes.liveNoticePage,{"id":list.id.toString()});
+            RRouter.push(context, Routes.liveIngPage,{"id":list.id});
             break;
           case "我的预约":
             RRouter.push(context, Routes.liveMeeting,{"title":"11"});

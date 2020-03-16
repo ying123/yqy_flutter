@@ -1,6 +1,9 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 ///
@@ -33,16 +36,21 @@ void requestIsRZ(BuildContext context,String userType) async {
                           cYM( setH(59)),
                           buildText("请您通过实名认证，才有权限执行此操作",size: 40,color: "#FF999999"),
                           cYM( setH(59)),
-                          Container(
-                            width: setW(516),
-                            height: setH(139),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
+                          InkWell(
+                            onTap: (){
+                              RRouter.push(context ,userType=="1"?Routes.realNameNewPage:Routes.realNameRepresentPage,{},transition:TransitionType.cupertino);
+                            },
+                            child:   Container(
+                                width: setW(516),
+                                height: setH(139),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
 
-                              gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)]),
-                              borderRadius: BorderRadius.all(Radius.circular(setW(58))),
+                                  gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)]),
+                                  borderRadius: BorderRadius.all(Radius.circular(setW(58))),
+                                ),
+                                child: Text("立即认证",style: TextStyle(color: Colors.white),)
                             ),
-                            child: Text("立即认证",style: TextStyle(color: Colors.white),)
                           ),
                           cYM( setH(59)),
 

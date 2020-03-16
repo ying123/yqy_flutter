@@ -4,6 +4,7 @@ import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:like_button/like_button.dart';
 import 'package:list_view_item_builder/list_view_item_builder.dart';
 import 'package:oktoast/oktoast.dart';
@@ -13,6 +14,7 @@ import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_meeting_list_info_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/hc_status_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
@@ -62,8 +64,9 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
   ///直播专家列表==================================
   TabMeetingListInfoInfo _meetingListInfoInfo; // 直播专家列表
-  ScrollController _scrollC = ScrollController(); // 滚动列表控制器
-  ListViewItemBuilder _itemBuilder;
+   ScrollController _scrollC = ScrollController(); // 滚动列表控制器
+  var _controllerDoctor = IndexedScrollController();
+   ListViewItemBuilder _itemBuilder;
   Timer timer; //定时器 轮询
   ///=============================================
 
@@ -72,12 +75,17 @@ class _LiveIngPageState extends State<LiveIngPage> {
   ///会场相关==================================
     String currentHCID ; // 当前所在的会场编号
     int currentHC = 0; // 当前所在的会场坐标
+    int statusId = 1; // 当前会场的直播状态  需要展示不同的布局
+   String imgUrl; // 当前会场的需要展示的图片   未开始和已结束
    ///=============================================
 
   final FijkPlayer player = FijkPlayer();
   StreamSubscription changeSubscription;
 
   String liveId; // 当前会议的ID
+
+
+
 
   @override
   void initState() {
@@ -86,11 +94,28 @@ class _LiveIngPageState extends State<LiveIngPage> {
     liveId = widget.id;
     loadData();
     initGetMeetingListInfoStatus();
-    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+    changeSubscription =  eventBus.on<HcStatusInfo>().listen((event) {
       setState(() {
-        player.reset().then((_){
-          player.setDataSource(event.url, autoPlay: true);
-        });
+        switch(event.isPlay){
+          case 0://已结束
+            statusId = 0;
+            imgUrl =  event.endImage;
+            break;
+          case 1: //进行中
+            statusId = 1;
+            player.reset().then((_){
+              player.setDataSource(event.playUrl.rtmp.hd, autoPlay: true);
+            });
+            break;
+          case 2://未开始
+            statusId = 2;
+            imgUrl =  event.image;
+            break;
+
+        }
+
+
+
 
       });
     });
@@ -125,7 +150,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
       if(ress[0].code==200){
         _liveDetailsInfo = LiveInfo.fromJson(ress[0].info);
-          player.setDataSource(_liveDetailsInfo.playUrl.hd, autoPlay: true);
+          player.setDataSource(_liveDetailsInfo.playUrl.rtmp.hd, autoPlay: true);
       }
 
       if(ress[1].code==200){
@@ -155,7 +180,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
       });
 
     }).then((_){
-      currentHCID = _liveDetailsInfo.meeting[0].id.toString();
+      currentHCID = _liveDetailsInfo.meetList[0].id.toString();
       getProgrammeListData();
 
     });
@@ -330,13 +355,12 @@ class _LiveIngPageState extends State<LiveIngPage> {
     return Container(
 
       height: ScreenUtil().setHeight(500),
-      color: Colors.blue,
-      child: FijkView(
+      child: statusId==1?FijkView(
         color: Colors.black,
         width: double.infinity,
         height: double.infinity,
         player: player,
-      ),
+      ):wrapImageUrl(imgUrl, double.infinity, double.infinity),
 
     );
 
@@ -359,22 +383,17 @@ class _LiveIngPageState extends State<LiveIngPage> {
             height: ScreenUtil().setHeight(100),
             child:  ListView.builder(
               shrinkWrap: true,
-              itemCount: _liveDetailsInfo.meeting.length,
+              itemCount: _liveDetailsInfo.meetList.length,
               padding: EdgeInsets.all(0),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context,page){
                 return   InkWell(
                   onTap: (){
 
-                    if(_liveDetailsInfo.meeting[page].isPlay==1){
-                      currentHC = page;
-                      currentHCID = _liveDetailsInfo.meeting[page].id.toString();
-                      eventBus.fire(new EventBusChange(_liveDetailsInfo.meeting[page].playUrl.rtmpHd));
-                      getProgrammeListData();
-
-                    }else{
-                      FLToast.showError(text: "当前会场没有开启直播");
-                    }
+                    currentHC = page;
+                    currentHCID = _liveDetailsInfo.meetList[page].id.toString();
+                    // 获取当前会场状态数据
+                    getCurrentHcStatusData(context);
 
                   },
                   child:  new Container(
@@ -388,7 +407,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
                       children: <Widget>[
 
                         Image.asset(wrapAssets( page==currentHC?"live/bg_hc_sele.png":"live/bg_hc.png"),width: double.infinity,height: double.infinity,),
-                        Text(_liveDetailsInfo.meeting[page].title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
+                        Text(_liveDetailsInfo.meetList[page].title,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.bold),),
 
                       ],
 
@@ -449,7 +468,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(_liveDetailsInfo.address, style: TextStyle(
+                        Text(_liveDetailsInfo.area, style: TextStyle(
                             color: Color(0xFF999999),
                             fontSize: ScreenUtil().setSp(35)),),
                       ],
@@ -984,12 +1003,28 @@ class _LiveIngPageState extends State<LiveIngPage> {
   ///  正在直播 节点切换
   ///
   buildLiveTab(BuildContext context) {
-    _itemBuilder = ListViewItemBuilder(
+    return Container(
+        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
+        height: ScreenUtil().setHeight(340),
+        child:  IndexedListView.builder(
+            scrollDirection: Axis.horizontal,
+          //  maxItemCount: _meetingListInfoInfo.videoLists.length,
+          //  minItemCount: _meetingListInfoInfo.videoLists.length,
+            controller: _controllerDoctor,
+            itemBuilder: (context,index){
+
+              return tabItemView(index);
+
+            })
+
+    );
+
+   /* _itemBuilder = ListViewItemBuilder(
       // If you want use [jumpTo] or [animateTo], need set scrollController.
       scrollController:_scrollC,
       rowCountBuilder: (section) => _meetingListInfoInfo.videoLists.length,
       itemsBuilder: (BuildContext context, int section, int index) {
-        return tabItemView(index,section);
+        return tabItemView(index);
       },
     );
     _itemBuilder.scrollDirection = Axis.horizontal;
@@ -1004,7 +1039,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
           controller: _scrollC,
         )
 
-    );
+    );*/
   }
 
 
@@ -1168,7 +1203,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
   ///
   ///  专家播放节点
   /// 
-  tabItemView(int pos,int se) {
+  tabItemView(int pos) {
     
     return   Container(
       alignment: Alignment.center,
@@ -1216,9 +1251,9 @@ class _LiveIngPageState extends State<LiveIngPage> {
   ///
   void initGetMeetingListInfoStatus() {
 
-     timer = Timer.periodic(Duration(seconds: 30), (timer) {
+     timer = Timer.periodic(Duration(seconds: 2), (timer) {
 
-        NetUtils.requestMeetingGetMeetingInfo(currentHCID)
+        NetUtils.requestMeetingGetProgrammeList(currentHCID)
             .then((res){
 
 
@@ -1234,11 +1269,13 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
                     offsetIndex = i;
 
+                  }else{
+                    offsetIndex = 0;
                   }
 
                 }
-               _itemBuilder.jumpTo(0, offsetIndex);
 
+                _controllerDoctor.jumpTo(offsetIndex*(setW(100)));
               }
 
 
@@ -1256,22 +1293,50 @@ class _LiveIngPageState extends State<LiveIngPage> {
   ///
   void getProgrammeListData() {
     // 请求会场专家的列表
-    NetUtils.requestMeetingGetMeetingInfo(currentHCID)
+    NetUtils.requestMeetingGetProgrammeList(currentHCID)
         .then((res){
 
 
       if(res.code==200){
 
-        _meetingListInfoInfo =    TabMeetingListInfoInfo.fromJson(res.info);
-
         setState(() {
+          _meetingListInfoInfo =    TabMeetingListInfoInfo.fromJson(res.info);
 
         });
 
       }
 
+    });
+
+
+  }
+
+
+
+  void getCurrentHcStatusData(BuildContext context) {
+
+    var loadingCancel = FLToast.loading();
+    NetUtils.requestMeetingGetMeetingInfo(currentHCID)
+        .then((res){
+
+
+         if(res.code==200){
+
+           HcStatusInfo hcStatusInfo = HcStatusInfo.fromJson(res.info);
+
+           // 传递消息
+           eventBus.fire(hcStatusInfo);
+           loadingCancel();
+         }else{
+           FLToast.showError(text:res.msg);
+         }
+
+    }).then((_){
+      _controllerDoctor.jumpTo(0);
+      getProgrammeListData();
 
     });
+
 
 
   }

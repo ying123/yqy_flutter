@@ -74,6 +74,7 @@ dependencies:
   flui: 0.8.0  # UI组件库 待完善
   flutter_sticky_header: 0.4.2 # 悬停布局2
   list_view_item_builder: 1.2.0  # 列表滚动到指定位置
+  indexed_list_view: 1.0.8  # 列表滚动到指定位置
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git
 dev_dependencies:

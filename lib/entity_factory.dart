@@ -24,6 +24,7 @@ import 'package:yqy_flutter/ui/home/tab/bean/tab_news_index_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_info_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_lists_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/comment_list_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/hc_status_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
@@ -110,6 +111,8 @@ class EntityFactory {
       return TabNewsListsEntity.fromJson(json) as T;
     } else if (T.toString() == "CommentListEntity") {
       return CommentListEntity.fromJson(json) as T;
+    } else if (T.toString() == "HcStatusEntity") {
+      return HcStatusEntity.fromJson(json) as T;
     } else if (T.toString() == "HdDetailsEntity") {
       return HdDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LiveDetailsEntity") {

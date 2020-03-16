@@ -223,7 +223,6 @@ class Routes {
     router.define(shopDetailsPage, handler:shopDetailsPageHandler);
     router.define(specialDetailPage, handler:specialDetailHandler);
     router.define(liveNoticePage, handler:liveNoticeHandler);
-    router.define(liveNoPage, handler:liveNoHandler);
     router.define(liveIngPage, handler:liveIngHandler);
     router.define(livePaybackPage, handler:livePaybackHandler);
     router.define(taskNewPage, handler:taskNewPageHandler);

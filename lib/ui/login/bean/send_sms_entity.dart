@@ -40,8 +40,8 @@ class SendSmsInfo {
   }
 
   SendSmsInfo.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-		token = json['token'];
+    status = json['status']??null;
+		token = json['token']??null;
 	}
 
 	Map<String, dynamic> toJson() {

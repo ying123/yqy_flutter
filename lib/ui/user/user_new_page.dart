@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
@@ -5,6 +7,7 @@ import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/user/bean/user_home_entity.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
@@ -22,12 +25,14 @@ class _NewUserPageState extends State<NewUserPage> {
 
   UserHomeInfo _info; // 用户首页的信息 根据用户信息返回的角色类型 请求相应的数据
 
-
+  StreamSubscription changeSubscription;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initData();
+    // 刷新实名认证的状态
+    initEventBusListener();
   }
 
 
@@ -36,7 +41,7 @@ class _NewUserPageState extends State<NewUserPage> {
     ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
     backgroundColor: Colors.white,
-      body: ListView(
+      body: _userInfoInfo==null?Container(): ListView(
         padding: EdgeInsets.all(0),
         children: <Widget>[
 
@@ -45,7 +50,6 @@ class _NewUserPageState extends State<NewUserPage> {
           buildMoreView(context),
           buildVideoListView(context),
           buildLine(),
-
 
          // 如果当前角色是医生
          _userInfoInfo.regType==1? Column(
@@ -71,7 +75,6 @@ class _NewUserPageState extends State<NewUserPage> {
 
            ],
          )
-
 
 
         ],
@@ -151,7 +154,7 @@ class _NewUserPageState extends State<NewUserPage> {
             Positioned(
                 top: ScreenUtil().setHeight(370),
                 left: ScreenUtil().setWidth(261),
-                child:  Text(_info==null?"":_info.userInfo,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
+                child:  Text(_info.userInfo==null?"":_info.userInfo,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
             ),
 
           buildUserInfoStatusView(context,_userInfoInfo.regType,_userInfoInfo.userInfoStatus),
@@ -162,18 +165,18 @@ class _NewUserPageState extends State<NewUserPage> {
               left: 0,
               child: Container(
                 color: Colors.white,
+                width: double.infinity,
                 height: ScreenUtil().setHeight(173),
                 child: Row(
-
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-
 
                  new Visibility(visible: _userInfoInfo.regType==1,child: new  Material(
 
                    color: Colors.white,
                    child: InkWell(
                      onTap: (){
+
 
                      },
                      child:   new Container(
@@ -399,7 +402,7 @@ class _NewUserPageState extends State<NewUserPage> {
             //  RRouter.push(context ,Routes.myCollectionPage,{},transition:TransitionType.cupertino);
               break;
             case"我的任务":
-            RRouter.push(context ,Routes.orderListPage,{},transition:TransitionType.cupertino);
+            RRouter.push(context ,Routes.taskNewPage,{},transition:TransitionType.cupertino);
               break;
           }
 
@@ -533,7 +536,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
       case 0:
 
-        return "0未认证";
+        return "未认证";
       case 1:
 
         return "已认证";
@@ -578,5 +581,11 @@ class _NewUserPageState extends State<NewUserPage> {
 
 
   }
+  void initEventBusListener() {
+    changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
+      initData();
+    });
 
+
+  }
 }

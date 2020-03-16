@@ -1,12 +1,17 @@
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
 import 'package:yqy_flutter/utils/department_picker.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/utils/user_utils.dart';
 
 ///
 ///   完善资料
@@ -49,6 +54,8 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
   String _department1Id,_department2Id; //一二级科室 ID
   String _department1,_department2; // 一二级科室 字符串
+
+  bool _check = true;
 
 
   TabController _tabController;
@@ -141,8 +148,8 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           // logo
          new Positioned(
            bottom: ScreenUtil().setHeight(100),
-             left: ScreenUtil().setWidth(450),
-            child: Image.asset(wrapAssets("logo_login.png"),width:  ScreenUtil().setWidth(180),height: ScreenUtil().setHeight(230),fit: BoxFit.fill,),
+             left: ScreenUtil().setWidth(440),
+            child: Image.asset(wrapAssets("logo_login.png"),width:  ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(230),fit: BoxFit.fill,),
          )
 
 
@@ -447,7 +454,8 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
             child: Container(
               alignment: Alignment.centerLeft,
               height: ScreenUtil().setHeight(120),
-              child: Text(_department,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+
+              child: Text(_department,style: TextStyle(color:_address=="选择科室"?Color(0xFF999999):Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),),
             )
         )),
         Container(
@@ -472,7 +480,11 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
        mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
 
-        Checkbox(value: true, onChanged: null,tristate: true,focusColor: Colors.red,),
+        Checkbox(value: _check, onChanged: (bool v){
+          setState(() {
+            this._check = !this._check;
+          });
+        },tristate: true,focusColor: Colors.red,activeColor:  Color(0xFF4AB1F2) ,),
         Text("我已阅读并同意",style: TextStyle(color:  Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
         InkWell(
 
@@ -530,7 +542,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           child: Container(
             alignment: Alignment.centerLeft,
               height: ScreenUtil().setHeight(120),
-            child: Text(_address,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),),
+            child: Text(_address,style: TextStyle(color: _address=="选择地区"?Color(0xFF999999):Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),),
           )
         )),
         Container(
@@ -604,14 +616,23 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     map["depart_id"] = _department1Id;
     map["depart_ids"] = _department2Id;
 
+    if(!_check){
+
+      FLToast.showError(text: "请先阅读并勾选用户服务协议");
+
+      return;
+
+    }
 
     NetUtils.requestFinishInfo(map)
         .then((res){
 
        if(res.code==200){
-         print(res.toString());
+         SendSmsInfo _loginInfo = SendSmsInfo.fromJson(res.info);
+         UserUtils.saveToken(_loginInfo.token.toString());
+         RRouter.push(context, Routes.homePage, {},clearStack: true);
        }else{
-         showToast(res.msg);
+         FLToast.showError(text: res.msg);
        }
 
     });

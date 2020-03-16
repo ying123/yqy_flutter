@@ -222,18 +222,31 @@ class NetUtils {
 
 
   ///
-  ///  单个会场信息及其日程信息
+  ///  日程列表信息
+  ///
+  ///
+  ///  id	是	string	会议编号
+  ///  token	是	string	用户token(仅APP)
+  ///
+  static Future<BaseResult> requestMeetingGetProgrammeList(String id) async {
+    String url = APPConfig.Server + "meeting/programme_list";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    return result;
+  }
+
+
+  ///
+  ///  单个会场信息
   ///
   ///
   ///  id	是	string	会议编号
   ///  token	是	string	用户token(仅APP)
   ///
   static Future<BaseResult> requestMeetingGetMeetingInfo(String id) async {
-    String url = APPConfig.Server + "meeting/programme_list";
+    String url = APPConfig.Server + "meeting/get_meeting_info";
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
     return result;
   }
-
 
   ///
   ///   点赞
