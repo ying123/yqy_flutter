@@ -167,58 +167,58 @@ class _NewUserPageState extends State<NewUserPage> {
                 color: Colors.white,
                 width: double.infinity,
                 height: ScreenUtil().setHeight(173),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                child: Flex(
+                  direction: Axis.horizontal,
                   children: <Widget>[
 
-                 new Visibility(visible: _userInfoInfo.regType==1,child: new  Material(
+                _userInfoInfo.regType==1? Expanded(flex: 1,child: new  Material(
 
-                   color: Colors.white,
-                   child: InkWell(
-                     onTap: (){
-
-
-                     },
-                     child:   new Container(
-                       padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
-                       alignment: Alignment.center,
-                       child:  Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: <Widget>[
-                           Text(_info==null?"0":_info.fabu.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
-                           Text("发布",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
-
-                         ],
-                       ),
+                      color: Colors.white,
+                      child: InkWell(
+                        onTap: (){
 
 
-                     ),
-                   ),
-                 ) ),
+                        },
+                        child:   new Container(
+                          padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
+                          alignment: Alignment.center,
+                          child:  Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(_info==null?"0":_info.fabu.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
+                              Text("发布",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(29)),),
 
-               new  Material(
+                            ],
+                          ),
 
-                 color: Colors.white,
-                 child: InkWell(
-                   onTap: (){
-                     RRouter.push(context ,Routes.collectHomePage,{},transition:TransitionType.cupertino);
-                   },
-                   child:   new Container(
-                     padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
-                     alignment: Alignment.center,
-                     child:  Column(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: <Widget>[
-                         Text(_info==null?"0":_info.collect.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
+
+                        ),
+                      ),
+                    )):Container(),
+
+                Expanded(flex: 1,child:     new  Material(
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: (){
+                      RRouter.push(context ,Routes.collectHomePage,{},transition:TransitionType.cupertino);
+                    },
+                    child:   new Container(
+                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
+                      alignment: Alignment.center,
+                      child:  Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(_info==null?"0":_info.collect.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
                           buildText("收藏",size: 29,color: "#FF333333"),
 
-                       ],
-                     ),
+                        ],
+                      ),
 
-                   ),
-                 ),
-               ) ,
-               new  Material(
+                    ),
+                  ),
+                ) ,),
+
+               Expanded(flex: 1,child:       new  Material(
 
                  color: Colors.white,
                  child: InkWell(
@@ -240,13 +240,14 @@ class _NewUserPageState extends State<NewUserPage> {
 
                    ),
                  ),
-               ) ,
-               new  Material(
+               ) ,),
+
+               Expanded(flex: 1,child:       new  Material(
 
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
-                   //  RRouter.push(context ,Routes.loginHomePage,{},transition:TransitionType.cupertino);
+                     //  RRouter.push(context ,Routes.loginHomePage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -262,7 +263,8 @@ class _NewUserPageState extends State<NewUserPage> {
 
                    ),
                  ),
-               ) ,
+               ) ,),
+
 
 
                   ],

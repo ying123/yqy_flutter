@@ -629,8 +629,9 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
        if(res.code==200){
          SendSmsInfo _loginInfo = SendSmsInfo.fromJson(res.info);
-         UserUtils.saveToken(_loginInfo.token.toString());
-         RRouter.push(context, Routes.homePage, {},clearStack: true);
+         UserUtils.saveToken(_loginInfo.token.toString()).then((_){
+           RRouter.push(context, Routes.homePage, {},clearStack: true);
+         });
        }else{
          FLToast.showError(text: res.msg);
        }

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -193,16 +194,17 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
               switch(type){
 
                 case "正在直播":
-                  RRouter.push(context, Routes.liveMeeting,{"title":"11"});
+              //    RRouter.push(context, Routes.liveMeeting,{"title":"11"});
+                 FLToast.info(text: "暂无更多内容");
                   break;
                 case "我的预约":
-
+                  FLToast.info(text: "暂无更多内容");
                   break;
                 case "直播预告":
-
+                  FLToast.info(text: "暂无更多内容");
                   break;
                 case "视频回放":
-                  RRouter.push(context, Routes.videoListPage,{});
+                  RRouter.push(context, Routes.doctorVideoListPage,{});
                   break;
 
               }
@@ -282,7 +284,6 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
   Widget itemVideoView(TabLiveInfoHistoryList list,String type) {
 
 
-
     return  InkWell(
       onTap: (){
 
@@ -298,7 +299,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
             RRouter.push(context, Routes.liveMeeting,{"title":"11"});
             break;
           case "视频回放":
-            RRouter.push(context, Routes.livePaybackPage,{});
+            RRouter.push(context, Routes.liveReviewPage,{"id":list.id.toString()});
             break;
 
         }

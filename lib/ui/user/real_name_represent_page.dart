@@ -62,7 +62,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,8 +115,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
                     cYM(ScreenUtil().setHeight(60)),
                   ],
                 ))
-
-
 
               ],
             ),
@@ -266,7 +263,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
   }
 
 
-
   buildHosNameInputView(BuildContext context) {
 
     return new Row(
@@ -372,7 +368,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
     );
 
   }
-
 
 
 

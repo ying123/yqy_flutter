@@ -28,6 +28,8 @@ import 'package:yqy_flutter/ui/live/bean/hc_status_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/live_review_info_entity.dart';
+import 'package:yqy_flutter/ui/live/bean/review_video_list_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/login_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/wx_info_entity.dart';
@@ -119,6 +121,10 @@ class EntityFactory {
       return LiveDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "LiveEntity") {
       return LiveEntity.fromJson(json) as T;
+    } else if (T.toString() == "LiveReviewInfoEntity") {
+      return LiveReviewInfoEntity.fromJson(json) as T;
+    } else if (T.toString() == "ReviewVideoListEntity") {
+      return ReviewVideoListEntity.fromJson(json) as T;
     } else if (T.toString() == "LoginEntity") {
       return LoginEntity.fromJson(json) as T;
     } else if (T.toString() == "SendSmsEntity") {

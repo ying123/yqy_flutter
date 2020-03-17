@@ -120,6 +120,9 @@ class Routes {
 
   static String livePaybackPage = "/livePaybackPage"; //  新的直播回放
 
+  static String liveReviewPage = "/liveReviewPage"; //  新的直播回放
+
+
   static String taskNewPage = "/taskNewPage"; //  新的积分兑换任务首页
 
   static String drugsCompanyHomePage = "/drugsCompanyHomePage"; //  药企首页
@@ -225,6 +228,7 @@ class Routes {
     router.define(liveNoticePage, handler:liveNoticeHandler);
     router.define(liveIngPage, handler:liveIngHandler);
     router.define(livePaybackPage, handler:livePaybackHandler);
+    router.define(liveReviewPage, handler:liveReviewPageHandler);
     router.define(taskNewPage, handler:taskNewPageHandler);
     router.define(drugsCompanyHomePage, handler:drugsCompanyHomePageHandler);
     router.define(drugsCompanyDetailPage, handler:drugsCompanyDetailPageHandler);

@@ -624,4 +624,25 @@ class NetUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
     return result;
   }
+
+  ///
+  ///   直播回放详情页
+  ///
+  static Future<BaseResult> requestReviewInfo(String id) async {
+    String url = APPConfig.Server + "meeting/review_info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+
+  ///
+  ///   单会场回放列表
+  ///
+  static Future<BaseResult> requestReviewVideoList(String id) async {
+    String url = APPConfig.Server + "meeting/review_video_list";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
 }

@@ -24,6 +24,7 @@ import 'package:yqy_flutter/ui/live/live_details.dart';
 import 'package:yqy_flutter/ui/live/live_ing_page.dart';
 import 'package:yqy_flutter/ui/live/live_notice_page.dart';
 import 'package:yqy_flutter/ui/live/live_playback_page.dart';
+import 'package:yqy_flutter/ui/live/live_review_page.dart';
 import 'package:yqy_flutter/ui/login/bind_phone_page.dart';
 import 'package:yqy_flutter/ui/login/login_home_page.dart';
 import 'package:yqy_flutter/ui/login/login_send_sms_page.dart';
@@ -359,6 +360,11 @@ var livePaybackHandler = Handler(handlerFunc: (BuildContext context, Map<String,
   return LivePaybackPage();
 });
 
+
+var liveReviewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  String id = params["id"]?.first;
+  return LiveReviewPage(id);
+});
 
 var taskNewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return TaskNewPage();

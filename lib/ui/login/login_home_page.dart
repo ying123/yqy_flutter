@@ -444,8 +444,10 @@ class _LoginHomePageState extends State<LoginHomePage> {
         SendSmsInfo _loginInfo = SendSmsInfo.fromJson(res.info);
 
         if(res.code==200){ // 直接登录
-          UserUtils.saveToken(_loginInfo.token.toString());
-          RRouter.push(context ,Routes.homePage,{},transition:TransitionType.cupertino,clearStack: true);
+          UserUtils.saveToken(_loginInfo.token.toString()).then((_){
+            RRouter.push(context ,Routes.homePage,{},transition:TransitionType.cupertino,clearStack: true);
+          });
+
         }else if(res.code==1501){ // 去绑定手机号码
           RRouter.push(context ,Routes.bindPhonePage,{"unionid":unionid},transition:TransitionType.cupertino);
         }else{ //错误信息
@@ -468,8 +470,10 @@ class _LoginHomePageState extends State<LoginHomePage> {
           if(res.code==200){
 
             SendSmsInfo  _loginInfo = SendSmsInfo.fromJson(res.info);
-            UserUtils.saveToken(_loginInfo.token.toString());
-           RRouter.push(context, Routes.homePage, {},clearStack: true);
+            UserUtils.saveToken(_loginInfo.token.toString()).then((bool){
+              RRouter.push(context, Routes.homePage, {},clearStack: true);
+            });
+
 
           }else{
             FLToast.error(text: res.msg);

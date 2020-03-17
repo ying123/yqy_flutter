@@ -13,10 +13,11 @@ class UserUtils {
   static const USER_NAME_KEY = "USER_NAME_KEY";
 
 
-  static  saveToken(String token) {
+  static Future<bool>  saveToken(String token) {
     if (token != null) {
-      LocalStorage.putObject(USER_TOKEN_KEY,token);
+     return LocalStorage.putObject(USER_TOKEN_KEY,token);
     }
+
   }
 
 

@@ -61,10 +61,8 @@ class _TabGFPageState extends State<TabGFPage> with AutomaticKeepAliveClientMixi
     
     NetworkUtils.requestGFList(page)
         .then((res) {
-      //   if (res.status == 200) {
-      /*   print("res.toString():"+res.toString());
-        print("res.info():"+res.info.toString());
-        print("_videoListEntity.toString():"+_videoListEntity.toString());*/
+
+
       int statusCode = int.parse(res.status);
       if(statusCode==9999){
         if(page>1){

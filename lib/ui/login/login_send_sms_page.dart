@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -131,8 +132,8 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
 
                 }),
             cYM(ScreenUtil().setHeight(80)),
-            TextWidget(textKey),
 
+            TextWidget(textKey)
 
           ],
         ),
@@ -208,7 +209,6 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
     });
 
 
-
   }
   ///
   ///  登录请求
@@ -226,8 +226,9 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
           //已注册直接登录
           if(status == 1){
             _loginInfo = SendSmsInfo.fromJson(res.info);
-            UserUtils.saveToken(_loginInfo.token.toString());
-            RRouter.push(context, Routes.homePage, {"phone":phone,"code":code},clearStack: true);
+            UserUtils.saveToken(_loginInfo.token.toString()).then((_){
+              RRouter.push(context, Routes.homePage, {},clearStack: true);
+            });
          // 未注册完善资料
           }else{
             RRouter.push(context, Routes.perfectInfoPage, {"phone":phone,"code":code},clearStack: false);
@@ -235,7 +236,8 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
 
         }else{
 
-          showToast(res.msg);
+          FLToast.showError(text: res.msg);
+
         }
 
 
