@@ -55,7 +55,7 @@
     </dict>
 
     <key>LSApplicationQueriesSchemes</key>
-     <array>
+    <array>
         <!-- 微信 URL Scheme 白名单-->
         <string>wechat</string>
         <string>weixin</string>

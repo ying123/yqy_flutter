@@ -139,7 +139,7 @@ class MainHomePage extends StatelessWidget {
         appId: APPConfig.WX_APP_ID,
         doOnAndroid: true,
         doOnIOS: true,
-        universalLink: "https://shuiyanmed.com/");
+        universalLink: "https://test2.yaoqiyuan.com/");
     var result = await isWeChatInstalled;
 
   //  FLToast.info(text: result.toString());
