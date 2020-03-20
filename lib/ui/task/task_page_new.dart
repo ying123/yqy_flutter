@@ -7,6 +7,7 @@ import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
+import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -47,6 +48,8 @@ class _TaskNewPageState extends State<TaskNewPage> {
   }
 
 
+
+  String _heroImage = "_heroImage";
 
 
 
@@ -435,7 +438,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
         InkWell(
           onTap: (){
-            RRouter.push(context ,Routes.shopDetailsPage,{"id":6},transition:TransitionType.cupertino);
+            RRouter.push(context ,Routes.shopDetailsPage,{"id":6},transition: TransitionType.cupertino);
           },
           child:    new  Container(
             padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(75), 0, ScreenUtil().setWidth(75), 0),
@@ -450,7 +453,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(300),fit: BoxFit.fill,),
+                Hero(tag: "avatar", transitionOnUserGestures: true, child:  Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(300),fit: BoxFit.fill,),),
                 Text("中医药适宜技术培训班学分证书",style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
                 Text("100积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
                 FlatButton(onPressed: (){
@@ -473,7 +476,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
         ),
         InkWell(
           onTap: (){
-            RRouter.push(context ,Routes.shopDetailsPage,{},transition:TransitionType.cupertino);
+             RRouter.push(context ,Routes.shopDetailsPage,{},transition:TransitionType.cupertino);
           },
           child:    new  Container(
             padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(75), 0, ScreenUtil().setWidth(75), 0),

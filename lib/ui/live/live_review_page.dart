@@ -130,7 +130,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
 
       if(ress[0].code==200){
         _liveDetailsInfo = LiveReviewInfoInfo.fromJson(ress[0].info);
-          player.setDataSource(_liveDetailsInfo.videoList[0].playUrl, autoPlay: true);
+          player.setDataSource(_liveDetailsInfo.videoList[0].playUrl??"", autoPlay: true);
       }
 
       if(ress[1].code==200){
@@ -199,6 +199,8 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
   ///  界面布局
   ///
   buildContextView(BuildContext context) {
+
+
 
     return Container(
       height: double.infinity,
@@ -431,7 +433,6 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
           buildBtnView(context),
 
 
-
         ],
 
       ),
@@ -460,6 +461,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
         cYM(setH(40)),
         // 视频简介
         buildContentInfoView(context),
+        // 其他会场的布局
         buildOtherHCView(context),
         //分割线
         buildLine(),
@@ -509,7 +511,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
             padding: EdgeInsets.only(left: ScreenUtil().setWidth(40)),
             scrollDirection: Axis.horizontal,
             itemCount: _liveDetailsInfo.keywords.length,
-          itemBuilder: (context,page){
+             itemBuilder: (context,page){
               return    new  Container(
                 width: ScreenUtil().setWidth(200),
                 height: ScreenUtil().setHeight(40),
@@ -1115,7 +1117,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
   ///  专家播放节点
   /// 
   tabItemView(int pos) {
-    
+
     return  InkWell(
       onTap: (){
 
@@ -1200,7 +1202,6 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
     getProgrammeListData();
     loadingCancel();
 
-
   }
 
   buildOtherHCView(BuildContext context) {
@@ -1229,7 +1230,8 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
                   currentHCID = _liveDetailsInfo.meetList[page].id.toString();
                   // 获取当前会场状态数据
                   getCurrentHcStatusData(context);
-                },
+
+                  },
                 child: new Container(
                     width: ScreenUtil().setWidth(430),
                     height: ScreenUtil().setHeight(90),

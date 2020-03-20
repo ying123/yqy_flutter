@@ -15,6 +15,8 @@ enum HttpMethod { GET, POST }
 const HTTPMethodValues = ['GET', 'POST'];
 const ContentTypeURLEncoded = 'application/x-www-form-urlencoded';
 
+//const ContentTypeURLEncoded = 'application/json';
+
 class HttpManager {
   Dio _dio = Dio();
 

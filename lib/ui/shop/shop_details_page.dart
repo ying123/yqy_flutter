@@ -15,7 +15,7 @@ import 'package:yqy_flutter/ui/shop/bean/shop_details_entity.dart';
 
 class ShopDetailsPage extends StatefulWidget {
 
-  String  id;
+  String  id ;
 
   ShopDetailsPage(this.id);
 
@@ -50,7 +50,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
         title: Text("商品详情"),
       ),
 
-      body:_shopDetailsInfo==null?Container(): Column(
+      body:Column(
 
         children: <Widget>[
           Expanded(child: ListView(
@@ -58,7 +58,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
               buildImageView(context),
 
-              Container(
+              _shopDetailsInfo==null?Container():  Container(
                 color: Colors.white,
                 padding: EdgeInsets.all(setH(30)),
                 child: Column(
@@ -76,11 +76,10 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                   ],
                 ),
               ),
-            buildContentTitleView(context),
-              buildContentView(context),
+              _shopDetailsInfo==null?Container(): buildContentTitleView(context),
+              _shopDetailsInfo==null?Container() :buildContentView(context),
             ],
           )),
-
 
         new  Container(
             color: Colors.white,
@@ -151,10 +150,8 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
   buildImageView(BuildContext context) {
 
-      return Container(
-        height: setH(600),
-        child: wrapImageUrl(_shopDetailsInfo.image,double.infinity,ScreenUtil().setHeight(500)),
-      );
+
+    return   Hero(tag: "avatar", transitionOnUserGestures: true, child:  Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(600),fit: BoxFit.fill,),);
 
   }
 
