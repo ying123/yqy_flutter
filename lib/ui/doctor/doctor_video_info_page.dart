@@ -759,13 +759,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
       height: ScreenUtil().setHeight(300),
 
       child:  new Row(
-
         children: <Widget>[
-          new  Container(
-            width: ScreenUtil().setWidth(196),
-            height: ScreenUtil().setHeight(196),
-            color: Colors.blue,
-          ),
+          wrapImageUrl(_doctorVideoInfoInfo.users.userPhoto, setW(196), setW(196)),
           cXM(ScreenUtil().setWidth(62)),
           new  Expanded(
               child: Column(
@@ -776,7 +771,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
                     children: <Widget>[
                       Text(_doctorVideoInfoInfo.users.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
                       cXM(ScreenUtil().setWidth(56)),
-                      Text(_doctorVideoInfoInfo.users.job==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400),),
+                    //  Text(_doctorVideoInfoInfo.users.job.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400),),
                       cXM(ScreenUtil().setWidth(32)),
                       Container(
                         width: ScreenUtil().setWidth(153),
@@ -786,14 +781,14 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
                           color: Color(0xFF4AB1F2),
                           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(22))),
                         ),
-                        child: Text(_doctorVideoInfoInfo.users.departs.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
+                        child: Text(_doctorVideoInfoInfo.users.job==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
                       )
 
                     ],
 
                   ),
                   cYM(ScreenUtil().setHeight(16)),
-                  Text(_doctorVideoInfoInfo.users.hospital.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
+                  Text(_doctorVideoInfoInfo.users.hospital==null?"":_doctorVideoInfoInfo.users.hospital.name,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
                 ],
 
               )
@@ -1157,8 +1152,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
                 isLiked: _isCollect,
                 likeBuilder: (bool isLike){
 
-                  return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
-                  Icon(Icons.star,color:Colors.red,size: 30,);
+                  return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png")):
+                  Image.asset(wrapAssets("icon_collect.png"));
                 },
                 onTap: (bool isLiked)
                 {
@@ -1172,13 +1167,14 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
           cXM(setW(40)),
           Row(
 
+
             children: <Widget>[
               LikeButton(
                 isLiked: _isLike,
                 likeBuilder: (bool isLike){
 
-                  return  !isLike?Icon(Icons.favorite_border,color:Colors.black45,size: 26,):
-                  Icon(Icons.favorite,color:Colors.red,size: 26,);
+                  return  !isLike?Image.asset(wrapAssets("icon_dz_cancel.png")):
+                  Image.asset(wrapAssets("icon_dz.png"));
                 },
                 onTap: (bool isLiked)
                 {

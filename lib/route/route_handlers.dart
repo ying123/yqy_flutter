@@ -430,7 +430,8 @@ var addAddressPageHandler = Handler(handlerFunc: (BuildContext context, Map<Stri
 
 
 var taskListPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return TaskListPage();
+  String id = params["id"]?.first;
+  return TaskListPage(id);
 });
 
 var integralListPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

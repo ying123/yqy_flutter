@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:package_info/package_info.dart';
 import 'package:yqy_flutter/bean/base_result_entity.dart';
+import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'interceptors/logs_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
@@ -32,7 +33,7 @@ class HttpManager {
     Options _options;
     Map<String, dynamic> header;
 
-    if(UserUtils.isLogin()){
+    if(UserUtils.isLogin()&&url!=APPConfig.Server + "points/index"){
       params["token"] = UserUtils.getToken()?? "";
     }
     //	设备

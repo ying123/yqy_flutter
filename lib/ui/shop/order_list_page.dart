@@ -130,8 +130,8 @@ class _OrderListPageState extends State<OrderListPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
 
-                buildText("2020-01-19  09:30:50",size: 32,color: "#FF999999"),
-                buildText(getStatusString(bean.orderStatus),size: 32,color: "#FF999999"),
+                buildText("2020-01-19  09:30:50",size: 34,color: "#FF999999"),
+                buildText(getStatusString(bean.orderStatus),size: 34,color: "#FF999999"),
 
               ],
             ),
@@ -148,7 +148,7 @@ class _OrderListPageState extends State<OrderListPage> {
                   children: <Widget>[
 
                     buildText(bean.goods.title),
-                    buildText(bean.points.toString()+"积分"+"x"+bean.nums.toString(),size: 32,color: "#FF999999"),
+                    buildText(bean.points.toString()+"积分"+"x"+bean.nums.toString(),size: 34,color: "#FF999999"),
 
 
                   ],
@@ -159,7 +159,7 @@ class _OrderListPageState extends State<OrderListPage> {
 
             new Container(
               alignment: Alignment.centerRight,
-              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 30,color: "#FF999999"),
+              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 34,color: "#FF999999"),
 
             ),
 

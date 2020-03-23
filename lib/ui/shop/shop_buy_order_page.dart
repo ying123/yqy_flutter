@@ -242,14 +242,14 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
                 wrapImageUrl(_orderInfo.image??"", setW(260), setH(210)),
                 cXM(setW(40)),
-                Column(
+                Expanded(child:  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                        buildText(_orderInfo.title.toString()??"",size: 42),
-                        cYM(20),
-                        buildText((_orderInfo.points??"0")+"积分",size: 33,color: "#FF999999")
+                    buildText(_orderInfo.title.toString()??"",size: 42),
+                    cYM(20),
+                    buildText((_orderInfo.points??"0")+"积分",size: 33,color: "#FF999999")
                   ],
-                ),
+                ),)
               ],
             ),
 

@@ -635,7 +635,6 @@ class NetUtils {
   }
 
 
-
   ///
   ///   单会场回放列表
   ///
@@ -645,4 +644,22 @@ class NetUtils {
     return result;
   }
 
+
+  ///
+  ///   积分首页
+  ///
+  static Future<BaseResult> requestPointsIndex() async {
+    String url = APPConfig.Server + "points/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"member_id":530});
+    return result;
+  }
+
+  ///
+  ///   积分列表
+  ///
+  static Future<BaseResult> requestPointsTaskChildList(String id) async {
+    String url = APPConfig.Server + "points/task_child_list";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
 }

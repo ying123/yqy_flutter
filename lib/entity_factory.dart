@@ -44,6 +44,7 @@ import 'package:yqy_flutter/ui/special/bean/special_cate_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_list_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_video_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/task_list_entity.dart';
+import 'package:yqy_flutter/ui/task/bean/task_page_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/task_question_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/task_video_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/upload_naire_entity.dart';
@@ -153,6 +154,8 @@ class EntityFactory {
       return SpecialVideoEntity.fromJson(json) as T;
     } else if (T.toString() == "TaskListEntity") {
       return TaskListEntity.fromJson(json) as T;
+    } else if (T.toString() == "TaskPageEntity") {
+      return TaskPageEntity.fromJson(json) as T;
     } else if (T.toString() == "TaskQuestionEntity") {
       return TaskQuestionEntity.fromJson(json) as T;
     } else if (T.toString() == "TaskVideoEntity") {

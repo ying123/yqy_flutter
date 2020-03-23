@@ -132,8 +132,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
 
-                buildText("2020-01-19  09:30:50",size: 32,color: "#FF999999"),
-                buildText(getStatusString(bean.orderStatus),size: 32,color: "#FF999999"),
+                buildText("2020-01-19  09:30:50",size: 34,color: "#FF999999"),
+                buildText(getStatusString(bean.orderStatus),size: 34,color: "#FF999999"),
 
               ],
             ),
@@ -150,7 +150,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   children: <Widget>[
 
                     buildText(bean.goods.title),
-                    buildText(bean.points??""+"积分"+"x"+bean.nums.toString(),size: 32,color: "#FF999999"),
+                    buildText(bean.points??""+"积分"+"x"+bean.nums.toString(),size: 34,color: "#FF999999"),
 
 
                   ],
@@ -161,7 +161,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
             new Container(
               alignment: Alignment.centerRight,
-              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 26,color: "#FF999999"),
+              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 34,color: "#FF999999"),
 
             ),
 
@@ -307,8 +307,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
 
-                buildText("订单编号",size: 32,color: "#FF999999"),
-                buildText("12345678922",size: 32,color: "#FF999999"),
+                buildText("订单编号",size: 34,color: "#FF999999"),
+                buildText("12345678922",size: 34,color: "#FF999999"),
 
               ],
             ),
@@ -316,8 +316,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
 
-              buildText("下单时间",size: 32,color: "#FF999999"),
-              buildText("2019-12-31  09:30:50",size: 32,color: "#FF999999"),
+              buildText("下单时间",size: 34,color: "#FF999999"),
+              buildText("2019-12-31  09:30:50",size: 34,color: "#FF999999"),
 
             ],
           ),
@@ -325,8 +325,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
 
-              buildText("发货时间",size: 32,color: "#FF999999"),
-              buildText("2020-12-31  18:30:50",size: 32,color: "#FF999999"),
+              buildText("发货时间",size: 34,color: "#FF999999"),
+              buildText("2020-12-31  18:30:50",size: 34,color: "#FF999999"),
 
             ],
           )

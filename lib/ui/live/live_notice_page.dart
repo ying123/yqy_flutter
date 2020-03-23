@@ -320,13 +320,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
     return Container(
 
       height: ScreenUtil().setHeight(500),
-      color: Colors.blue,
-      child: FijkView(
-        color: Colors.black,
-        width: double.infinity,
-        height: double.infinity,
-        player: player,
-      ),
+      child:  wrapImageUrl(_liveDetailsInfo.image, double.infinity, double.infinity)
 
     );
 

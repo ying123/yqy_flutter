@@ -24,8 +24,6 @@ import 'package:yqy_flutter/ui/login/login_home_page.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/task/task_page_new.dart';
 import 'package:yqy_flutter/ui/user/user_new_page.dart';
-import 'package:yqy_flutter/ui/user/user_page.dart';
-import 'package:yqy_flutter/ui/task/task_page.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
 import 'package:yqy_flutter/utils/chinese_cupertino_localizations.dart';
 import 'package:yqy_flutter/utils/local_storage_utils.dart';
