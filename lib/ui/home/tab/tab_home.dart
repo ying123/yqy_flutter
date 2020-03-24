@@ -143,7 +143,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                       cYM(ScreenUtil().setHeight(25)),
 
                       getBannerView(_homeIndexInfo.bannerList), //轮播图
-                      getMarqueeView(new List()),//跑马灯
+                   //   getMarqueeView(new List()),//跑马灯 预约
                       cYM(ScreenUtil().setHeight(60)),
                       getGridBtnView(), //图片按钮
                       cYM(ScreenUtil().setHeight(70)),
@@ -343,7 +343,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(type,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w800),),
-        new GestureDetector(
+      /*  new GestureDetector(
           child: Container(
             child: Row(
               children: <Widget>[
@@ -359,7 +359,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             RRouter.push(context, Routes.videoListPage,{});
           },
 
-        ),
+        ),*/
 
         ],
         

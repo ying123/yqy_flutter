@@ -217,7 +217,8 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
                   FLToast.info(text: "暂无更多内容");
                   break;
                 case "视频回放":
-                  RRouter.push(context, Routes.doctorVideoListPage,{});
+                  FLToast.info(text: "暂无更多内容");
+                 // RRouter.push(context, Routes.doctorVideoListPage,{});
                   break;
 
               }

@@ -276,6 +276,10 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
        itemCount: adList.length,
        viewportFraction: 0.8,
        scale: 0.9,
+       onTap: (int){
+
+         RRouter.push(context, Routes.newsContentPage, {"id":adList[int].id});
+       },
      ),
 
 

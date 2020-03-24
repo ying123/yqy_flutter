@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:like_button/like_button.dart';
@@ -415,14 +416,21 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
                 cYM(ScreenUtil().setHeight(10)),
                 Visibility(
                     visible: _showTipContent,
-                    child: new Row(
+                  child: Html(
+                    data: _liveDetailsInfo.content,
+
+                  ),
+
+
+                  // 文字显示
+                  /*  child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(_liveDetailsInfo.content, style: TextStyle(
                             color: Color(0xFF999999),
                             fontSize: ScreenUtil().setSp(35)),),
                       ],
-                    )
+                    )*/
                 )
 
               ],
