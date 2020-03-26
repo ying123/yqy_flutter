@@ -159,7 +159,7 @@ class _OrderListPageState extends State<OrderListPage> {
 
             new Container(
               alignment: Alignment.centerRight,
-              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString(),size: 34,color: "#FF999999"),
+              child: buildText("共"+bean.nums.toString()+"件商品，合计:"+(bean.nums*int.parse(bean.points??"0")).toString()+"积分",size: 34,color: "#FF999999"),
 
             ),
 

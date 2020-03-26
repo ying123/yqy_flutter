@@ -53,12 +53,12 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
       body:Column(
 
         children: <Widget>[
-          Expanded(child: ListView(
+          Expanded(child:   _shopDetailsInfo==null?Container():  ListView(
             children: <Widget>[
 
               buildImageView(context),
 
-              _shopDetailsInfo==null?Container():  Container(
+             Container(
                 color: Colors.white,
                 padding: EdgeInsets.all(setH(30)),
                 child: Column(
@@ -76,37 +76,40 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                   ],
                 ),
               ),
-              _shopDetailsInfo==null?Container(): buildContentTitleView(context),
-              _shopDetailsInfo==null?Container() :buildContentView(context),
+             buildContentTitleView(context),
+             buildContentView(context),
             ],
           )),
 
         new  Container(
-            color: Colors.white,
+            color: Colors.white10,
             height: setH(161),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                cXM(setW(60)),
+               cXM(setW(60)),
+                InkWell(
+
+                  onTap: (){
+
+                    showServiceDialogView(context);
+
+                  },
+                  child:   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+
+                      Image.asset(wrapAssets("shop/icon_kf.png"),width: setW(65),height: setH(65),),
+                      buildText("客服",size: 40,color: "#FF999999")
+
+                    ],
+                  ),
+                ),
                Expanded(
-                 child: InkWell(
+                 child: Container(
 
-                   onTap: (){
-
-                     showServiceDialogView(context);
-
-                   },
-                   child:   Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: <Widget>[
-
-                       Icon(Icons.account_circle),
-                       buildText("客服",size: 40,color: "#FF999999")
-
-                     ],
-                   ),
-                 )
+                 ),
                 ),
                InkWell(
                  onTap: (){
@@ -151,7 +154,9 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
   buildImageView(BuildContext context) {
 
 
-    return   Hero(tag: "avatar", transitionOnUserGestures: true, child:  Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(600),fit: BoxFit.fill,),);
+    return wrapImageUrl(_shopDetailsInfo.image,double.infinity, ScreenUtil().setWidth(600));
+
+   // return   Hero(tag: "avatar", transitionOnUserGestures: true, child:  Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(600),fit: BoxFit.fill,),);
 
   }
 
@@ -210,15 +215,15 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(setW(12)))
           ),
-          margin: EdgeInsets.fromLTRB(setW(100), setW(800), setW(100), setW(850)),
+          margin: EdgeInsets.fromLTRB(setW(100), setW(800), setW(100), setW(950)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               cYM(setH(40)),
             new  Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  cXM(setW(220)),
                   Icon(Icons.phone,color: Color(0xFF4AB1F2),),
                   cXM(setW(40)),
                   Column(
@@ -239,6 +244,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
               height: setH(150),
               child:   new  Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(child: InkWell(
                     child:  Container(

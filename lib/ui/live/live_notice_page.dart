@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:async';
 import 'package:fijkplayer/fijkplayer.dart';
@@ -6,7 +7,6 @@ import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:like_button/like_button.dart';
-import 'package:list_view_item_builder/list_view_item_builder.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
@@ -66,7 +66,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
   ///直播专家列表==================================
   TabMeetingListInfoInfo _meetingListInfoInfo; // 直播专家列表
   ScrollController _scrollC = ScrollController(); // 滚动列表控制器
-  ListViewItemBuilder _itemBuilder;
   Timer timer; //定时器 轮询
   ///=============================================
 
@@ -257,7 +256,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
           ),),
 
-          cXM(ScreenUtil().setWidth(40)),
+          cXM(ScreenUtil().setWidth(20)),
           // 消息按钮
           new  Material(
             color: Colors.transparent,
@@ -284,7 +283,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
                             width: ScreenUtil().setWidth(36),
                             height: ScreenUtil().setWidth(36),
                             alignment: Alignment.center,
-                            child: Text("3",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
+                            child: Text(_commentListInfo==null?"0":_commentListInfo.lists.length.toString(),style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
 
                           ))
                     ],
@@ -297,15 +296,15 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
           // 点赞按钮
           new Container(
-              alignment: Alignment.center,
-              height:  ScreenUtil().setHeight(110),
-              width: ScreenUtil().setWidth(110),
-              child: FlatButton(
+            alignment: Alignment.center,
+            height:  ScreenUtil().setHeight(110),
+            width: ScreenUtil().setWidth(25),
+            /*  child: FlatButton(
                 padding: EdgeInsets.all(0),
                 onPressed: (){
 
                 }, child:    Icon(Icons.favorite,size: ScreenUtil().setWidth(60),color: Color(0xFFFF934C),),)
-
+*/
           )
         ],
       ),
@@ -433,14 +432,10 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
                 cYM(ScreenUtil().setHeight(10)),
                 Visibility(
                     visible: _showTipContent,
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(_liveDetailsInfo.content, style: TextStyle(
-                            color: Color(0xFF999999),
-                            fontSize: ScreenUtil().setSp(35)),),
-                      ],
-                    )
+                    child:  Html(
+                      data: _liveDetailsInfo.content,
+
+                    ),
                 )
 
               ],
@@ -714,7 +709,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
       onTap: (){
 
-        RRouter.push(context, Routes.liveNoticePage,{"id":bean.id});
+        RRouter.push(context, Routes.liveReviewPage,{"id":bean.id});
 
       },
 
@@ -765,7 +760,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
                           children: <Widget>[
                             Icon(Icons.access_time,size: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text("2019-12-01  03:33:00",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                            Text(bean.startTime.toString(),style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
                           ],
 
                         ),
@@ -940,32 +935,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
     );
   }
 
-  ///
-  ///  正在直播 节点切换
-  ///
-  buildLiveTab(BuildContext context) {
-    _itemBuilder = ListViewItemBuilder(
-      // If you want use [jumpTo] or [animateTo], need set scrollController.
-      scrollController:_scrollC,
-      rowCountBuilder: (section) => _meetingListInfoInfo.videoLists.length,
-      itemsBuilder: (BuildContext context, int section, int index) {
-        return tabItemView(index,section);
-      },
-    );
-    _itemBuilder.scrollDirection = Axis.horizontal;
-    return Container(
-        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
-        height: ScreenUtil().setHeight(340),
-        child:  ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: _itemBuilder.itemBuilder,
-          itemCount: _itemBuilder.itemCount,
-          controller: _scrollC,
-        )
-
-    );
-  }
 
 
 
@@ -1171,44 +1140,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
   }
 
-  ///
-  ///  定时查询专家的所在列表
-  ///
-  void initGetMeetingListInfoStatus() {
-
-    timer = Timer.periodic(Duration(seconds: 30), (timer) {
-
-      NetUtils.requestMeetingGetProgrammeList(currentHCID)
-          .then((res){
-
-
-        if(res.code==200){
-
-          _meetingListInfoInfo =    TabMeetingListInfoInfo.fromJson(res.info);
-
-          int nowIndex =  _meetingListInfoInfo.nowVideo;
-          int offsetIndex;
-          for(int i = 0; i< _meetingListInfoInfo.videoLists.length; i++){
-
-            if(nowIndex ==  _meetingListInfoInfo.videoLists[i].id){
-
-              offsetIndex = i;
-
-            }
-
-          }
-          _itemBuilder.jumpTo(0, offsetIndex);
-
-        }
-
-
-      });
-
-
-    });
-
-
-  }
 
 
   ///

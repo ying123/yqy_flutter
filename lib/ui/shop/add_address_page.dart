@@ -25,7 +25,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
 
   String _tel;// 联系方式
 
-  String _address = "所在地区";// 地区
+  String _address = "选择所在地区";// 地区
 
   String _provinceId,_cityId,_areaId; //省市区 ID
   String _province,_city,_area; // 省市区 字符串
@@ -61,7 +61,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-
                     buildText("收货地址",size: 46,fontWeight: FontWeight.w600),
                     cYM(setH(99)),
                     // 姓名输入
@@ -98,19 +97,10 @@ class _AddAddressPageState extends State<AddAddressPage> {
     );
   }
 
-  buildInputName(BuildContext context) {
-
-    return Container(
-
-    );
-
-  }
-
   buildSubmitBtnView(BuildContext context) {
     return FlatButton(
         padding: EdgeInsets.all(0),
         onPressed: () {
-
               // 上传地址数据
             uploadAddressData(context);
         },
@@ -328,7 +318,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
 
     }
 
-    if(_address=="所在地区"){
+    if(_address=="选择所在地区"){
 
       showToast("请选择收货地区");
 
@@ -357,16 +347,13 @@ class _AddAddressPageState extends State<AddAddressPage> {
     NetUtils.requestAdAddress(map)
       .then((res){
 
-
         showToast(res.msg);
 
         if(res.code==200){
 
-
-
+            Navigator.pop(context);
 
         }
-
 
 
     });

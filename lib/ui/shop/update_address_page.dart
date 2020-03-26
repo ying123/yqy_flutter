@@ -138,7 +138,7 @@ class _UpdateAddressPageState extends State<UpdateAddressPage> {
                   colors: [Color(0xFF68E0CF), Color(0xFF209CFF)]),
               borderRadius: BorderRadius.all(Radius.circular(setW(43)))
           ),
-          child: buildText("保存并使用", size: 37, color: "#FFFEFFFF"),
+          child: buildText("保存", size: 37, color: "#FFFEFFFF"),
 
 
         ));

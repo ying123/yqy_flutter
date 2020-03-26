@@ -33,7 +33,7 @@ class HttpManager {
     Options _options;
     Map<String, dynamic> header;
 
-    if(UserUtils.isLogin()&&url!=APPConfig.Server + "points/index"){
+    if(UserUtils.isLogin()){
       params["token"] = UserUtils.getToken()?? "";
     }
     //	设备

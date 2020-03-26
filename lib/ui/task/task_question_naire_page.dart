@@ -4,7 +4,9 @@ import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/ui/task/bean/question_task_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/task_question_entity.dart';
 import 'package:yqy_flutter/ui/task/bean/upload_naire_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
@@ -31,7 +33,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
 
   List seleValues2; // 每个问题的ID  提交数据时用到
 
-  TaskQuestionInfo _questionInfo;
+  QuestionTaskInfo _questionInfo;
 
   @override
   void initState() {
@@ -53,22 +55,19 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
 
   void loadData() {
 
-    NetworkUtils.requestTaskQuestion(widget.tid)
+    NetUtils.requestPointsQuestionTask(widget.tid)
         .then((res){
 
-      int statusCode = int.parse(res.status);
 
-      if(statusCode==9999){
-
-        _questionInfo = TaskQuestionInfo.fromJson(res.info);
-        seleValues  = new List(_questionInfo.xList.length);
-        seleValues2  = new List(_questionInfo.xList.length);
+      if(res.code==200){
+        _questionInfo = QuestionTaskInfo.fromJson(res.info);
+        seleValues  = new List(_questionInfo.questionList.length);
+        seleValues2  = new List(_questionInfo.questionList.length);
         seleValues.fillRange(0,seleValues.length,-1);
         setState(() {
 
         });
       }
-
 
     });
 
@@ -82,8 +81,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
     return Scaffold(
 
       appBar: AppBar(
-
-        title: Text(_questionInfo==null?"调查问卷":_questionInfo.title),
+        title: Text(_questionInfo==null?"调查问卷":_questionInfo.title,style: TextStyle(fontSize: setSP(50)),),
         centerTitle: true,
       ),
 
@@ -92,9 +90,10 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
         children: <Widget>[
           cYM(15),
           ListView.builder(
+            padding: EdgeInsets.only(right: setW(30)),
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,//内容适配
-            itemCount: _questionInfo.xList.length,
+            itemCount: _questionInfo.questionList.length,
             itemBuilder: (context,index){
               return buildItemView(index);
             },
@@ -121,27 +120,27 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
             children: <Widget>[
               cXM(15),
                new Container(
-                  width: 60,
-                  height: 35,
+                  width: setW(180),
+                  height: setH(100),
                   child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
                           Image.asset(wrapAssets("icon_question_bg.png"),width: double.infinity,height: double.infinity,),
-                          Text(_questionInfo.xList[firstIndex].type=="1"?"单选":"多选",style: TextStyle(color: Colors.white),)
+                          Text(_questionInfo.questionList[firstIndex].type==1?"单选":"多选",style: TextStyle(color: Colors.white,fontSize: setSP(36)),)
                       ],
                   ),
                 ),
                 cXM(10),
-                Expanded(child:  Text(_questionInfo.xList[firstIndex].question,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w900),),),
+                Expanded(child:  Text(_questionInfo.questionList[firstIndex].title,style: TextStyle(fontSize: setSP(45),fontWeight: FontWeight.w900),),),
             ],
           ),
         cYM(10),
         new  ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,//内容适配
-          itemCount: _questionInfo.xList[firstIndex].content.length,
+          itemCount: _questionInfo.questionList[firstIndex].content.length,
           itemBuilder: (c,index){
-            return  buildAnswerItemView(firstIndex,index,_questionInfo.xList[firstIndex].questionId);
+            return  buildAnswerItemView(firstIndex,index,_questionInfo.questionList[firstIndex].id.toString());
           },
 
         ),
@@ -194,7 +193,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
             child: Text(buildOptionValue(index),style: TextStyle(color:seleValue==index?Colors.white:Colors.black ),)
           ),
           cXM(20),
-          Text(_questionInfo.xList[firstIndex].content[index],style: TextStyle(color:seleValue==index?Colors.blue:Colors.black ,fontSize: 14),)
+          Text(_questionInfo.questionList[firstIndex].content[index],style: TextStyle(color:seleValue==index?Colors.blue:Colors.black ,fontSize: 14),)
 
 
         ],

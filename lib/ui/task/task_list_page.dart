@@ -1,3 +1,4 @@
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -155,14 +156,34 @@ class _TaskListPageState extends State<TaskListPage> {
                 //  根据任务类型不同  跳转不同的页面
                 onTap: (){
 
-                  switch(bean.type){
 
-                    case 0:
+                  // 未完成 状态时 才去跳转进行任务
+                  if(bean.status==1){
 
-                      break;
-                    case 1:
+                    switch(bean.type){
+                      case 1: // 视频任务
+                        RRouter.push(context, Routes.taskVideoPage, {"tid": bean.id},transition: TransitionType.cupertino);
+                        break;
+                      case 2:// 问卷调查任务
+                        RRouter.push(context, Routes.taskQuestionNairePage, {"tid": bean.id},transition: TransitionType.cupertino);
+                        break;
+                      case 3:// 实名认证任务
 
-                      break;
+                        if(UserUtils.getUserInfoX().regType==1){
+
+                          RRouter.push(context, Routes.realNameNewPage, {},transition: TransitionType.cupertino);
+
+                        }else{
+                          RRouter.push(context, Routes.realNameRepresentPage, {},transition: TransitionType.cupertino);
+                        }
+
+                        break;
+                    }
+
+                  }else{
+
+
+                    FLToast.info(text: getTextStatus(bean.status));
 
                   }
 
@@ -204,8 +225,8 @@ class _TaskListPageState extends State<TaskListPage> {
 
   // 0未开始 1去完成 2领取奖励 3已完成 4已过期
   String getTextStatus(int status) {
-    String v;
 
+    String v;
     switch(status){
       case 0:
         v = "未开始";

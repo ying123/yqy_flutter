@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fijkplayer/fijkplayer.dart';
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:like_button/like_button.dart';
@@ -34,7 +35,7 @@ class DoctorVideoInfoPage extends StatefulWidget {
   _DoctorVideoInfoPageState createState() => _DoctorVideoInfoPageState();
 }
 
-class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
+class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with WidgetsBindingObserver{
 
   bool _showTipContent  = false;// 是否显示简介
 
@@ -60,7 +61,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
 
 
   /// 播放器设置
-    final FijkPlayer player = FijkPlayer();
+     FijkPlayer player = FijkPlayer();
 
   StreamSubscription changeSubscription;
 
@@ -69,7 +70,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    WidgetsBinding.instance.addObserver(this);
     loadData(widget.id);
     initPlayerSetting();
     changeSubscription =  eventBus.on<DoctorVideoInfoInfoVideoList>().listen((event) {
@@ -87,10 +88,24 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
     //  FlutterUmplus.endPageView(runtimeType.toString());
     super.dispose();
     player.release();
+    player = null;
     changeSubscription.cancel();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+
+    if(state==AppLifecycleState.paused){
+      player.pause();
+    }
+
+    if(state==AppLifecycleState.resumed){
+      player.start();
+    }
+
+  }
 
   void loadData(String id) async{
 
@@ -262,7 +277,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
 
           ),),
 
-          cXM(ScreenUtil().setWidth(40)),
+          cXM(ScreenUtil().setWidth(20)),
           // 消息按钮
           new  Material(
             color: Colors.transparent,
@@ -289,7 +304,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
                             width: ScreenUtil().setWidth(36),
                             height: ScreenUtil().setWidth(36),
                             alignment: Alignment.center,
-                            child: Text("3",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
+                            child: Text(_commentListInfo==null?"0":_commentListInfo.lists.length.toString(),style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
 
                           ))
                     ],
@@ -302,15 +317,15 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
 
           // 点赞按钮
           new Container(
-              alignment: Alignment.center,
-              height:  ScreenUtil().setHeight(110),
-              width: ScreenUtil().setWidth(110),
-              child: FlatButton(
+            alignment: Alignment.center,
+            height:  ScreenUtil().setHeight(110),
+            width: ScreenUtil().setWidth(25),
+            /*  child: FlatButton(
                 padding: EdgeInsets.all(0),
                 onPressed: (){
 
                 }, child:    Icon(Icons.favorite,size: ScreenUtil().setWidth(60),color: Color(0xFFFF934C),),)
-
+*/
           )
         ],
       ),
@@ -574,8 +589,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
               ),
             ),
             onTap: (){
-              type=="热门视频"?RRouter.push(context, Routes.liveMeeting,{"title":"11"}):
-              RRouter.push(context, Routes.videoListPage,{});
+              type=="专家视频"?   RRouter.push(context, Routes.doctorVideoListPage,{}):
+                FLToast.info(text: "暂无更多内容");
             },
 
           ),
@@ -1143,7 +1158,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
 
-          Expanded(child: buildText(_doctorVideoInfoInfo.pv.toString()??"0"+"次播放",color: "#FF999999"),),
+          Expanded(child: buildText(_doctorVideoInfoInfo.pv==null?"0次播放":_doctorVideoInfoInfo.pv.toString()+"次播放",color: "#FF999999"),),
 
           Row(
 

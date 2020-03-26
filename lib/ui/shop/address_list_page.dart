@@ -64,7 +64,6 @@ class _AddressListPageState extends State<AddressListPage> {
 
           buildDefaultAddress(context),
           buildLine(),
-          cYM(setH(30)),
           _addressListInfo==null?Container():buildAddressListView(context),
           cYM(setH(20)),
           buildAddTextView(context)
@@ -110,7 +109,7 @@ class _AddressListPageState extends State<AddressListPage> {
 
         color: Colors.white,
         padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
-        height: setH(180),
+        height: setH(200),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -174,7 +173,7 @@ class _AddressListPageState extends State<AddressListPage> {
          color: Colors.white,
          padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
          margin: EdgeInsets.only(bottom: setH(15)),
-         height: setH(180),
+         height: setH(200),
          child: Row(
            mainAxisAlignment: MainAxisAlignment.spaceBetween,
            children: <Widget>[

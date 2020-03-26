@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:like_button/like_button.dart';
-import 'package:list_view_item_builder/list_view_item_builder.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
@@ -36,7 +36,8 @@ class LiveIngPage extends StatefulWidget {
   _LiveIngPageState createState() => _LiveIngPageState();
 }
 
-class _LiveIngPageState extends State<LiveIngPage> {
+class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
+
 
   bool _showTipContent  = false;// 是否显示简介
 
@@ -66,7 +67,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
   TabMeetingListInfoInfo _meetingListInfoInfo; // 直播专家列表
    ScrollController _scrollC = ScrollController(); // 滚动列表控制器
   var _controllerDoctor = IndexedScrollController();
-   ListViewItemBuilder _itemBuilder;
   Timer timer; //定时器 轮询
   ///=============================================
 
@@ -79,7 +79,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
    String imgUrl; // 当前会场的需要展示的图片   未开始和已结束
    ///=============================================
 
-  final FijkPlayer player = FijkPlayer();
+  FijkPlayer player = FijkPlayer();
   StreamSubscription changeSubscription;
 
   String liveId; // 当前会议的ID
@@ -91,11 +91,15 @@ class _LiveIngPageState extends State<LiveIngPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     liveId = widget.id;
     loadData();
-    initGetMeetingListInfoStatus();
+   //   initGetMeetingListInfoStatus();
     changeSubscription =  eventBus.on<HcStatusInfo>().listen((event) {
       setState(() {
+
+        print("当前会场直播状态："+event.isPlay.toString());
+
         switch(event.isPlay){
           case 0://已结束
             statusId = 0;
@@ -120,13 +124,28 @@ class _LiveIngPageState extends State<LiveIngPage> {
     });
   }
 
+
   @override
   void dispose() {
     //  FlutterUmplus.endPageView(runtimeType.toString());
-    super.dispose();
     timer.cancel();
     player.release();
+    player = null;
     changeSubscription.cancel();
+    super.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
+
+
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+
+      if(state==AppLifecycleState.paused){
+         player.pause();
+      }
   }
 
 
@@ -291,7 +310,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
           ),),
 
-          cXM(ScreenUtil().setWidth(40)),
+          cXM(ScreenUtil().setWidth(20)),
           // 消息按钮
           new  Material(
             color: Colors.transparent,
@@ -318,7 +337,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
                             width: ScreenUtil().setWidth(36),
                             height: ScreenUtil().setWidth(36),
                             alignment: Alignment.center,
-                            child: Text("3",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
+                            child: Text(_commentListInfo==null?"0":_commentListInfo.lists.length.toString(),style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
 
                           ))
                     ],
@@ -331,15 +350,15 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
           // 点赞按钮
           new Container(
-              alignment: Alignment.center,
-              height:  ScreenUtil().setHeight(110),
-              width: ScreenUtil().setWidth(110),
-              child: FlatButton(
+            alignment: Alignment.center,
+            height:  ScreenUtil().setHeight(110),
+            width: ScreenUtil().setWidth(25),
+            /*  child: FlatButton(
                 padding: EdgeInsets.all(0),
                 onPressed: (){
 
                 }, child:    Icon(Icons.favorite,size: ScreenUtil().setWidth(60),color: Color(0xFFFF934C),),)
-
+*/
           )
         ],
       ),
@@ -476,14 +495,10 @@ class _LiveIngPageState extends State<LiveIngPage> {
                 cYM(ScreenUtil().setHeight(10)),
                 Visibility(
                     visible: _showTipContent,
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(_liveDetailsInfo.content, style: TextStyle(
-                            color: Color(0xFF999999),
-                            fontSize: ScreenUtil().setSp(35)),),
-                      ],
-                    )
+                    child:  Html(
+                      data: _liveDetailsInfo.content,
+
+                    ),
                 )
 
               ],
@@ -767,7 +782,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
       onTap: (){
 
-        RRouter.push(context, Routes.liveNoticePage,{"id":bean.id});
+        RRouter.push(context, Routes.liveReviewPage,{"id":bean.id});
 
       },
 
@@ -795,12 +810,12 @@ class _LiveIngPageState extends State<LiveIngPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new  Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Image.asset(wrapAssets("tab/tab_live_ic2.png"),width: ScreenUtil().setSp(32),height: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
                             Row(
-
-                              children: bean.authors.map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
+                                children: bean.authors.map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
                             )
 
                           ],
@@ -818,7 +833,7 @@ class _LiveIngPageState extends State<LiveIngPage> {
                           children: <Widget>[
                             Icon(Icons.access_time,size: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text("2019-12-01  03:33:00",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                            Text(bean.startTime.toString(),style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
                           ],
 
                         ),
@@ -1002,43 +1017,21 @@ class _LiveIngPageState extends State<LiveIngPage> {
   ///  正在直播 节点切换
   ///
   buildLiveTab(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
-        height: ScreenUtil().setHeight(340),
-        child:  IndexedListView.builder(
-            scrollDirection: Axis.horizontal,
-          //  maxItemCount: _meetingListInfoInfo.videoLists.length,
-          //  minItemCount: _meetingListInfoInfo.videoLists.length,
-            controller: _controllerDoctor,
-            itemBuilder: (context,index){
 
-              return tabItemView(index);
 
-            })
+      return Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
+          height: ScreenUtil().setHeight(340),
+          child:  IndexedListView.builder(
+              scrollDirection: Axis.horizontal,
+              controller: _controllerDoctor,
+              itemBuilder: (context,index){
+                return tabItemView(index);
 
-    );
+              })
 
-   /* _itemBuilder = ListViewItemBuilder(
-      // If you want use [jumpTo] or [animateTo], need set scrollController.
-      scrollController:_scrollC,
-      rowCountBuilder: (section) => _meetingListInfoInfo.videoLists.length,
-      itemsBuilder: (BuildContext context, int section, int index) {
-        return tabItemView(index);
-      },
-    );
-    _itemBuilder.scrollDirection = Axis.horizontal;
-    return Container(
-      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
-        height: ScreenUtil().setHeight(340),
-        child:  ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: _itemBuilder.itemBuilder,
-          itemCount: _itemBuilder.itemCount,
-          controller: _scrollC,
-        )
+      );
 
-    );*/
   }
 
 
@@ -1096,7 +1089,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
             ],
           )
-
 
 
 
@@ -1322,7 +1314,6 @@ class _LiveIngPageState extends State<LiveIngPage> {
          if(res.code==200){
 
            HcStatusInfo hcStatusInfo = HcStatusInfo.fromJson(res.info);
-
            // 传递消息
            eventBus.fire(hcStatusInfo);
            loadingCancel();
@@ -1338,5 +1329,21 @@ class _LiveIngPageState extends State<LiveIngPage> {
 
 
 
+  }
+
+
+   ///
+  ///   遍历数据 展示专家列表i哦
+  ///
+  String getAuthors(List<LiveInfoRecommandMeetingAuthors> authors) {
+
+    StringBuffer sb = new StringBuffer();
+
+    authors.forEach((e){
+
+      sb.write(e.realName);
+    });
+
+    return sb.toString();
   }
 }

@@ -114,15 +114,19 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
-        child:  ListView.builder(
-            itemCount:_newsListEntity==null?1:_newsListEntity.lists.length+1,
-            itemBuilder: (context,index) {
+        child:
 
-              return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.lists[index-1]);
+        ListView.separated(itemBuilder:  (context,index) {
 
-            }
+          return  _newsListEntity==null?Container():index==0?cYMW(15):getLiveItemView(context,_newsListEntity.lists[index-1]);
 
-        ),
+        }, separatorBuilder:  (context,index) {
+          return Container(
+            height: setH(1),
+            color: Colors.black12,
+          );
+
+        },   itemCount:_newsListEntity==null?1:_newsListEntity.lists.length+1)
 
       ),
 
@@ -144,7 +148,7 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
 
         color: Colors.white,
 
-        height: setH(200),
+        height: setH(220),
 
         child: new Column(
 
@@ -163,7 +167,7 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
                   children: <Widget>[
 
                     new   Container(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      padding: EdgeInsets.fromLTRB(setW(20), 0, setW(20), 0),
                       child: Text(xlist.title,style: TextStyle(color: Color(0xFF333333),fontSize: setSP(38),fontWeight: FontWeight.w500),maxLines: 2,overflow: TextOverflow.ellipsis,),
                     ),
 
@@ -171,7 +175,7 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
 
                     new  Container(
 
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      padding: EdgeInsets.fromLTRB(setW(20), 0, setW(20), 0),
 
                       child:  new  Row(
 
@@ -185,7 +189,6 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
 
                           buildText(xlist.pv.toString()+"次阅读",size: 32,color:"#FF7E7E7E"),
 
-
                         ],
 
 
@@ -197,11 +200,12 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
                 ),
                 ),
 
-                xlist.image==null?Container():wrapImageUrl(xlist.image, setW(200), setH(120))
+                xlist.image==null?Container():wrapImageUrl(xlist.image, setW(235), setH(140)),
+
+                cXM(setW(20))
 
               ],
             ),
-            Divider(height: 1,color: Colors.black26,)
 
 
 

@@ -134,13 +134,17 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
-        child:  ListView.builder(
-            shrinkWrap: true,
-            itemCount:_newsIndexInfo==null?0:_newsIndexInfo.newsLists.length+1,
-            itemBuilder: (context,index) {
-              return index==0?bannerListView(context,_newsIndexInfo.adList): getLiveItemView(context,_newsIndexInfo.newsLists[index-1]);
-            }
-        ),
+        child:
+
+          ListView.separated(itemBuilder: (context,index) {
+          return index==0?bannerListView(context,_newsIndexInfo.adList): getLiveItemView(context,_newsIndexInfo.newsLists[index-1]);
+         }, separatorBuilder:  (context,index) {
+            return Container(
+              height: setH(1),
+              color: Colors.black12,
+            );
+
+          }, itemCount: _newsIndexInfo==null?0:_newsIndexInfo.newsLists.length+1)
 
       ),
 
@@ -222,9 +226,6 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
               ],
             ),
-            Divider(height: 1,color: Colors.black26,)
-
-
 
           ],
 

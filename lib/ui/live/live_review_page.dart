@@ -7,7 +7,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:like_button/like_button.dart';
-import 'package:list_view_item_builder/list_view_item_builder.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
@@ -39,7 +38,7 @@ class LiveReviewPage extends StatefulWidget {
   _LiveReviewPageState createState() => _LiveReviewPageState();
 }
 
-class _LiveReviewPageState extends State<LiveReviewPage> {
+class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObserver {
 
   bool _showTipContent  = false;// 是否显示简介
 
@@ -79,7 +78,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
    String imgUrl; // 当前会场的需要展示的图片   未开始和已结束
    ///=============================================
 
-  final FijkPlayer player = FijkPlayer();
+  FijkPlayer player = FijkPlayer();
   StreamSubscription changeSubscription;
 
   String liveId; // 当前会议的ID
@@ -91,6 +90,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     liveId = widget.id;
     loadData();
     changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
@@ -108,10 +108,23 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
     //  FlutterUmplus.endPageView(runtimeType.toString());
     super.dispose();
     player.release();
+      player=null;
     changeSubscription.cancel();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
 
+    if(state==AppLifecycleState.paused){
+      player.pause();
+    }
+
+    if(state==AppLifecycleState.resumed){
+      player.start();
+    }
+
+  }
 
   void loadData() async{
 
@@ -274,7 +287,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
 
           ),),
 
-          cXM(ScreenUtil().setWidth(40)),
+          cXM(ScreenUtil().setWidth(20)),
           // 消息按钮
           new  Material(
             color: Colors.transparent,
@@ -301,7 +314,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
                             width: ScreenUtil().setWidth(36),
                             height: ScreenUtil().setWidth(36),
                             alignment: Alignment.center,
-                            child: Text("3",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
+                            child: Text(_commentListInfo==null?"0":_commentListInfo.lists.length.toString(),style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(22)),),
 
                           ))
                     ],
@@ -316,13 +329,13 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
           new Container(
               alignment: Alignment.center,
               height:  ScreenUtil().setHeight(110),
-              width: ScreenUtil().setWidth(110),
-              child: FlatButton(
+              width: ScreenUtil().setWidth(25),
+            /*  child: FlatButton(
                 padding: EdgeInsets.all(0),
                 onPressed: (){
 
                 }, child:    Icon(Icons.favorite,size: ScreenUtil().setWidth(60),color: Color(0xFFFF934C),),)
-
+*/
           )
         ],
       ),
@@ -711,7 +724,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
 
       onTap: (){
 
-        RRouter.push(context, Routes.liveNoticePage,{"id":bean.id});
+        RRouter.push(context, Routes.liveReviewPage,{"id":bean.id});
 
       },
 
@@ -762,7 +775,7 @@ class _LiveReviewPageState extends State<LiveReviewPage> {
                           children: <Widget>[
                             Icon(Icons.access_time,size: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text("2019-12-01  03:33:00",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                            Text(bean.startTime.toString(),style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
                           ],
 
                         ),

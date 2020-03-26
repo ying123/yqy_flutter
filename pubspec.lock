@@ -467,7 +467,7 @@ packages:
     source: hosted
     version: "1.0.8"
   infinite_listview:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: infinite_listview
       url: "https://pub.flutter-io.cn"
@@ -522,13 +522,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.9"
-  list_view_item_builder:
-    dependency: "direct main"
-    description:
-      name: list_view_item_builder
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.2.0"
   localstorage:
     dependency: "direct main"
     description:

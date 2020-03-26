@@ -175,33 +175,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             )
 
 
-      /*ListView(
-          controller: _scrollController,
-          padding: EdgeInsets.only(top: 0),
-          children: <Widget>[
-
-
-            cYM(ScreenUtil().setHeight(25)),
-
-            getBannerView(_homeIndexInfo.bannerList), //轮播图
-            getMarqueeView(new List()),//跑马灯
-            cYM(ScreenUtil().setHeight(60)),
-            getGridBtnView(), //图片按钮
-            cYM(ScreenUtil().setHeight(70)),
-            getRowTextView("热门视频"),//热门会议标题栏
-            getHotVideo(_homeIndexInfo.hotVideo),//热门会议视频横向列表
-            cYM(ScreenUtil().setHeight(20)),
-            getRowTextView("特约专家"),//往期会议标题栏
-            cYM(ScreenUtil().setHeight(12)),
-            getDocViews(_homeIndexInfo.recomDoctor),
-            cYM(ScreenUtil().setHeight(30)),
-            getRowTextView("最新资讯"),//往期会议标题栏
-            cYM(ScreenUtil().setHeight(12)),
-            getNewsListView()
-
-          ],
-
-        ),*/
       )
     ),
     );

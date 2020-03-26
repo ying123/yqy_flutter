@@ -650,7 +650,7 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsIndex() async {
     String url = APPConfig.Server + "points/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"member_id":530});
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
     return result;
   }
 
@@ -662,4 +662,28 @@ class NetUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
     return result;
   }
+
+
+  ///
+  ///   问卷调查任务
+  ///
+  static Future<BaseResult> requestPointsQuestionTask(String id) async {
+    String url = APPConfig.Server + "points/question_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+
+  ///
+  ///   视频观看任务
+  ///
+  static Future<BaseResult> requestPointsVideoTask(String id) async {
+    String url = APPConfig.Server + "points/video_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+
 }

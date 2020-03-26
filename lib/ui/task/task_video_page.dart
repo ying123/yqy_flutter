@@ -3,10 +3,13 @@ import 'dart:math';
 
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/task/bean/task_video_entity.dart';
+import 'package:yqy_flutter/ui/task/bean/video_task_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/widgets/CustomFijkPanel.dart';
@@ -22,14 +25,14 @@ class TaskVideoPage extends StatefulWidget {
   _TaskVideoPageState createState() => _TaskVideoPageState();
 }
 
-class _TaskVideoPageState extends State<TaskVideoPage> {
+class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObserver{
 
-  final FijkPlayer player = FijkPlayer();
+  FijkPlayer player = FijkPlayer();
 
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 
-  TaskVideoInfo _taskVideoInfo;
+  VideoTaskInfo _taskVideoInfo;
 
   StreamSubscription _currentPosSubs;
   Duration _currentPos;
@@ -40,6 +43,7 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     FlutterUmplus.beginPageView(runtimeType.toString());
     initData();
     player.addListener(_fijkValueListener);
@@ -68,7 +72,9 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
     super.dispose();
     player.removeListener(_fijkValueListener);
     player.release();
+    player=null;
     _currentPosSubs?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   ///
@@ -78,32 +84,43 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
 
     FijkValue value = player.value;
 
-
     // 准备完毕  跳转到之前的播放进度
-    if (value.state == FijkState.prepared) {
+   /* if (value.state == FijkState.prepared) {
          player.seekTo(_taskVideoInfo==null?0:int.parse(_taskVideoInfo.playTime)*1000);
-    }
-
+    }*/
 
     // 播放完成
     if(value.state == FijkState.completed){
        completedVideo();
     }
 
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+
+    if(state==AppLifecycleState.paused){
+      player.pause();
+    }
+
+    if(state==AppLifecycleState.resumed){
+      player.start();
+    }
 
   }
 
+
   void initData() {
-    NetworkUtils.requestTaskVideo(widget.tid)
+    NetUtils.requestPointsVideoTask(widget.tid)
         .then((res){
 
-      int statusCode = int.parse(res.status);
-      if(statusCode==9999){
-        _taskVideoInfo = TaskVideoInfo.fromJson(res.info);
+      if(res.code==200){
+        _taskVideoInfo = VideoTaskInfo.fromJson(res.info);
       }
       setState(() {
          player.setDataSource(_taskVideoInfo.playUrl, autoPlay: true);
-        _layoutState = loadStateByCode(statusCode);
+        _layoutState = loadStateByCode(res.code);
       });
 
     });
@@ -159,7 +176,9 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
             cYM(ScreenUtil().setHeight(100)),
             Container(
               padding: EdgeInsets.only(left: ScreenUtil().setWidth(40)),
-              child: Text(_taskVideoInfo.content),
+              child: Html(
+                data: _taskVideoInfo.desc,
+              ),
             ),
 
         ],
@@ -199,9 +218,6 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
   ///
   void subData() {
 
-
-
-
   }
 
 
@@ -217,25 +233,17 @@ class _TaskVideoPageState extends State<TaskVideoPage> {
 
     });
 
-
   }
 
+
+
+  ///
+  ///  当前 视频 播放完成   提交完成任务的接口
+  ///
   void completedVideo() {
 
-    NetworkUtils.requestTaskVideoComplete(widget.tid)
-        .then((res){
-
-         if(res.status=="9999"){
-           showToast(res.message);
-         }
-
-         eventBus.fire(new EventBusChange(res.message));
-
-         Navigator.pop(context);
 
 
-
-     });
   }
 
 

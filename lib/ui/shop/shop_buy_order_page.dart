@@ -82,7 +82,6 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
 
         title: Text("提交订单"),
@@ -92,14 +91,13 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
         children: <Widget>[
 
-          Expanded(child:  ListView(
+          Expanded(child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-
               // 添加地址
               buildAddAddressView(context),
               buildLine(),
-              cYM(setH(40)),
+
               // 商品信息
               buildShopInfoView(context),
             ],
@@ -123,65 +121,67 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
   buildAddAddressView(BuildContext context) {
 
 
-      if(_orderInfo==null){
+    if(_orderInfo==null){
 
-        return Container();
-      }
+      return Container();
+    }
 
 
-      if(_orderInfo.address.id!=null){
+    if(_orderInfo.address.id!=null){
 
-        UserUtils.saveAddress(_orderInfo.address);
+      UserUtils.saveAddress(_orderInfo.address);
 
-      }
+    }
 
-      if(UserUtils.getAddress()!=null){
+    if(UserUtils.getAddress()!=null){
 
-        _orderInfo.address = UserUtils.getAddress();
-      }
+      _orderInfo.address = UserUtils.getAddress();
+    }
 
-      // 如果id 等于null 表示之前没有添加过地址
-      return _orderInfo.address.id==null? Container(
-        color: Colors.white,
-        padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
-        height: setH(173),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+    // 如果id 等于null 表示之前没有添加过地址
+    return _orderInfo.address.id==null? Container(
+      color: Colors.white,
+      padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
+      height: setH(173),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
 
-            buildText("您还没有收货地址，赶快添加吧！",size: 40),
+          buildText("您还没有收货地址，赶快添加吧！",size: 40),
 
-            InkWell(
+          InkWell(
 
-              onTap: (){
+            onTap: (){
 
-                RRouter.push(context ,Routes.addAddressPage,{},transition:TransitionType.cupertino);
+              RRouter.push(context ,Routes.addAddressPage,{},transition:TransitionType.cupertino);
 
-              },
-              child:   Container(
-                width: setW(288),
-                height: setH(86),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(setW(43))),
-                    border: Border.all(color: Color(0xFF2CAAEE),width: setW(1))
-                ),
-                alignment: Alignment.center,
-                child: buildText("添加地址",size: 40,color: "#FF2CAAEE"),
+            },
+            child:   Container(
+              width: setW(288),
+              height: setH(86),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(setW(43))),
+                  border: Border.all(color: Color(0xFF2CAAEE),width: setW(1)),
+                  color: Colors.white
               ),
+              alignment: Alignment.center,
+              child: buildText("添加地址",size: 40,color: "#FF2CAAEE"),
+            ),
 
-            )
-          ],
-        ),
-      ):InkWell(
+          )
+        ],
+      ),
+    ):Container(
+      padding: EdgeInsets.fromLTRB(setW(58), 0, setW(18),  0),
+      height: setH(200),
+      color: Colors.white,
+      child: InkWell(
 
         onTap: (){
           RRouter.push(context ,Routes.addressListPage,{},transition:TransitionType.cupertino);
 
         },
-        child: Container( // 显示之前填写的地址信息
-          color: Colors.white,
-          padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
-          height: setH(180),
+        child:  new Container( // 显示之前填写的地址信息
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -190,6 +190,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
               cXM(setW(40)),
               Expanded(child:  Container(
                 alignment: Alignment.centerLeft,
+                color: Colors.white,
                 child:  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -211,7 +212,11 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
         ),
 
-      );
+      ),
+
+    );
+
+
 
   }
 
@@ -219,7 +224,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
     return  Container(
 
-
+      color: Colors.white,
       child: Image.asset(wrapAssets("shop/address_line.png"),width: double.infinity,height: setH(6),fit: BoxFit.fill,),
     );
 
@@ -439,6 +444,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
   ///
   void showPayFailDialog(BuildContext context) {
 
+
     showDialog(context: context,
         builder: (_)=>Material(
           color: Colors.transparent,
@@ -456,14 +462,12 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
                 cYM(setH(20)),
 
                 Image.asset(wrapAssets("pay/error.png"),width: double.infinity,height:setH(127),),
-                buildText("支付失败！"),
-                cYM(setH(15)),
-                buildText("您的积分不足，快去做任务赚取积分吧",size: 32,color: "#FF999999"),
-
+                cYM(setH(20)),
+                buildText("您的积分不足，快去做任务赚取积分吧",size: 36,color: "#FF999999"),
+                cYM(setH(20)),
                 Container(
                   alignment: Alignment.bottomCenter,
-                  margin: EdgeInsets.only(top: setH(40)),
-                  height: setH(150),
+                  height: setH(120),
                   child:   new  Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -604,7 +608,7 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
           showPaySuccessDialog(context);
         }else if(res.code==400){
 
-           showPayFailDialog(context);
+         showPayFailDialog(context);
 
         }else{
 

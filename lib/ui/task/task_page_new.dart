@@ -100,7 +100,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
                             cYM(ScreenUtil().setHeight(40)),
                             _taskPageInfo == null ? Container() :buildBottomShopView( _taskPageInfo.goodsList),
 
-                            cYM(ScreenUtil().setHeight(80)),
                           ],
                         ),
 
@@ -364,7 +363,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
             Expanded(child:
             new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -420,7 +419,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
                       color: "#FFFA994C"),
                 ),
 
-
                 // 任务的进度条
                 Container(
                   margin: EdgeInsets.only(left: setW(50)),
@@ -443,13 +441,12 @@ class _TaskNewPageState extends State<TaskNewPage> {
                           // 为了优化UI美观   当有未完成的任务使用listview实现布局  当都完成时使用Row 实现布局
                           // 目前的方案  待优化
                           child: bean.allTask != bean.completeTask ? ListView
-                              .builder(itemCount: bean.allTask,
+                              .builder(itemCount: bean.completeTask,
                               shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
                               physics: new NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                return buildPgBarView(context, setW((470 -
-                                    ((bean.allTask) * bean.completeTask)) /
-                                    bean.allTask));
+                                return buildPgBarView(context, setW((470 - ((bean.completeTask) * 5)) / bean.allTask));
                               }) : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -460,7 +457,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
                       ),
 
                       cXM(setW(20)),
-                      buildText("已完成" + bean.completeTask.toString() + " / " +
+                      buildText("已完成 " + bean.completeTask.toString() + " / " +
                           bean.allTask.toString(), size: 32, color: "#FF999999")
 
                     ],
@@ -493,7 +490,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
     return GridView.builder(
         itemCount: bean.length,
          shrinkWrap: true,
-        padding: EdgeInsets.fromLTRB(setW(27), 0, setW(27), 0),
+        padding: EdgeInsets.fromLTRB(setW(27), 0, setW(27), setH(40)),
         physics: new NeverScrollableScrollPhysics(),
         //SliverGridDelegateWithFixedCrossAxisCount 构建一个横轴固定数量Widget
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -628,7 +625,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
   buildPgBarView(BuildContext context,double width) {
 
       return Container(
-      //  padding: EdgeInsets.all(setW(6)),
+      // padding: EdgeInsets.all(setW(6)),
          margin: EdgeInsets.fromLTRB(setW(4), setW(3),0,  setW(3)),
          width: width,
          height: setH(15),
@@ -731,7 +728,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
           // Hero(tag: "avatar", transitionOnUserGestures: false, child: wrapImageUrl(goodsList.image, setW(240), setH(300))),
-           wrapImageUrl(goodsList.image,  setW(240),  setH(300)),
+             wrapImageUrl(goodsList.image,  setW(360),  setH(300)),
             Text(goodsList.title,style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
             Text(goodsList.points+"积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
             FlatButton(onPressed: (){

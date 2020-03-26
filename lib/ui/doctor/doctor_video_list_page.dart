@@ -18,10 +18,46 @@ class DoctorVideoListPage extends StatefulWidget {
 
 class _DoctorVideoListPageState extends State<DoctorVideoListPage> {
 
+
+  //页面加载状态，默认为加载中
+  LoadState _layoutState = LoadState.State_Loading;
+
   String _content;
 
   bool _screenShow = false; // 筛选布局是否显示
 
+
+  VideoPageInfo _videoPageInfo;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    initData();
+
+  }
+
+
+
+  void initData() {
+
+
+    NetUtils.requestVideosIndex()
+        .then((res){
+
+      if(res.code==200){
+
+        setState(() {
+          _videoPageInfo = VideoPageInfo.fromJson(res.info);
+          _layoutState = loadStateByCode(res.code);
+        });
+
+      }
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +71,7 @@ class _DoctorVideoListPageState extends State<DoctorVideoListPage> {
 
       body:  new   Column(
 
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
 
           buildSearchView(context),
@@ -43,12 +80,27 @@ class _DoctorVideoListPageState extends State<DoctorVideoListPage> {
               child:  Stack(
                   children: <Widget>[
 
-                      // 主体内容  列表
-                      ListView.builder(itemBuilder: (context,index){
+              // 主体内容  列表
+                LoadStateLayout(
+                state: _layoutState,
+                errorRetry: () {
+                  setState(() {
+                    _layoutState = LoadState.State_Loading;
+                  });
+                  this.initData();
+                },
+                  successWidget:  _videoPageInfo==null?Container():ListView.separated(itemBuilder:  (context,index){
 
-                          return getLiveItemView(context,null);
+                    return getLiveItemView(context,_videoPageInfo.videoList[index]);
 
-                      }),
+                  }, separatorBuilder:(context,index){
+
+                    return  Container(
+                      height: setH(1),
+                      color: Colors.black12,
+                    );
+                  }, itemCount: _videoPageInfo.videoList.length),
+                ),
 
                       //筛选布局
                       Visibility(visible: _screenShow??false,child: buildScreenView(context)),
@@ -81,7 +133,7 @@ class _DoctorVideoListPageState extends State<DoctorVideoListPage> {
 
       child: new Container(
         height: ScreenUtil().setHeight(250),
-        padding: EdgeInsets.fromLTRB( ScreenUtil().setWidth(27), 0, 0,  ScreenUtil().setHeight(40)),
+        padding: EdgeInsets.fromLTRB( ScreenUtil().setWidth(27), setH(27), 0,  ScreenUtil().setHeight(40)),
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -103,7 +155,7 @@ class _DoctorVideoListPageState extends State<DoctorVideoListPage> {
                           children: <Widget>[
                             Image.asset(wrapAssets("tab/tab_live_ic2.png"),width: ScreenUtil().setSp(32),height: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text("张素娟  李霞  将建成  张大大  王素娥",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                          //  Text("张素娟  李霞  将建成  张大大  王素娥",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
                           ],
                         ),
 
@@ -255,6 +307,7 @@ class _DoctorVideoListPageState extends State<DoctorVideoListPage> {
     );
 
   }
+
 
 
 }

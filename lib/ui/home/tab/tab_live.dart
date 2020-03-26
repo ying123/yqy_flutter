@@ -547,6 +547,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
             break;
           case "视频回放":
             RRouter.push(context, Routes.liveReviewPage,{"id":list.id});
+          //  RRouter.push(context, Routes.liveIngPage,{"id":list.id});
             break;
 
         }
