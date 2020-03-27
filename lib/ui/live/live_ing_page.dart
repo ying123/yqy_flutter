@@ -65,7 +65,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
   ///直播专家列表==================================
   TabMeetingListInfoInfo _meetingListInfoInfo; // 直播专家列表
-   ScrollController _scrollC = ScrollController(); // 滚动列表控制器
+   ScrollController _scrollC = new ScrollController(); // 滚动列表控制器
   var _controllerDoctor = IndexedScrollController();
   Timer timer; //定时器 轮询
   ///=============================================
@@ -133,7 +133,8 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
     player = null;
     changeSubscription.cancel();
     super.dispose();
-
+    //为了避免内存泄露，需要调用_controller.dispose
+    _scrollC.dispose();
     WidgetsBinding.instance.removeObserver(this);
 
 
@@ -565,7 +566,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
         //评论
         getRowTextView("全部评论"),
         buildCommentView(context),
-
 
       ],
 
@@ -1019,6 +1019,21 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
   buildLiveTab(BuildContext context) {
 
 
+    return Container(
+        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
+        height: ScreenUtil().setHeight(340),
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            controller: _scrollC,
+            itemBuilder: (context,index){
+              return tabItemView(index);
+
+            })
+
+    );
+
+
+    /*
       return Container(
           margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
           height: ScreenUtil().setHeight(340),
@@ -1030,7 +1045,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
               })
 
-      );
+      );*/
 
   }
 
@@ -1292,6 +1307,8 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
         setState(() {
           _meetingListInfoInfo =    TabMeetingListInfoInfo.fromJson(res.info);
+          _scrollC.jumpTo(100);
+
 
         });
 
