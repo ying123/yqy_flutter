@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_umplus/flutter_umplus.dart';
 import 'package:oktoast/oktoast.dart';
@@ -98,7 +101,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
               return buildItemView(index);
             },
           ),
-          buildBtnView()
+          buildBtnView(context)
 
 
         ],
@@ -241,12 +244,12 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
 
   ///
   ///  提交按钮
-  Widget  buildBtnView() {
+  Widget  buildBtnView(BuildContext context) {
 
     return FlatButton(
         onPressed: (){
 
-          submissionData();
+          submissionData(context);
 
         },
         child: Container(
@@ -269,7 +272,7 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
   ///
   ///  提交数据
   ///
-  Future submissionData() async {
+  Future submissionData(BuildContext context) async {
 
     bool result = seleValues.any((element)=>(element==-1)); // 判断当前每道题是否都已经选择完成
 
@@ -279,36 +282,42 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
         return;
     }
 
-
-
+/*
     List<answer>  answerList = new List();
 
     int i = 0;
     seleValues.forEach((element){//遍历每个元素  此时不可add或remove  否则报错 但可以修改元素值，
         answerList.add(new answer(id:seleValues2[i],value: element.toString() ));
         i++;
+    });*/
+
+
+   Map<String,String>  answerMap = new Map();
+
+    int i = 0;
+    seleValues.forEach((element){//遍历每个元素  此时不可add或remove  否则报错 但可以修改元素值，
+      answerMap[seleValues2[i].toString()] = (element+1).toString();
+      i++;
     });
 
-    UploadQuestionBean questionBean = new UploadQuestionBean(tid: widget.tid,token: UserUtils.getUserInfo().token,answe: answerList);
+
+ //   UploadQuestionBean questionBean = new UploadQuestionBean(tid: widget.tid,token: UserUtils.getToken(),answe: answerMap);
+
+    NetUtils.requestPointsCompleteQuestionTask({"tid": widget.tid,"answer":answerMap})
+        .then((res){
 
 
-    Dio _dio = Dio();
+      if(res.code==200){
 
-    Response response =  await _dio.post(APPConfig.Server + "task/complete_question_task",data: questionBean.toJson());
+      //  eventBus.fire(new EventBusChange(res.code));
 
-    BaseResult fromJsonMap = BaseResult.fromJson(response.data);
-
-    showToast(fromJsonMap.message);
-
-    if(fromJsonMap.status=="9999"){
-
-      eventBus.fire(new EventBusChange(fromJsonMap.status));
-
-      Navigator.pop(context);
+        showReceiveDialogView(context,res.info["points"],res.info["msg"]);
 
 
+      }
 
-    }
+
+    });
 
 
 
@@ -316,6 +325,59 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
 
   }
 
+  ///
+  ///  积分领取成功弹窗
+  ///
+  void showReceiveDialogView(BuildContext context,var nums,String msg) {
 
+    showDialog(context: context,
+
+        builder: (_)=>Material(
+          color: Colors.transparent,
+          child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.fromLTRB(setW(40), setW(650), setW(40), setW(900)),
+              child: Stack(
+
+                children: <Widget>[
+                  Image.asset(wrapAssets("task/bg_finish.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
+                  Positioned(left: setW(200),top: setH(260),child: Text("您已获得 "+nums.toString()+" 积分",style: TextStyle(color: Colors.white,fontSize: setSP(75),fontWeight: FontWeight.w900,fontStyle: FontStyle.italic),)),
+                  Positioned(left: setW(175),bottom: setH(20),child: Container(
+                    width: setW(600),
+                    margin: EdgeInsets.fromLTRB(setW(20),0, 0, setW(20)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+
+                        Expanded(child:  Text(msg,style: TextStyle(color: Colors.white,fontSize: setSP(40))))
+
+                      ],
+
+                    ),
+
+                  ))
+
+
+                ],
+
+              )
+
+          ),
+
+
+        )
+    );
+
+    Future.delayed(Duration(seconds: 2)).then((_){
+
+      Navigator.pop(context);
+      Navigator.pop(context);
+
+    });
+
+
+
+  }
 
 }

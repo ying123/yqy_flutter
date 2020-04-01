@@ -38,7 +38,6 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
 
 
-
   @override
   Widget build(BuildContext context) {
     //设置适配尺寸 (填入设计稿中设备的屏幕尺寸) 假如设计稿是按iPhone6的尺寸设计的(iPhone6 750*1334)
@@ -51,7 +50,6 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
       ),
 
       body:Column(
-
         children: <Widget>[
           Expanded(child:   _shopDetailsInfo==null?Container():  ListView(
             children: <Widget>[
@@ -70,7 +68,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                     cYM(setH(46)),
                     buildText("剩余库存："+_shopDetailsInfo.nums,size: 40,color: "#FF999999"),
                     cYM(setH(46)),
-                    buildText("截止时间："+_shopDetailsInfo.closeTime,size: 40,color: "#FF999999"),
+                    buildText("截止时间："+_shopDetailsInfo.closeTime.toString(),size: 40,color: "#FF999999"),
                     cYM(setH(25)),
 
                   ],
@@ -82,7 +80,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
           )),
 
         new  Container(
-            color: Colors.white10,
+            color: Colors.white,
             height: setH(161),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,21 +140,20 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
         ],
 
 
-
       )
-
-
 
     );
   }
 
 
+
+  ///
+  ///  商品图片
+  ///
   buildImageView(BuildContext context) {
 
 
-    return wrapImageUrl(_shopDetailsInfo.image,double.infinity, ScreenUtil().setWidth(600));
-
-   // return   Hero(tag: "avatar", transitionOnUserGestures: true, child:  Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(240),height: ScreenUtil().setWidth(600),fit: BoxFit.fill,),);
+    return wrapImageUrl(_shopDetailsInfo.image,double.infinity, ScreenUtil().setHeight(800));
 
   }
 

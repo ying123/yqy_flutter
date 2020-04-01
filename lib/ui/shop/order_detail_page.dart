@@ -88,12 +88,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         children: <Widget>[
 
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
 
-                  buildText("订单已发货",size: 40,color: "#FFFFFFFF"),
+                  buildText("商品 "+getStatusString(_detailInfo.orderStatus),size: 40,color: "#FFFFFFFF"),
                   cYM(setH(10)),
-                  buildText("请注意查收您的包裹",size: 32,color: "#FFFFFFFF"),
+                  buildText("",size: 32,color: "#FFFFFFFF"),
 
 
                 ],
@@ -132,7 +133,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
 
-                buildText("2020-01-19  09:30:50",size: 34,color: "#FF999999"),
+                buildText("",size: 34,color: "#FF999999"),
                 buildText(getStatusString(bean.orderStatus),size: 34,color: "#FF999999"),
 
               ],
@@ -308,7 +309,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               children: <Widget>[
 
                 buildText("订单编号",size: 34,color: "#FF999999"),
-                buildText("12345678922",size: 34,color: "#FF999999"),
+                buildText("",size: 34,color: "#FF999999"),
 
               ],
             ),
@@ -317,7 +318,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             children: <Widget>[
 
               buildText("下单时间",size: 34,color: "#FF999999"),
-              buildText("2019-12-31  09:30:50",size: 34,color: "#FF999999"),
+              buildText("",size: 34,color: "#FF999999"),
 
             ],
           ),
@@ -326,7 +327,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             children: <Widget>[
 
               buildText("发货时间",size: 34,color: "#FF999999"),
-              buildText("2020-12-31  18:30:50",size: 34,color: "#FF999999"),
+              buildText("",size: 34,color: "#FF999999"),
 
             ],
           )

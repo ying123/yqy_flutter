@@ -1,14 +1,14 @@
-class HomeIndexEntity {
+class TabHomeEntity {
 	String msg;
 	int code;
-	HomeIndexInfo info;
+	TabHomeInfo info;
 
-	HomeIndexEntity({this.msg, this.code, this.info});
+	TabHomeEntity({this.msg, this.code, this.info});
 
-	HomeIndexEntity.fromJson(Map<String, dynamic> json) {
+	TabHomeEntity.fromJson(Map<String, dynamic> json) {
 		msg = json['msg'];
 		code = json['code'];
-		info = json['info'] != null ? new HomeIndexInfo.fromJson(json['info']) : null;
+		info = json['info'] != null ? new TabHomeInfo.fromJson(json['info']) : null;
 	}
 
 	Map<String, dynamic> toJson() {
@@ -22,26 +22,26 @@ class HomeIndexEntity {
 	}
 }
 
-class HomeIndexInfo {
-	List<HomeIndexInfoNewsList> newsList;
-	List<HomeIndexInfoBannerList> bannerList;
-	List<HomeIndexInfoHotVideo> hotVideo;
-	List<HomeIndexInfoRecomDoctor> recomDoctor;
+class TabHomeInfo {
+	List<TabHomeInfoNewsList> newsList;
+	List<TabHomeInfoBannerList> bannerList;
+	List<TabHomeInfoHotVideo> hotVideo;
+	List<TabHomeInfoRecomDoctor> recomDoctor;
 
-	HomeIndexInfo({this.newsList, this.bannerList, this.hotVideo, this.recomDoctor});
+	TabHomeInfo({this.newsList, this.bannerList, this.hotVideo, this.recomDoctor});
 
-	HomeIndexInfo.fromJson(Map<String, dynamic> json) {
+	TabHomeInfo.fromJson(Map<String, dynamic> json) {
 		if (json['news_list'] != null) {
-			newsList = new List<HomeIndexInfoNewsList>();(json['news_list'] as List).forEach((v) { newsList.add(new HomeIndexInfoNewsList.fromJson(v)); });
+			newsList = new List<TabHomeInfoNewsList>();(json['news_list'] as List).forEach((v) { newsList.add(new TabHomeInfoNewsList.fromJson(v)); });
 		}
 		if (json['banner_list'] != null) {
-			bannerList = new List<HomeIndexInfoBannerList>();(json['banner_list'] as List).forEach((v) { bannerList.add(new HomeIndexInfoBannerList.fromJson(v)); });
+			bannerList = new List<TabHomeInfoBannerList>();(json['banner_list'] as List).forEach((v) { bannerList.add(new TabHomeInfoBannerList.fromJson(v)); });
 		}
 		if (json['hot_video'] != null) {
-			hotVideo = new List<HomeIndexInfoHotVideo>();(json['hot_video'] as List).forEach((v) { hotVideo.add(new HomeIndexInfoHotVideo.fromJson(v)); });
+			hotVideo = new List<TabHomeInfoHotVideo>();(json['hot_video'] as List).forEach((v) { hotVideo.add(new TabHomeInfoHotVideo.fromJson(v)); });
 		}
 		if (json['recom_doctor'] != null) {
-			recomDoctor = new List<HomeIndexInfoRecomDoctor>();(json['recom_doctor'] as List).forEach((v) { recomDoctor.add(new HomeIndexInfoRecomDoctor.fromJson(v)); });
+			recomDoctor = new List<TabHomeInfoRecomDoctor>();(json['recom_doctor'] as List).forEach((v) { recomDoctor.add(new TabHomeInfoRecomDoctor.fromJson(v)); });
 		}
 	}
 
@@ -63,16 +63,16 @@ class HomeIndexInfo {
 	}
 }
 
-class HomeIndexInfoNewsList {
+class TabHomeInfoNewsList {
 	String image;
 	String createTime;
 	int pv;
 	int id;
 	String title;
 
-	HomeIndexInfoNewsList({this.image, this.createTime, this.pv, this.id, this.title});
+	TabHomeInfoNewsList({this.image, this.createTime, this.pv, this.id, this.title});
 
-	HomeIndexInfoNewsList.fromJson(Map<String, dynamic> json) {
+	TabHomeInfoNewsList.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
 		createTime = json['create_time'];
 		pv = json['pv'];
@@ -91,7 +91,7 @@ class HomeIndexInfoNewsList {
 	}
 }
 
-class HomeIndexInfoBannerList {
+class TabHomeInfoBannerList {
 	String img;
 	String route;
 	int artId;
@@ -102,9 +102,9 @@ class HomeIndexInfoBannerList {
 	String url;
 	String pcRoute;
 
-	HomeIndexInfoBannerList({this.img, this.route, this.artId, this.name, this.advType, this.mRoute, this.id, this.url, this.pcRoute});
+	TabHomeInfoBannerList({this.img, this.route, this.artId, this.name, this.advType, this.mRoute, this.id, this.url, this.pcRoute});
 
-	HomeIndexInfoBannerList.fromJson(Map<String, dynamic> json) {
+	TabHomeInfoBannerList.fromJson(Map<String, dynamic> json) {
 		img = json['img'];
 		route = json['route'];
 		artId = json['art_id'];
@@ -131,16 +131,16 @@ class HomeIndexInfoBannerList {
 	}
 }
 
-class HomeIndexInfoHotVideo {
+class TabHomeInfoHotVideo {
 	String image;
 	String createTime;
 	int pv;
 	int id;
 	String title;
 
-	HomeIndexInfoHotVideo({this.image, this.createTime, this.pv, this.id, this.title});
+	TabHomeInfoHotVideo({this.image, this.createTime, this.pv, this.id, this.title});
 
-	HomeIndexInfoHotVideo.fromJson(Map<String, dynamic> json) {
+	TabHomeInfoHotVideo.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
 		createTime = json['create_time'];
 		pv = json['pv'];
@@ -159,25 +159,25 @@ class HomeIndexInfoHotVideo {
 	}
 }
 
-class HomeIndexInfoRecomDoctor {
+class TabHomeInfoRecomDoctor {
 	String realName;
 	int jId;
 	int tIds;
 	String recomImage;
 	int id;
-	String job;
-	HomeIndexInfoRecomDoctorDeparts departs;
+	TabHomeInfoRecomDoctorJob job;
+	TabHomeInfoRecomDoctorDeparts departs;
 
-	HomeIndexInfoRecomDoctor({this.realName, this.jId, this.tIds, this.recomImage, this.id, this.job, this.departs});
+	TabHomeInfoRecomDoctor({this.realName, this.jId, this.tIds, this.recomImage, this.id, this.job, this.departs});
 
-	HomeIndexInfoRecomDoctor.fromJson(Map<String, dynamic> json) {
+	TabHomeInfoRecomDoctor.fromJson(Map<String, dynamic> json) {
 		realName = json['realName'];
 		jId = json['j_id'];
 		tIds = json['t_ids'];
 		recomImage = json['recom_image'];
 		id = json['id'];
-		job = json['job'];
-		departs = json['departs'] != null ? new HomeIndexInfoRecomDoctorDeparts.fromJson(json['departs']) : null;
+		job = json['job'] != null ?  json['job'].runtimeType == String?null:new TabHomeInfoRecomDoctorJob.fromJson(json['job']) : null;
+		departs = json['departs'] != null ? new TabHomeInfoRecomDoctorDeparts.fromJson(json['departs']) : null;
 	}
 
 	Map<String, dynamic> toJson() {
@@ -188,7 +188,7 @@ class HomeIndexInfoRecomDoctor {
 		data['recom_image'] = this.recomImage;
 		data['id'] = this.id;
 		if (this.job != null) {
-      data['job'] = this.job;
+      data['job'] = this.job.toJson();
     }
 		if (this.departs != null) {
       data['departs'] = this.departs.toJson();
@@ -197,28 +197,67 @@ class HomeIndexInfoRecomDoctor {
 	}
 }
 
-class HomeIndexInfoRecomDoctorJob {
+class TabHomeInfoRecomDoctorJob {
+	int fid;
+	dynamic image;
+	String createTime;
+	int dataFlag;
+	int sort;
+	int cityId;
+	int type;
+	int provinceId;
+	int isShow;
+	int areaId;
+	String createTimeX;
 	String name;
+	int id;
 
-	HomeIndexInfoRecomDoctorJob({this.name});
+	TabHomeInfoRecomDoctorJob({this.fid, this.image, this.createTime, this.dataFlag, this.sort, this.cityId, this.type, this.provinceId, this.isShow, this.areaId, this.createTimeX, this.name, this.id});
 
-	HomeIndexInfoRecomDoctorJob.fromJson(Map<String, dynamic> json) {
-		name = json['name'];
+	TabHomeInfoRecomDoctorJob.fromJson(Map<String, dynamic> json) {
+
+
+
+		fid = json['fid'] != null ?json['fid'] : null;
+		image = json['image'] != null ?json['image'] : null;
+		createTime = json['create_time'] != null ?json['create_time'] : null;
+		dataFlag = json['dataFlag'] != null ?json['dataFlag'] : null;
+		sort = json['sort'] != null ?json['sort'] : null;
+		cityId = json['cityId'] != null ?json['cityId'] : null;
+		type = json['type'] != null ?json['type'] : null;
+		provinceId = json['provinceId'] != null ?json['provinceId'] : null;
+		isShow = json['isShow'] != null ?json['isShow'] : null;
+		areaId = json['areaId'] != null ?json['areaId'] : null;
+		createTimeX = json['createTime'] != null ?json['createTime'] : null;
+		name = json['name'] != null ?json['name'] : null;
+		id = json['id'] != null ?json['id'] : null;
 	}
 
 	Map<String, dynamic> toJson() {
 		final Map<String, dynamic> data = new Map<String, dynamic>();
+		data['fid'] = this.fid;
+		data['image'] = this.image;
+		data['create_time'] = this.createTime;
+		data['dataFlag'] = this.dataFlag;
+		data['sort'] = this.sort;
+		data['cityId'] = this.cityId;
+		data['type'] = this.type;
+		data['provinceId'] = this.provinceId;
+		data['isShow'] = this.isShow;
+		data['areaId'] = this.areaId;
+		data['createTime'] = this.createTimeX;
 		data['name'] = this.name;
+		data['id'] = this.id;
 		return data;
 	}
 }
 
-class HomeIndexInfoRecomDoctorDeparts {
+class TabHomeInfoRecomDoctorDeparts {
 	String name;
 
-	HomeIndexInfoRecomDoctorDeparts({this.name});
+	TabHomeInfoRecomDoctorDeparts({this.name});
 
-	HomeIndexInfoRecomDoctorDeparts.fromJson(Map<String, dynamic> json) {
+	TabHomeInfoRecomDoctorDeparts.fromJson(Map<String, dynamic> json) {
 		name = json['name'];
 	}
 

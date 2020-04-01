@@ -50,7 +50,6 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
     _currentPos = player.currentPos;
     _currentPosSubs = player.onCurrentPosUpdate.listen((v) {
 
-
         if(videoNode != v.inSeconds){
 
           videoNode = v.inSeconds;
@@ -58,9 +57,9 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
            uploadData();
 
         }
-
-
     });
+
+
 
   }
 
@@ -69,12 +68,14 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
   void dispose() {
     // TODO: implement dispose
     FlutterUmplus.endPageView(runtimeType.toString());
-    super.dispose();
     player.removeListener(_fijkValueListener);
     player.release();
     player=null;
     _currentPosSubs?.cancel();
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+
+
   }
 
   ///
@@ -85,9 +86,9 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
     FijkValue value = player.value;
 
     // 准备完毕  跳转到之前的播放进度
-   /* if (value.state == FijkState.prepared) {
-         player.seekTo(_taskVideoInfo==null?0:int.parse(_taskVideoInfo.playTime)*1000);
-    }*/
+    if (value.state == FijkState.prepared) {
+          player.seekTo(_taskVideoInfo==null?0:_taskVideoInfo.playTime*1000);
+    }
 
     // 播放完成
     if(value.state == FijkState.completed){
@@ -128,6 +129,7 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
 
       appBar: AppBar(
@@ -152,22 +154,6 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
               padding: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
               alignment: Alignment.centerRight,
               width: double.infinity,
-            /*  child: InkWell(
-                onTap: (){
-                  subData();
-                },
-                child:  Container(
-                  alignment: Alignment.center,
-                  width: ScreenUtil().setWidth(200),
-                  height: ScreenUtil().setHeight(90),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(12))),
-                  ),
-                  child: Text("答题",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(40)),),
-
-                ),
-              ),*/
             ),
             Container(
               padding: EdgeInsets.only(left: ScreenUtil().setWidth(40)),
@@ -193,20 +179,22 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
 
       return   Container(
         color: Colors.black,
-        height: 220,
+        height: setH(450),
         width: double.infinity,
         child:FijkView(
           color: Colors.black,
           width: double.infinity,
           height: double.infinity,
           player: player,
-         /* panelBuilder: (FijkPlayer player, BuildContext context, Size viewSize, Rect texturePos) {
-            return CustomFijkPanel(
-                player: player,
-                buildContext: context,
-                viewSize: viewSize,
-                texturePos: texturePos);
-          },*/
+          panelBuilder: (FijkPlayer player,
+          // 重置UI  当前是没有进度条的视频框
+          FijkData data, BuildContext context, Size viewSize, Rect texturePos) {
+               return CustomFijkPanel(
+                    player: player,
+                    buildContext: context,
+                     viewSize: viewSize,
+                     texturePos: texturePos);
+          },
         ),
       );
 
@@ -226,10 +214,8 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
   ///
   void uploadData() async{
 
-
-    NetworkUtils.requestTaskVideoNode(widget.tid,videoNode.toString())
+    NetUtils.requestPointsVideoNode(widget.tid,videoNode.toString())
         .then((res){
-
 
     });
 
@@ -242,6 +228,70 @@ class _TaskVideoPageState extends State<TaskVideoPage>   with WidgetsBindingObse
   ///  当前 视频 播放完成   提交完成任务的接口
   ///
   void completedVideo() {
+
+    NetUtils.requestPointsCompleteVideoTask(widget.tid)
+        .then((res){
+
+
+          if(res.code==200){
+
+            showReceiveDialogView(res.info["points"],res.info["msg"]);
+
+          }
+
+    });
+
+  }
+  ///
+  ///  积分领取成功弹窗
+  ///
+  void showReceiveDialogView(var nums,String msg) {
+
+    showDialog(context: context,
+
+        builder: (_)=>Material(
+          color: Colors.transparent,
+          child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.fromLTRB(setW(40), setW(650), setW(40), setW(900)),
+              child: Stack(
+
+                children: <Widget>[
+                  Image.asset(wrapAssets("task/bg_finish.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
+                  Positioned(left: setW(200),top: setH(260),child: Text("您已获得 "+nums.toString()+" 积分",style: TextStyle(color: Colors.white,fontSize: setSP(75),fontWeight: FontWeight.w900,fontStyle: FontStyle.italic),)),
+                  Positioned(left: setW(175),bottom: setH(20),child: Container(
+                    width: setW(600),
+                    margin: EdgeInsets.fromLTRB(setW(20),0, 0, setW(20)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+
+                        Expanded(child:  Text(msg,style: TextStyle(color: Colors.white,fontSize: setSP(40))))
+
+                      ],
+
+                    ),
+
+                  ))
+
+
+                ],
+
+              )
+
+          ),
+
+
+        )
+    );
+
+    Future.delayed(Duration(seconds: 2)).then((_){
+
+      Navigator.pop(context);
+      Navigator.pop(context);
+
+    });
 
 
 

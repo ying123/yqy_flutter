@@ -104,24 +104,25 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
             isLiked: isCollect,
             likeBuilder: (bool isLike){
 
-              return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
-              Icon(Icons.star,color:Colors.amber,size: 30,);
+              return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png")):
+              Image.asset(wrapAssets("icon_collect.png"));
             },
             onTap: (bool isLiked)
             {
-              return onLikeButtonTap(AppRequest.Collect_News,isLiked,_detailsEntity.id);
+              return onLikeButtonTap(AppRequest.Collect_ZX,isLiked,_detailsEntity.id.toString());
             },
 
           ),
+
           cXM(10),
-          new GestureDetector(
+       /*   new GestureDetector(
 
             child: Icon(Icons.share,color: Colors.black45,size: 26,),
 
             onTap: (){
               showToast("点击分享");
             },
-          ),
+          ),*/
           cXM(10),
 
         ],

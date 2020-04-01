@@ -16,6 +16,28 @@ class NetUtils {
 
 
   ///
+  ///   检查版本更新（APP） android
+  ///
+  static Future<BaseResult> requestAppVersionAndroid() async {
+    String url = APPConfig.Server + "index/version";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+
+  ///
+  ///   检查版本更新（APP） iOS
+  ///
+  static Future<BaseResult> requestAppVersionIos() async {
+    String url = APPConfig.Server + "index/ios_version";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    return result;
+  }
+
+
+
+  ///
   ///   获取验证码接口
   ///
   static Future<BaseResult> requestSmsCode(String phone) async {
@@ -685,5 +707,116 @@ class NetUtils {
   }
 
 
+  ///
+  ///   更新视频进度
+  ///  tid	是	string	子任务ID
+  ///  play_time	否	string	当前播放进度，单位秒
+  ///
+  ///
+  static Future<BaseResult> requestPointsVideoNode(String tid,String play_time) async {
+    String url = APPConfig.Server + "points/video_node";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"tid":tid,"play_time":play_time});
+    return result;
+  }
+
+
+
+  ///
+  ///   完成视频任务
+  ///   简要描述：
+  ///   完成视频任务
+  ///   当前版本仅统计观看视频，不设置随视频答题题目
+  ///
+  ///
+  static Future<BaseResult> requestPointsCompleteVideoTask(String tid) async {
+    String url = APPConfig.Server + "points/complete_video_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"tid":tid});
+    return result;
+  }
+
+
+
+  ///
+  ///   完成问卷调查任务
+  ///
+  ///   tid	是	string	子任务ID
+  ///   answer	否	array	用户提交答案
+  ///
+  ///
+  static Future<BaseResult> requestPointsCompleteQuestionTask(Map<String, dynamic>  map) async {
+    String url = APPConfig.Server + "points/complete_question_task";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
+    return result;
+  }
+
+
+  ///
+  ///  首页搜索
+  ///
+  static Future<BaseResult> requestSearchIndex(String kwd) async {
+    String url = APPConfig.Server + "search/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"kwd":kwd});
+    return result;
+  }
+
+
+  ///
+  ///  首页 医学专题
+  ///
+  static Future<BaseResult> requestSpecialIndex() async {
+    String url = APPConfig.Server + "special/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+  ///
+  ///  专题详情
+  ///
+  static Future<BaseResult> requestSpecialInfo(String id) async {
+    String url = APPConfig.Server + "special/info";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+
+  ///
+  ///    专题内容页 视频或文章
+  ///
+  static Future<BaseResult> requestSpecialViews(String id) async {
+    String url = APPConfig.Server + "special/views";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+
+  ///
+  ///    提交用户反馈
+  ///
+  static Future<BaseResult> requestFeedbackAdd(String content,String phone) async {
+    String url = APPConfig.Server + "feedback/add";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"content":content,"phone":phone});
+    return result;
+  }
+
+
+  ///
+  ///   代表用户 - 我的企业
+  ///
+  static Future<BaseResult> requestMyCompany() async {
+    String url = APPConfig.Server + "users/my_company";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
+
+
+  ///
+  ///  首页- 专家
+  ///
+  static Future<BaseResult> requestDoctorIndex() async {
+    String url = APPConfig.Server + "doctor/index";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+  }
 
 }

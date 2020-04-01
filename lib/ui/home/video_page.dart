@@ -62,7 +62,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
           cYM(ScreenUtil().setHeight(20)),
           buildAdView(context),
           cYM(ScreenUtil().setHeight(20)),
-          buildScreenView(context),
+      //    buildScreenView(context),
           Expanded(child: buildListView(context))
 
         ]
@@ -72,7 +72,6 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
     );
   }
-
 
 
   Widget buildBannerView(BuildContext context) {
@@ -108,9 +107,10 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
   Widget buildScreenView(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 0, ScreenUtil().setWidth(29), 0),
-    //  height: ScreenUtil().setHeight(40),
+      padding:EdgeInsets.fromLTRB(setW(29), 0, setW(29), 0),
+       height: ScreenUtil().setHeight(120),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Expanded(child:  TabBar(

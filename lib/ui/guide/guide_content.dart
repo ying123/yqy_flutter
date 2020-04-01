@@ -117,19 +117,19 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
 
           LikeButton(
             isLiked: isCollect,
-            likeBuilder: (bool isLike) {
-              return !isLike ? Icon(
-                Icons.star_border, color: Colors.black45, size: 30,) :
-              Icon(Icons.star, color: Colors.amber, size: 30,);
+            likeBuilder: (bool isLike){
+
+              return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png")):
+              Image.asset(wrapAssets("icon_collect.png"));
             },
-            onTap: (bool isLiked) {
-              return onLikeButtonTap(
-                  AppRequest.Collect_News, isLiked, _detailsEntity.id);
+            onTap: (bool isLiked)
+            {
+              return onLikeButtonTap(AppRequest.Collect_News,isLiked,_detailsEntity.id.toString());
             },
 
           ),
           cXM(10),
-          new GestureDetector(
+        /*  new GestureDetector(
 
             child: Image.asset(wrapAssets("share.png"),width: setW(75),height: setW(75),),
 
@@ -137,7 +137,7 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
 
               showShareView(context);
             },
-          ),
+          ),*/
           cXM(10),
 
         ],

@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_special_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 
 class TabSpecialPage extends StatefulWidget {
@@ -10,25 +14,36 @@ class TabSpecialPage extends StatefulWidget {
 }
 
 class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAliveClientMixin {
+
+
+  TabSpecialInfo _tabSpecialInfo;
+
+  List<String> bgImageList =  ["bg_special.png","bg_special2.png","bg_special3.png","bg_special4.png"];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    initData();
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
 
       backgroundColor: Colors.white,
-      body: ListView(
-        
-        
-        children: <Widget>[
-          
-          buildBanner(context),
-          
-          buildItemView(context),
-          buildItemView(context),
-          buildItemView(context),
-          buildItemView(context)
+      body: _tabSpecialInfo==null?Container():ListView.builder(
+        shrinkWrap: true,
+        itemCount: _tabSpecialInfo.typeList.length+1,
+        itemBuilder: (context,index){
 
-        ],
+         return  index==0? buildBanner(context): _tabSpecialInfo.typeList[index-1].lists.length==0?Container():buildItemView(_tabSpecialInfo.typeList[index-1]);
+
+        },
       ),
 
     );
@@ -46,7 +61,7 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
     
   }
 
-  buildItemView(BuildContext context) {
+  buildItemView(TabSpecialInfoTypeList typeList) {
 
     return  Padding(
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(26), ScreenUtil().setHeight(50), ScreenUtil().setWidth(26),  ScreenUtil().setHeight(30)),
@@ -54,19 +69,22 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
 
         children: <Widget>[
           Container(
-            color: Colors.red,
             height: ScreenUtil().setHeight(95),
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+
+                Image.asset(wrapAssets(bgImageList[Random().nextInt(bgImageList.length)]),width: double.infinity,height:setH(95),fit: BoxFit.fill,),
+                Text(typeList.title,style: TextStyle(fontSize: setSP(50),color: Colors.white,fontWeight: FontWeight.bold),)
+
+              ],
+
+            ),
           ),
 
           Column(
 
-            children: <Widget>[
-
-              getLiveItemView(),
-              getLiveItemView(),
-              getLiveItemView(),
-
-            ],
+            children:  typeList.lists.map((e)=>getLiveItemView(e)).toList()
           )
 
 
@@ -78,33 +96,34 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
 
   }
 
-    Widget getLiveItemView(){
+    Widget getLiveItemView(TabSpecialInfoTypeListList bean){
 
       return  GestureDetector(
 
         onTap: (){
-          RRouter.push(context ,Routes.specialDetailPage,{});
+          RRouter.push(context ,Routes.specialDetailPage,{"id":bean.id});
         },
 
         child: new Container(
+          margin: EdgeInsets.only(top: setH(20)),
           height: ScreenUtil().setHeight(250),
+          width: double.infinity,
           color: Colors.white,
           child: Row(
             children: <Widget>[
-              Image.asset(wrapAssets("tab/tab_live_img.png"),fit: BoxFit.fill,height: ScreenUtil().setHeight(215),width:ScreenUtil().setWidth(288)),
-              cXM(ScreenUtil().setHeight(20)),
+              wrapImageUrl(bean.image, ScreenUtil().setWidth(500),  ScreenUtil().setHeight(250)),
+              cXM(ScreenUtil().setHeight(40)),
               new Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        child: Text("北京妇科专家协会",style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(40)),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        child: Text(bean.title,style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(40)),maxLines: 2,overflow: TextOverflow.ellipsis,),
 
                       ),
                       Container(
-                        width: ScreenUtil().setWidth(700),
-                        child:   Text("北京妇科专家学会由98名北京"*2,style: TextStyle(color: Color(0xFF7E7E7E),fontSize:  ScreenUtil().setSp(32)),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        child:   Text(bean.descs==null?"":bean.descs.toString(),style: TextStyle(color: Color(0xFF7E7E7E),fontSize:  ScreenUtil().setSp(32)),maxLines: 2,overflow: TextOverflow.ellipsis,),
                       )
 
                     ],
@@ -129,4 +148,25 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+  void initData() {
+
+    NetUtils.requestSpecialIndex()
+        .then((res){
+
+       if(res.code==200){
+
+
+         setState(() {
+           _tabSpecialInfo =    TabSpecialInfo.fromJson(res.info);
+         });
+
+
+       }
+
+
+
+    });
+
+  }
 }

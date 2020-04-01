@@ -98,7 +98,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
         player.reset().then((_){
           player.setDataSource(event.url, autoPlay: true);
         });
-
       });
     });
   }
@@ -144,7 +143,13 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
 
       if(ress[0].code==200){
         _liveDetailsInfo = LiveReviewInfoInfo.fromJson(ress[0].info);
+
+
+        if(_liveDetailsInfo.videoList.length>0){
           player.setDataSource(_liveDetailsInfo.videoList[0].playUrl??"", autoPlay: true);
+
+          }
+
       }
 
       if(ress[1].code==200){
@@ -174,8 +179,12 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
       });
 
     }).then((_){
-      currentHCID = _liveDetailsInfo.meetList[0].id.toString();
-      getProgrammeListData();
+      if(_liveDetailsInfo.meetList!=null){
+        currentHCID = _liveDetailsInfo.meetList[0].id.toString();
+        getProgrammeListData();
+      }
+
+
 
     });
 
@@ -372,7 +381,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
         children: <Widget>[
 
           new Container(
-            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, ScreenUtil().setWidth(30),ScreenUtil().setWidth(30)),
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0,ScreenUtil().setWidth(30),ScreenUtil().setWidth(0)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -383,7 +392,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
                       fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.start,),
                   width: ScreenUtil().setWidth(1000),
                 ),
-                cYM(ScreenUtil().setHeight(10)),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -433,7 +441,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
                     data: _liveDetailsInfo.content,
 
                   ),
-
 
                   // 文字显示
                   /*  child: new Row(
@@ -518,8 +525,8 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   buildCruxView(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setWidth(40), ScreenUtil().setWidth(29),  ScreenUtil().setWidth(40)),
-      height: ScreenUtil().setHeight(140),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),setH(29), ScreenUtil().setWidth(29), setH(29)),
+      height: ScreenUtil().setHeight(120),
 
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -586,12 +593,10 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   Widget getRowTextView(String type){
 
     return Container(
-      color: Colors.white,
-      height: ScreenUtil().setHeight(55),
-      margin: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), 0, ScreenUtil().setWidth(29), 0),
+      height: ScreenUtil().setHeight(120),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),0, ScreenUtil().setWidth(29), 0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(type,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w800),),
@@ -657,20 +662,25 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(10),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(29)),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),0, ScreenUtil().setWidth(29), 0),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例
       //子Widget列表
       children: list.getRange(0,list.length).map((item) => itemVideoView(item)).toList(),
-    ): ListView.builder(
+    ): ListView.separated(
         shrinkWrap: true ,
-        padding: EdgeInsets.all(0),
         physics: new NeverScrollableScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (context,index){
           return getLiveItemView(context,list[index]);
-        }
+        },
+      separatorBuilder: (context,index){
+          return Container(
+            height: setH(1),
+            color: Colors.black12,
+          );
+      },
     );
   }
   ///
@@ -733,6 +743,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
         padding: EdgeInsets.fromLTRB( ScreenUtil().setWidth(27), ScreenUtil().setHeight(27), 0,  ScreenUtil().setHeight(40)),
         color: Colors.white,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             // Icon(Icons.apps,size: 110,color: Colors.blueAccent,),
               wrapImageUrl(bean.image, ScreenUtil().setHeight(230),ScreenUtil().setWidth(380)),
@@ -810,13 +821,12 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   Widget buildDoctorListView(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), ScreenUtil().setHeight(30), 0, ScreenUtil().setHeight(30)),
       height: ScreenUtil().setHeight(300),
       child: ListView.builder(
+          padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),0, ScreenUtil().setWidth(29), 0),
           scrollDirection:Axis.horizontal,
           itemCount: _liveDetailsInfo.authors.length,
           itemBuilder: (context,index){
-
             return buildItemDoctorView(context,_liveDetailsInfo.authors[index]);
           }
       ),
@@ -831,16 +841,17 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   Widget buildItemDoctorView(BuildContext context,LiveReviewInfoInfoAuthor bean) {
 
     return Container(
-      margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
-      width: ScreenUtil().setWidth(200),
+      margin: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
+      height: ScreenUtil().setWidth(260),
       child: Column(
 
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
 
-          wrapImageUrl(bean.userPhoto, setW(200), setW(200)),
-          Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
-          Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+          wrapImageUrl(bean.userPhoto, setW(250), setW(245)),
+          cYM(setH(35)),
+          Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w400,fontSize: ScreenUtil().setSp(35)),),
+       //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
 
         ],
@@ -898,7 +909,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
     return _commentListInfo==null?Container(): ListView.builder(
       controller: _scrollController,
       shrinkWrap: true,
-      padding: EdgeInsets.all(ScreenUtil().setWidth(24)),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),0, ScreenUtil().setWidth(29), 0),
       physics: new NeverScrollableScrollPhysics(),
       itemCount: _commentListInfo.lists.length,
       itemBuilder: (context,index){
@@ -960,7 +971,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   ///
   buildLiveTab(BuildContext context) {
     return Container(
-        margin: EdgeInsets.fromLTRB(0, ScreenUtil().setHeight(40), 0, 0),
         height: ScreenUtil().setHeight(340),
         child: ListView.builder(
              shrinkWrap: true,
@@ -989,7 +999,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
 
-          Expanded(child: buildText(_liveDetailsInfo.pv==null?"0":_liveDetailsInfo.pv.toString()+"人正在观看",color: "#FF999999"),),
+          Expanded(child: buildText(_liveDetailsInfo.pv==null?"0":_liveDetailsInfo.pv.toString()+"次播放",color: "#FF999999"),),
 
           Row(
 
@@ -998,8 +1008,8 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
                 isLiked: _isCollect,
                 likeBuilder: (bool isLike){
 
-                  return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png")):
-                  Image.asset(wrapAssets("icon_collect.png"));
+                  return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png"),width: setW(25),height: setH(25),):
+                  Image.asset(wrapAssets("icon_collect.png"),width: setW(25),height: setH(25));
                 },
                 onTap: (bool isLiked)
                 {
@@ -1018,8 +1028,8 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
                 isLiked: _isLike,
                 likeBuilder: (bool isLike){
 
-                  return  !isLike?Image.asset(wrapAssets("icon_dz_cancel.png")):
-                  Image.asset(wrapAssets("icon_dz.png"));
+                  return  !isLike?Image.asset(wrapAssets("icon_dz_cancel.png"),width: setW(25),height: setH(25)):
+                  Image.asset(wrapAssets("icon_dz.png"),width: setW(25),height: setH(25));
                 },
                 onTap: (bool isLiked)
                 {
@@ -1195,18 +1205,21 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   ///
   void getProgrammeListData() {
     // 请求会场专家的列表
+    var loadingCancel = FLToast.loading();
     NetUtils.requestReviewVideoList(currentHCID)
         .then((res){
 
-
+      loadingCancel();
       if(res.code==200){
 
         setState(() {
           _videoListInfo  =    ReviewVideoListInfo.fromJson(res.info);
-
         });
 
       }
+
+    }).catchError((e){
+      loadingCancel();
 
     });
 
@@ -1219,9 +1232,8 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   ///
   void getCurrentHcStatusData(BuildContext context) {
 
-    var loadingCancel = FLToast.loading();
+
     getProgrammeListData();
-    loadingCancel();
 
   }
 

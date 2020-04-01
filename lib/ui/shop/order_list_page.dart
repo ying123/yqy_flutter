@@ -1,3 +1,4 @@
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -70,6 +71,13 @@ class _OrderListPageState extends State<OrderListPage> {
             _listInfo = OrderListInfo.fromJson(res.info);
             _refreshController.refreshCompleted();
             _refreshController.resetNoData();
+
+            if(_listInfo.lists.length==0){
+
+              FLToast.info(text: "当前订单列表为空");
+
+            }
+
           }
 
         }
@@ -130,7 +138,7 @@ class _OrderListPageState extends State<OrderListPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
 
-                buildText("2020-01-19  09:30:50",size: 34,color: "#FF999999"),
+                buildText(" ",size: 34,color: "#FF999999"),
                 buildText(getStatusString(bean.orderStatus),size: 34,color: "#FF999999"),
 
               ],

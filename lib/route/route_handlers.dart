@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yqy_flutter/bean/personal_entity.dart';
 import 'package:yqy_flutter/main.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_details.dart';
+import 'package:yqy_flutter/ui/doctor/doctor_home_page.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_video_info_page.dart';
 import 'package:yqy_flutter/ui/doctor/doctor_video_list_page.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
@@ -218,7 +219,7 @@ var hdDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, L
 
 
 
-var doctorHomeHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+var doctorDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   String id = params["userId"]?.first;
   return DoctorDetailsPage(userId: id,);
 });
@@ -338,7 +339,8 @@ var shopDetailsPageHandler = Handler(handlerFunc: (BuildContext context, Map<Str
 });
 
 var specialDetailHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return SpecialDetailPage();
+  String id = params["id"]?.first;
+  return SpecialDetailPage(id);
 });
 
 
@@ -477,6 +479,10 @@ var pdfViewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String,
   return PdfViewPage();
 });
 
+
+var doctorHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return DoctorHomePage();
+});
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

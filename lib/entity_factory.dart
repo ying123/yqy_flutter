@@ -4,6 +4,7 @@ import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/bean/update_version_entity.dart';
 import 'package:yqy_flutter/bean/upload_image_entity.dart';
 import 'package:yqy_flutter/bean/user_entity.dart';
+import 'package:yqy_flutter/ui/doctor/bean/doctor_home_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_video_info_entity.dart';
 import 'package:yqy_flutter/ui/guide/bean/guide_index_entity.dart';
@@ -17,12 +18,15 @@ import 'package:yqy_flutter/ui/home/bean/news_details_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/news_list_entity.dart';
 import 'package:yqy_flutter/ui/home/bean/video_page_entity.dart';
 import 'package:yqy_flutter/ui/home/notice/bean/notice_home_entity.dart';
+import 'package:yqy_flutter/ui/home/search/bean/search_home_entity.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/special_details_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_home_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_live_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_meeting_list_info_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_index_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_info_entity.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_news_lists_entity.dart';
+import 'package:yqy_flutter/ui/home/tab/bean/tab_special_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/comment_list_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hc_status_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hd_details_entity.dart';
@@ -39,6 +43,7 @@ import 'package:yqy_flutter/ui/shop/bean/shop_address_list_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_buy_order_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_details_entity.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
+import 'package:yqy_flutter/ui/special/bean/special_all_details_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_banner_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_cate_entity.dart';
 import 'package:yqy_flutter/ui/special/bean/special_list_entity.dart';
@@ -56,6 +61,7 @@ import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_list_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/user_home_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
+import 'package:yqy_flutter/ui/user/enterprise/bean/my_enterprise_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
@@ -76,6 +82,8 @@ class EntityFactory {
       return UploadImageEntity.fromJson(json) as T;
     } else if (T.toString() == "UserEntity") {
       return UserEntity.fromJson(json) as T;
+    } else if (T.toString() == "DoctorHomeEntity") {
+      return DoctorHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorInfoEntity") {
       return DoctorInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorVideoInfoEntity") {
@@ -102,8 +110,12 @@ class EntityFactory {
       return VideoPageEntity.fromJson(json) as T;
     } else if (T.toString() == "NoticeHomeEntity") {
       return NoticeHomeEntity.fromJson(json) as T;
-    } else if (T.toString() == "HomeIndexEntity") {
-      return HomeIndexEntity.fromJson(json) as T;
+    } else if (T.toString() == "SearchHomeEntity") {
+      return SearchHomeEntity.fromJson(json) as T;
+    }else if (T.toString() == "SpecialDetailsEntity") {
+      return SpecialDetailsEntity.fromJson(json) as T;
+    } else if (T.toString() == "TabHomeEntity") {
+      return TabHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "TabLiveEntity") {
       return TabLiveEntity.fromJson(json) as T;
     } else if (T.toString() == "TabMeetingListInfoEntity") {
@@ -114,6 +126,8 @@ class EntityFactory {
       return TabNewsInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "TabNewsListsEntity") {
       return TabNewsListsEntity.fromJson(json) as T;
+    } else if (T.toString() == "TabSpecialEntity") {
+      return TabSpecialEntity.fromJson(json) as T;
     } else if (T.toString() == "CommentListEntity") {
       return CommentListEntity.fromJson(json) as T;
     } else if (T.toString() == "HcStatusEntity") {
@@ -146,6 +160,8 @@ class EntityFactory {
       return ShopDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "ShopHomeEntity") {
       return ShopHomeEntity.fromJson(json) as T;
+    } else if (T.toString() == "SpecialAllDetailsEntity") {
+      return SpecialAllDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialBannerEntity") {
       return SpecialBannerEntity.fromJson(json) as T;
     } else if (T.toString() == "SpecialCateEntity") {
@@ -180,6 +196,8 @@ class EntityFactory {
       return UserHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "UserInfoEntity") {
       return UserInfoEntity.fromJson(json) as T;
+    } else if (T.toString() == "MyEnterpriseEntity") {
+      return MyEnterpriseEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoDetailsEntity") {
       return VideoDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoInfoEntity") {

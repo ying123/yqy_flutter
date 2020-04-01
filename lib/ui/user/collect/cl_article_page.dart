@@ -37,8 +37,8 @@ class _ClArticlePageState extends State<ClArticlePage> {
 
               children: <Widget>[
                 new  Container(
-                  width: ScreenUtil().setWidth(81),
-                  height: ScreenUtil().setHeight(81),
+                  width: ScreenUtil().setWidth(90),
+                  height: ScreenUtil().setHeight(90),
                   color: Colors.blue,
                 ),
                 cXM(ScreenUtil().setWidth(16)),
@@ -54,14 +54,12 @@ class _ClArticlePageState extends State<ClArticlePage> {
              child:    Text("案例分析案例分析案例分析案例分析案例分析案例分析",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35)),),
            ),
             new Row(
-
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-
               FlatButton.icon(onPressed: (){}, icon: Icon(Icons.add_circle,size: ScreenUtil().setWidth(50),), label: Text("558",style: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999)),),padding: EdgeInsets.all(0),),
               FlatButton.icon(onPressed: (){}, icon: Icon(Icons.add_circle,size: ScreenUtil().setWidth(50),), label: Text("558",style: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999)),),padding: EdgeInsets.all(0),),
               FlatButton.icon(onPressed: (){}, icon: Icon(Icons.add_circle,size: ScreenUtil().setWidth(50),), label: Text("558",style: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999)),),padding: EdgeInsets.all(0),),
-              FlatButton.icon(onPressed: (){}, icon: Icon(Icons.add_circle,size: ScreenUtil().setWidth(50),), label: Text("558",style: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999)),),padding: EdgeInsets.all(0),),
+           //   FlatButton.icon(onPressed: (){}, icon: Icon(Icons.add_circle,size: ScreenUtil().setWidth(50),), label: Text("558",style: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999)),),padding: EdgeInsets.all(0),),
 
             ],
 

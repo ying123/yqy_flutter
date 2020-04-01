@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +43,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   List<String> marqueeList ;
 
 
-  HomeIndexInfo _homeIndexInfo;
+  TabHomeInfo _TabHomeInfo;
 
   ScrollController _scrollController = new ScrollController(); // 解决嵌套滑动冲突  设置统一滑动
 
@@ -68,16 +71,13 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
 
           if(res.code==200){
-
             setState(() {
-              _homeIndexInfo = HomeIndexInfo.fromJson(res.info);
-              _layoutState = loadStateByCode(res.code);
+              _layoutState = loadStateByCode(200);
+              _TabHomeInfo = TabHomeInfo.fromJson(res.info);
             });
 
           }
 
-    }).catchError((err){
-      _layoutState = loadStateByCode(-2);
     });
 
 
@@ -122,7 +122,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       this.loadData();
     },
     successWidget:
-    _homeIndexInfo==null?Container():SmartRefresher(
+    _TabHomeInfo==null?Container():SmartRefresher(
           enablePullDown: true,
           enablePullUp: true,
           controller: _refreshController,
@@ -142,20 +142,21 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                     children: <Widget>[
                       cYM(ScreenUtil().setHeight(25)),
 
-                      getBannerView(_homeIndexInfo.bannerList), //轮播图
+                      getBannerView(_TabHomeInfo.bannerList), //轮播图
                    //   getMarqueeView(new List()),//跑马灯 预约
                       cYM(ScreenUtil().setHeight(60)),
                       getGridBtnView(), //图片按钮
-                      cYM(ScreenUtil().setHeight(70)),
-                      getRowTextView("热门视频"),//热门会议标题栏
-                      getHotVideo(_homeIndexInfo.hotVideo),//热门会议视频横向列表
                       cYM(ScreenUtil().setHeight(20)),
+                      getRowTextView("热门视频"),//热门会议标题栏
+                      getHotVideo(_TabHomeInfo.hotVideo),//热门会议视频横向列表
                       getRowTextView("特约专家"),//往期会议标题栏
-                      cYM(ScreenUtil().setHeight(12)),
-                      getDocViews(_homeIndexInfo.recomDoctor),
+                      Container(
+                        color: Color(0xfff9f9f9),
+                        child:    getDocViews(_TabHomeInfo.recomDoctor),
+                      ),
+
                       cYM(ScreenUtil().setHeight(30)),
                       getRowTextView("最新资讯"),//往期会议标题栏
-                      cYM(ScreenUtil().setHeight(20)),
 
                     ],
                   ),
@@ -165,8 +166,8 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
                 SliverList(  delegate: SliverChildBuilderDelegate(
                       (context, i) =>
-                          getNewsItemView(context,_homeIndexInfo.newsList[i]),
-                  childCount: _homeIndexInfo.newsList.length,
+                          getNewsItemView(context,_TabHomeInfo.newsList[i]),
+                  childCount: _TabHomeInfo.newsList.length,
                 ),)
 
 
@@ -181,7 +182,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-  Widget getBannerView(List<HomeIndexInfoBannerList> data) {
+  Widget getBannerView(List<TabHomeInfoBannerList> data) {
 
 
   //  print("getBannerView:"+data.length.toString());
@@ -223,7 +224,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
 
   Widget   getMarqueeView(List<HomeDatamedicalNews> data){
-
 
     if(data==null){
       return Container();
@@ -268,7 +268,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-
   Widget getGridBtnView(){
     return Container(
         height: ScreenUtil().setHeight(260),
@@ -279,7 +278,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             Expanded(
                 child: InkWell(
                   onTap: (){
-                      RRouter.push(context ,Routes.doctorVideoListPage,{});
+                      RRouter.push(context ,Routes.doctorHomePage,{});
                   },
                   child: Image.asset(wrapAssets("home/bg_doctor_video.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
                 )
@@ -309,10 +308,10 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
     return Container(
       color: Colors.white,
-      height: ScreenUtil().setHeight(55),
+      height: ScreenUtil().setHeight(120),
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(27), 0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(type,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w800),),
@@ -343,7 +342,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
   }
 
-  Widget getHotVideo(List<HomeIndexInfoHotVideo>  list){
+  Widget getHotVideo(List<TabHomeInfoHotVideo>  list){
 
     return list==null?Container(): GridView.count(
       controller: _scrollController,
@@ -354,7 +353,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(10),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(29)),
+      padding: EdgeInsets.fromLTRB(setW(29), 0, setW(29), 0),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例
@@ -424,16 +423,19 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-  Widget getDocView(HomeIndexInfoRecomDoctor bean){
+  Widget getDocView(TabHomeInfoRecomDoctor bean){
     return InkWell(
 
       onTap: (){
-         RRouter.push(context, Routes.doctorHomePage,{"userId":bean.id});
+          FLToast.info(text: "暂无相关信息");
+        // RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
       },
       child: new Container(
+        color: Colors.white,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(250), ScreenUtil().setHeight(245)),
+                wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(230), ScreenUtil().setHeight(220)),
                 cXM(ScreenUtil().setWidth(29)),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -441,8 +443,8 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                   children: <Widget>[
 
                     Text(bean.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),),
-                    Text(bean.departs==null?"":bean.departs.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35)),),
-                    Text(bean.job==null?"":bean.job,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
+                    Text(bean.departs==null?"":bean.departs.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
+                    Text(bean.job==null?"":bean.job.name,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
 
 
                   ],
@@ -464,7 +466,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   ///
   ///  热门视频 item
   ///
-  Widget itemVideoView(HomeIndexInfoHotVideo bean) {
+  Widget itemVideoView(TabHomeInfoHotVideo bean) {
 
 
     return  InkWell(
@@ -509,7 +511,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   ///
   ///  特约专家布局
   ///
- Widget getDocViews(List<HomeIndexInfoRecomDoctor> list) {
+ Widget getDocViews(List<TabHomeInfoRecomDoctor> list) {
 
    return list==null?Container(): GridView.builder(
        controller: _scrollController,
@@ -522,11 +524,11 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
          //横轴元素个数
            crossAxisCount: 2,
            //纵轴间距
-           mainAxisSpacing: ScreenUtil().setHeight(42),
+           mainAxisSpacing: ScreenUtil().setHeight(20),
            //横轴间距
            crossAxisSpacing: ScreenUtil().setHeight(25),
            //子组件宽高长度比例
-           childAspectRatio: 2),
+           childAspectRatio: 1.4),
           itemBuilder: (BuildContext context, int index) {
          //Widget Function(BuildContext context, int index)
          return getDocView(list[index]);
@@ -543,10 +545,10 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
         controller: _scrollController,
         shrinkWrap: true ,
         physics: new NeverScrollableScrollPhysics(),
-        itemCount:_homeIndexInfo.newsList.length,
+        itemCount:_TabHomeInfo.newsList.length,
         itemBuilder: (context,index) {
 
-          return  getNewsItemView(context,_homeIndexInfo.newsList[index]);
+          return  getNewsItemView(context,_TabHomeInfo.newsList[index]);
 
         }
 
@@ -557,8 +559,8 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   ///
   ///  资讯布局
   ///
-  Widget getNewsItemView(BuildContext context,HomeIndexInfoNewsList xlist) {
-    return GestureDetector(
+  Widget getNewsItemView(BuildContext context,TabHomeInfoNewsList xlist) {
+    return  new GestureDetector(
 
       onTap: (){
         RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});

@@ -1,9 +1,13 @@
+import 'package:flui/flui.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
+import 'package:yqy_flutter/ui/doctor/bean/doctor_home_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'dart:math' as math;
 
@@ -26,14 +30,17 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
   int viewType = 0;// 当前的排列方式  我的预约排列   0 gridview  1  listvie
 
+  DoctorHomeInfo _doctorHomeInfo;
 
+
+  String _bannerIndexName = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
-
+    initData();
 
   }
 
@@ -44,125 +51,133 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
       backgroundColor: Colors.white,
+
+      appBar: getCommonAppBar("专家视频"),
+
       endDrawer: buildDrawer(context),
 
-
-     /* body: ListView(
-        padding: EdgeInsets.all(0),
-       children: <Widget>[
-        Container(height: ScreenUtil().setHeight(80),color: Colors.white,),
-         buildBanner(context),
-         cYM(ScreenUtil().setHeight(30)),
-         buildBannerTitle(context),
-         cYM(ScreenUtil().setHeight(58)),
-         // 横向推荐视频
-         buildRowRecommendView(context),
-         cYM(ScreenUtil().setHeight(20)),
-         buildAdView(context),
-         cYM(ScreenUtil().setHeight(40)),
-         buildScreenView(context),
-         buildListView(new List())
-
-       ],
-
-      ),
-*/
-
-      body: Column(
+      body:_doctorHomeInfo==null?Container(): Column(
 
         children: <Widget>[
-          Container(height: ScreenUtil().setHeight(80),color: Colors.white,),
+          Container(height: ScreenUtil().setHeight(30),color: Colors.white,),
           buildBanner(context),
-          cYM(ScreenUtil().setHeight(30)),
           buildBannerTitle(context),
-          cYM(ScreenUtil().setHeight(58)),
           Expanded(child:  CustomScrollView(
 
             shrinkWrap: true,
             slivers: <Widget>[
 
               new SliverToBoxAdapter(
-
                 child: Column(
                   children: <Widget>[
                     // 横向推荐视频
-                    buildRowRecommendView(context),
-                    cYM(ScreenUtil().setHeight(20)),
-                    buildAdView(context),
-                    cYM(ScreenUtil().setHeight(40)),
+                    getHotVideo(_doctorHomeInfo.recomVideo),
+                    //buildAdView(context),
+                    getRowTextView("特约专家"),//往期会议标题栏
+                     Container(
+                       color: Color(0xfff9f9f9),
+                       child:    getDocViews(_doctorHomeInfo.recomDoctor),
+                     )
                   ],
                 ),
               ),
-
               SliverStickyHeader(
                 header:  buildScreenView(context),
                 sliver: viewType==0? SliverGrid.count(
-                  //水平子Widget之间间距
-                  crossAxisSpacing: ScreenUtil().setWidth(0),
-                  //垂直子Widget之间间距
-                  mainAxisSpacing: ScreenUtil().setHeight(0),
-                  //GridView内边距
-                  //一行的Widget数量
-                  crossAxisCount: 2,
-                  //子Widget宽高比例
-                  //子Widget列表
-                  children: [
-                    buildItemView(null),
-                    buildItemView(null),
-                    buildItemView(null),
-                    buildItemView(null),
-                    buildItemView(null),
-                    buildItemView(null),
-                    buildItemView(null),
-                  ])
+                     //水平子Widget之间间距
+                     //  crossAxisSpacing: ScreenUtil().setWidth(20),
+                    //垂直子Widget之间间距
+                    // mainAxisSpacing: ScreenUtil().setHeight(10),
+                    childAspectRatio:1,
+                    //一行的Widget数量
+                    crossAxisCount: 2,
+                  children: _doctorHomeInfo.videoList
+                      .map((e)=> buildItemView(e)).toList())
                     :
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (context, i) =>
-                            getLiveItemView(context,null),
-                    childCount: 20,
+                            getLiveItemView(context, _doctorHomeInfo.videoList[i]),
+                    childCount:  _doctorHomeInfo.videoList.length,
                   ),
                 ),
               ),
 
-
-
-
             ],
-
-
 
           ),
           )
 
-
         ],
       )
 
-
-
     );
   }
-
-  buildBanner(BuildContext context) {
+  Widget getRowTextView(String type){
 
 
     return Container(
-      height: ScreenUtil().setHeight(450),
+      color: Colors.white,
+      height: ScreenUtil().setHeight(120),
+      alignment: Alignment.center,
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(27), 0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(type,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w800),),
+            new GestureDetector(
+          child: Container(
+            child: Row(
+              children: <Widget>[
+                Text("更多专家",style: TextStyle(color:Color(0xFF999999),fontSize: ScreenUtil().setSp(32)),),
+                cXM(ScreenUtil().setWidth(4)),
+                Icon(Icons.arrow_forward_ios,color: Colors.black12,size: ScreenUtil().setWidth(35),),
+              ],
+
+            ),
+          ),
+          onTap: (){
+
+            FLToast.info(text: "暂无更多内容");
+
+          },
+
+        ),
+
+        ],
+
+
+      ),
+
+    );
+
+  }
+
+
+
+  buildBanner(BuildContext context) {
+    return Container(
+      height: ScreenUtil().setHeight(360),
       width: double.infinity,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return new Image.asset(
-            wrapAssets("tab/tab_live_img.png"),
-            fit: BoxFit.fill,
-          );
+          return wrapImageUrl( _doctorHomeInfo.topBanner[index].url, double.infinity, double.infinity);
         },
-        itemCount: 10,
+        itemCount: _doctorHomeInfo.topBanner.length,
         viewportFraction: 0.8,
         scale: 0.9,
         autoplay: true,
         autoplayDelay: 8000,
+        onIndexChanged: (index){
+
+           setState(() {
+             _bannerIndexName = _doctorHomeInfo.topBanner[index].name;
+           });
+
+        },
       ),
+
     );
 
   }
@@ -170,10 +185,10 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
   buildBannerTitle(BuildContext context) {
     
     return Container(
-      height: setH(60),
+      height: setH(120),
       alignment: Alignment.center,
       width: double.infinity,
-      child: Text("王金义：杂交法经食管切除术",style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(40)),),
+      child: Text(_bannerIndexName,style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(40)),),
       
     );
 
@@ -240,7 +255,6 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
       width: double.infinity,
       height: ScreenUtil().setHeight(173),
       child: Image.asset(wrapAssets("ad_bg.png"),width: ScreenUtil().setWidth(1022),height: ScreenUtil().setHeight(173),fit: BoxFit.fill,),
-      
     );
     
   }
@@ -248,12 +262,192 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
 
 
+  Widget getHotVideo(List<DoctorHomeInfoRecomVideo>  list){
 
+    return list==null?Container(): GridView.count(
+      shrinkWrap: true ,
+      physics: new NeverScrollableScrollPhysics(),
+      //水平子Widget之间间距
+      crossAxisSpacing: ScreenUtil().setWidth(20),
+      //垂直子Widget之间间距
+      mainAxisSpacing: ScreenUtil().setHeight(5),
+      //GridView内边距
+      padding:EdgeInsets.fromLTRB(setW(29), 0, setW(29), 0),
+      //一行的Widget数量
+      crossAxisCount: 2,
+      //子Widget宽高比例
+      //子Widget列表
+      children: list.getRange(0,list.length).map((item) => itemVideoView(item)).toList(),
+    );
+  }
+
+
+  ///
+  ///  特约专家布局
+  ///
+  Widget getDocViews(List<DoctorHomeInfoRecomDoctor> list) {
+
+    return list==null?Container(): GridView.builder(
+        itemCount: list.length,
+        shrinkWrap: true ,
+        padding: EdgeInsets.all(ScreenUtil().setWidth(27)),
+        physics: new NeverScrollableScrollPhysics(),
+        //SliverGridDelegateWithFixedCrossAxisCount 构建一个横轴固定数量Widget
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //横轴元素个数
+            crossAxisCount: 2,
+            //纵轴间距
+            mainAxisSpacing: ScreenUtil().setHeight(20),
+            //横轴间距
+            crossAxisSpacing: ScreenUtil().setHeight(25),
+            //子组件宽高长度比例
+            childAspectRatio: 1.4),
+        itemBuilder: (BuildContext context, int index) {
+          //Widget Function(BuildContext context, int index)
+          return getDocView(list[index]);
+        });
+
+  }
+
+  Widget getDocView(DoctorHomeInfoRecomDoctor bean){
+    return InkWell(
+
+      onTap: (){
+        FLToast.info(text: "暂无相关信息");
+     //   RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
+      },
+      child: new Container(
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(230), ScreenUtil().setHeight(220)),
+            cXM(ScreenUtil().setWidth(29)),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+
+                Text(bean.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),),
+                Text(bean.department??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35)),),
+                Text(bean.job==null?"":bean.job,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
+
+
+              ],
+
+            )
+
+
+          ],
+        ),
+
+
+      ),
+    );
+
+  }
+  ///
+  ///  热门视频 item
+  ///
+  Widget itemVideoView(DoctorHomeInfoRecomVideo bean) {
+
+
+    return  InkWell(
+      onTap: (){
+        //   RRouter.push(context, Routes.livePaybackPage, {});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()},transition:  TransitionType.cupertino);
+      },
+      child: Container(
+        width: double.infinity,
+        height: ScreenUtil().setHeight(412),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            wrapImageUrl(bean.img, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
+            Container(
+              padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14), ScreenUtil().setHeight(26), ScreenUtil().setWidth(14), 0),
+              child: Text(bean.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
+            ),
+            cYM(setH(5)),
+            Container(
+              padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14),0, ScreenUtil().setWidth(14), 0),
+              child:  Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                 // Text(bean.,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(32)),),
+                //  Text(bean.pv.toString()+"次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(32)),),
+                ],
+              ),
+            )
+
+          ],
+        ),
+
+      ),
+    );
+
+  }
 
 
   Widget buildScreenView(BuildContext context) {
 
-    return Container(
+    return  new  Container(
+      color: Colors.white,
+      height: setH(120),
+      padding:EdgeInsets.fromLTRB(setW(30), 0, setW(30), 0),
+      //  height: ScreenUtil().setHeight(40),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+         Expanded(child:   Text("为你推荐",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w800),),),
+          Container(
+            width: ScreenUtil().setWidth(80),
+            child:   FlatButton(
+              onPressed: (){
+                setState(() {
+                  viewType==0?viewType=1:viewType=0;
+                });
+              },
+              padding: EdgeInsets.all(0),
+              child: Image.asset(wrapAssets(viewType==0?"tab/tab_live_iv1.png":"tab/tab_live_iv11.png"),width: ScreenUtil().setWidth(40),height: ScreenUtil().setHeight(40),),
+            ),
+
+          ),
+          cXM(ScreenUtil().setWidth(40)),
+
+          Builder(builder: (context1){
+            return
+              InkWell(
+                  onTap: (){
+                    Scaffold.of(context1).openEndDrawer();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+                    child:  Row(
+                      children: <Widget>[
+                        Image.asset(wrapAssets("tab/tab_screen.png"),width: ScreenUtil().setWidth(50),height: ScreenUtil().setHeight(50),),
+                        cXM(ScreenUtil().setWidth(6)),
+                        Text("筛选",style:TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(32)))
+                      ],
+
+
+                    ),
+                  )
+
+              );
+
+          })
+
+
+        ],
+
+      ),
+    );
+
+
+    /*   return  new  Container(
       color: Colors.white,
       margin: EdgeInsets.fromLTRB(0, 0,0, 0),
       padding: EdgeInsets.only(right: setW(10)),
@@ -315,85 +509,40 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
         ],
 
       ),
-    );
+    );*/
 
   }
 
 
 
-  Widget buildListView(List  list){
 
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    list.add("");
-    return list==null?Container():viewType==0? GridView.count(
-      shrinkWrap: true ,
-      physics: new NeverScrollableScrollPhysics(),
-      //水平子Widget之间间距
-      crossAxisSpacing: ScreenUtil().setWidth(20),
-      //垂直子Widget之间间距
-      mainAxisSpacing: ScreenUtil().setHeight(5),
-      //GridView内边距
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(20), 0, ScreenUtil().setWidth(20), ScreenUtil().setWidth(20)),
-      //一行的Widget数量
-      crossAxisCount: 2,
-      //子Widget宽高比例
-      //子Widget列表
-      children: list.map((item) => buildItemView(item)).toList(),
-    ): ListView.builder(
-        shrinkWrap: true ,
-        padding: EdgeInsets.all(0),
-        physics: new NeverScrollableScrollPhysics(),
-        // physics: new NeverScrollableScrollPhysics(),
-        itemCount: list.length,
-        itemBuilder: (context,index){
-          return getLiveItemView(context,list);
-        }
-    );
-  }
-
-  Widget buildItemView(String string) {
+  Widget buildItemView(DoctorHomeInfoVideoList bean) {
 
 
     return  InkWell(
       onTap: (){
-
-
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()},transition:  TransitionType.cupertino);
       },
       child: Container(
         width: double.infinity,
-        height: ScreenUtil().setHeight(430),
+        padding: EdgeInsets.fromLTRB(setW(20), 0, setW(20), 0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            wrapImageUrl("http:\/\/cdn2.yaoqiyuan.com\/upload\/adspic\/2019-12\/5dea039ac27a0.JPG", ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
+            wrapImageUrl(bean.image, ScreenUtil().setWidth(501), ScreenUtil().setHeight(288)),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14), ScreenUtil().setHeight(26), ScreenUtil().setWidth(14), 0),
-              child: Text("中西医结合联合微创技术治疗普通外科疾病进展学习班暨安徽省中医药学会外科专业委员会2019年学术年会",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
+              child: Text(bean.title,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
             ),
+            cYM(setH(5)),
             Container(
               padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(14),0, ScreenUtil().setWidth(14), 0),
               child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("2019-09-20",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
-                  Text("2269次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),),
+                  // Text(bean.,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(32)),),
+                  //  Text(bean.pv.toString()+"次播放",style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(32)),),
                 ],
               ),
             )
@@ -403,7 +552,6 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
       ),
     );
-
 
 
   }
@@ -611,12 +759,13 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
   ///
   ///   列表item
   ///
-  Widget getLiveItemView(context,List listBean){
+  Widget getLiveItemView(context,DoctorHomeInfoVideoList listBean){
 
     return  GestureDetector(
 
       onTap: (){
         //  RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.id});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": listBean.id.toString()},transition:  TransitionType.cupertino);
       },
 
       child: new Container(
@@ -626,8 +775,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
         child: Row(
           children: <Widget>[
             // Icon(Icons.apps,size: 110,color: Colors.blueAccent,),
-            //  wrapImageUrl(listBean.image,110.0, 110.0),
-            Image.asset(wrapAssets("tab/tab_live_img.png"),fit: BoxFit.fill,height: ScreenUtil().setHeight(215),width:ScreenUtil().setWidth(288)),
+            wrapImageUrl(listBean.image, ScreenUtil().setHeight(215),ScreenUtil().setWidth(288)),
+          //  Image.asset(wrapAssets("tab/tab_live_img.png"),fit: BoxFit.fill,height: ScreenUtil().setHeight(215),width:ScreenUtil().setWidth(288)),
             //  new Image(image: new CachedNetworkImageProvider("http://via.placeholder.com/350x150"),width: 110,height: 110,color: Colors.black,),
             cXM(ScreenUtil().setHeight(20)),
             new Container(
@@ -637,7 +786,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      child: Text("湖南湘中医联盟肛肠疾病高峰论坛学术交流会",style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(37)),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                      child: Text(listBean.title,style: TextStyle(color: Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(37)),maxLines: 2,overflow: TextOverflow.ellipsis,),
 
                     ),
                     new Row(
@@ -645,9 +794,10 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
                       children: <Widget>[
                         new  Row(
                           children: <Widget>[
-                            Image.asset(wrapAssets("tab/tab_live_ic2.png"),width: ScreenUtil().setSp(32),height: ScreenUtil().setSp(32),color: Colors.black45,),
+                            Text(listBean.pv.toString()+"次播放",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                         /*   Image.asset(wrapAssets("tab/tab_live_ic2.png"),width: ScreenUtil().setSp(32),height: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text("张素娟  李霞  将建成  张大大  王素娥",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                            Text("张素娟  李霞  将建成  张大大  王素娥",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),*/
                           ],
 
                         ),
@@ -656,7 +806,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
                       ],
                     ),
-                    new Row(
+                /*    new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new  Row(
@@ -671,7 +821,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
                         //       Text("看录播",style: TextStyle(color: Colors.greenAccent),)
 
                       ],
-                    ),
+                    ),*/
 
                   ],
 
@@ -689,6 +839,25 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
 
     );
+
+  }
+
+  void initData() {
+
+    NetUtils.requestDoctorIndex()
+        .then((res){
+
+          if(res.code==200){
+
+            setState(() {
+                _doctorHomeInfo  =   DoctorHomeInfo.fromJson(res.info);
+            });
+
+          }
+
+    });
+
+
 
   }
 

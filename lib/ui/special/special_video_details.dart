@@ -7,6 +7,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/ui/special/bean/special_all_details_entity.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
@@ -36,7 +38,7 @@ class SpecialVideoDetailsPage extends StatefulWidget {
   _VideoDetailsState createState() => _VideoDetailsState();
 }
 
-class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTickerProviderStateMixin{
+class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTickerProviderStateMixin,WidgetsBindingObserver {
 
 
   //页面加载状态，默认为加载中
@@ -51,13 +53,14 @@ class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTick
   TabController _tabController;
 
 
-  SpecialVideoEntity _specialVideoEntity;
+  SpecialDetailsInfo _specialVideoEntity;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _layoutState = LoadState.State_Loading;
     _tabController = TabController(vsync: this, length: tabBarList.length??1);
     loadData();
@@ -69,19 +72,23 @@ class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTick
   void loadData() async{
 
     //await Future.delayed(Duration(milliseconds: 1000));
-    NetworkUtils.requestSpecialArticle(widget.id)
+    NetUtils.requestSpecialViews(widget.id)
         .then((res){
 
-      setState(() {
-        _specialVideoEntity = SpecialVideoEntity.fromJson(res.info);
-        int statusCode = res.status;
-        _layoutState = loadStateByCode(statusCode);
-        if(res.status==9999){
+      if(res.code==200){
+
+        setState(() {
+          _specialVideoEntity = SpecialDetailsInfo.fromJson(res.info);
           tabBarViewList = [WebPage(_specialVideoEntity.content)];
           player.setDataSource(_specialVideoEntity.playUrl, autoPlay: true);
-        }
+          _layoutState = loadStateByCode(res.code);
 
-      });
+
+        });
+
+      }
+
+
     });
   }
 
@@ -90,8 +97,24 @@ class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTick
   void dispose() {
     player.release();
     _tabController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+
+    if(state==AppLifecycleState.paused){
+      player.pause();
+    }
+
+    if(state==AppLifecycleState.resumed){
+      player.start();
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +129,7 @@ class _VideoDetailsState extends State<SpecialVideoDetailsPage>  with SingleTick
           },
         ),
         centerTitle: true,
-        title: Text(_specialVideoEntity==null?"":_specialVideoEntity.title, style: TextStyle(color: Colors.black),),
+        title: Text(_specialVideoEntity==null?"":_specialVideoEntity.title, style: TextStyle(color: Colors.black,fontSize: setSP(46)),),
         backgroundColor: Colors.white,
       ),
 

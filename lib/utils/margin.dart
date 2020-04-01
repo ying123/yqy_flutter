@@ -57,6 +57,9 @@ AppBar getCommonAppBar(String v){
   return AppBar(
     centerTitle: true,
     title: Text(v),
+    actions: <Widget>[
+      Text("")
+    ],
 
   );
 
@@ -89,8 +92,8 @@ Widget wrapImageUrl(String url,double w,double h){
     height: h,
     fit: BoxFit.fill,
     imageUrl: url,
-  //  placeholder: (context, url) => Icon(Icons.picture_in_picture,size: 110,color: Colors.black45,),
-    errorWidget: (context, url, error) => new Icon(Icons.error,size:w,color: Colors.black45,),
+  // placeholder: (context, url) => Icon(Icons.picture_in_picture,size: 110,color: Colors.black45,),
+    errorWidget: (context, url, error) => Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
   );
 }
 

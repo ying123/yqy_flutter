@@ -58,8 +58,6 @@ class NetworkUtils {
     return result;
   }
 
-
-
   ///
   ///  发送短信（登陆）
   ///
@@ -68,7 +66,6 @@ class NetworkUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone});
     return result;
   }
-
 
 
   ///
@@ -100,7 +97,6 @@ class NetworkUtils {
   }
 
 
-
   ///
   ///  互动会议接口
   ///
@@ -129,8 +125,6 @@ class NetworkUtils {
   }
 
 
-
-
   ///
   ///  医药资讯列表
   ///
@@ -149,8 +143,6 @@ class NetworkUtils {
     BaseResult result = await httpManager.request(HttpMethod.POST, url, {"page":page,"key":key});
     return result;
   }
-
-
 
 
   ///

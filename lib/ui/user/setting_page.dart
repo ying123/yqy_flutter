@@ -1,6 +1,8 @@
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -73,13 +75,16 @@ class _SettingPageState extends State<SettingPage> {
 
         children: <Widget>[
 
-          buildMobileView(context),
+        /*  buildMobileView(context),
           Divider(height: 1,),
           buildUpdateInfoView(context),
           Divider(height: 1,),
           buildServicePhoneView(context),
           Divider(height: 1,),
-          buildAboutView(context),
+          buildAboutView(context),*/
+
+          buildUserAgreement(context),
+
           buildExitUser(context)
 
         ],
@@ -90,7 +95,54 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+  Widget buildUserAgreement(BuildContext context) {
 
+    return  InkWell(
+      onTap: (){
+
+        NetUtils.requestAgreements()
+            .then((res){
+
+              if(res.code==200){
+                RRouter.push(context, Routes.webPage,{"url":res.info["content"],"title":"用户协议"});
+              }
+
+
+        });
+
+
+
+
+      },
+      child: Container(
+        height: 60,
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+        child: Row(
+
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+
+            Text("用户协议",style: TextStyle(color: Colors.black87,fontSize: 16),),
+            new Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                )
+
+            ),
+
+            Icon(Icons.keyboard_arrow_right,size: 30,color: Colors.black26,),
+
+          ],
+        ),
+
+      ),
+    );
+
+
+  }
 
   launchURLToPhone(String phoneNumber) async {
     String url = 'tel:$phoneNumber';
@@ -225,10 +277,9 @@ class _SettingPageState extends State<SettingPage> {
             color: Colors.white,
             child: FlatButton(
                 onPressed: (){
+                  RRouter.push(context, Routes.loginPage,{},clearStack: true);
                   UserUtils.removeToken();
                   UserUtils.removeUserInfo();
-                  RRouter.push(context, Routes.loginPage,{},clearStack: true);
-
                 },
                 child: Container(
                   height: 55,

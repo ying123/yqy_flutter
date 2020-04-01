@@ -23,29 +23,33 @@ class VideoTaskEntity {
 }
 
 class VideoTaskInfo {
-	int uid;
 	String image;
+	var logId;
+	String playUrl;
+	String title;
+	int playTime;
+	int uid;
 	int times;
 	VideoTaskInfoTask task;
-	String playUrl;
 	VideoTaskInfoCompany company;
 	int id;
-	String title;
 	int cid;
 	String desc;
 	String videoId;
 
-	VideoTaskInfo({this.uid, this.image, this.times, this.task, this.playUrl, this.company, this.id, this.title, this.cid, this.desc, this.videoId});
+	VideoTaskInfo({this.image, this.logId, this.playUrl, this.title, this.playTime, this.uid, this.times, this.task, this.company, this.id, this.cid, this.desc, this.videoId});
 
 	VideoTaskInfo.fromJson(Map<String, dynamic> json) {
-		uid = json['uid'];
 		image = json['image'];
+		logId = json['log_id'];
+		playUrl = json['play_url'];
+		title = json['title'];
+		playTime = json['play_time'];
+		uid = json['uid'];
 		times = json['times'];
 		task = json['task'] != null ? new VideoTaskInfoTask.fromJson(json['task']) : null;
-		playUrl = json['play_url'];
 		company = json['company'] != null ? new VideoTaskInfoCompany.fromJson(json['company']) : null;
 		id = json['id'];
-		title = json['title'];
 		cid = json['cid'];
 		desc = json['desc'];
 		videoId = json['video_id'];
@@ -53,18 +57,20 @@ class VideoTaskInfo {
 
 	Map<String, dynamic> toJson() {
 		final Map<String, dynamic> data = new Map<String, dynamic>();
-		data['uid'] = this.uid;
 		data['image'] = this.image;
+		data['log_id'] = this.logId;
+		data['play_url'] = this.playUrl;
+		data['title'] = this.title;
+		data['play_time'] = this.playTime;
+		data['uid'] = this.uid;
 		data['times'] = this.times;
 		if (this.task != null) {
       data['task'] = this.task.toJson();
     }
-		data['play_url'] = this.playUrl;
 		if (this.company != null) {
       data['company'] = this.company.toJson();
     }
 		data['id'] = this.id;
-		data['title'] = this.title;
 		data['cid'] = this.cid;
 		data['desc'] = this.desc;
 		data['video_id'] = this.videoId;

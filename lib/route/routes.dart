@@ -53,7 +53,7 @@ class Routes {
 
   static String hdDetailsPage = "/hdDetailsPage";
 
-  static String doctorHomePage = "/doctorHomePage";
+  static String doctorDetailsPage = "/doctorDetailsPage";
 
   static String realNamePage = "/realNamePage";
 
@@ -175,8 +175,7 @@ class Routes {
 
   static String hdFollowPage = "/hdFollowPage"; //  互动消息  关注的消息
 
-
-
+  static String doctorHomePage = "/doctorHomePage"; //  互动消息  关注的消息
 
 
 
@@ -202,7 +201,7 @@ class Routes {
     router.define(zxContentPage, handler: zxDetailsHandler);
     router.define(flfgContentPage, handler: flfgDetailsHandler);
     router.define(gfContentPage, handler: gfDetailsHandler);
-    router.define(doctorHomePage, handler: doctorHomeHandler);
+    router.define(doctorDetailsPage, handler: doctorDetailsHandler);
     router.define(feedBackPage, handler: feedBackHandler);
     router.define(personalPage, handler: personalHandler);
     router.define(updateExplainPage, handler: updateExplainHandler);
@@ -250,7 +249,7 @@ class Routes {
     router.define(doctorVideoInfoPage, handler:doctorVideoInfoPageHandler);
     router.define(doctorVideoListPage, handler:doctorVideoListPageHandler);
     router.define(pdfViewPage, handler:pdfViewPageHandler);
-
+    router.define(doctorHomePage, handler:doctorHomePageHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

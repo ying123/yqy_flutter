@@ -156,10 +156,10 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
 
     return Container(
       color: Colors.white,
-      height: ScreenUtil().setHeight(55),
+      height: ScreenUtil().setHeight(120),
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(24), 0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(type,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w600),),
@@ -248,7 +248,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(10),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(29)),
+      padding:EdgeInsets.fromLTRB(setW(29), 0, setW(29), 0),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例
@@ -276,7 +276,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(10),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(29)),
+      padding:EdgeInsets.fromLTRB(setW(29), 0, setW(29), 0),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例
@@ -549,6 +549,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
           case "视频回放":
            RRouter.push(context, Routes.liveReviewPage,{"id":list.id});
           //  RRouter.push(context, Routes.liveIngPage,{"id":list.id});
+           // RRouter.push(context, Routes.liveNoticePage,{"id":list.id});
             break;
 
         }
@@ -865,7 +866,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
   ///
   Widget getLiveItemHistoryView(context,TabLiveInfoHistoryList listBean){
 
-    return  GestureDetector(
+    return  new  GestureDetector(
 
       onTap: (){
         RRouter.push(context, Routes.liveReviewPage,{"id":listBean.id});
@@ -981,7 +982,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(10),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(29)),
+      padding:EdgeInsets.fromLTRB(setW(29), 0, setW(29), 0),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例
@@ -1006,7 +1007,7 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(10),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(29)),
+      padding:EdgeInsets.fromLTRB(setW(29), 0, setW(29), 0),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例

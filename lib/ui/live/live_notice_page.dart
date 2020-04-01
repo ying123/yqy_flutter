@@ -335,7 +335,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
         children: <Widget>[
 
           // 倒计时  预约
-          new  Container(
+       /*   new  Container(
               margin: EdgeInsets.all(ScreenUtil().setWidth(20)),
               height: ScreenUtil().setHeight(135),
               child: Stack(
@@ -374,9 +374,9 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
               )
           ),
-
+*/
           new Container(
-            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, ScreenUtil().setWidth(30),ScreenUtil().setWidth(30)),
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),ScreenUtil().setWidth(30), ScreenUtil().setWidth(30),0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -572,11 +572,10 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
     return Container(
       color: Colors.white,
-      height: ScreenUtil().setHeight(55),
-      margin: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
+      height: ScreenUtil().setHeight(120),
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), 0, ScreenUtil().setWidth(29), 0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(type,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w800),),
@@ -648,14 +647,21 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
       //子Widget宽高比例
       //子Widget列表
       children: list.getRange(0,list.length).map((item) => itemVideoView(item)).toList(),
-    ): ListView.builder(
+    ): ListView.separated(
         shrinkWrap: true ,
         padding: EdgeInsets.all(0),
         physics: new NeverScrollableScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (context,index){
           return getLiveItemView(context,list[index]);
-        }
+        },
+        separatorBuilder: (context,index){
+          return Container(
+            height: setH(1),
+            color: Colors.black12,
+          );
+
+        },
     );
   }
   ///
@@ -708,14 +714,12 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
     return  GestureDetector(
 
       onTap: (){
-
         RRouter.push(context, Routes.liveReviewPage,{"id":bean.id});
-
       },
 
       child: new Container(
         height: ScreenUtil().setHeight(250),
-        padding: EdgeInsets.fromLTRB( ScreenUtil().setWidth(27), ScreenUtil().setHeight(27), 0,  ScreenUtil().setHeight(40)),
+        padding: EdgeInsets.fromLTRB( ScreenUtil().setWidth(27),ScreenUtil().setHeight(27), 0,  ScreenUtil().setHeight(40)),
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -742,7 +746,9 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
                             cXM(5),
                             Row(
 
-                                children: bean.authors.map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
+                                children: bean.authors.length>6?bean.authors.sublist(0, 6).map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
+                                    :bean.authors.map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
+
                             )
 
                           ],
@@ -796,9 +802,10 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
 
     return Container(
-      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), ScreenUtil().setHeight(30), 0, ScreenUtil().setHeight(30)),
+      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, 0, ScreenUtil().setHeight(30)),
       height: ScreenUtil().setHeight(300),
       child: ListView.builder(
+          padding: EdgeInsets.all(0),
           scrollDirection:Axis.horizontal,
           itemCount: _liveDetailsInfo.authors.length,
           itemBuilder: (context,index){
@@ -814,15 +821,15 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
     return Container(
       margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
-      width: ScreenUtil().setWidth(200),
       child: Column(
 
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
 
-          wrapImageUrl(bean.userPhoto, setW(200), setW(200)),
+          wrapImageUrl(bean.userPhoto, setW(245), setW(250)),
+          cYM(setH(8)),
           Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
-          Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+       //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
         ],
 
@@ -878,7 +885,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
     return _commentListInfo==null?Container(): ListView.builder(
       controller: _scrollController,
       shrinkWrap: true,
-      padding: EdgeInsets.all(ScreenUtil().setWidth(24)),
       physics: new NeverScrollableScrollPhysics(),
       itemCount: _commentListInfo.lists.length,
       itemBuilder: (context,index){

@@ -8,6 +8,8 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/ui/special/bean/special_all_details_entity.dart';
 import  'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
@@ -32,7 +34,7 @@ class _VideoDetailsState extends State<SpecialWebDetailsPage>  with SingleTicker
   //页面加载状态，默认为加载中
   LoadState _layoutState;
 
-  SpecialVideoEntity _specialVideoEntity;
+  SpecialDetailsInfo _specialVideoEntity;
 
 
   @override
@@ -48,13 +50,12 @@ class _VideoDetailsState extends State<SpecialWebDetailsPage>  with SingleTicker
   void loadData() async{
 
     //await Future.delayed(Duration(milliseconds: 1000));
-    NetworkUtils.requestSpecialArticle(widget.id)
+    NetUtils.requestSpecialViews(widget.id)
         .then((res){
 
       setState(() {
-        _specialVideoEntity = SpecialVideoEntity.fromJson(res.info);
-        int statusCode = res.status;
-        _layoutState = loadStateByCode(statusCode);
+        _specialVideoEntity = SpecialDetailsInfo.fromJson(res.info);
+        _layoutState = loadStateByCode(res.code);
 
       });
     });
@@ -98,7 +99,7 @@ class _VideoDetailsState extends State<SpecialWebDetailsPage>  with SingleTicker
 
 
 class WebviewPage extends StatefulWidget {
-  SpecialVideoEntity  bean;
+  SpecialDetailsInfo  bean;
 
   WebviewPage(this.bean);
 

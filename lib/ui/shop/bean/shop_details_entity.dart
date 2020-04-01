@@ -26,7 +26,7 @@ class ShopDetailsInfo {
 	String image;
 	String createTime;
 	String sendWay;
-	String closeTime;
+	dynamic closeTime;
 	String title;
 	String content;
 	int isShow;

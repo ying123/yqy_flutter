@@ -1,20 +1,20 @@
 class UpdateVersionEntity {
-	String message;
-	String status;
+	String msg;
+	int code;
 	UpdateVersionInfo info;
 
-	UpdateVersionEntity({this.message, this.status, this.info});
+	UpdateVersionEntity({this.msg, this.code, this.info});
 
 	UpdateVersionEntity.fromJson(Map<String, dynamic> json) {
-		message = json['message'];
-		status = json['status'];
+		msg = json['msg'];
+		code = json['code'];
 		info = json['info'] != null ? new UpdateVersionInfo.fromJson(json['info']) : null;
 	}
 
 	Map<String, dynamic> toJson() {
 		final Map<String, dynamic> data = new Map<String, dynamic>();
-		data['message'] = this.message;
-		data['status'] = this.status;
+		data['msg'] = this.msg;
+		data['code'] = this.code;
 		if (this.info != null) {
       data['info'] = this.info.toJson();
     }
@@ -26,16 +26,22 @@ class UpdateVersionInfo {
 	String size;
 	String createTime;
 	String remark;
-	String dataFlag;
-	String id;
+	int dataFlag;
+	int id;
 	String downdress;
 	String versioncode;
-	String qid;
+	int qid;
 	String versionname;
-	String staffId;
-	String status;
+	int staffId;
+	int status;
 
-	UpdateVersionInfo({this.size, this.createTime, this.remark, this.dataFlag, this.id, this.downdress, this.versioncode, this.qid, this.versionname, this.staffId, this.status});
+
+  @override
+  String toString() {
+    return 'UpdateVersionInfo{size: $size, createTime: $createTime, remark: $remark, dataFlag: $dataFlag, id: $id, downdress: $downdress, versioncode: $versioncode, qid: $qid, versionname: $versionname, staffId: $staffId, status: $status}';
+  }
+
+  UpdateVersionInfo({this.size, this.createTime, this.remark, this.dataFlag, this.id, this.downdress, this.versioncode, this.qid, this.versionname, this.staffId, this.status});
 
 	UpdateVersionInfo.fromJson(Map<String, dynamic> json) {
 		size = json['size'];

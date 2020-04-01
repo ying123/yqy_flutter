@@ -125,10 +125,12 @@ class APPConfig {
 
 
   static const DEBUG = true;
-  //static const Server = "http://api.yaoqiyuan.com/api/";
+ //static const Server = "http://api.yaoqiyuan.com/api/";
+
+  static const Server = "http://api.yaoqiyuan.com/";
 
 
-  static const Server = "http://apitest.yaoqiyuan.com/";//测试地址
+//  static const Server = "http://apitest.yaoqiyuan.com/";//测试地址
  // static const Server = "http://test.yaoqiyuan.com/api/"; //测试地址
   // static const Server = "http://localhost:8090";
 
@@ -138,7 +140,10 @@ class APPConfig {
 
    static String onlineLiveUrl = "http://m.yaoqiyuan.com/";//直播分享地址
 
-  static const Agreement = Server+ "Register/agreement";  //用户协议
+ // static const Agreement = Server+ "Register/agreement";  //用户协议
+
+  static const Agreement = Server+ "login/agreements";  //用户协议
+
 
   static const WebIntro = Server+ "About/WebIntro"; // 平台资质
 

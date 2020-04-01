@@ -93,7 +93,11 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     liveId = widget.id;
-    loadData();
+
+    if(mounted){
+      loadData();
+    }
+
    //   initGetMeetingListInfoStatus();
     changeSubscription =  eventBus.on<HcStatusInfo>().listen((event) {
       setState(() {
@@ -439,7 +443,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
           ),
 
           new Container(
-            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, ScreenUtil().setWidth(30),ScreenUtil().setWidth(30)),
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, ScreenUtil().setWidth(30),0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -450,7 +454,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
                       fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.start,),
                   width: ScreenUtil().setWidth(1000),
                 ),
-                cYM(ScreenUtil().setHeight(10)),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -548,7 +551,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
         getRowTextView("正在播放"),
         _meetingListInfoInfo==null?Container(): buildLiveTab(context),
         buildLine(),
-
         // 关键词
         buildCruxView(context),
         buildLine(),
@@ -576,8 +578,8 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
   buildCruxView(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setWidth(40), ScreenUtil().setWidth(29),  ScreenUtil().setWidth(40)),
-      height: ScreenUtil().setHeight(140),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setWidth(29), ScreenUtil().setWidth(29),  ScreenUtil().setWidth(29)),
+      height: ScreenUtil().setHeight(120),
 
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -624,7 +626,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
         },
         child: Container(
           padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),0, ScreenUtil().setWidth(29), 0),
-          height: ScreenUtil().setHeight(140),
+          height: ScreenUtil().setHeight(120),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -645,11 +647,10 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
     return Container(
       color: Colors.white,
-      height: ScreenUtil().setHeight(55),
-      margin: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
+      height: ScreenUtil().setHeight(120),
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), 0, ScreenUtil().setWidth(29), 0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(type,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w800),),
@@ -721,14 +722,24 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
       //子Widget宽高比例
       //子Widget列表
       children: list.getRange(0,list.length).map((item) => itemVideoView(item)).toList(),
-    ): ListView.builder(
+    ): ListView.separated(
         shrinkWrap: true ,
         padding: EdgeInsets.all(0),
         physics: new NeverScrollableScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (context,index){
           return getLiveItemView(context,list[index]);
-        }
+        },
+      separatorBuilder: (context,index){
+
+          return Container(
+
+            height: setH(1),
+            color: Colors.black12,
+
+          );
+
+      },
     );
   }
   ///
@@ -788,7 +799,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
       child: new Container(
         height: ScreenUtil().setHeight(250),
-        padding: EdgeInsets.fromLTRB( ScreenUtil().setWidth(27), ScreenUtil().setHeight(27), 0,  ScreenUtil().setHeight(40)),
+        padding: EdgeInsets.fromLTRB( ScreenUtil().setWidth(27),ScreenUtil().setHeight(27), 0,  ScreenUtil().setHeight(40)),
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -815,7 +826,8 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
                             Image.asset(wrapAssets("tab/tab_live_ic2.png"),width: ScreenUtil().setSp(32),height: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
                             Row(
-                                children: bean.authors.map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
+                                children: bean.authors.length>6?bean.authors.sublist(0, 6).map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
+                                                                :bean.authors.map((item)=>Text(item.realName+" ",style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32))),).toList()
                             )
 
                           ],
@@ -868,9 +880,10 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
   Widget buildDoctorListView(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), ScreenUtil().setHeight(30), 0, ScreenUtil().setHeight(30)),
+      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, 0, ScreenUtil().setHeight(30)),
       height: ScreenUtil().setHeight(300),
       child: ListView.builder(
+        padding: EdgeInsets.all(0),
           scrollDirection:Axis.horizontal,
           itemCount: _liveDetailsInfo.authors.length,
           itemBuilder: (context,index){
@@ -897,8 +910,9 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
         children: <Widget>[
 
           wrapImageUrl(bean.userPhoto, setW(200), setW(200)),
+          cYM(setH(8)),
           Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
-          Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+       //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
 
         ],
@@ -1020,12 +1034,14 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
 
     return Container(
-        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(0), ScreenUtil().setHeight(40), 0, 0),
         height: ScreenUtil().setHeight(340),
         child: ListView.builder(
+            padding: EdgeInsets.all(0),
             scrollDirection: Axis.horizontal,
+            itemCount: _meetingListInfoInfo.videoLists.length,
             controller: _scrollC,
             itemBuilder: (context,index){
+
               return tabItemView(index);
 
             })
@@ -1308,8 +1324,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
         setState(() {
           _meetingListInfoInfo =    TabMeetingListInfoInfo.fromJson(res.info);
           _scrollC.jumpTo(100);
-
-
         });
 
       }
@@ -1322,25 +1336,27 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
 
   void getCurrentHcStatusData(BuildContext context) {
-
     var loadingCancel = FLToast.loading();
     NetUtils.requestMeetingGetMeetingInfo(currentHCID)
         .then((res){
 
 
          if(res.code==200){
-
+           loadingCancel();
            HcStatusInfo hcStatusInfo = HcStatusInfo.fromJson(res.info);
            // 传递消息
            eventBus.fire(hcStatusInfo);
-           loadingCancel();
          }else{
+           loadingCancel();
            FLToast.showError(text:res.msg);
          }
 
     }).then((_){
       _controllerDoctor.jumpTo(0);
       getProgrammeListData();
+
+    }).catchError((res){
+      loadingCancel();
 
     });
 

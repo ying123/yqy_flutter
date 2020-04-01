@@ -106,19 +106,22 @@ class _ZxContentPageState extends State<ZxContentPage> with AutomaticKeepAliveCl
         backgroundColor: Colors.white,
         actions: <Widget>[
 
+
           LikeButton(
             isLiked: isCollect,
             likeBuilder: (bool isLike){
 
-              return  !isLike?Icon(Icons.star_border,color:Colors.black45,size: 30,):
-              Icon(Icons.star,color:Colors.amber,size: 30,);
+              return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png")):
+              Image.asset(wrapAssets("icon_collect.png"));
             },
             onTap: (bool isLiked)
             {
-              return onLikeButtonTap(AppRequest.Collect_ZX,isLiked,_detailsEntity.id);
+              return onLikeButtonTap(AppRequest.Collect_ZX,isLiked,_detailsEntity.id.toString());
             },
 
           ),
+
+
           cXM(10),
           new GestureDetector(
 

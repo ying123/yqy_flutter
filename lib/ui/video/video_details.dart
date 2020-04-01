@@ -13,6 +13,7 @@ import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import  'package:yqy_flutter/utils/margin.dart';
@@ -233,25 +234,24 @@ class _VideoDetailsState extends State<VideoDetailsPage>  with SingleTickerProvi
 
   Future<bool> onLikeButtonTap(String type ,bool isLike,var  id) {
 
+
     final Completer<bool> completer = new Completer<bool>();
 
     if(!isLike){
 
-      NetworkUtils.requestCollectAdd(type,id)
+      NetUtils.requestCollectAdd(type,id)
           .then((res){
-        int statusCode = int.parse(res.status);
-        completer.complete(statusCode==9999?true:false);
-        Fluttertoast.showToast(msg: res.message,gravity: ToastGravity.CENTER);
+        completer.complete(res.code==200?true:false);
+        Fluttertoast.showToast(msg: res.msg,gravity: ToastGravity.CENTER);
       });
     }else{
 
-      NetworkUtils.requestCollectDel(type,id)
+      NetUtils.requestCollectDel(id)
           .then((res){
-        int statusCode = int.parse(res.status);
-        completer.complete(statusCode==9999?false:true);
-        Fluttertoast.showToast(msg: res.message,gravity: ToastGravity.CENTER);
+        completer.complete(res.code==200?false:true);
+        Fluttertoast.showToast(msg: res.msg,gravity: ToastGravity.CENTER);
       });
-     }
+    }
     return completer.future;
 }
 

@@ -49,6 +49,14 @@ class _TaskListPageState extends State<TaskListPage> {
   }
 
   @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    initData();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
 
@@ -67,12 +75,7 @@ class _TaskListPageState extends State<TaskListPage> {
 
        ],
 
-
-
-
       ),
-
-
 
     );
   }
@@ -156,8 +159,8 @@ class _TaskListPageState extends State<TaskListPage> {
                 //  根据任务类型不同  跳转不同的页面
                 onTap: (){
 
-
                   // 未完成 状态时 才去跳转进行任务
+                  // 0未开始 1去完成 2领取奖励 3已完成 4已过期
                   if(bean.status==1){
 
                     switch(bean.type){
@@ -180,8 +183,12 @@ class _TaskListPageState extends State<TaskListPage> {
                         break;
                     }
 
-                  }else{
+                  }else if(bean.status==2){
 
+                     FLToast.info(text: "领取成功");
+
+                    //showReceiveDialogView(context);
+                  }else{
 
                     FLToast.info(text: getTextStatus(bean.status));
 
@@ -194,11 +201,10 @@ class _TaskListPageState extends State<TaskListPage> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(26)),
-                      border: Border.all(color: Color(0xFF4AB1F2),width: setW(1))
+                      border: Border.all(color: Color(bean.status==1?0xFF4AB1F2:0xFF999999),width: setW(1))
 
                   ),
-
-                  child: Text(getTextStatus(bean.status),style: TextStyle(color: Color(0xFF4AB1F2),fontSize: setSP(35)),),
+                  child: Text(getTextStatus(bean.status),style: TextStyle(color: Color(bean.status==1?0xFF4AB1F2:0xFF999999),fontSize: setSP(35)),),
 
                 ),
 
@@ -272,4 +278,62 @@ class _TaskListPageState extends State<TaskListPage> {
     });
 
   }
+
+  ///
+  ///  积分领取成功弹窗
+  ///
+  void showReceiveDialogView(BuildContext context) {
+
+    showDialog(context: context,
+
+        builder: (_)=>Material(
+          color: Colors.transparent,
+          child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.fromLTRB(setW(40), setW(650), setW(40), setW(900)),
+            child: Stack(
+
+
+              children: <Widget>[
+
+                Image.asset(wrapAssets("task/bg_finish.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
+                Positioned(left: setW(200),top: setH(260),child: Text("您已获得 100 积分",style: TextStyle(color: Colors.white,fontSize: setSP(75),fontWeight: FontWeight.w900,fontStyle: FontStyle.italic),)),
+                Positioned(left: setW(175),bottom: setH(20),child: Container(
+                  width: setW(600),
+                  margin: EdgeInsets.fromLTRB(setW(20),0, 0, setW(20)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+
+                      Expanded(child:  Text("任务奖励积分已放入您的积分帐户，您可以用来兑换学分或礼品！",style: TextStyle(color: Colors.white,fontSize: setSP(40))))
+
+                    ],
+
+                  ),
+
+                ))
+                
+
+              ],
+
+            )
+
+          ),
+
+
+        )
+    );
+
+    Future.delayed(Duration(seconds: 2)).then((_){
+
+      Navigator.pop(context);
+
+    });
+
+
+
+  }
+
+
 }

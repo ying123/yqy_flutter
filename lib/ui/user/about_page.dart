@@ -35,9 +35,9 @@ class _AboutPageState extends State<AboutPage> {
       int statusCode = int.parse(res.status);
 
       if(statusCode==9999){
-        _aboutInfo = AboutInfo.fromJson(res.info);
-        setState(() {
 
+        setState(() {
+          _aboutInfo = AboutInfo.fromJson(res.info);
         });
 
       }

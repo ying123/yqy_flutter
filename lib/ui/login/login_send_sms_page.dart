@@ -225,9 +225,10 @@ class _LoginSendSmsPageState extends State<LoginSendSmsPage> {
 
           //已注册直接登录
           if(status == 1){
-            _loginInfo = SendSmsInfo.fromJson(res.info);
-            UserUtils.saveToken(_loginInfo.token.toString()).then((_){
-              RRouter.push(context, Routes.homePage, {},clearStack: true);
+            SendSmsInfo   _loginInfo = SendSmsInfo.fromJson(res.info);
+            UserUtils.saveToken(_loginInfo.token.toString()).then((bool){
+
+               RRouter.push(context, Routes.homePage, {},clearStack: true);
             });
          // 未注册完善资料
           }else{

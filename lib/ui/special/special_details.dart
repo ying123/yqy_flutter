@@ -107,8 +107,6 @@ class _SpecialDetailsPageState extends State<SpecialDetailsPage>  with TickerPro
       });
     });
 
-
-
   }
 
 

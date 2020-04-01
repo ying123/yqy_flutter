@@ -77,6 +77,7 @@ dependencies:
   infinite_listview: 1.0.1+1 # 列表滚动到指定位置
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git
+  flutter_xupdate: ^0.0.3 # App 升级更新插件
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:yqy_flutter/common/constant.dart' show AppColors;
+import 'package:yqy_flutter/net/net_utils.dart';
 
 ///
 ///   webView 页面
@@ -30,6 +32,14 @@ class _CommonWebviewPageState extends State<CommonWebviewPage>  with SingleTicke
     ),
   );
 
+String  _html = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initData();
+
+  }
 
   @override
   void dispose() {
@@ -40,7 +50,7 @@ class _CommonWebviewPageState extends State<CommonWebviewPage>  with SingleTicke
 
   @override
   Widget build(BuildContext context) {
-    return WebviewScaffold(
+    return   widget.url.startsWith("http")?WebviewScaffold(
       url: widget.url??"",
       appBar: AppBar(
         centerTitle: true,
@@ -51,6 +61,43 @@ class _CommonWebviewPageState extends State<CommonWebviewPage>  with SingleTicke
       withLocalStorage: true,
        hidden: true,
       initialChild: _loadingContainer,
+    ): Scaffold(
+      appBar: AppBar(
+
+        title: Text("用户协议"),
+      ),
+      body: ListView(
+
+        children: <Widget>[
+
+        Html(
+        data: _html,
+        )
+        ],
+      ),
+
     );
+  }
+
+  void initData() {
+
+
+    NetUtils.requestAgreements()
+        .then((res){
+
+       if(res.code==200){
+
+         setState(() {
+
+           _html =  res.info["content"];
+
+         });
+
+       }
+
+
+    });
+
+
   }
 }

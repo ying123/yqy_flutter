@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
@@ -35,6 +36,14 @@ class _NewUserPageState extends State<NewUserPage> {
     initEventBusListener();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    changeSubscription.cancel();
+    changeSubscription = null;
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +62,6 @@ class _NewUserPageState extends State<NewUserPage> {
 
          // 如果当前角色是医生
          _userInfoInfo.regType==1? Column(
-
 
            children: <Widget>[
 
@@ -127,7 +135,8 @@ class _NewUserPageState extends State<NewUserPage> {
                   color: Colors.transparent,
                   child:  InkWell(
                       onTap: (){
-                        RRouter.push(context ,Routes.noticeHomePage,{},transition:TransitionType.cupertino);
+                        FLToast.info(text: "暂无消息");
+                      //  RRouter.push(context ,Routes.noticeHomePage,{},transition:TransitionType.cupertino);
                       },
                       child: Padding(padding: EdgeInsets.all(10),
                         child: Image.asset(wrapAssets("user/msg.png"),width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),),
@@ -176,8 +185,7 @@ class _NewUserPageState extends State<NewUserPage> {
                       color: Colors.white,
                       child: InkWell(
                         onTap: (){
-
-
+                            FLToast.error(text: "暂无内容");
                         },
                         child:   new Container(
                           padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -200,7 +208,8 @@ class _NewUserPageState extends State<NewUserPage> {
                   color: Colors.white,
                   child: InkWell(
                     onTap: (){
-                      RRouter.push(context ,Routes.collectHomePage,{},transition:TransitionType.cupertino);
+                      FLToast.error(text: "暂无内容");
+                     // RRouter.push(context ,Routes.collectHomePage,{},transition:TransitionType.cupertino);
                     },
                     child:   new Container(
                       padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -223,7 +232,8 @@ class _NewUserPageState extends State<NewUserPage> {
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
-                     RRouter.push(context ,Routes.followHomePage,{},transition:TransitionType.cupertino);
+                     FLToast.error(text: "暂无内容");
+                  //   RRouter.push(context ,Routes.followHomePage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -247,6 +257,7 @@ class _NewUserPageState extends State<NewUserPage> {
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
+                     FLToast.error(text: "暂无内容");
                      //  RRouter.push(context ,Routes.loginHomePage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
@@ -320,6 +331,7 @@ class _NewUserPageState extends State<NewUserPage> {
               ),
             ),
             onTap: (){
+              FLToast.error(text: "暂无内容");
             },
 
           ),
@@ -358,20 +370,31 @@ class _NewUserPageState extends State<NewUserPage> {
   ///
   Widget buildItemDoctorView() {
 
-    return Container(
-      margin: EdgeInsets.only(right: ScreenUtil().setWidth(43)),
-      width: ScreenUtil().setWidth(288),
-      child: Column(
-
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-
-          Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(288),height: ScreenUtil().setHeight(215),fit: BoxFit.fill,),
-          Text("湖南湘中医联盟肛...",style: TextStyle(color:Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(32)),),
-
-        ],
+    return  InkWell(
 
 
+      onTap: (){
+
+        FLToast.info(text: "暂无内容");
+
+      },
+
+      child: Container(
+        margin: EdgeInsets.only(right: ScreenUtil().setWidth(43)),
+        width: ScreenUtil().setWidth(288),
+        child: Column(
+
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+
+            Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(288),height: ScreenUtil().setHeight(215),fit: BoxFit.fill,),
+            Text("湖南湘中医联盟肛...",style: TextStyle(color:Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(32)),),
+
+          ],
+
+
+
+        ),
 
       ),
 
@@ -401,10 +424,14 @@ class _NewUserPageState extends State<NewUserPage> {
                RRouter.push(context ,Routes.orderListPage,{},transition:TransitionType.cupertino);
              break;
             case"我的赞":
+              FLToast.info(text: "暂无内容");
             //  RRouter.push(context ,Routes.myCollectionPage,{},transition:TransitionType.cupertino);
               break;
             case"我的任务":
             RRouter.push(context ,Routes.taskNewPage,{},transition:TransitionType.cupertino);
+              break;
+            case"我的企业":
+              RRouter.push(context ,Routes.myEnterprisePage,{},transition:TransitionType.cupertino);
               break;
           }
 
@@ -423,7 +450,10 @@ class _NewUserPageState extends State<NewUserPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
 
-                      Icon(Icons.account_balance,size: ScreenUtil().setWidth(70),),
+                    //  Icon(Icons.account_balance,size: ScreenUtil().setWidth(70),),
+
+                      Image.asset(wrapAssets(getLineImage(value)),width: setW(60),height: setH(60),),
+
                       cXM(ScreenUtil().setWidth(23)),
                       Expanded(child:  Text(value,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),)),
                       Icon(Icons.arrow_forward_ios,color: Colors.black12,size: ScreenUtil().setWidth(46),),
@@ -587,6 +617,35 @@ class _NewUserPageState extends State<NewUserPage> {
     changeSubscription =  eventBus.on<EventBusChange>().listen((event) {
       initData();
     });
+
+
+  }
+
+  String getLineImage(String value) {
+
+    String image = "";
+
+    switch(value){
+      case"用户反馈":
+        image = "user/ic_feedback.png";
+        break;
+      case"积分专区":
+        image = "user/ic_jf.png";
+        break;
+      case"我的订单":
+        image = "user/ic_order.png";
+        break;
+      case"我的赞":
+        image = "user/ic_star.png";
+        break;
+      case"我的任务":
+        image = "user/ic_task.png";
+        break;
+      case"我的企业":
+        image = "user/ic_enterprise.png";
+        break;
+    }
+    return  image;
 
 
   }

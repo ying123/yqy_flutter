@@ -270,13 +270,8 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
         break;
 
     }
-
     return color;
-
-
   }
-
-
 
 
 

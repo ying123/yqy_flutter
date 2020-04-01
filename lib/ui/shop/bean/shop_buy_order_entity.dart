@@ -27,7 +27,7 @@ class ShopBuyOrderInfo {
 	ShopBuyOrderInfoAddress address;
 	String createTime;
 	dynamic sendWay;
-	String closeTime;
+	var closeTime;
 	String title;
 	String content;
 	int isShow;

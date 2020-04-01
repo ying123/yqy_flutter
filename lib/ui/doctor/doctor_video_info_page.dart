@@ -207,12 +207,6 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
         children: <Widget>[
           // 视频布局
           buildContentVideo(context),
-          // 视频简介
-          buildContentInfoView(context),
-          // 观看人数 点赞收藏
-          buildBtnView(context),
-          //分割线
-          buildLine(),
           //下方内容为可滚动的
           buildListView(context),
           //底部的高度 避免评论布局遮挡内容的布局
@@ -354,14 +348,13 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
     buildContentInfoView(BuildContext context) {
 
     return Container(
-
       child: Column(
 
         children: <Widget>[
 
           new Container(
-            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, ScreenUtil().setWidth(30),ScreenUtil().setWidth(30)),
-            margin: EdgeInsets.only(top: setH(30)),
+            padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30),0, ScreenUtil().setWidth(30),ScreenUtil().setWidth(0)),
+            margin: EdgeInsets.only(top: setH(15)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,7 +365,6 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
                       fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.start,),
                   width: ScreenUtil().setWidth(1000),
                 ),
-                cYM(ScreenUtil().setHeight(10)),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -438,7 +430,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
   buildLine() {
     return Container(
       height: ScreenUtil().setHeight(12),
-      color: Color(0xFFF5F5F5),
+      color: Color(0xFFf5f5f5),
     );
 
   }
@@ -450,6 +442,12 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
       shrinkWrap: true,
       padding: EdgeInsets.all(0),
       children: <Widget>[
+        // 视频简介
+        buildContentInfoView(context),
+        // 观看人数 点赞收藏
+        buildBtnView(context),
+        //分割线
+        buildLine(),
         //相关专家
         _doctorVideoInfoInfo.users==null?Container():getRowTextView("相关专家"),
        _doctorVideoInfoInfo.users==null?Container(): buildDoctorListView(context),
@@ -478,8 +476,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
   buildCruxView(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), ScreenUtil().setWidth(40), ScreenUtil().setWidth(29),  ScreenUtil().setWidth(40)),
-      height: ScreenUtil().setHeight(140),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),setH(29), ScreenUtil().setWidth(29), setH(29)),
+      height: ScreenUtil().setHeight(120),
 
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -547,7 +545,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
     return Container(
       color: Colors.white,
-      height: ScreenUtil().setHeight(80),
+      height: ScreenUtil().setHeight(120),
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), 0, ScreenUtil().setWidth(29), 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -616,20 +614,28 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
       //垂直子Widget之间间距
       mainAxisSpacing: ScreenUtil().setHeight(10),
       //GridView内边距
-      padding: EdgeInsets.all(ScreenUtil().setWidth(29)),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), 0, ScreenUtil().setWidth(29), 0),
       //一行的Widget数量
       crossAxisCount: 2,
       //子Widget宽高比例
       //子Widget列表
       children: _doctorVideoInfoInfo.videoList.getRange(0,_doctorVideoInfoInfo.videoList.length).map((item) => itemVideoView(item)).toList(),
-    ): ListView.builder(
+    ): ListView.separated(
         shrinkWrap: true ,
         padding: EdgeInsets.all(0),
         physics: new NeverScrollableScrollPhysics(),
         itemCount: _doctorVideoInfoInfo.videoList.length,
         itemBuilder: (context,index){
           return getLiveItemView(context,_doctorVideoInfoInfo.videoList[index]);
-        }
+        },
+      separatorBuilder: (context,index){
+
+          return Container(
+            height: setH(1),
+            color: Colors.black12,
+          );
+
+      },
     );
   }
   ///
@@ -770,12 +776,12 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
   Widget buildDoctorListView(BuildContext context) {
 
     return Container(
-      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), ScreenUtil().setHeight(30), 0, ScreenUtil().setHeight(30)),
-      height: ScreenUtil().setHeight(300),
+      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, 0, 0),
+      height: ScreenUtil().setHeight(260),
 
       child:  new Row(
         children: <Widget>[
-          wrapImageUrl(_doctorVideoInfoInfo.users.userPhoto, setW(196), setW(196)),
+          wrapImageUrl(_doctorVideoInfoInfo.users.userPhoto, setW(250), setW(245)),
           cXM(ScreenUtil().setWidth(62)),
           new  Expanded(
               child: Column(
@@ -789,8 +795,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
                     //  Text(_doctorVideoInfoInfo.users.job.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400),),
                       cXM(ScreenUtil().setWidth(32)),
                       Container(
-                        width: ScreenUtil().setWidth(153),
                         height: ScreenUtil().setHeight(43),
+                        padding: EdgeInsets.fromLTRB(setW(10), 0, setW(10), 0),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Color(0xFF4AB1F2),
@@ -889,7 +895,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
     return _commentListInfo==null?Container(): ListView.builder(
       controller: _scrollController,
       shrinkWrap: true,
-      padding: EdgeInsets.all(ScreenUtil().setWidth(24)),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29), 0, ScreenUtil().setWidth(29), 0),
       physics: new NeverScrollableScrollPhysics(),
       itemCount: _commentListInfo.lists.length,
       itemBuilder: (context,index){
@@ -1167,8 +1173,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
                 isLiked: _isCollect,
                 likeBuilder: (bool isLike){
 
-                  return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png")):
-                  Image.asset(wrapAssets("icon_collect.png"));
+                  return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png"),width: setW(25),height: setH(25),):
+                  Image.asset(wrapAssets("icon_collect.png"),width: setW(25),height: setH(25),);
                 },
                 onTap: (bool isLiked)
                 {
@@ -1188,8 +1194,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
                 isLiked: _isLike,
                 likeBuilder: (bool isLike){
 
-                  return  !isLike?Image.asset(wrapAssets("icon_dz_cancel.png")):
-                  Image.asset(wrapAssets("icon_dz.png"));
+                  return  !isLike?Image.asset(wrapAssets("icon_dz_cancel.png"),width: setW(25),height: setH(25),):
+                  Image.asset(wrapAssets("icon_dz.png"),width: setW(25),height: setH(25),);
                 },
                 onTap: (bool isLiked)
                 {

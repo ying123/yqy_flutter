@@ -1,6 +1,6 @@
 class BaseResult {
-	String msg;
 	int code;
+	String msg;
 	var info;
 
 	bool get tokenCancel => 4001 == code;

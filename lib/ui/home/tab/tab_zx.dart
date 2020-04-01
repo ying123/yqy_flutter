@@ -157,7 +157,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
 
   Widget getLiveItemView(BuildContext context,TabNewsIndexInfoNewsList xlist) {
-    return GestureDetector(
+    return  new GestureDetector(
 
       onTap: (){
         RRouter.push(context, Routes.newsContentPage, {"id":xlist.id});

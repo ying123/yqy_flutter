@@ -1,3 +1,4 @@
+import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
 import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
+import 'package:yqy_flutter/utils/DateUtils.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 import 'package:yqy_flutter/utils/margin.dart';
@@ -90,7 +92,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
                       SliverToBoxAdapter(
 
                         child: Column(
-
                           children: <Widget>[
                             buildTopView(context),
                             cYM(ScreenUtil().setHeight(40)),
@@ -149,19 +150,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
                 ))
           ],
         )
-
-
-      /* body: ListView(
-        padding: EdgeInsets.all(0),
-        children: <Widget>[
-          buildTopView(context),
-          buildItemListView(context),
-          buildTipTextView(),
-          cYM(ScreenUtil().setHeight(40)),
-          buildBottomShopView(context),
-          cYM(ScreenUtil().setHeight(80)),
-        ],
-      ),*/
 
     );
   }
@@ -291,6 +279,9 @@ class _TaskNewPageState extends State<TaskNewPage> {
                           color: Color(0xFFFA994C),
                           fontSize: ScreenUtil().setSp(40)),),
                       onPressed: () {
+
+                        FLToast.info(text: "暂未开放");
+                        return;
                         RRouter.push(context, Routes.integralListPage, {},
                             transition: TransitionType.cupertino);
                       },
@@ -376,7 +367,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
                         buildText(bean.title, color: "#FF333333",
                             size: 40,
                             fontWeight: FontWeight.bold),
-                        buildText("有效期至 2020-3-1", color: "#FF999999",
+                        buildText("有效期至 "+ DateUtils.instance.getFormartData(timeSamp: bean.endTime*1000,format: "yyyy-MM-dd"), color: "#FF999999",
                             size: 29,
                             fontWeight: FontWeight.w400),
 
