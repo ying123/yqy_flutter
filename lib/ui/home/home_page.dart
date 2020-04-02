@@ -323,7 +323,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             // ios 和 android 的更新提示
             if (Platform.isIOS) {
 
-              final url = "https://itunes.apple.com/cn/app/id1380512641"; // id 后面的数字换成自己的应用 id 就行了
+              final url = "https://itunes.apple.com/cn/app/id1484902664"; // id 后面的数字换成自己的应用 id 就行了
               if (await canLaunch(url)) {
                 await launch(url, forceSafariVC: false);
               } else {

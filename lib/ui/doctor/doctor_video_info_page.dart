@@ -107,8 +107,11 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
   }
 
-  void loadData(String id) async{
 
+  ///
+  ///  请求数据
+  ///
+  void loadData(String id) async{
 
 
     Future.wait([
@@ -186,7 +189,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
           children: <Widget>[
             //主要内容布局
             buildContextView(context),
-            // 底部点击评论的布局
+
+            // 底部评论的布局
             buildBottomView(context)
           ],
         ),

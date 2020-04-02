@@ -41,7 +41,6 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
     initData();
-
   }
 
   @override
@@ -55,7 +54,6 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
       appBar: getCommonAppBar("专家视频"),
 
       endDrawer: buildDrawer(context),
-
       body:_doctorHomeInfo==null?Container(): Column(
 
         children: <Widget>[
@@ -76,7 +74,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
                     getRowTextView("特约专家"),//往期会议标题栏
                      Container(
                        color: Color(0xfff9f9f9),
-                       child:    getDocViews(_doctorHomeInfo.recomDoctor),
+                       child:  getDocViews(_doctorHomeInfo.recomDoctor),
                      )
                   ],
                 ),
@@ -306,8 +304,10 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
           //Widget Function(BuildContext context, int index)
           return getDocView(list[index]);
         });
-
   }
+
+
+
 
   Widget getDocView(DoctorHomeInfoRecomDoctor bean){
     return InkWell(
@@ -852,12 +852,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
             setState(() {
                 _doctorHomeInfo  =   DoctorHomeInfo.fromJson(res.info);
             });
-
           }
-
     });
-
-
 
   }
 
