@@ -123,5 +123,11 @@
     <string>App需要您的同意,才能访问相册</string>
     <key>NSRemindersUsageDescription</key>
     <string>App需要您的同意,才能访问提醒事项</string>
+    <key>NSContactsUsageDescription</key>
+    <string>App需要您的同意,才能访问通讯录</string>
+    <key>NSSpeechConntionusageDescription</key>
+    <string>App需要您的同意,才能使用语音识别</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>App需要您的同意,才能使用语音识别</string>
 </dict>
 </plist>
