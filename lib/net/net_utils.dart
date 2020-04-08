@@ -819,4 +819,55 @@ class NetUtils {
     return result;
   }
 
+  ///
+  ///  专家 页面详情
+  ///
+    static Future<BaseResult> requestDoctorPortal(String id) async {
+    String url = APPConfig.Server + "doctor/portal";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+  }
+
+  ///
+  ///    我的关注
+  ///
+  static Future<BaseResult> requestUsersMyFocus(int page) async {
+    String url = APPConfig.Server + "users/my_focus";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return result;
+  }
+
+
+  ///
+  ///    添加关注
+  ///
+  ///   passive_id	是	int	被关注人的id
+  ///
+  static Future<BaseResult> requestUsersFriendsAdd(String passive_id) async {
+    String url = APPConfig.Server + "friends/add";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+    return result;
+  }
+
+  ///
+  ///    取消关注
+  ///
+  ///   passive_id	是	int	被关注人的id
+  ///
+  static Future<BaseResult> requestUsersFriendsDel(String passive_id) async {
+    String url = APPConfig.Server + "friends/del";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+    return result;
+  }
+  ///
+  ///    检测是否已关注
+  ///
+  ///   passive_id	是	int	被关注人的id
+  ///
+  static Future<BaseResult> requestUsersFriendsCheck(String passive_id) async {
+    String url = APPConfig.Server + "friends/check";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+    return result;
+  }
+
 }

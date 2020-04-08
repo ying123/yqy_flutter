@@ -1,9 +1,14 @@
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/ui/doctor/bean/doctor_details_entity.dart';
 
 class DoctorDetailsPage extends StatefulWidget {
 
@@ -23,33 +28,61 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
     '主页',
     '视频',
     '文章',
-    '相关',
   ];
 
   TabController _tabController;
 
-  DoctorInfoInfo _doctorInfoInfo;
+  DoctorDetailsInfo _doctorInfoInfo;
+
+  bool _flowStatus = false; // 当前用户的关注状态
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: 4);
-   // loadData();
+      loadData();
   }
   void loadData() {
 
-    NetworkUtils.requestDoctorHome(widget.userId)
-        .then((res){
+    // 页面数据
+      NetUtils.requestDoctorPortal(widget.userId)
+          .then((res){
 
-      int statusCode = int.parse(res.status);
-      if(statusCode==9999){
-        _doctorInfoInfo = DoctorInfoInfo.fromJson(res.info);
-        setState(() {
+            if(res.code==200){
 
-        });
-      }
-    });
+              setState(() {
+                _doctorInfoInfo = DoctorDetailsInfo.fromJson(res.info);
+              });
+
+            }
+      });
+
+      // 检测当前用户之前是否关注
+      NetUtils.requestUsersFriendsCheck(widget.userId)
+          .then((res){
+
+        if(res.code==200){
+
+          setState(() {
+            
+
+            if(res.msg=="已关注"){
+
+              _flowStatus = true;
+
+            }else{
+              _flowStatus = false;
+            }
+
+
+          });
+
+        }
+
+      });
+
+
 
   }
 
@@ -81,10 +114,37 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
                         centerTitle: true,
                         background: Container(
                             height: ScreenUtil().setHeight(550),
-                            child:  buildTopContainer(context)
+                            child:  _doctorInfoInfo==null?Container():buildTopContainer(context)
                         )
 
                     ),
+                    actions: <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(right: setW(40)),
+                        child: InkWell(
+
+                          onTap: (){
+
+                            getFlowStatusData(_doctorInfoInfo.id.toString());
+
+                          },
+                          child:  Container(
+                            padding: EdgeInsets.fromLTRB(setW(20), setH(5), setW(20), setH(5)),
+                            child: Text(_flowStatus?"已关注":"+关注"),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white,width: setW(1)),
+                                borderRadius: BorderRadius.all(Radius.circular(setW(20)))
+                            ),
+
+
+                          ),
+
+                        )
+                        
+                      )
+                      
+                    ],
                   ),
                   new SliverPersistentHeader(
                     delegate: new SliverTabBarDelegate(
@@ -114,38 +174,34 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
                       padding: EdgeInsets.only(top: 0),
                       shrinkWrap: true,
                       children: <Widget>[
-                        getRowTextView("相关学会"),
-                        buildLearnView(context),
-                        getRowTextView("关注专家"),
-                        buildDoctorListView(context),
+                      //  getRowTextView("相关学会"),
+                      //  buildLearnView(context),
+                        getRowTextView("基本资料"),
+                        _doctorInfoInfo==null?Container():buildInfoTextView()
+                      /*  buildDoctorListView(context),
                         getRowTextView("热门内容"),
-                        buildLiveNoticeView(new List()),
+                        buildLiveNoticeView(new List()),*/
                       ],
                     ),
                     color: Colors.white,
                   ),
-                  Container(
+                  _doctorInfoInfo==null? Container(): Container(
                     height: double.infinity,
-                    child:ListView(
+                    child: _doctorInfoInfo.videoList.length==0?Center(child: Text("暂无视频"),): ListView.builder(
 
-                      shrinkWrap: true,
-                      children: <Widget>[
+                        itemCount:  _doctorInfoInfo.videoList.length,
+                        itemBuilder: (context,index){
+                          return getVideoTabView(context,  _doctorInfoInfo.videoList[index]);
 
-                        getVideoTabView(context),
-                        getVideoTabView(context)
-
-                      ],
-
-                    ),
+                        })
                   ),
-                  Container(
-                    height: 20,
+                  Center(
                     child: Text("暂无数据"),
                   ),
-                  Container(
+               /*   Container(
                     height: 20,
                     child: Text("暂无数据"),
-                  ),
+                  ),*/
 
                 ],
               ),
@@ -159,7 +215,7 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
     return Container(
                 child: new Stack(
                   children: <Widget>[
-                    wrapImageUrl("",double.infinity,double.infinity),
+                   // wrapImageUrl("",double.infinity,double.infinity),
                     Container(width: double.infinity,height: double.infinity,decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [Color(0xFF1DD5E6),Color(0xFF46AEF7)])
                     ),),
@@ -169,17 +225,17 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
                           SizedBox(
                             height: ScreenUtil().setHeight(240),
                           ),
-                          wrapImageUrl("", setW(160), setW(160)),
+                          wrapImageUrl(_doctorInfoInfo.recomImage, setW(200), setW(200)),
                           cYM( ScreenUtil().setHeight(20)),
-                          Text("占位",style: TextStyle(color: Colors.white,fontSize: 18),),
+                          Text(_doctorInfoInfo==null?"":_doctorInfoInfo.realName,style: TextStyle(color: Colors.white,fontSize: 18),),
                           cYM( ScreenUtil().setHeight(20)),
-                          Text("占位",style: TextStyle(color: Colors.white,fontSize: 14),),
-                          cYM( ScreenUtil().setHeight(20)),
+                          Text(_doctorInfoInfo==null?"":_doctorInfoInfo.hospital==null?"":_doctorInfoInfo.hospital,style: TextStyle(color: Colors.white,fontSize: 14),),
+                          cYM( ScreenUtil().setHeight(10)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text("发布 454 |",style: TextStyle(color: Colors.white,fontSize: 14),),
-                              Text(" 粉丝 5645",style: TextStyle(color: Colors.white,fontSize: 14),),
+                              Text("视频 "+_doctorInfoInfo.videoList.length.toString()+" | ",style: TextStyle(color: Colors.white,fontSize: 14),),
+                              Text(" 粉丝 "+_doctorInfoInfo.fenNum.toString(),style: TextStyle(color: Colors.white,fontSize: 14),),
 
                             ],
 
@@ -227,7 +283,7 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
 
                   cXM(ScreenUtil().setWidth(60)),
 
-                  Visibility(
+               /*   Visibility(
                       visible: type.contains("相关")||type.contains("产品")?false:true,
                       child: Row(
                         children: <Widget>[
@@ -235,7 +291,7 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
                           Icon(Icons.arrow_forward_ios,color: Colors.black12,size: ScreenUtil().setWidth(35),),
                         ],
                       )
-                  )
+                  )*/
 
                 ],
 
@@ -449,57 +505,67 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
   ///
   ///  视频选项卡的页面
   ///
-  getVideoTabView(BuildContext context) {
+  getVideoTabView(BuildContext context,DoctorDetailsInfoVideoList bean) {
 
-    return  Container(
-      margin: EdgeInsets.fromLTRB(0, setH(0), 0, setH(20)),
-      padding: EdgeInsets.all(setW(30)),
-      color: Colors.white,
-      child:  new Column(
+    return  InkWell(
 
-        children: <Widget>[
+      onTap: (){
 
-          Row(
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id":bean.id});
 
-            children: <Widget>[
+      },
 
-              Icon(Icons.account_box,size: 40,),
-              cXM(setW(15)),
-              buildText("医生名字",size: 35,color: "#4AB1F2"),
-              cXM(setW(28)),
-              buildText("2019-10-12  15:35:58",size: 32),
+      child:  Container(
+        margin: EdgeInsets.fromLTRB(0, setH(0), 0, setH(20)),
+        padding: EdgeInsets.all(setW(30)),
+        color: Colors.white,
+        child:  new Column(
 
-            ],
-          ),
-          cYM(setH(28)),
-          Container(
-            color: Colors.blue,
-            height: setH(576),
-          ),
-          cYM(setH(28)),
-          buildText("关于糖尿病足溃疡药在临床上的应用",size: 43,color: "#333333"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
+          children: <Widget>[
 
-              buildText("112次播放"),
+            Row(
 
-              buildText("收藏"),
+              children: <Widget>[
 
-              buildText("点赞"),
+                wrapImageUrl(_doctorInfoInfo.recomImage, setW(90),  setW(90)),
+                cXM(setW(15)),
+                buildText(_doctorInfoInfo.realName,size: 35,color: "#ff1C86EE"),
+                cXM(setW(40)),
+                buildText(bean.createTime,size: 32),
 
+              ],
+            ),
+            cYM(setH(28)),
+            Container(
+              height: setH(450),
+              child: wrapImageUrl(bean.image, double.infinity, double.infinity),
+            ),
+            cYM(setH(28)),
 
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Expanded(child:  buildText(bean.title,size: 40),)
+              ],
+            ),
+            cYM(setH(28)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
 
+                buildText(bean.pv.toString()+"次播放",color: "#ff999999",size: 36),
 
-            ],
-          )
+                //  buildText("收藏"),
 
-        ],
+                //  buildText("点赞"),
+              ],
+            )
+
+          ],
+        ),
+
       ),
-
     );
-
 
 
   }
@@ -580,6 +646,72 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
 
   }
 
+
+  ///
+  ///  医生的基本资料
+  ///
+  buildInfoTextView() {
+
+    return Container(
+      padding: EdgeInsets.all(setW(40)),
+      child: Text(_doctorInfoInfo.userInfo==null?"":_doctorInfoInfo.userInfo,style: TextStyle(fontSize: setSP(44)),),
+
+    );
+
+
+  }
+
+
+  ///
+  ///  关注 或者 取消关注 请求接口
+  ///
+  void getFlowStatusData(String id) {
+
+
+    if(!_flowStatus){
+
+      NetUtils.requestUsersFriendsAdd(id)
+          .then((res){
+
+           if(res.code==200){
+
+             setState(() {
+
+               _flowStatus = true;
+
+             });
+
+           }
+
+      });
+
+
+    }else{
+
+
+      NetUtils.requestUsersFriendsDel(id)
+          .then((res){
+
+        if(res.code==200){
+
+          setState(() {
+
+            _flowStatus = false;
+
+          });
+
+        }
+
+      });
+
+
+    }
+
+
+
+
+  }
+
 }
 
 
@@ -622,7 +754,7 @@ class _TopCommonViewState extends State<TopCommonView> with SingleTickerProvider
           color: Colors.white,
           child:  TabBar(
             controller: widget._tabController,
-            tabs: [Text('主页'),Text('文章'),Text('视频'),Text('相关')],
+            tabs: [Text('主页'),Text('文章'),Text('视频')],
             indicatorColor: Color(0xFF1DD5E6), //指示器颜色 如果和标题栏颜色一样会白色
         //    isScrollable: true, //是否可以滑动
             labelColor: Color(0xFF1DD5E6) ,

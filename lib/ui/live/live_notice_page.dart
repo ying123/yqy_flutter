@@ -819,23 +819,29 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
   Widget buildItemDoctorView(BuildContext context,LiveInfoAuthor bean) {
 
-    return Container(
-      margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
-      child: Column(
+    return  InkWell(
+      onTap: (){
+        RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
+      },
 
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
+      child: Container(
+        margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
+        child: Column(
 
-          wrapImageUrl(bean.userPhoto, setW(245), setW(250)),
-          cYM(setH(8)),
-          Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
-       //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
 
-        ],
+            wrapImageUrl(bean.userPhoto, setW(245), setW(250)),
+            cYM(setH(8)),
+            Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
+            //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
+          ],
+
+
+        ),
 
       ),
-
     );
 
   }

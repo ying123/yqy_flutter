@@ -183,9 +183,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
         currentHCID = _liveDetailsInfo.meetList[0].id.toString();
         getProgrammeListData();
       }
-
-
-
     });
 
   }
@@ -223,8 +220,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   ///
   buildContextView(BuildContext context) {
 
-
-
     return Container(
       height: double.infinity,
       child: Column(
@@ -240,7 +235,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
         ],
       ),
     );
-
   }
 
   buildBottomView(BuildContext context) {
@@ -478,6 +472,8 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
     );
 
   }
+
+
 
   buildListView(BuildContext context) {
 
@@ -840,23 +836,28 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
 
   Widget buildItemDoctorView(BuildContext context,LiveReviewInfoInfoAuthor bean) {
 
-    return Container(
-      margin: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
-      height: ScreenUtil().setWidth(260),
-      child: Column(
+    return  InkWell(
+      onTap: (){
+        RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
+      },
 
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
+      child: Container(
+        margin: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
+        height: ScreenUtil().setWidth(260),
+        child: Column(
 
-          wrapImageUrl(bean.userPhoto, setW(250), setW(245)),
-          cYM(setH(35)),
-          Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w400,fontSize: ScreenUtil().setSp(35)),),
-       //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+
+            wrapImageUrl(bean.userPhoto, setW(250), setW(245)),
+            cYM(setH(35)),
+            Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w400,fontSize: ScreenUtil().setSp(35)),),
+            //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+
+          ],
 
 
-        ],
-
-
+        ),
 
       ),
 

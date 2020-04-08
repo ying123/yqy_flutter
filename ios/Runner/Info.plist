@@ -105,10 +105,6 @@
     <string>App需要您的同意,才能访问日历</string>
     <key>NSCameraUsageDescription</key>
     <string>App需要您的同意,才能访问相机</string>
-    <key>NSHealthShareUsageDescription</key>
-    <string>App需要您的同意,才能访问健康分享</string>
-    <key>NSHealthUpdateUsageDescription</key>
-    <string>App需要您的同意,才能访问健康更新 </string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>App需要您的同意,才能始终访问位置</string>
     <key>NSLocationUsageDescription</key>

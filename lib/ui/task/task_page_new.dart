@@ -321,8 +321,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
         itemBuilder: (context, index) {
           return buildItemTask(context, _taskPageInfo.taskList[index]);
         });
-
-
   }
 
 
@@ -390,26 +388,21 @@ class _TaskNewPageState extends State<TaskNewPage> {
                                   color: Color(0xFFE57C36), width: setW(1)),
                               borderRadius: BorderRadius.all(
                                   Radius.circular(setW(33)))
-
                           ),
                           // 0未开始 1去完成 2领取奖励 3已完成 4已过期
                           child: Text(getTextStatus(bean.status),
                             style: TextStyle(color: Color(0xFFE88747),
                                 fontSize: setSP(35)),),
-
-
                         ))
 
                   ],
                 ),
-
                 Container(
                   margin: EdgeInsets.only(left: setW(50)),
                   child: buildText(
                       "+" + bean.points.toString() + "积分", size: 40,
                       color: "#FFFA994C"),
                 ),
-
                 // 任务的进度条
                 Container(
                   margin: EdgeInsets.only(left: setW(50)),
@@ -426,7 +419,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
                                   Radius.circular(setW(6))),
                               border: Border.all(
                                   color: Color(0xFF999999), width: setW(1))
-
                           ),
 
                           // 为了优化UI美观   当有未完成的任务使用listview实现布局  当都完成时使用Row 实现布局
@@ -444,7 +436,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
                               children: getWidget(bean)
 
                           )
-
                       ),
 
                       cXM(setW(20)),
@@ -456,11 +447,8 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
                 )
 
-
               ],
             ))
-
-
           ],
 
         )
@@ -649,7 +637,6 @@ class _TaskNewPageState extends State<TaskNewPage> {
         setState(() {
           _taskPageInfo =  TaskPageInfo.fromJson(res.info);
         });
-
 
       }
 

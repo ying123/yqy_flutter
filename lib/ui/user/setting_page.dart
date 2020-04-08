@@ -1,5 +1,6 @@
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
@@ -24,6 +25,8 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
 
 
+  String _appVersion = "";  // 当前本地的版本
+
   AboutInfo _aboutInfo;
 
 
@@ -32,6 +35,7 @@ class _SettingPageState extends State<SettingPage> {
     // TODO: implement initState
     super.initState();
     loadData();
+    initData();
 
   }
 
@@ -60,8 +64,6 @@ class _SettingPageState extends State<SettingPage> {
 
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,8 +85,10 @@ class _SettingPageState extends State<SettingPage> {
           Divider(height: 1,),
           buildAboutView(context),*/
 
+          //buildVersion(context),
+          //Divider(height: 1,),
           buildUserAgreement(context),
-
+          Divider(height: 1,),
           buildExitUser(context)
 
         ],
@@ -93,8 +97,41 @@ class _SettingPageState extends State<SettingPage> {
 
 
     );
+
   }
 
+
+  ///
+  ///  当前版本
+  ///  
+  Widget buildVersion(BuildContext context) {
+
+    return Container(
+      color: Colors.white,
+      height: 60,
+      padding: EdgeInsets.all(15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("当前版本",style: TextStyle(color: Colors.black87,fontSize: 16),),
+              Text(_appVersion,style: TextStyle(color: Colors.black38,fontSize: 16),),
+            
+            ],
+
+          ),
+
+        ],
+
+      ),
+
+
+    );
+
+  }
   Widget buildUserAgreement(BuildContext context) {
 
     return  InkWell(
@@ -107,12 +144,7 @@ class _SettingPageState extends State<SettingPage> {
                 RRouter.push(context, Routes.webPage,{"url":res.info["content"],"title":"用户协议"});
               }
 
-
         });
-
-
-
-
       },
       child: Container(
         height: 60,
@@ -330,6 +362,23 @@ class _SettingPageState extends State<SettingPage> {
 
       ),
     );
+
+  }
+
+  Future<void> initData() async {
+
+    //获取当前版本
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+
+    setState(() {
+
+      _appVersion =   packageInfo.version;
+
+    });
+
+
+
 
   }
 

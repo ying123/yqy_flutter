@@ -4,6 +4,7 @@ import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/bean/update_version_entity.dart';
 import 'package:yqy_flutter/bean/upload_image_entity.dart';
 import 'package:yqy_flutter/bean/user_entity.dart';
+import 'package:yqy_flutter/ui/doctor/bean/doctor_details_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_home_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_info_entity.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_video_info_entity.dart';
@@ -82,6 +83,8 @@ class EntityFactory {
       return UploadImageEntity.fromJson(json) as T;
     } else if (T.toString() == "UserEntity") {
       return UserEntity.fromJson(json) as T;
+    } else if (T.toString() == "DoctorDetailsEntity") {
+      return DoctorDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorHomeEntity") {
       return DoctorHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "DoctorInfoEntity") {
@@ -112,7 +115,7 @@ class EntityFactory {
       return NoticeHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "SearchHomeEntity") {
       return SearchHomeEntity.fromJson(json) as T;
-    }else if (T.toString() == "SpecialDetailsEntity") {
+    } else if (T.toString() == "SpecialDetailsEntity") {
       return SpecialDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "TabHomeEntity") {
       return TabHomeEntity.fromJson(json) as T;

@@ -101,10 +101,11 @@ class _AboutPageState extends State<AboutPage> {
       ) ,
 
     );
-
-
   }
 
+  ///
+  ///  当前版本
+  ///
  Widget buildVersion(BuildContext context) {
 
     return Container(

@@ -156,11 +156,11 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
   buildBanner(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(360),
+      height: ScreenUtil().setHeight(400),
       width: double.infinity,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return wrapImageUrl( _doctorHomeInfo.topBanner[index].url, double.infinity, double.infinity);
+          return wrapImageUrl( _doctorHomeInfo.topBanner[index].img, double.infinity, double.infinity);
         },
         itemCount: _doctorHomeInfo.topBanner.length,
         viewportFraction: 0.8,
@@ -313,8 +313,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     return InkWell(
 
       onTap: (){
-        FLToast.info(text: "暂无相关信息");
-     //   RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
+      //  FLToast.info(text: "暂无相关信息:"+bean.id.toString());
+        RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
       },
       child: new Container(
         color: Colors.white,

@@ -165,7 +165,6 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
     });
 
-
   }
 
   @override
@@ -189,7 +188,6 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
           children: <Widget>[
             //主要内容布局
             buildContextView(context),
-
             // 底部评论的布局
             buildBottomView(context)
           ],
@@ -215,12 +213,13 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
           buildListView(context),
           //底部的高度 避免评论布局遮挡内容的布局
           cYM(ScreenUtil().setHeight(130))
-
         ],
       ),
     );
 
   }
+
+
 
   buildBottomView(BuildContext context) {
 
@@ -280,8 +279,8 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
           new  Material(
             color: Colors.transparent,
             child:   InkWell(
-
               onTap: (){
+
 
               },
               child:   new Container(
@@ -481,7 +480,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
     return Container(
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),setH(29), ScreenUtil().setWidth(29), setH(29)),
-      height: ScreenUtil().setHeight(120),
+      height: setH(120),
 
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -543,8 +542,9 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
       ),
     );
-
   }
+
+
   Widget getRowTextView(String type){
 
     return Container(
@@ -779,50 +779,58 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
   ///
   Widget buildDoctorListView(BuildContext context) {
 
-    return Container(
-      margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, 0, 0),
-      height: ScreenUtil().setHeight(260),
+    return InkWell(
 
-      child:  new Row(
-        children: <Widget>[
-          wrapImageUrl(_doctorVideoInfoInfo.users.userPhoto, setW(250), setW(245)),
-          cXM(ScreenUtil().setWidth(62)),
-          new  Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Row(
-                    children: <Widget>[
-                      Text(_doctorVideoInfoInfo.users.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
-                      cXM(ScreenUtil().setWidth(56)),
-                    //  Text(_doctorVideoInfoInfo.users.job.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400),),
-                      cXM(ScreenUtil().setWidth(32)),
-                      Container(
-                        height: ScreenUtil().setHeight(43),
-                        padding: EdgeInsets.fromLTRB(setW(10), 0, setW(10), 0),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF4AB1F2),
-                          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(22))),
-                        ),
-                        child: Text(_doctorVideoInfoInfo.users.job==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
-                      )
+      onTap: (){
+        RRouter.push(context, Routes.doctorDetailsPage,{"userId":_doctorVideoInfoInfo.users.id});
+      },
 
-                    ],
+      child: Container(
+        margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, 0, 0),
+        height: ScreenUtil().setHeight(260),
 
-                  ),
-                  cYM(ScreenUtil().setHeight(16)),
-                  Text(_doctorVideoInfoInfo.users.hospital==null?"":_doctorVideoInfoInfo.users.hospital.name,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
-                ],
+        child:  new Row(
+          children: <Widget>[
+            wrapImageUrl(_doctorVideoInfoInfo.users.userPhoto, setW(250), setW(245)),
+            cXM(ScreenUtil().setWidth(62)),
+            new  Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Row(
+                      children: <Widget>[
+                        Text(_doctorVideoInfoInfo.users.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
+                        cXM(ScreenUtil().setWidth(56)),
+                        //  Text(_doctorVideoInfoInfo.users.job.name==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400),),
+                        cXM(ScreenUtil().setWidth(32)),
+                        Container(
+                          height: ScreenUtil().setHeight(43),
+                          padding: EdgeInsets.fromLTRB(setW(10), 0, setW(10), 0),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF4AB1F2),
+                            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(22))),
+                          ),
+                          child: Text(_doctorVideoInfoInfo.users.job==null?"":_doctorVideoInfoInfo.users.job.name,style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
+                        )
 
-              )
-          ),
-          cXM(ScreenUtil().setWidth(50)),
+                      ],
 
-        ],
+                    ),
+                    cYM(ScreenUtil().setHeight(16)),
+                    Text(_doctorVideoInfoInfo.users.hospital==null?"":_doctorVideoInfoInfo.users.hospital.name,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
+                  ],
+
+                )
+            ),
+            cXM(ScreenUtil().setWidth(50)),
+
+          ],
+        ),
+
+
       ),
-
 
     );
 

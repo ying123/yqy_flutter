@@ -21,8 +21,10 @@ class EventBusChange2{
   String v;
 
   EventBusChange2(this.v);
-
 }
+
+
+
 
 ///
 ///   医药咨询分类的筛选

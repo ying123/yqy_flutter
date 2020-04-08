@@ -152,9 +152,8 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                       getRowTextView("特约专家"),//往期会议标题栏
                       Container(
                         color: Color(0xfff9f9f9),
-                        child:    getDocViews(_TabHomeInfo.recomDoctor),
+                        child:  getDocViews(_TabHomeInfo.recomDoctor),
                       ),
-
                       cYM(ScreenUtil().setHeight(30)),
                       getRowTextView("最新资讯"),//往期会议标题栏
 
@@ -162,7 +161,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                   ),
 
                 ),
-
 
                 SliverList(  delegate: SliverChildBuilderDelegate(
                       (context, i) =>
@@ -255,7 +253,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
               ),
               child: Text("预约",style: TextStyle(color: Color(0xFFFB7D39),fontSize: ScreenUtil().setSp(32)),textAlign: TextAlign.center,),
 
-
             )
             
           ],
@@ -297,7 +294,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
           ],
 
         ),
-
 
     );
   }
@@ -427,8 +423,8 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     return InkWell(
 
       onTap: (){
-          FLToast.info(text: "暂无相关信息");
-        // RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
+        //  FLToast.info(text: "暂无相关信息");
+         RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
       },
       child: new Container(
         color: Colors.white,

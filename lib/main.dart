@@ -38,7 +38,12 @@ void main()  {
   WidgetsFlutterBinding.ensureInitialized();
    LocalStorage.getInstance().then((res){
      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-     runApp(MainHomePage());
+     runApp(
+         MainHomePage()
+       // 一行代码 搞定 全灰色主题
+     //  ColorFiltered(colorFilter:  ColorFilter.mode(Colors.white, BlendMode.color),child: MainHomePage(),)
+       
+     );
    });
 
 }
@@ -237,7 +242,6 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
       case 4:
         img = "assets/imgs/tab/tab_me_sele.png";
         break;
-
     }
 
     return img;

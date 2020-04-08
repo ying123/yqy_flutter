@@ -901,23 +901,33 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
   Widget buildItemDoctorView(BuildContext context,LiveInfoAuthor bean) {
 
-    return Container(
-      margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
-      width: ScreenUtil().setWidth(200),
-      child: Column(
+    return  InkWell(
 
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
+      onTap: (){
 
-          wrapImageUrl(bean.userPhoto, setW(200), setW(200)),
-          cYM(setH(8)),
-          Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
-       //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
+        RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
+
+      },
+
+      child: Container(
+        margin: EdgeInsets.only(right: ScreenUtil().setWidth(40)),
+        width: ScreenUtil().setWidth(200),
+        child: Column(
+
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+
+            wrapImageUrl(bean.userPhoto, setW(200), setW(200)),
+            cYM(setH(8)),
+            Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: ScreenUtil().setSp(35)),),
+            //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
 
-        ],
+          ],
 
 
+
+        ),
 
       ),
 
