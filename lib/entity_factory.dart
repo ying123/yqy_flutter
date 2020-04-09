@@ -62,7 +62,10 @@ import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_list_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/user_home_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/user_info_entity.dart';
+import 'package:yqy_flutter/ui/user/collect/bean/cl_news_entity.dart';
+import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
 import 'package:yqy_flutter/ui/user/enterprise/bean/my_enterprise_entity.dart';
+import 'package:yqy_flutter/ui/user/follow/bean/flow_doctor_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
@@ -199,8 +202,14 @@ class EntityFactory {
       return UserHomeEntity.fromJson(json) as T;
     } else if (T.toString() == "UserInfoEntity") {
       return UserInfoEntity.fromJson(json) as T;
+    } else if (T.toString() == "ClNewsEntity") {
+      return ClNewsEntity.fromJson(json) as T;
+    } else if (T.toString() == "ClVideoEntity") {
+      return ClVideoEntity.fromJson(json) as T;
     } else if (T.toString() == "MyEnterpriseEntity") {
       return MyEnterpriseEntity.fromJson(json) as T;
+    } else if (T.toString() == "FlowDoctorEntity") {
+      return FlowDoctorEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoDetailsEntity") {
       return VideoDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoInfoEntity") {

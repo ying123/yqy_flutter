@@ -1,7 +1,11 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/ui/user/collect/bean/cl_news_entity.dart';
+import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
+import 'package:yqy_flutter/ui/user/follow/bean/flow_doctor_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 
@@ -831,10 +835,17 @@ class NetUtils {
   ///
   ///    我的关注
   ///
-  static Future<BaseResult> requestUsersMyFocus(int page) async {
+  static Future<FlowDoctorEntity> requestUsersMyFocus(int page) async {
+
+    Response response;
+    Dio dio = new Dio();
     String url = APPConfig.Server + "users/my_focus";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
-    return result;
+    response=await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
+
+    FlowDoctorEntity flowDoctorEntity =  FlowDoctorEntity.fromJson(response.data);
+
+  //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return flowDoctorEntity;
   }
 
 
@@ -868,6 +879,61 @@ class NetUtils {
     String url = APPConfig.Server + "friends/check";
     BaseResult result = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
     return result;
+  }
+
+
+
+  ///
+  ///    我的粉丝
+  ///
+  static Future<FlowDoctorEntity> requestUsersMyFans(int page) async {
+
+    Response response;
+    Dio dio = new Dio();
+    String url = APPConfig.Server + "users/my_fans";
+    response=await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
+
+    FlowDoctorEntity flowDoctorEntity =  FlowDoctorEntity.fromJson(response.data);
+
+    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return flowDoctorEntity;
+  }
+
+
+
+
+
+  ///
+  ///    我的收藏 --视频收藏
+  ///
+  static Future<ClVideoEntity> requestUsersCollectionVideo(int page) async {
+
+    Response response;
+    Dio dio = new Dio();
+    String url = APPConfig.Server + "users/collection_video";
+    response=await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
+
+    ClVideoEntity flowDoctorEntity =  ClVideoEntity.fromJson(response.data);
+
+    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return flowDoctorEntity;
+  }
+
+
+  ///
+  ///    我的收藏 --文章收藏
+  ///
+  static Future<ClNewsEntity> requestUsersCollectionDocu(int page) async {
+
+    Response response;
+    Dio dio = new Dio();
+    String url = APPConfig.Server + "users/collection_docu";
+    response=await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
+
+    ClNewsEntity flowDoctorEntity =  ClNewsEntity.fromJson(response.data);
+
+    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return flowDoctorEntity;
   }
 
 }

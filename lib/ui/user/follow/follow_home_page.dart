@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/ui/user/follow/bean/flow_doctor_entity.dart';
 import 'package:yqy_flutter/ui/user/follow/fl_doctor_page.dart';
 import 'package:yqy_flutter/ui/user/follow/fl_enterprise_page.dart';
 import 'package:yqy_flutter/ui/user/follow/fl_learn_page.dart';
@@ -13,11 +15,10 @@ class _TabData {
 
 final _tabDataList = <_TabData>[
   _TabData(tab: Text('医生'), body: FlDoctorPage()),
-  _TabData(tab: Text('学会'), body: FlLearnPage()),
-  _TabData(tab: Text('企业'), body: FlEnterPage()),
+//  _TabData(tab: Text('学会'), body: FlLearnPage()),
+  _TabData(tab: Text('企业'), body:Center(child: Text("暂无数据"),)),
   // _TabData(tab: Text('规范解读'), body: TabGFPage())
 ];
-
 
 
 class FollowHomePage extends StatefulWidget  {
@@ -32,20 +33,23 @@ class _FollowHomePageState extends State<FollowHomePage> with SingleTickerProvid
   final tabBarList = _tabDataList.map((item) => item.tab).toList();
   final tabBarViewList = _tabDataList.map((item) => item.body).toList();
 
+
+
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: tabBarList.length);
+
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
 
-        appBar: AppBar(
-          title: Text("我的关注"),
-        ),
+        appBar: getCommonAppBar("我的关注"),
         body: Column(
 
           children: <Widget>[
@@ -55,7 +59,7 @@ class _FollowHomePageState extends State<FollowHomePage> with SingleTickerProvid
               tabs:tabBarList,
               indicatorColor: Color(0xFF1DD5E6), //指示器颜色 如果和标题栏颜色一样会白色
               isScrollable: true, //是否可以滑动
-              labelColor: Color(0xFF333333) ,
+              labelColor: Color(0xFF1DD5E6) ,
               unselectedLabelColor: Color(0xFF999999),
               indicatorSize: TabBarIndicatorSize.label,
               unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(50),fontWeight: FontWeight.w400), //防止字体抖动 不用此方法
@@ -78,4 +82,6 @@ class _FollowHomePageState extends State<FollowHomePage> with SingleTickerProvid
 
     );
   }
+
+
 }

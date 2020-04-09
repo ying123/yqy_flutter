@@ -14,15 +14,11 @@ class _ClArticlePageState extends State<ClArticlePage> {
     return  Scaffold(
       backgroundColor: Colors.white,
 
-      body: ListView.builder(
-          shrinkWrap: true,
-          itemCount: 10,
-          itemBuilder: (context,index){
+      body: Center(
 
-            return itemListView();
+        child: Text("暂无数据"),
 
-          }
-      ),
+      )
     );
   }
 
@@ -62,7 +58,6 @@ class _ClArticlePageState extends State<ClArticlePage> {
            //   FlatButton.icon(onPressed: (){}, icon: Icon(Icons.add_circle,size: ScreenUtil().setWidth(50),), label: Text("558",style: TextStyle(fontSize: ScreenUtil().setSp(35),color: Color(0xFF999999)),),padding: EdgeInsets.all(0),),
 
             ],
-
 
           ),
             Divider(height: 2,color: Color(0xFFEEEEEE),)

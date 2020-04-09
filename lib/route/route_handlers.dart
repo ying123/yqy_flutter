@@ -53,6 +53,7 @@ import 'package:yqy_flutter/ui/user/enterprise/my_enterprise_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/search_page.dart';
 import 'package:yqy_flutter/ui/user/enterprise/staff_list_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
+import 'package:yqy_flutter/ui/user/follow/fans_doctor_page.dart';
 import 'package:yqy_flutter/ui/user/follow/follow_home_page.dart';
 import 'package:yqy_flutter/ui/user/my_collection_page.dart';
 import 'package:yqy_flutter/ui/user/my_foot_page.dart';
@@ -483,6 +484,13 @@ var pdfViewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String,
 var doctorHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return DoctorHomePage();
 });
+
+
+
+var fansDoctorPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return FansDoctorPage();
+});
+
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

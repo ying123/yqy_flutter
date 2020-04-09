@@ -11,13 +11,16 @@ import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
-
-class FlDoctorPage extends StatefulWidget {
+///
+///   粉丝列表
+///
+///
+class FansDoctorPage extends StatefulWidget {
   @override
-  _FlDoctorPageState createState() => _FlDoctorPageState();
+  _FansDoctorPageState createState() => _FansDoctorPageState();
 }
 
-class _FlDoctorPageState extends State<FlDoctorPage> {
+class _FansDoctorPageState extends State<FansDoctorPage> {
 
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
@@ -54,7 +57,11 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
   @override
   Widget build(BuildContext context) {
 
-    return LoadStateLayout(
+    return  Scaffold(
+
+      appBar: getCommonAppBar("我的粉丝"),
+
+      body:  new LoadStateLayout(
         state: _layoutState,
         errorRetry: () {
           setState(() {
@@ -93,6 +100,8 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
 
 
 
+
+      ),
 
     );
 
@@ -141,31 +150,11 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
 
                           ),
                           cYM(ScreenUtil().setHeight(16)),
-                          Text(bean.info.hospital.name,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
+                          Text(bean.info.hospital==null?"":bean.info.hospital.name,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(35)),)
                         ],
 
                       )
                   ),
-                  cXM(ScreenUtil().setWidth(50)),
-                  InkWell(
-
-                    onTap: (){
-
-                      getCancelFlowStatusData(bean.info.id.toString());
-
-                    },
-                    child:    new  Container(
-                      width: ScreenUtil().setWidth(153),
-                      height: ScreenUtil().setHeight(55),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF999999),
-                        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(22))),
-                      ),
-                      child: Text("已关注",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(32)),),
-                    ),
-
-                  )
                 ],
               ),
               cYM(ScreenUtil().setHeight(16)),
@@ -182,7 +171,7 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
 
   void initData() {
 
-    NetUtils.requestUsersMyFocus(page)
+    NetUtils.requestUsersMyFans(page)
         .then((res){
 
       if(res.code==200){
@@ -218,24 +207,6 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
 
 
 
-  void getCancelFlowStatusData(String id) {
-
-
-    NetUtils.requestUsersFriendsDel(id)
-        .then((res){
-
-      if(res.code==200){
-
-          FLToast.showSuccess(text: "已取消关注");
-
-          initData();
-
-      }
-
-    });
-
-
-  }
 
 
 }

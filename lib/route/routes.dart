@@ -177,6 +177,8 @@ class Routes {
 
   static String doctorHomePage = "/doctorHomePage"; //  互动消息  关注的消息
 
+  static String fansDoctorPage = "/fansDoctorPage"; //  我的粉丝列表
+
 
 
   static void configureRoutes(Router router) {
@@ -250,6 +252,9 @@ class Routes {
     router.define(doctorVideoListPage, handler:doctorVideoListPageHandler);
     router.define(pdfViewPage, handler:pdfViewPageHandler);
     router.define(doctorHomePage, handler:doctorHomePageHandler);
+    router.define(fansDoctorPage, handler:fansDoctorPageHandler);
+
+
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

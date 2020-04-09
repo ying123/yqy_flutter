@@ -65,7 +65,6 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
         if(res.code==200){
 
           setState(() {
-            
 
             if(res.msg=="已关注"){
 

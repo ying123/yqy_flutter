@@ -4,6 +4,7 @@ import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -20,13 +21,15 @@ class NewUserPage extends StatefulWidget {
 }
 
 class _NewUserPageState extends State<NewUserPage> {
-
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
 
   UserInfoInfo _userInfoInfo; // 用户的信息 包含角色类型
 
   UserHomeInfo _info; // 用户首页的信息 根据用户信息返回的角色类型 请求相应的数据
 
   StreamSubscription changeSubscription;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -208,8 +211,8 @@ class _NewUserPageState extends State<NewUserPage> {
                   color: Colors.white,
                   child: InkWell(
                     onTap: (){
-                      FLToast.error(text: "暂无内容");
-                     // RRouter.push(context ,Routes.collectHomePage,{},transition:TransitionType.cupertino);
+                    //  FLToast.error(text: "暂无内容");
+                     RRouter.push(context ,Routes.collectHomePage,{},transition:TransitionType.cupertino);
                     },
                     child:   new Container(
                       padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -232,8 +235,8 @@ class _NewUserPageState extends State<NewUserPage> {
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
-                     FLToast.error(text: "暂无内容");
-                  //   RRouter.push(context ,Routes.followHomePage,{},transition:TransitionType.cupertino);
+                    // FLToast.error(text: "暂无内容");
+                   RRouter.push(context ,Routes.followHomePage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -257,8 +260,8 @@ class _NewUserPageState extends State<NewUserPage> {
                  color: Colors.white,
                  child: InkWell(
                    onTap: (){
-                     FLToast.error(text: "暂无内容");
-                     //  RRouter.push(context ,Routes.loginHomePage,{},transition:TransitionType.cupertino);
+                   //  FLToast.error(text: "暂无内容");
+                   RRouter.push(context ,Routes.fansDoctorPage,{},transition:TransitionType.cupertino);
                    },
                    child:   new Container(
                      padding: EdgeInsets.all(ScreenUtil().setWidth(25)),
@@ -568,7 +571,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
       case 0:
 
-        return "未认证";
+       return"未认证";
       case 1:
 
         return "已认证";
