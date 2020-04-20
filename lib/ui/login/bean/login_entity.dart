@@ -3,7 +3,7 @@ class LoginEntity {
 	String  userPhone;
 	String nickName;
 	String userId;
-	String regType;
+	var regType;
 	String token;
 
 	LoginEntity({this. loginSecret, this. userPhone, this.nickName, this.userId, this.regType, this.token});

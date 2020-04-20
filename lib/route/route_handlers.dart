@@ -55,6 +55,7 @@ import 'package:yqy_flutter/ui/user/enterprise/staff_list_page.dart';
 import 'package:yqy_flutter/ui/user/feed_back_page.dart';
 import 'package:yqy_flutter/ui/user/follow/fans_doctor_page.dart';
 import 'package:yqy_flutter/ui/user/follow/follow_home_page.dart';
+import 'package:yqy_flutter/ui/user/goods/my_goods_page.dart';
 import 'package:yqy_flutter/ui/user/my_collection_page.dart';
 import 'package:yqy_flutter/ui/user/my_foot_page.dart';
 import 'package:yqy_flutter/ui/user/my_integral_detail_page.dart';
@@ -489,6 +490,11 @@ var doctorHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<Stri
 
 var fansDoctorPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return FansDoctorPage();
+});
+
+
+var myGoodsPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return MyGoodsPage();
 });
 
 /*

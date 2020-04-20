@@ -48,12 +48,23 @@ class _NewUserPageState extends State<NewUserPage> {
   }
 
 
+
+  void _onRefresh() async{
+    initData();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
     backgroundColor: Colors.white,
-      body: _userInfoInfo==null?Container(): ListView(
+      body:   SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: null,
+        child: ListView(
         padding: EdgeInsets.all(0),
         children: <Widget>[
 
@@ -63,10 +74,13 @@ class _NewUserPageState extends State<NewUserPage> {
           buildVideoListView(context),
           buildLine(),
 
+          _userInfoInfo==null?Container():
+
          // 如果当前角色是医生
          _userInfoInfo.regType==1? Column(
 
            children: <Widget>[
+
 
              buildBtnView(context,"我的赞"),
              buildBtnView(context,"积分专区"),
@@ -80,7 +94,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
            children: <Widget>[
 
-             buildBtnView(context,"我的企业"),
+         //    buildBtnView(context,"我的企业"),
              buildBtnView(context,"我的任务"),
              buildBtnView(context,"用户反馈"),
 
@@ -90,7 +104,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
         ],
       ),
-
+      )
 
     );
   }
@@ -114,7 +128,7 @@ class _NewUserPageState extends State<NewUserPage> {
             ),
 
            Image.asset(wrapAssets("user/top_bg.png"),width: double.infinity,height:  ScreenUtil().setHeight(470),fit: BoxFit.fill,),
-
+        
            Positioned(
              top: ScreenUtil().setHeight(120),
              right: ScreenUtil().setWidth(136),
@@ -166,10 +180,10 @@ class _NewUserPageState extends State<NewUserPage> {
             Positioned(
                 top: ScreenUtil().setHeight(370),
                 left: ScreenUtil().setWidth(261),
-                child:  Text(_info.userInfo==null?"":_info.userInfo,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
+                child:  Text(_info==null?"":_info.userInfo,style: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
             ),
 
-          buildUserInfoStatusView(context,_userInfoInfo.regType,_userInfoInfo.userInfoStatus),
+            _userInfoInfo==null?Container(): buildUserInfoStatusView(context,_userInfoInfo.regType,_userInfoInfo.userInfoStatus),
 
           new Positioned(
               bottom: 0,
@@ -182,7 +196,7 @@ class _NewUserPageState extends State<NewUserPage> {
                 child: Flex(
                   direction: Axis.horizontal,
                   children: <Widget>[
-
+                    _userInfoInfo==null?Container():
                 _userInfoInfo.regType==1? Expanded(flex: 1,child: new  Material(
 
                       color: Colors.white,
@@ -246,10 +260,8 @@ class _NewUserPageState extends State<NewUserPage> {
                        children: <Widget>[
                          Text(_info==null?"0":_info.follow.toString(),style: TextStyle(color: Color(0xFF000000),fontSize: ScreenUtil().setSp(63),fontStyle: FontStyle.italic),),
                          buildText("关注",size: 29,color: "#FF333333")
-
                        ],
                      ),
-
 
                    ),
                  ),
@@ -278,8 +290,6 @@ class _NewUserPageState extends State<NewUserPage> {
                    ),
                  ),
                ) ,),
-
-
 
                   ],
                 ),
@@ -375,7 +385,6 @@ class _NewUserPageState extends State<NewUserPage> {
 
     return  InkWell(
 
-
       onTap: (){
 
         FLToast.info(text: "暂无内容");
@@ -410,6 +419,7 @@ class _NewUserPageState extends State<NewUserPage> {
   ///
   buildBtnView(BuildContext context,String value) {
 
+
     return Material(
       color: Colors.white,
       child: InkWell(
@@ -427,8 +437,9 @@ class _NewUserPageState extends State<NewUserPage> {
                RRouter.push(context ,Routes.orderListPage,{},transition:TransitionType.cupertino);
              break;
             case"我的赞":
-              FLToast.info(text: "暂无内容");
-            //  RRouter.push(context ,Routes.myCollectionPage,{},transition:TransitionType.cupertino);
+              // 我的赞 当前暂未开放
+            //  FLToast.info(text: "暂无内容");
+               RRouter.push(context ,Routes.myGoodsPage,{},transition:TransitionType.cupertino);
               break;
             case"我的任务":
             RRouter.push(context ,Routes.taskNewPage,{},transition:TransitionType.cupertino);
@@ -439,7 +450,6 @@ class _NewUserPageState extends State<NewUserPage> {
           }
 
         },
-
         child: Container(
           height: ScreenUtil().setHeight(140),
           padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58), 0, ScreenUtil().setWidth(43), 0),
@@ -454,9 +464,7 @@ class _NewUserPageState extends State<NewUserPage> {
                     children: <Widget>[
 
                     //  Icon(Icons.account_balance,size: ScreenUtil().setWidth(70),),
-
                       Image.asset(wrapAssets(getLineImage(value)),width: setW(60),height: setH(60),),
-
                       cXM(ScreenUtil().setWidth(23)),
                       Expanded(child:  Text(value,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(40)),)),
                       Icon(Icons.arrow_forward_ios,color: Colors.black12,size: ScreenUtil().setWidth(46),),
@@ -489,12 +497,14 @@ class _NewUserPageState extends State<NewUserPage> {
       if(res.code==200){
           _userInfoInfo = UserInfoInfo.fromJson(res.info);
           UserUtils.saveUserInfo(_userInfoInfo);
+          _refreshController.refreshCompleted();
+          _refreshController.resetNoData();
        }
 
 
     }).then((_){
 
-      NetUtils.requestIndex(_userInfoInfo.regType)
+      NetUtils.requestIndex(int.parse(_userInfoInfo.regType.toString()))
           .then((res){
 
         if(res.code==200){

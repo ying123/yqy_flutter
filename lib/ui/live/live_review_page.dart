@@ -144,7 +144,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
       if(ress[0].code==200){
         _liveDetailsInfo = LiveReviewInfoInfo.fromJson(ress[0].info);
 
-
         if(_liveDetailsInfo.videoList.length>0){
           player.setDataSource(_liveDetailsInfo.videoList[0].playUrl??"", autoPlay: true);
 

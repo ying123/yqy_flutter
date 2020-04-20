@@ -98,9 +98,6 @@ class _FansDoctorPageState extends State<FansDoctorPage> {
 
         ),
 
-
-
-
       ),
 
     );

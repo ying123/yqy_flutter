@@ -132,14 +132,19 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
   @override
   void dispose() {
     //  FlutterUmplus.endPageView(runtimeType.toString());
-    timer.cancel();
-    player.release();
-    player = null;
-    changeSubscription.cancel();
-    super.dispose();
     //为了避免内存泄露，需要调用_controller.dispose
-    _scrollC.dispose();
+    player.release().then((_){
+      player = null;
+    });
+    changeSubscription.cancel();
     WidgetsBinding.instance.removeObserver(this);
+    if(timer!=null){
+      timer.cancel();
+    }
+
+    _scrollC.dispose();
+    super.dispose();
+
 
 
   }

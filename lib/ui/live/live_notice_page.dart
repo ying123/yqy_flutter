@@ -95,10 +95,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
   }
 
 
-
   void loadData() async{
-
-
     Future.wait([
       // 当前页面的数据
       NetUtils.requestMeetingInfo(liveId),

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yqy_flutter/bean/upload_image_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
@@ -34,7 +38,7 @@ class _SettingPageState extends State<SettingPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadData();
+   // loadData();
     initData();
 
   }
@@ -87,7 +91,9 @@ class _SettingPageState extends State<SettingPage> {
 
           //buildVersion(context),
           //Divider(height: 1,),
-          buildUserAgreement(context),
+          buildUpdateAvatar(context),
+          Divider(height: 1,),
+          buildUserAgreement("用户协议和隐私政策",context),
           Divider(height: 1,),
           buildExitUser(context)
 
@@ -132,16 +138,16 @@ class _SettingPageState extends State<SettingPage> {
     );
 
   }
-  Widget buildUserAgreement(BuildContext context) {
+  Widget buildUserAgreement(String v,BuildContext context) {
 
-    return  InkWell(
+    return new  InkWell(
       onTap: (){
 
         NetUtils.requestAgreements()
             .then((res){
 
               if(res.code==200){
-                RRouter.push(context, Routes.webPage,{"url":res.info["content"],"title":"用户协议"});
+                RRouter.push(context, Routes.webPage,{"url":res.info["content"],"title":v});
               }
 
         });
@@ -156,7 +162,7 @@ class _SettingPageState extends State<SettingPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
 
-            Text("用户协议",style: TextStyle(color: Colors.black87,fontSize: 16),),
+            Text(v,style: TextStyle(color: Colors.black87,fontSize: 16),),
             new Expanded(
                 child: Container(
                   padding: EdgeInsets.only(right: 10),
@@ -378,6 +384,76 @@ class _SettingPageState extends State<SettingPage> {
     });
 
 
+
+
+  }
+
+
+  File _imageFile;
+  Future getImage() async {
+
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _imageFile = image;
+
+    NetUtils.requestUploadsImages(_imageFile,"certification")
+        .then((res){
+
+            if(res.code==200){
+              UploadImageInfo  _uploadImageInfo = UploadImageInfo.fromJson(res.info);
+              updateAvatarUrl(_uploadImageInfo.src);
+            }
+
+    });
+
+
+  }
+  buildUpdateAvatar(BuildContext context) {
+    return new  InkWell(
+      onTap: (){
+        getImage();
+      },
+      child: Container(
+        height: 60,
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+        child: Row(
+
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+
+            Text("修改头像",style: TextStyle(color: Colors.black87,fontSize: 16),),
+            new Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                )
+            ),
+
+            Icon(Icons.keyboard_arrow_right,size: 30,color: Colors.black26,),
+
+          ],
+        ),
+
+      ),
+    );
+
+  }
+
+  void updateAvatarUrl(String url) {
+
+    NetUtils.requestUsersUpdateAvatar(url)
+        .then((res){
+
+
+          if(res.code==200){
+
+             FLToast.showSuccess(text: "修改成功");
+
+          }
+
+
+    });
 
 
   }

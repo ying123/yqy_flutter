@@ -4,22 +4,26 @@ import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
+import 'package:yqy_flutter/ui/user/goods/bean/my_goods_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ClVideoPage extends StatefulWidget {
+///
+///  我的点赞列表
+///
+class MyGoodsPage extends StatefulWidget {
   @override
-  _ClVideoPageState createState() => _ClVideoPageState();
+  _MyGoodsPageState createState() => _MyGoodsPageState();
 }
 
-class _ClVideoPageState extends State<ClVideoPage> {
+class _MyGoodsPageState extends State<MyGoodsPage> {
 
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
 
   int page = 1;
 
-  ClVideoEntity _clVideoEntity;
+  MyGoodsEntity _myGoodsEntity;
 
 
   @override
@@ -40,36 +44,40 @@ class _ClVideoPageState extends State<ClVideoPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return    SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: true,
-        controller: _refreshController,
-        onRefresh: _onRefresh,
-        onLoading: _onLoading,
-        child:
-        _clVideoEntity==null?Container(): ListView.separated(
-          shrinkWrap: true,
-          itemCount: _clVideoEntity.info.length,
-          itemBuilder: (context,index){
-            return getVideoTabView(context,_clVideoEntity.info[index]);
+    return  Scaffold(
 
-          },
-          separatorBuilder: (context,index){
-            return Container(
-              height: setH(1),
-              color: Colors.black26,
-            );
+      appBar: getCommonAppBar("我的点赞"),
+      body:  new SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child:
+          _myGoodsEntity==null?Container(): ListView.separated(
+            shrinkWrap: true,
+            itemCount: _myGoodsEntity.info.length,
+            itemBuilder: (context,index){
+              return getVideoTabView(context,_myGoodsEntity.info[index]);
 
-          },
-        )
+            },
+            separatorBuilder: (context,index){
+              return Container(
+                height: setH(1),
+                color: Colors.black26,
+              );
 
+            },
+          )
+
+      ),
     );
 
   }
   ///
   ///  视频选项卡的页面
   ///
-  getVideoTabView(BuildContext context,ClVideoInfo bean) {
+  getVideoTabView(BuildContext context,MyGoodsInfo bean) {
 
     return  InkWell(
 
@@ -122,32 +130,30 @@ class _ClVideoPageState extends State<ClVideoPage> {
   }
   void initData() {
 
-     NetUtils.requestUsersCollectionVideo(page)
+     NetUtils.requestUsersMyGood(page)
         .then((res){
 
       if(res.code==200){
 
-        setState(() {
 
           if(page==1){
-            _clVideoEntity =   ClVideoEntity.fromJson(res.toJson());
+            _myGoodsEntity =   MyGoodsEntity.fromJson(res.toJson());
             _refreshController.refreshCompleted();
 
           }else{
 
-            if(ClVideoEntity.fromJson(res.toJson()).info.length==0){
+            if(MyGoodsEntity.fromJson(res.toJson()).info.length==0){
               _refreshController.loadNoData();
             }else{
-
-              _clVideoEntity.info.addAll(ClVideoEntity.fromJson(res.toJson()).info);
+              _myGoodsEntity.info.addAll(MyGoodsEntity.fromJson(res.toJson()).info);
               _refreshController.loadComplete();
 
             }
 
           }
+        setState(() {
 
         });
-
       }
 
     });

@@ -96,18 +96,16 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
                 // 身份证输入
                 buildIDCardInputView(context),
                 buildLine(),
-                // 医院地区选择
+                // 地区选择
                 buildAddressView(context),
                 buildLine(),
-                // 医院名称
+              /*  // 医院名称
                 buildHosNameInputView(context),
-                buildLine(),
+                buildLine(),*/
                 //提交按钮
-
                 Visibility(visible: UserUtils.getUserInfoX().userInfoStatus!=1,child: Column(
 
                   children: <Widget>[
-
                     cYM(ScreenUtil().setHeight(100)),
                     buildBtnRegisterView(context),
                     cYM(ScreenUtil().setHeight(60)),
@@ -155,7 +153,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
         child: Text("提交审核",style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(37),fontWeight: FontWeight.w500),),
       ),
     );
-
   }
 
 
@@ -314,7 +311,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
 
 
   buildAddressView(BuildContext context) {
-
     return new Row(
       children: <Widget>[
         Container(
@@ -371,41 +367,6 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
 
 
 
-  buildJobNumberInputView(BuildContext context) {
-    return new Row(
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(50),
-          height:   ScreenUtil().setWidth(50),
-          alignment: Alignment.center,
-          child:  Image.asset(wrapAssets("user/ic_id.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
-        ),
-        Expanded(child: TextFormField(
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.start,
-          maxLines: 1,
-          decoration: InputDecoration(
-            hintText: "请输入医师执业证书号",
-            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
-            border: InputBorder.none, // 去除下划线
-          ),
-          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
-          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
-        )),
-        Container(
-          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
-          width:   ScreenUtil().setWidth(36),
-          height:   ScreenUtil().setWidth(36),
-          child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
-        ),
-      ],
-    );
-  }
-
-
-
   buildBottomTipView() {
 
     return Container(
@@ -438,12 +399,12 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
 
 
     // 医院
-    if(_hosNameC.text.isEmpty){
+   /* if(_hosNameC.text.isEmpty){
       showToast("请先输入医院名称");
       return;
     }
     map["hospital_name"] = _hosNameC.text;
-    map["h_id"] = 0;
+    map["h_id"] = 0;*/
 
     // 地区
     if(address.isEmpty||address=="选择地区"){

@@ -1,3 +1,4 @@
+import 'package:flui/flui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -39,8 +40,6 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
   }
   void loadData() async{
-
-
 
 
 
@@ -168,11 +167,9 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
                //   border: new Border(BorderSide(color: Colors.black12,width: 1) ),
                  border: new Border.all(color: Colors.black12,width: 1),
                  color: Colors.white
-
              ),
              width: 115,
              height: 85,
-
 
              child: Column(
 
@@ -251,7 +248,7 @@ import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
            )  ,
            onTap: (){
 
-             showToast("点击研究分类");
+             FLToast.info(text:"点击研究分类" );
 
            },
 

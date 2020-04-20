@@ -179,6 +179,9 @@ class Routes {
 
   static String fansDoctorPage = "/fansDoctorPage"; //  我的粉丝列表
 
+  static String myGoodsPage = "/myGoodsPage"; //  我的点赞列表
+
+
 
 
   static void configureRoutes(Router router) {
@@ -253,7 +256,7 @@ class Routes {
     router.define(pdfViewPage, handler:pdfViewPageHandler);
     router.define(doctorHomePage, handler:doctorHomePageHandler);
     router.define(fansDoctorPage, handler:fansDoctorPageHandler);
-
+    router.define(myGoodsPage, handler:myGoodsPageHandler);
 
 
    /* router.define(rootPage, handler: rootHandler);

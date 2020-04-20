@@ -47,7 +47,6 @@ class _ClNewsPageState extends State<ClNewsPage> {
         onRefresh: _onRefresh,
         onLoading: _onLoading,
         child:
-
         ListView.separated(itemBuilder: (context,index) {
           return getListItemView(context,_clNewsEntity.info[index]);
         }, separatorBuilder:  (context,index) {
@@ -70,14 +69,14 @@ class _ClNewsPageState extends State<ClNewsPage> {
       if(res.code==200){
 
         setState(() {
-          _clNewsEntity =   ClNewsEntity.fromJson(res.toJson());
-          if(page==1){
 
+          if(page==1){
+            _clNewsEntity =   ClNewsEntity.fromJson(res.toJson());
             _refreshController.refreshCompleted();
 
           }else{
 
-            if(_clNewsEntity.info.length==0){
+            if(ClNewsEntity.fromJson(res.toJson()).info.length==0){
 
               _refreshController.loadNoData();
             }else{
@@ -102,7 +101,7 @@ class _ClNewsPageState extends State<ClNewsPage> {
     return  new GestureDetector(
 
       onTap: (){
-        RRouter.push(context, Routes.newsContentPage, {"id":info.id});
+        RRouter.push(context, Routes.guideContentPage, {"id":info.id});
       },
       child: new Container(
 
@@ -116,11 +115,8 @@ class _ClNewsPageState extends State<ClNewsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
 
-
           children: <Widget>[
-
             Row(
-
               children: <Widget>[
 
                 Expanded(child:   Column(
@@ -152,7 +148,6 @@ class _ClNewsPageState extends State<ClNewsPage> {
 
                         ],
 
-
                       ),
                     ),
 
@@ -161,7 +156,7 @@ class _ClNewsPageState extends State<ClNewsPage> {
                 ),
                 ),
 
-                info.image.isEmpty?Container():wrapImageUrl(info.image, setW(200), setH(120)),
+                info.image==null?Container():wrapImageUrl(info.image, setW(200), setH(120)),
 
                 cXM(setW(20))
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flui/flui.dart';
@@ -14,6 +15,7 @@ import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/login/bean/send_sms_entity.dart';
 import 'package:yqy_flutter/ui/login/bean/wx_info_entity.dart';
+import 'package:yqy_flutter/utils/local_storage_utils.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/regex_utils.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
@@ -46,12 +48,17 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
   String _result = "无"; // 微信登陆响应的结果
 
+  bool isFirst =  true;  // 是否是第一次安装
+
+  bool isProtocol = false;// 当前是否同意
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initControllerListener();
     initWxLoginListener();
+    initProtocolDialog();
   }
 
   void initControllerListener() {
@@ -127,11 +134,14 @@ class _LoginHomePageState extends State<LoginHomePage> {
                   buildBtnLoginView(context),
                   cYM(ScreenUtil().setHeight(10)),
                   buildPwdLoginView(context),
-                  cYM(ScreenUtil().setHeight(330)),
+                  cYM(ScreenUtil().setHeight(240)),
                   buildTipView2(),
-                  cYM(ScreenUtil().setHeight(46)),
+                  cYM(ScreenUtil().setHeight(30)),
                   // 其他登陆方式
                   buildOtherLoginView(context),
+                  cYM(ScreenUtil().setHeight(60)),
+                  // 用户协议 和 隐私协议
+                  buildProtocolView(context)
                 ],
               ),
               onTap: (){
@@ -245,9 +255,17 @@ class _LoginHomePageState extends State<LoginHomePage> {
           alignment: Alignment.center,
            child: FlatButton(
              onPressed: (){
+
+               if(!isProtocol){
+                 FLToast.info(text: "请先点击同意下方的“用户协议和隐私政策”");
+                 return;
+               }
+
+
                if (_formKey.currentState.validate()) {
                  ///只有输入的内容符合要求通过才会到达此处
                  _formKey.currentState.save();
+
                  if(RegexUtils.isChinaPhoneLegal(_phone)){
 
                    RRouter.push(context ,Routes.loginSendSmsPage,{"phone":_phone},transition:TransitionType.cupertino);
@@ -463,7 +481,15 @@ class _LoginHomePageState extends State<LoginHomePage> {
   ///  密码登录请求
   ///
   void requestPwdLogin(BuildContext context, String phone, String pwd) {
-      
+
+
+    if(!isProtocol){
+
+      FLToast.info(text: "请先点击同意下方的“用户协议和隐私政策”");
+      return;
+    }
+
+
     NetUtils.requestPassLogin(phone,pwd)
         .then((res){
 
@@ -480,6 +506,85 @@ class _LoginHomePageState extends State<LoginHomePage> {
           }
 
     });
+  }
+
+  buildProtocolView(BuildContext context) {
+
+
+    return Container(
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+
+
+          Checkbox(value: isProtocol, onChanged: (e){
+
+              setState(() {
+                isProtocol  = e;
+              });
+
+          }),
+          buildText("已同意"),
+
+          InkWell(
+
+            onTap: (){
+              NetUtils.requestAgreements()
+                  .then((res){
+
+                if(res.code==200){
+                  RRouter.push(context, Routes.webPage,{"url":res.info["content"],"title":"用户协议和隐私政策"});
+                }
+
+              });
+            },
+            child:    buildText("《用户协议和隐私政策》",color: "#FF209CFF"),
+
+          )
+
+
+
+        ],
+      ),
+    );
+
+
+  }
+
+
+  ///
+  ///  应用宝市场要求  必须有 隐私政策和用户协议
+  ///
+  ///   如果是首次安装打开   显示弹窗
+  ///
+  ///    仅安卓
+  ///
+  void initProtocolDialog() {
+
+
+    if(Platform.isAndroid){
+
+      isFirst =  LocalStorage.getBool("isFirst");
+
+
+     // 第一次
+      if(!isFirst){
+
+        LocalStorage.putBool("isFirst", true);
+        isProtocol =  false;
+      }else{
+        isProtocol =  true;
+      }
+
+      setState(() {
+
+      });
+
+
+    }
+
+
   }
 
 

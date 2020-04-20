@@ -188,15 +188,15 @@ class _FlDoctorPageState extends State<FlDoctorPage> {
       if(res.code==200){
 
         setState(() {
-          _flowDoctorInfo =   FlowDoctorEntity.fromJson(res.toJson());
-          if(page==1){
 
+          if(page==1){
+            _flowDoctorInfo =   FlowDoctorEntity.fromJson(res.toJson());
             _layoutState = loadStateByCode(res.code);
             _refreshController.refreshCompleted();
 
           }else{
 
-              if(_flowDoctorInfo.info.length==0){
+              if(FlowDoctorEntity.fromJson(res.toJson()).info.length==0){
 
                 _refreshController.loadNoData();
               }else{

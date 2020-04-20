@@ -80,6 +80,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
     NetUtils.requestUploadsImages(_imageFile,"certification")
         .then((res){
       setState(() {
+
         if(res.code==200){
           _uploadImageInfo = UploadImageInfo.fromJson(res.info);
 

@@ -6,6 +6,7 @@ import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/ui/user/collect/bean/cl_news_entity.dart';
 import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
 import 'package:yqy_flutter/ui/user/follow/bean/flow_doctor_entity.dart';
+import 'package:yqy_flutter/ui/user/goods/bean/my_goods_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 
@@ -935,5 +936,35 @@ class NetUtils {
     //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return flowDoctorEntity;
   }
+
+
+
+  ///
+  ///    修改头像
+  ///
+  ///   src  头像地址
+  ///
+  static Future<BaseResult> requestUsersUpdateAvatar(String  src) async {
+
+    String url = APPConfig.Server + "users/uploadEdit";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"src":src});
+    return result;
+  }
+
+
+  ///
+  ///   我的点赞
+  ///
+  static Future<MyGoodsEntity> requestUsersMyGood(int page) async {
+    Response response;
+    Dio dio = new Dio();
+    String url = APPConfig.Server + "users/my_good";
+    response=await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
+
+    MyGoodsEntity flowDoctorEntity =  MyGoodsEntity.fromJson(response.data);
+
+    return flowDoctorEntity;
+  }
+
 
 }

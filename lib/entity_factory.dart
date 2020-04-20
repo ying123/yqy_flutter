@@ -66,6 +66,7 @@ import 'package:yqy_flutter/ui/user/collect/bean/cl_news_entity.dart';
 import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
 import 'package:yqy_flutter/ui/user/enterprise/bean/my_enterprise_entity.dart';
 import 'package:yqy_flutter/ui/user/follow/bean/flow_doctor_entity.dart';
+import 'package:yqy_flutter/ui/user/goods/bean/my_goods_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_details_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_info_entity.dart';
 import 'package:yqy_flutter/ui/video/bean/video_list_entity.dart';
@@ -210,6 +211,8 @@ class EntityFactory {
       return MyEnterpriseEntity.fromJson(json) as T;
     } else if (T.toString() == "FlowDoctorEntity") {
       return FlowDoctorEntity.fromJson(json) as T;
+    } else if (T.toString() == "MyGoodsEntity") {
+      return MyGoodsEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoDetailsEntity") {
       return VideoDetailsEntity.fromJson(json) as T;
     } else if (T.toString() == "VideoInfoEntity") {
