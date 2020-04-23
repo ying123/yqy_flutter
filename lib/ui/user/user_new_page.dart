@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -9,6 +10,7 @@ import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/user/bean/user_home_entity.dart';
+import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +32,8 @@ class _NewUserPageState extends State<NewUserPage> {
 
   StreamSubscription changeSubscription;
 
+  ClVideoEntity watch_log_entity;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -46,7 +50,6 @@ class _NewUserPageState extends State<NewUserPage> {
     changeSubscription = null;
     super.dispose();
   }
-
 
 
   void _onRefresh() async{
@@ -70,8 +73,17 @@ class _NewUserPageState extends State<NewUserPage> {
 
           buildTopInfoView(context),
           buildLine(),
-          buildMoreView(context),
-          buildVideoListView(context),
+          watch_log_entity==null|| watch_log_entity.info.length==0?Container():
+          Column(
+            children: <Widget>[
+
+              buildMoreView(context),
+              buildVideoListView(context),
+
+            ],
+
+          ),
+
           buildLine(),
 
           _userInfoInfo==null?Container():
@@ -368,10 +380,10 @@ class _NewUserPageState extends State<NewUserPage> {
       height: ScreenUtil().setHeight(300),
       child: ListView.builder(
           scrollDirection:Axis.horizontal,
-          itemCount: 8,
+          itemCount: watch_log_entity.info.length,
           itemBuilder: (context,index){
 
-            return buildItemDoctorView();
+            return buildItemDoctorView(watch_log_entity.info[index]);
           }
       ),
 
@@ -381,13 +393,15 @@ class _NewUserPageState extends State<NewUserPage> {
   ///
   ///  观看记录横向视频列表 Item
   ///
-  Widget buildItemDoctorView() {
+  Widget buildItemDoctorView(ClVideoInfo bean) {
 
     return  InkWell(
 
       onTap: (){
 
-        FLToast.info(text: "暂无内容");
+       // FLToast.info(text: "暂无内容");
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
+
 
       },
 
@@ -399,8 +413,9 @@ class _NewUserPageState extends State<NewUserPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
 
-            Image.asset(wrapAssets("tab/tab_live_img.png"),width: ScreenUtil().setWidth(288),height: ScreenUtil().setHeight(215),fit: BoxFit.fill,),
-            Text("湖南湘中医联盟肛...",style: TextStyle(color:Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(32)),),
+
+            wrapImageUrl(bean.video.image, setW(288), setH(215)),
+            Text(bean.video.title,style: TextStyle(color:Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(32)),maxLines: 2,overflow: TextOverflow.ellipsis,),
 
           ],
 
@@ -522,6 +537,28 @@ class _NewUserPageState extends State<NewUserPage> {
 
     });
 
+
+    // 请求 历史观看记录的数据
+    NetUtils.requestUsersWatchLog(1)
+        .then((res){
+
+
+
+          if(res.code==200){
+
+
+            setState(() {
+
+                 watch_log_entity = ClVideoEntity.fromJson(res.toJson());
+
+            });
+
+
+
+          }
+
+
+    });
 
 
   }

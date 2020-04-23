@@ -65,6 +65,21 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
   }
 
   loadData() {
+
+    NetUtils.requestCollectCheckStatus(AppRequest.PAGE_ROUTE_DOCTOR_GUIDE_INFO, widget.id)
+        .then((res){
+
+      if(res.code==200){
+
+        setState(() {
+          res.info["status"]==1?isCollect = true:isCollect = false;
+        });
+
+      }
+
+
+    });
+
     NetUtils.requestDocumentInfo(widget.id)
         .then((res) async {
       if (res.code == 200) {
@@ -124,7 +139,7 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
             },
             onTap: (bool isLiked)
             {
-              return onLikeButtonTap(AppRequest.Collect_News,isLiked,_detailsEntity.id.toString());
+              return onLikeButtonTap(AppRequest.PAGE_ROUTE_DOCTOR_GUIDE_INFO,isLiked,_detailsEntity.id.toString());
             },
 
           ),

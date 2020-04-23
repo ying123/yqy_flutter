@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'dart:io';
 
 import 'package:flui/flui.dart';
@@ -58,7 +59,7 @@ class MainHomePage extends StatelessWidget {
     final router = new Router();
     Routes.configureRoutes(router);
     RRouter.initWithRouter(router);
-    initUMeng();
+   // initUMeng();
    initWxSDK();
     requestPermission();
 

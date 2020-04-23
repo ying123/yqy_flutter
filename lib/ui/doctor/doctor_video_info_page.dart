@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:like_button/like_button.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
@@ -36,6 +37,10 @@ class DoctorVideoInfoPage extends StatefulWidget {
 }
 
 class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with WidgetsBindingObserver{
+
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+
 
   bool _showTipContent  = false;// 是否显示简介
 
@@ -440,46 +445,54 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
   buildListView(BuildContext context) {
 
-    return Expanded(child:  ListView(
-      controller: _scrollController,
-      shrinkWrap: true,
-      padding: EdgeInsets.all(0),
-      children: <Widget>[
-        // 视频简介
-        buildContentInfoView(context),
-        // 观看人数 点赞收藏
-        buildBtnView(context),
-        //分割线
-        buildLine(),
-        //相关专家
-        _doctorVideoInfoInfo.users==null?Container():getRowTextView("相关专家"),
-       _doctorVideoInfoInfo.users==null?Container(): buildDoctorListView(context),
-        _doctorVideoInfoInfo.users==null?Container(): buildLine(),
-        // 关键词
-        buildCruxView(context),
-        buildLine(),
-        //相关学会
-     //   getRowTextView("相关学会"),
-      //  buildLearnView(context),
-      //  buildLine(),
-        // 推荐视频
-        getRowTextView("专家视频"),
-        buildLiveNoticeView(viewTypeMy),
-        //评论
-        getRowTextView("全部评论"),
-        buildCommentView(context),
+    return Expanded(child:SmartRefresher(
+    enablePullDown: false,
+    enablePullUp: true,
+        controller: _refreshController,
+        onRefresh: null,
+        onLoading: _onLoading,
+        child:  ListView(
+          controller: _scrollController,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
+            // 视频简介
+            buildContentInfoView(context),
+            // 观看人数 点赞收藏
+            buildBtnView(context),
+            //分割线
+            buildLine(),
+            //相关专家
+            _doctorVideoInfoInfo.users==null?Container():getRowTextView("相关专家"),
+            _doctorVideoInfoInfo.users==null?Container(): buildDoctorListView(context),
+            _doctorVideoInfoInfo.users==null?Container(): buildLine(),
+            // 关键词
+            buildCruxView(context),
+            buildLine(),
+            //相关学会
+            //   getRowTextView("相关学会"),
+            //  buildLearnView(context),
+            //  buildLine(),
+            // 推荐视频
+            getRowTextView("专家视频"),
+            buildLiveNoticeView(viewTypeMy),
+            //评论
+            getRowTextView("全部评论"),
+            buildCommentView(context),
 
 
-      ],
+          ],
 
-    ));
+        ),
+
+    ) );
 
   }
 
   buildCruxView(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),setH(29), ScreenUtil().setWidth(29), setH(29)),
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),setH(12), ScreenUtil().setWidth(12), setH(29)),
       height: setH(120),
 
       child: Row(
@@ -1345,6 +1358,37 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
   }
 
+  void _onLoading() async{
+    _commentPage ++;
+    loadMoreData();
+  }
+
+  ///
+  ///  加载更多评论
+  ///
+  void loadMoreData() {
+
+    // 评论列表
+    NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_DOCTOR_VIDEO_INFO,widget.id,_commentPage.toString())
+        .then((res){
 
 
+      if(res.code==200){
+        if (CommentListInfo
+            .fromJson(res.info)
+            .lists.length == 0) {
+          _refreshController.loadNoData();
+        } else {
+          _commentListInfo.lists.addAll(CommentListInfo.fromJson(res.info).lists);
+          _refreshController.loadComplete();
+        }
+        setState(() {
+
+        });
+
+      }
+
+    });
+
+  }
 }

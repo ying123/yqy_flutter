@@ -282,8 +282,8 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
                         FLToast.info(text: "暂未开放");
                         return;
-                        RRouter.push(context, Routes.integralListPage, {},
-                            transition: TransitionType.cupertino);
+                    /*    RRouter.push(context, Routes.integralListPage, {},
+                            transition: TransitionType.cupertino);*/
                       },
                     ),
 
@@ -319,7 +319,8 @@ class _TaskNewPageState extends State<TaskNewPage> {
         shrinkWrap: true,
         itemCount: _taskPageInfo.taskList.length,
         itemBuilder: (context, index) {
-          return buildItemTask(context, _taskPageInfo.taskList[index]);
+          // 当前版本没有病例征集的任务
+          return  _taskPageInfo.taskList[index].title=="病例征集"?Container(): buildItemTask(context, _taskPageInfo.taskList[index]);
         });
   }
 
@@ -710,7 +711,7 @@ class _TaskNewPageState extends State<TaskNewPage> {
             Text(goodsList.title,style: TextStyle(color:Color(0xFF333333),fontSize: ScreenUtil().setSp(35),fontWeight: FontWeight.w400,),textAlign: TextAlign.center,),
             Text(goodsList.points+"积分",style: TextStyle(color:Color(0xFFFA994C),fontSize: ScreenUtil().setSp(40),fontWeight: FontWeight.bold),),
             FlatButton(onPressed: (){
-              RRouter.push(context ,Routes.shopBuyOrderPage,{"id":"6"},transition:TransitionType.cupertino);
+              RRouter.push(context ,Routes.shopBuyOrderPage,{"id":goodsList.id},transition:TransitionType.cupertino);
             }, child:  Container(
               alignment: Alignment.center,
               width: ScreenUtil().setWidth(311),

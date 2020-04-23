@@ -34,9 +34,8 @@ class _AddressListPageState extends State<AddressListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    initData();
-
     _address =  UserUtils.getAddress();
+    initData();
 
   }
 
@@ -105,7 +104,7 @@ class _AddressListPageState extends State<AddressListPage> {
   ///
   buildDefaultAddress(BuildContext context) {
 
-      return Container( // 显示之前填写的地址信息
+      return _address==null?Container(): Container( // 显示之前填写的地址信息
 
         color: Colors.white,
         padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),

@@ -257,7 +257,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
              onPressed: (){
 
                if(!isProtocol){
-                 FLToast.info(text: "请先点击同意下方的“用户协议和隐私政策”");
+                 FLToast.info(text: "请阅读并同意下方的“用户协议和隐私政策”");
                  return;
                }
 
@@ -485,7 +485,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
 
     if(!isProtocol){
 
-      FLToast.info(text: "请先点击同意下方的“用户协议和隐私政策”");
+      FLToast.info(text: "请阅读并同意下方的“用户协议和隐私政策”");
       return;
     }
 
@@ -530,14 +530,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
           InkWell(
 
             onTap: (){
-              NetUtils.requestAgreements()
-                  .then((res){
-
-                if(res.code==200){
-                  RRouter.push(context, Routes.webPage,{"url":res.info["content"],"title":"用户协议和隐私政策"});
-                }
-
-              });
+              RRouter.push(context, Routes.webPage,{"url":"","title":"用户协议和隐私政策"});
             },
             child:    buildText("《用户协议和隐私政策》",color: "#FF209CFF"),
 

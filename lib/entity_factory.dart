@@ -133,8 +133,6 @@ class EntityFactory {
       return TabNewsInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "TabNewsListsEntity") {
       return TabNewsListsEntity.fromJson(json) as T;
-    } else if (T.toString() == "TabSpecialEntity") {
-      return TabSpecialEntity.fromJson(json) as T;
     } else if (T.toString() == "CommentListEntity") {
       return CommentListEntity.fromJson(json) as T;
     } else if (T.toString() == "HcStatusEntity") {

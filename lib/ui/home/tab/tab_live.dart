@@ -18,7 +18,9 @@ class TabLivePage extends StatefulWidget {
 
 class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClientMixin {
 
-
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
@@ -968,9 +970,6 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
 
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 
   buildLiveMyNoticeView(String s, List<TabLiveInfoMyOrder> list, int viewType) {
 

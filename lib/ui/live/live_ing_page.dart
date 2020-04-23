@@ -17,6 +17,7 @@ import 'package:yqy_flutter/ui/home/tab/bean/tab_meeting_list_info_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/hc_status_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
+import 'package:yqy_flutter/utils/DateUtils.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -850,7 +851,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
                           children: <Widget>[
                             Icon(Icons.access_time,size: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text(bean.startTime.toString(),style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                            Text(DateUtils.instance.getFormartData(timeSamp: int.parse(bean.startTime.toString())*1000,format: "yyyy-MM-dd"),style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
                           ],
 
                         ),

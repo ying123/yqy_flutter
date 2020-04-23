@@ -967,4 +967,20 @@ class NetUtils {
   }
 
 
+
+  ///
+  ///   我的历史记录
+  ///
+  static Future<ClVideoEntity> requestUsersWatchLog(int page) async {
+    Response response;
+    Dio dio = new Dio();
+    String url = APPConfig.Server + "users/watch_log";
+    response = await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
+    ClVideoEntity flowDoctorEntity =  ClVideoEntity.fromJson(response.data);
+
+    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return flowDoctorEntity;
+
+  }
+
 }

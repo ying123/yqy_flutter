@@ -54,7 +54,6 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
   }
 
 
-
   void _onRefresh() async{
     page = 1;
     loadData();

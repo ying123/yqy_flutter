@@ -64,7 +64,7 @@ String  _html = "";
     ): Scaffold(
       appBar: AppBar(
 
-        title: Text("用户协议"),
+        title: Text(widget.title??"网页"),
       ),
       body: ListView(
 

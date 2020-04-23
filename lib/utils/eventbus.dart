@@ -23,7 +23,11 @@ class EventBusChange2{
   EventBusChange2(this.v);
 }
 
+class EventBusUpdateAddress{
 
+
+  EventBusUpdateAddress();
+}
 
 
 ///

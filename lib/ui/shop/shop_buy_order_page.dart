@@ -63,6 +63,13 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
     changeSubscription.cancel();
   }
 
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    initData();
+  }
+
 
 
   ///
@@ -70,7 +77,9 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
   ///
   void initEventBusListener() {
 
-    changeSubscription =  eventBus.on<ShopAddressListInfoList>().listen((event) {
+    changeSubscription =  eventBus.on<EventBusUpdateAddress>().listen((event) {
+
+          print("监听  收货地址的切换");
 
           initData();
 
@@ -126,20 +135,19 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
       return Container();
     }
 
-
-    if(_orderInfo.address.id!=null){
+   /* if(_orderInfo.address!=null){
 
       UserUtils.saveAddress(_orderInfo.address);
 
-    }
+    }*/
 
-    if(UserUtils.getAddress()!=null){
+   /* if(UserUtils.getAddress()!=null){
 
       _orderInfo.address = UserUtils.getAddress();
-    }
+    }*/
 
     // 如果id 等于null 表示之前没有添加过地址
-    return _orderInfo.address.id==null? Container(
+    return _orderInfo.address==null? Container(
       color: Colors.white,
       padding: EdgeInsets.fromLTRB(setW(58), 0, setW(58),  0),
       height: setH(173),
@@ -572,6 +580,11 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
 
          setState(() {
            _orderInfo = ShopBuyOrderInfo.fromJson(res.info);
+
+           if(_orderInfo.address!=null){
+             UserUtils.saveAddress(_orderInfo.address);
+           }
+
          });
 
        }

@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:indexed_list_view/indexed_list_view.dart';
 import 'package:like_button/like_button.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:yqy_flutter/bean/status_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
@@ -19,6 +20,7 @@ import 'package:yqy_flutter/ui/live/bean/live_details_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/live_review_info_entity.dart';
 import 'package:yqy_flutter/ui/live/bean/review_video_list_entity.dart';
+import 'package:yqy_flutter/utils/DateUtils.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -39,6 +41,9 @@ class LiveReviewPage extends StatefulWidget {
 }
 
 class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObserver {
+
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
 
   bool _showTipContent  = false;// 是否显示简介
 
@@ -476,43 +481,50 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
 
   buildListView(BuildContext context) {
 
-    return Expanded(child:  ListView(
-      controller: _scrollController,
-      shrinkWrap: true,
-      padding: EdgeInsets.all(0),
-      children: <Widget>[
-        cYM(setH(40)),
-        // 视频简介
-        buildContentInfoView(context),
-        // 其他会场的布局
-        buildOtherHCView(context),
-        //分割线
-        buildLine(),
-        // 关键词
-        buildCruxView(context),
-        buildLine(),
-        //正在播放
-        getRowTextView("内容列表"),
-        _videoListInfo==null?Container(): buildLiveTab(context),
-        buildLine(),
-        //相关专家
-        getRowTextView("相关专家"),
-        buildDoctorListView(context),
-        buildLine(),
-     /*   //相关学会
+    return Expanded(child:  SmartRefresher(
+    enablePullDown: false,
+    enablePullUp: true,
+        controller: _refreshController,
+        onRefresh: null,
+        onLoading: _onLoading,
+        child:  ListView(
+          controller: _scrollController,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
+            cYM(setH(40)),
+            // 视频简介
+            buildContentInfoView(context),
+            // 其他会场的布局
+            buildOtherHCView(context),
+            //分割线
+            buildLine(),
+            // 关键词
+            buildCruxView(context),
+            buildLine(),
+            //正在播放
+            getRowTextView("内容列表"),
+            _videoListInfo==null?Container(): buildLiveTab(context),
+            buildLine(),
+            //相关专家
+            getRowTextView("相关专家"),
+            buildDoctorListView(context),
+            buildLine(),
+            /*   //相关学会
         getRowTextView("相关学会"),
         buildLearnView(context),
         buildLine(),*/
-        // 推荐视频
-        getRowTextView("为您推荐"),
-        buildLiveNoticeView(_liveDetailsInfo.recommendMeeting,viewTypeMy),
-        //评论
-        getRowTextView("全部评论"),
-        buildCommentView(context),
+            // 推荐视频
+            getRowTextView("为您推荐"),
+            buildLiveNoticeView(_liveDetailsInfo.recommendMeeting,viewTypeMy),
+            //评论
+            getRowTextView("全部评论"),
+            buildCommentView(context),
 
-      ],
+          ],
 
-    ));
+        )
+    )      );
   }
 
 
@@ -781,7 +793,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
                           children: <Widget>[
                             Icon(Icons.access_time,size: ScreenUtil().setSp(32),color: Colors.black45,),
                             cXM(5),
-                            Text(bean.startTime.toString(),style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
+                            Text(DateUtils.instance.getFormartData(timeSamp: int.parse(bean.startTime.toString())*1000,format: "yyyy-MM-dd"),style: TextStyle(color: Colors.black45,fontSize:  ScreenUtil().setSp(32)),),
                           ],
 
                         ),
@@ -904,19 +916,29 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   ///
   ///  评论布局
   ///
+  ///
+  ///
+
+
+  void _onLoading() async{
+    _commentPage ++;
+    loadMoreData();
+  }
   buildCommentView(BuildContext context) {
 
-    return _commentListInfo==null?Container(): ListView.builder(
-      controller: _scrollController,
-      shrinkWrap: true,
-      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),0, ScreenUtil().setWidth(29), 0),
-      physics: new NeverScrollableScrollPhysics(),
-      itemCount: _commentListInfo.lists.length,
-      itemBuilder: (context,index){
-        return itemCommentView(context,index);
-      },
+    return _commentListInfo==null?Container():
 
+        ListView.builder(
+          controller: _scrollController,
+          shrinkWrap: true,
+          padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),0, ScreenUtil().setWidth(29), 0),
+          physics: new NeverScrollableScrollPhysics(),
+          itemCount: _commentListInfo.lists.length,
+          itemBuilder: (context,index){
+            return itemCommentView(context,index);
+          },
     );
+
 
   }
 
@@ -927,7 +949,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
 
     return Container(
         padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), 0, ScreenUtil().setWidth(30), 0),
-        height: ScreenUtil().setHeight(140),
+        height: ScreenUtil().setHeight(145),
         child: Column(
           children: <Widget>[
             new  Expanded(child: Row(
@@ -1296,6 +1318,35 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
     ],
 
     ):Container();
+
+  }
+
+  ///
+  ///  加载更多评论
+  ///
+  void loadMoreData() {
+
+    // 评论列表
+    NetUtils.requestCommentLists(UserUtils.getUserInfoX().id.toString(),AppRequest.PAGE_ROUTE_LIVE,liveId,_commentPage.toString())
+        .then((res){
+
+
+      if(res.code==200){
+        if (CommentListInfo
+            .fromJson(res.info)
+            .lists.length == 0) {
+          _refreshController.loadNoData();
+        } else {
+          _commentListInfo.lists.addAll(CommentListInfo.fromJson(res.info).lists);
+          _refreshController.loadComplete();
+        }
+        setState(() {
+
+        });
+
+      }
+
+    });
 
   }
 }

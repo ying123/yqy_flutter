@@ -87,12 +87,14 @@ Text getContentText(String str){
 ///
 Widget wrapImageUrl(String url,double w,double h){
 
+
+
   return CachedNetworkImage(
     width: w,
     height: h,
     fit: BoxFit.fill,
     imageUrl: url,
-  // placeholder: (context, url) => Icon(Icons.picture_in_picture,size: 110,color: Colors.black45,),
+   placeholder: (context, url) => Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
     errorWidget: (context, url, error) => Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
   );
 }

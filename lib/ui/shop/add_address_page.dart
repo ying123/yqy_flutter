@@ -6,6 +6,7 @@ import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
 import 'package:yqy_flutter/utils/city_picker.dart';
+import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:html_unescape/html_unescape.dart';
@@ -350,6 +351,8 @@ class _AddAddressPageState extends State<AddAddressPage> {
         showToast(res.msg);
 
         if(res.code==200){
+
+            eventBus.fire(new EventBusUpdateAddress());
 
             Navigator.pop(context);
 

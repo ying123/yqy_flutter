@@ -227,7 +227,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                     children: <Widget>[
                       buildText("拨打客服电话",size: 40),
                       cYM(setH(10)),
-                      buildText("400-1111-1234",size: 35)
+                      buildText("0531-62308369",size: 35)
                     ],
                   ),
 
@@ -307,7 +307,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 }
 
 _launchPhone() async {
-  const url = 'tel:17865937635';
+  const url = 'tel:0531-62308369';
 
   if (await canLaunch(url)) {
     await launch(url);

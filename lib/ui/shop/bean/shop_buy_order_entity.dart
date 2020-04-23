@@ -42,7 +42,7 @@ class ShopBuyOrderInfo {
 
 	ShopBuyOrderInfo.fromJson(Map<String, dynamic> json) {
 		image = json['image'];
-		address = json['address'] != null ? new ShopBuyOrderInfoAddress.fromJson(json['address']) : null;
+		address = json['address'].toString()=="[]"? null : new ShopBuyOrderInfoAddress.fromJson(json['address']) ;
 		createTime = json['create_time'];
 		sendWay = json['send_way'];
 		closeTime = json['close_time'];

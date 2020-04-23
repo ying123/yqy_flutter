@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
@@ -16,7 +17,7 @@ class TabSpecialPage extends StatefulWidget {
 class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAliveClientMixin {
 
 
-  TabSpecialInfo _tabSpecialInfo;
+  Info _tabSpecialInfo;
 
   List<String> bgImageList =  ["bg_special.png","bg_special2.png","bg_special3.png","bg_special4.png"];
 
@@ -50,18 +51,25 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
   }
 
   buildBanner(BuildContext context) {
-    
-    return Container(
-      
-      height: ScreenUtil().setHeight(403),
-      child: Image.asset(wrapAssets("tab/tab_live_banner.png")),
 
+    return Container(
+        height: setH(403),
+        width: double.infinity,
+        child:new Swiper(
+          itemBuilder: (BuildContext context,int index){
+            return new Image.network(_tabSpecialInfo.bannerList[index].img,fit: BoxFit.fill,);
+          },
+          itemCount: _tabSpecialInfo.bannerList.length,
+          autoplay: true,
+          autoplayDelay: 5000,
+          layout: SwiperLayout.DEFAULT,
+        )
     );
     
     
   }
 
-  buildItemView(TabSpecialInfoTypeList typeList) {
+  buildItemView(TypeList typeList) {
 
     return  Padding(
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(26), ScreenUtil().setHeight(50), ScreenUtil().setWidth(26),  ScreenUtil().setHeight(30)),
@@ -96,7 +104,7 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
 
   }
 
-    Widget getLiveItemView(TabSpecialInfoTypeListList bean){
+    Widget getLiveItemView(Lists bean){
 
       return  GestureDetector(
 
@@ -158,7 +166,9 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
 
 
          setState(() {
-           _tabSpecialInfo =    TabSpecialInfo.fromJson(res.info);
+            _tabSpecialInfo  =    Info.fromJson(res.info);
+
+
          });
 
 

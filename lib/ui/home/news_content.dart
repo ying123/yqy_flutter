@@ -55,6 +55,22 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
 
    loadData() {
 
+
+    NetUtils.requestCollectCheckStatus(AppRequest.PAGE_ROUTE_DOCTOR_NEWS_INFO, widget.id)
+    .then((res){
+
+      if(res.code==200){
+
+        setState(() {
+          res.info["status"]==1?isCollect = true:isCollect = false;
+        });
+
+      }
+
+
+    });
+
+
      NetUtils.requestNewsInfo(widget.id)
       .then((res){
 
@@ -77,8 +93,6 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
          setState(() {
          });
        }
-
-
      });
   }
 
@@ -109,7 +123,7 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
             },
             onTap: (bool isLiked)
             {
-              return onLikeButtonTap(AppRequest.Collect_ZX,isLiked,_detailsEntity.id.toString());
+              return onLikeButtonTap(AppRequest.PAGE_ROUTE_DOCTOR_NEWS_INFO,isLiked,_detailsEntity.id.toString());
             },
 
           ),

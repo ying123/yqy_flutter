@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 /// 颜色
@@ -95,9 +96,14 @@ class AppRequest{
   static const int LIVE_HD = 2;//互动直播列表
 
 ///  新版-----------------------------------------------------------------------------------
-  static const String PAGE_ROUTE_LIVE  = "4";//会议直播 类型
+  static const String PAGE_ROUTE_LIVE  = "5";//会议直播 类型
 
   static const String PAGE_ROUTE_DOCTOR_VIDEO_INFO  = "20";//专家视频详情类型
+
+
+  static const String PAGE_ROUTE_DOCTOR_GUIDE_INFO  = "17";//文献详情类型
+
+  static const String PAGE_ROUTE_DOCTOR_NEWS_INFO  = "11";//资讯类型
 
 }
 

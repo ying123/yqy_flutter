@@ -95,6 +95,12 @@ class _SettingPageState extends State<SettingPage> {
           Divider(height: 1,),
           buildUserAgreement("用户协议和隐私政策",context),
           Divider(height: 1,),
+          buildServicePhoneView("0531-62308369",context),
+          Divider(height: 1,),
+          buildVersion("当前版本"),
+          Divider(height: 1,),
+
+
           buildExitUser(context)
 
         ],
@@ -110,31 +116,37 @@ class _SettingPageState extends State<SettingPage> {
   ///
   ///  当前版本
   ///  
-  Widget buildVersion(BuildContext context) {
+  Widget buildVersion(String v) {
 
-    return Container(
-      color: Colors.white,
-      height: 60,
-      padding: EdgeInsets.all(15),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+    return new  InkWell(
+      onTap: (){
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("当前版本",style: TextStyle(color: Colors.black87,fontSize: 16),),
-              Text(_appVersion,style: TextStyle(color: Colors.black38,fontSize: 16),),
-            
-            ],
+      },
+      child: Container(
+        height: 60,
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+        child: Row(
 
-          ),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
 
-        ],
+            Text(v,style: TextStyle(color: Colors.black87,fontSize: 16),),
+            new Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                  child: Text(_appVersion),
+                )
+
+            ),
+
+
+          ],
+        ),
 
       ),
-
-
     );
 
   }
@@ -231,11 +243,11 @@ class _SettingPageState extends State<SettingPage> {
 
 
   }
-  Widget buildServicePhoneView(BuildContext context) {
+  Widget buildServicePhoneView(String phone,BuildContext context) {
 
     return  InkWell(
       onTap: (){
-        launchURLToPhone(_aboutInfo.serviceTel3);
+        launchURLToPhone(phone);
       },
       child: Container(
         height: 60,
@@ -252,7 +264,7 @@ class _SettingPageState extends State<SettingPage> {
                 child: Container(
                     padding: EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
-                    child: Text(_aboutInfo==null?"":_aboutInfo.serviceTel3,style: TextStyle(color: Colors.blueAccent,fontSize: 15),)
+                    child: Text(phone,style: TextStyle(color: Colors.blueAccent,fontSize: 15),)
                 )
 
             ),

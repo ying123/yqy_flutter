@@ -38,7 +38,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 
-  RefreshController _refreshController ;
+  RefreshController    _refreshController  = RefreshController(initialRefresh: false);
 
   List<String> marqueeList ;
 
@@ -51,8 +51,14 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
+
+
     loadData();
-    _refreshController  = RefreshController(initialRefresh: false);
+
+
+
 
   }
 
