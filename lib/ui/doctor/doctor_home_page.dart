@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/route/banner_router.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/doctor/bean/doctor_home_entity.dart';
@@ -173,6 +174,10 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
              _bannerIndexName = _doctorHomeInfo.topBanner[index].name;
            });
 
+        },
+        onTap: (index){
+         // _doctorHomeInfo.topBanner[index].advType；
+          BannerRouter.push(context,200, _doctorHomeInfo.topBanner[index].artId);
         },
       ),
 

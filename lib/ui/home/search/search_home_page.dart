@@ -334,7 +334,7 @@ Widget getLiveItemView(context,SearchHomeInfoVideoList listBean){
   return  new  GestureDetector(
 
     onTap: (){
-      RRouter.push(context, Routes.liveReviewPage,{"id":listBean.id});
+      RRouter.push(context, Routes.doctorVideoInfoPage,{"id":listBean.id});
     },
 
     child: new Container(

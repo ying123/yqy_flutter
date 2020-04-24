@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:yqy_flutter/bean/base_result_entity.dart';
 import 'package:yqy_flutter/common/constant.dart';
+import 'package:yqy_flutter/ui/task/bean/integral_list_entity.dart';
 import 'package:yqy_flutter/ui/user/collect/bean/cl_news_entity.dart';
 import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
 import 'package:yqy_flutter/ui/user/follow/bean/flow_doctor_entity.dart';
@@ -980,6 +981,22 @@ class NetUtils {
 
     //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return flowDoctorEntity;
+
+  }
+
+
+  ///
+  ///   积分明细
+  ///
+  static Future<IntegralListEntity> requestPointsDetailList(int page) async {
+    Response response;
+    Dio dio = new Dio();
+    String url = APPConfig.Server + "points/detail_list";
+    response = await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
+    IntegralListEntity integralListEntity =  IntegralListEntity.fromJson(response.data);
+
+    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return integralListEntity;
 
   }
 

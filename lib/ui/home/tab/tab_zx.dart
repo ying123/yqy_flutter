@@ -219,7 +219,7 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
                  ),
                  ),
 
-                xlist.image.isEmpty?Container():wrapImageUrl(xlist.image, setW(200), setH(120)),
+                xlist.image.isEmpty||xlist.image.endsWith("m")?Container():wrapImageUrl(xlist.image, setW(200), setH(120)),
 
                 cXM(setW(20))
 

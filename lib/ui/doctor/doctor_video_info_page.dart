@@ -141,6 +141,9 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
             player.setDataSource(_doctorVideoInfoInfo.playUrl, autoPlay: true);
           });
         }
+      }else{
+        FLToast.error(text: results[0].msg);
+
       }
 
       if(results[1].code==200){

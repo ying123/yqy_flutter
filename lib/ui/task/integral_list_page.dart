@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/shop/bean/shop_home_entity.dart';
+import 'package:yqy_flutter/ui/task/bean/integral_list_entity.dart';
 import 'package:yqy_flutter/ui/user/bean/integral_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
@@ -22,6 +24,35 @@ class IntegralListPage extends StatefulWidget {
 }
 
 class _IntegralListPageState extends State<IntegralListPage> {
+
+  RefreshController    _refreshController  = RefreshController(initialRefresh: false);
+
+  IntegralListEntity _integralListEntity;
+
+  int page = 1;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    initData();
+
+  }
+
+  void _onRefresh() async{
+    // monitor network fetch
+    // await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    page = 1;
+    initData();
+  }
+
+  void _onLoading() async{
+    page++;
+    initData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,28 +63,31 @@ class _IntegralListPageState extends State<IntegralListPage> {
 
       ),
 
-      body: Column(
+      body: _integralListEntity==null?Container():  SmartRefresher(
+    enablePullDown: true,
+    enablePullUp: true,
+    controller: _refreshController,
+    onRefresh: _onRefresh,
+    onLoading: _onLoading,
+    child: ListView.builder(
+      padding: EdgeInsets.only(top: setH(20)),
+        shrinkWrap: true,
+        itemCount: _integralListEntity.info.data.length+1,
+        itemBuilder: (context,index){
+          return index==0?buildTopView(context): buildItemView(context,_integralListEntity.info.data[index-1]);
+        })
 
-        children: <Widget>[
-
-
-          buildTopView(context),
-          buildTaskListView(context)
-
-
-        ],
-
-
-
-
-      ),
-
+      )
 
 
 
     );
   }
 
+
+  ///
+  ///  顶部
+  ///
   buildTopView(BuildContext context) {
 
     return Container(
@@ -71,7 +105,7 @@ class _IntegralListPageState extends State<IntegralListPage> {
             children: <Widget>[
               buildText("积分明细",color: "#FF333333",size: 40,fontWeight: FontWeight.bold),
               cYM(setH(12)),
-              buildText("本月新增 100 积分，扣除 0 积分",size: 32,color: "#FF999999")
+              buildText("本月新增 ${_integralListEntity.info.add} 积分，扣除 ${_integralListEntity.info.minus} 积分",size: 36,color: "#FF999999")
             ],
           ),
 
@@ -87,20 +121,8 @@ class _IntegralListPageState extends State<IntegralListPage> {
 
   }
 
-  buildTaskListView(BuildContext context) {
 
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: 6,
-        itemBuilder: (context,index){
-          return buildItemView(context);
-
-        });
-
-
-  }
-
-  buildItemView(BuildContext context) {
+  buildItemView(BuildContext context,Data bean) {
 
 
     return Container(
@@ -116,8 +138,8 @@ class _IntegralListPageState extends State<IntegralListPage> {
               children: <Widget>[
 
                 Container(
-                  width: setW(80),
-                  height: setW(80),
+                  width: setW(120),
+                  height: setW(120),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
 
@@ -125,7 +147,7 @@ class _IntegralListPageState extends State<IntegralListPage> {
                       borderRadius: BorderRadius.all(Radius.circular(30))
 
                   ),
-                  child: Text("100",style: TextStyle(color: Colors.white,fontSize: setSP(37),fontWeight: FontWeight.bold),),
+                  child: Text(bean.userMoney.toString(),style: TextStyle(color: Colors.white,fontSize: setSP(37),fontWeight: FontWeight.bold),),
                 ),
                 cXM(setW(30)),
                 Expanded(
@@ -134,15 +156,15 @@ class _IntegralListPageState extends State<IntegralListPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
 
-                        buildText("礼品兑换",size: 37,color: "#FF333333"),
+                        buildText(bean.remark,size: 37,color: "#FF333333"),
 
-                        buildText("2019-12-05  16:30:44",size: 32,color: "#FF999999"),
+                        buildText(bean.createTime,size: 32,color: "#FF999999"),
                       ],
                     )
 
                 ),
 
-                buildText("+100积分",size: 46,color: "#FFFE6017"),
+                buildText(getMType(bean.payType)+bean.money.toString(),size: 46,color: "#FFFE6017"),
 
               ],
             ),),
@@ -159,6 +181,61 @@ class _IntegralListPageState extends State<IntegralListPage> {
 
 
     );
+
+  }
+
+
+
+  void initData() {
+
+    NetUtils.requestPointsDetailList(page)
+        .then((res){
+      if(page>1){
+        if (IntegralListEntity
+            .fromJson(res.toJson())
+            .info.data.length == 0||IntegralListEntity
+            .fromJson(res.toJson())
+            .info==null) {
+          _refreshController.loadNoData();
+        } else {
+          _integralListEntity.info.data.addAll(IntegralListEntity.fromJson(res.toJson()).info.data);
+          _refreshController.loadComplete();
+        }
+
+      }else{
+        _integralListEntity = IntegralListEntity.fromJson(res.toJson());
+        _refreshController.refreshCompleted();
+        _refreshController.resetNoData();
+      }
+
+      setState(() {
+      });
+
+
+
+    });
+  }
+
+  String getMType(int type) {
+    // 0:充值,1:提现,3:收入,4:消费,5提现冻结
+    String value = "";
+    switch(type){
+
+      case 0:
+      case 3:
+      case 7:
+        value = "+";
+        break;
+      case 1:
+      case 4:
+        value = "-";
+        break;
+      case 5:
+        value = "冻结 ";
+        break;
+    }
+
+    return value;
 
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/route/banner_router.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/drugs/drugs_company_detail_page.dart';
@@ -59,8 +60,8 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
             color: Colors.blue[300],
           ),
           buildBannerView(context),
-          cYM(ScreenUtil().setHeight(20)),
-          buildAdView(context),
+        //  cYM(ScreenUtil().setHeight(20)),
+          //buildAdView(context),
           cYM(ScreenUtil().setHeight(20)),
       //    buildScreenView(context),
           Expanded(child: buildListView(context))
@@ -86,6 +87,10 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
        autoplay: true,
        autoplayDelay: 5000,
        layout: SwiperLayout.DEFAULT,
+       onTap: (index){
+         //  _videoPageInfo.bannerList[index].advType
+         BannerRouter.push(context,200, _videoPageInfo.bannerList[index].artId);
+       },
      )
    );
   }
@@ -93,11 +98,17 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
   buildAdView(BuildContext context) {
 
-    return Container(
-      alignment: Alignment.center,
-      width: double.infinity,
-      height: ScreenUtil().setHeight(173),
-      child: Image.network(_videoPageInfo.ad[0].img,width: ScreenUtil().setWidth(1022),height: ScreenUtil().setHeight(173),fit: BoxFit.fill,),
+    return  InkWell(
+
+      onTap: (){
+        BannerRouter.push(context,200,_videoPageInfo.ad[0].artId);
+      },
+      child: Container(
+        alignment: Alignment.center,
+        width: double.infinity,
+        height: ScreenUtil().setHeight(173),
+        child: Image.network(_videoPageInfo.ad[0].img,width: ScreenUtil().setWidth(1022),height: ScreenUtil().setHeight(173),fit: BoxFit.fill,),
+      ),
     );
 
   }

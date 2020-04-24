@@ -10,6 +10,7 @@ import 'package:yqy_flutter/net/net_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/user/bean/user_home_entity.dart';
+import 'package:yqy_flutter/ui/user/bean/watch_log_entity.dart';
 import 'package:yqy_flutter/ui/user/collect/bean/cl_video_entity.dart';
 import 'package:yqy_flutter/utils/eventbus.dart';
 import 'package:yqy_flutter/utils/margin.dart';
@@ -32,7 +33,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
   StreamSubscription changeSubscription;
 
-  ClVideoEntity watch_log_entity;
+  Watch_log_entity watch_log_entity;
 
   @override
   void initState() {
@@ -393,14 +394,13 @@ class _NewUserPageState extends State<NewUserPage> {
   ///
   ///  观看记录横向视频列表 Item
   ///
-  Widget buildItemDoctorView(ClVideoInfo bean) {
+  Widget buildItemDoctorView(Info bean) {
 
     return  InkWell(
 
       onTap: (){
 
-       // FLToast.info(text: "暂无内容");
-        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.video.id.toString()});
 
 
       },
@@ -549,7 +549,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
             setState(() {
 
-                 watch_log_entity = ClVideoEntity.fromJson(res.toJson());
+                 watch_log_entity = Watch_log_entity.fromJson(res.toJson());
 
             });
 

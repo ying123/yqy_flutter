@@ -233,8 +233,8 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text("视频 "+_doctorInfoInfo.videoList.length.toString()+" | ",style: TextStyle(color: Colors.white,fontSize: 14),),
-                              Text(" 粉丝 "+_doctorInfoInfo.fenNum.toString(),style: TextStyle(color: Colors.white,fontSize: 14),),
+                              Text("视频 ${_doctorInfoInfo.videoList.length.toString()} | ",style: TextStyle(color: Colors.white,fontSize: 14),),
+                              Text(" 粉丝 ${_doctorInfoInfo.fenNum.toString()}",style: TextStyle(color: Colors.white,fontSize: 14),),
 
                             ],
 

@@ -471,7 +471,8 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
           InkWell(
             onTap: (){
-              RRouter.push(context, Routes.noticeHomePage,{});
+              FLToast.info(text: "暂无内容");
+              //RRouter.push(context, Routes.noticeHomePage,{});
             },
             child: Image.asset(wrapAssets("home/msg_btn.png"),width: ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(58),),
           ),

@@ -200,7 +200,7 @@ class _TabGuidePageState extends State<TabGuidePage> with AutomaticKeepAliveClie
                 ),
                 ),
 
-                xlist.image==null?Container():wrapImageUrl(xlist.image, setW(235), setH(140)),
+                xlist.image.isEmpty||xlist.image.endsWith("m")?Container():wrapImageUrl(xlist.image, setW(235), setH(140)),
 
                 cXM(setW(20))
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/route/banner_router.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_special_entity.dart';
@@ -63,6 +64,9 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
           autoplay: true,
           autoplayDelay: 5000,
           layout: SwiperLayout.DEFAULT,
+          onTap: (index){
+            BannerRouter.push(context,300, _tabSpecialInfo.bannerList[index].artId);
+          },
         )
     );
     

@@ -280,10 +280,8 @@ class _TaskNewPageState extends State<TaskNewPage> {
                           fontSize: ScreenUtil().setSp(40)),),
                       onPressed: () {
 
-                        FLToast.info(text: "暂未开放");
-                        return;
-                    /*    RRouter.push(context, Routes.integralListPage, {},
-                            transition: TransitionType.cupertino);*/
+                        RRouter.push(context, Routes.integralListPage, {},
+                            transition: TransitionType.cupertino);
                       },
                     ),
 

@@ -20,6 +20,7 @@ import 'package:yqy_flutter/route/route_handlers.dart';
 import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 import 'package:yqy_flutter/widgets/marquee_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yqy_flutter/route/banner_router.dart';
 class TabHomePage extends StatefulWidget {
 
   @override
@@ -148,7 +149,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                     children: <Widget>[
                       cYM(ScreenUtil().setHeight(25)),
 
-                      getBannerView(_TabHomeInfo.bannerList), //轮播图
+                      getBannerView(context,_TabHomeInfo.bannerList), //轮播图
                    //   getMarqueeView(new List()),//跑马灯 预约
                       cYM(ScreenUtil().setHeight(60)),
                       getGridBtnView(), //图片按钮
@@ -186,7 +187,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
-  Widget getBannerView(List<TabHomeInfoBannerList> data) {
+  Widget getBannerView(BuildContext buildContext,List<TabHomeInfoBannerList> data) {
 
 
   //  print("getBannerView:"+data.length.toString());
@@ -211,7 +212,12 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             ),
 
             onTap: () {
-              switch(data[index % data.length].advType){
+
+
+              BannerRouter.push(buildContext, data[index % data.length].advType, data[index % data.length].artId);
+
+            /*  switch(data[index % data.length].advType){
+
                 case 1:  //会议直播
                //   RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId": data[index % data.length].art_id},transition:TransitionType.cupertino);
                   break;
@@ -219,7 +225,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                //   RRouter.push(context, Routes.videoDetailsPage,{"reviewId": data[index % data.length].art_id});
                   break;
               }
-
+*/
 
             });
       },
