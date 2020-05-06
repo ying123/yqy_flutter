@@ -159,6 +159,12 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
   }
 
 
+
+
+
+  ///
+  ///  主要布局
+  ///
   buildContainerHosLogin(BuildContext context) {
 
     return new Container(
@@ -208,14 +214,13 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
           cYM(ScreenUtil().setHeight(20)),
           //注册按钮
           buildBtnRegisterView(context),
-
-
         ],
       ),
 
-
     );
   }
+
+
 
   buildMobileInputView(BuildContext context) {
 
@@ -263,7 +268,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     );
 
   }
-
 
 
 
@@ -420,6 +424,7 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
   }
 
+
   ///
   ///  科室选择
   ///
@@ -555,8 +560,9 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
       ],
 
     );
-
   }
+
+
 
   void initTextControllerListener() {
 

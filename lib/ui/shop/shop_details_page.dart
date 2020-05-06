@@ -44,17 +44,15 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
     ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
 
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("商品详情"),
-      ),
+      appBar: getCommonAppBar(context, "商品详情"),
 
       body:Column(
         children: <Widget>[
           Expanded(child:   _shopDetailsInfo==null?Container():  ListView(
+
             children: <Widget>[
 
-              buildImageView(context),
+            buildImageView(context),
 
              Container(
                 color: Colors.white,
@@ -62,6 +60,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+
                     buildText(_shopDetailsInfo.title,size: 46),
                     cYM(setH(46)),
                     buildText(_shopDetailsInfo.points+"积分",size: 40,color: "#FFFA994C"),
@@ -100,6 +99,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
                       Image.asset(wrapAssets("shop/icon_kf.png"),width: setW(65),height: setH(65),),
                       buildText("客服",size: 40,color: "#FF999999")
+
 
                     ],
                   ),

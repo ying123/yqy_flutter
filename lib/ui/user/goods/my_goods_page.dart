@@ -46,7 +46,7 @@ class _MyGoodsPageState extends State<MyGoodsPage> {
   Widget build(BuildContext context) {
     return  Scaffold(
 
-      appBar: getCommonAppBar("我的点赞"),
+      appBar: getCommonAppBar(context,"我的点赞"),
       body:  new SmartRefresher(
           enablePullDown: true,
           enablePullUp: true,

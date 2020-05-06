@@ -181,7 +181,7 @@ class Routes {
 
   static String myGoodsPage = "/myGoodsPage"; //  我的点赞列表
 
-
+  static String noticeDetails = "/noticeDetails"; //  消息详情
 
 
   static void configureRoutes(Router router) {
@@ -257,7 +257,7 @@ class Routes {
     router.define(doctorHomePage, handler:doctorHomePageHandler);
     router.define(fansDoctorPage, handler:fansDoctorPageHandler);
     router.define(myGoodsPage, handler:myGoodsPageHandler);
-
+    router.define(noticeDetails, handler:noticeDetailsHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

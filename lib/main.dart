@@ -165,7 +165,7 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
 
   String showTv = "首页"; //当前显示的页面布局
 
-  final pages = [HomePage(),GuidePage(),VideoPage(),DoctorHomePage(),NewUserPage()];
+  final pages = [HomePage(),GuidePage(),VideoPage(),DoctorHomePage("0"),NewUserPage()];
 
 
   @override

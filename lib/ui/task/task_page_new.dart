@@ -29,7 +29,9 @@ class TaskNewPage extends StatefulWidget {
   _TaskNewPageState createState() => _TaskNewPageState();
 }
 
-class _TaskNewPageState extends State<TaskNewPage> {
+class _TaskNewPageState extends State<TaskNewPage>  with AutomaticKeepAliveClientMixin {
+
+
 
 
   double appBarAlpha = 0;
@@ -727,5 +729,9 @@ class _TaskNewPageState extends State<TaskNewPage> {
 
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
 }

@@ -42,7 +42,7 @@ class _CollectHomePageState extends State<CollectHomePage>  with SingleTickerPro
   Widget build(BuildContext context) {
     return new Scaffold(
     backgroundColor: Colors.white,
-        appBar: getCommonAppBar("我的收藏"),
+        appBar: getCommonAppBar(context,"我的收藏"),
         body: Column(
 
           children: <Widget>[

@@ -83,6 +83,8 @@ class _MyIntegralDetailPageState extends State<MyIntegralDetailPage> {
   }
 
 
+
+
   Widget  buildTypeView(BuildContext context,String t,String v) {
 
     return InkWell(

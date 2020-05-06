@@ -26,7 +26,6 @@ Widget cYMW(double y) {
 
 
 
-
  double setW(double w){
   return ScreenUtil().setWidth(w);
  }
@@ -41,9 +40,10 @@ double setSP(double sp){
 }
 
 
-Text buildText(String v,{String color="#FF333333",double size=40,FontWeight fontWeight=FontWeight.w400}){
+Text buildText(String v,{String color="#FF333333",double size=40,FontWeight fontWeight=FontWeight.w400,}){
 
-  return  Text(v,style: TextStyle(color: Color(int.parse(color.replaceAll("#", "0x"))),fontSize: ScreenUtil().setSp(size),fontWeight: fontWeight),);
+  return  Text(v,style: TextStyle(color: Color(int.parse(color.replaceAll("#", "0x"))),fontSize: ScreenUtil().setSp(size),fontWeight: fontWeight
+              ,),);
 
 }
 
@@ -52,11 +52,21 @@ Text buildText(String v,{String color="#FF333333",double size=40,FontWeight font
 ///
 ///  统一标题栏抽取
 ///
-AppBar getCommonAppBar(String v){
+AppBar getCommonAppBar(BuildContext context,String v){
 
   return AppBar(
     centerTitle: true,
-    title: Text(v),
+    backgroundColor: Colors.white,
+    title: Text(v,style: TextStyle(fontSize: 16,color: Colors.black)),
+    leading: InkWell(
+      
+      onTap: (){
+        Navigator.pop(context);
+      },
+      
+      child: Icon(Icons.arrow_back_ios,color: Colors.black54,)
+      
+    ),
     actions: <Widget>[
       Text("")
     ],

@@ -84,10 +84,10 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
         .then((res) async {
       if (res.code == 200) {
         _detailsEntity = GuideInfoInfo.fromJson(res.info);
-        _type = _detailsEntity.type;
+        _type = _detailsEntity.filepath.toString().endsWith("pdf")?0:1;
 
 
-        if (_type == 0) {
+        if (_type == 1) {
           String subTitle = "<h3>" + _detailsEntity.title + "<\/h3>";
           String soure = "<p><span style=\"float:left;font-size:12px;color:#999999\">" +
               "来源:  " +
@@ -157,7 +157,7 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
 
         ],
       ),
-      body: _type == 0 ? Container(
+      body: _type == 1 ? Container(
           padding: EdgeInsets.all(setW(20)),
           child: ListView(
             children: <Widget>[

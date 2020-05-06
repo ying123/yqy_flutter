@@ -49,7 +49,7 @@ class _FollowHomePageState extends State<FollowHomePage> with SingleTickerProvid
   Widget build(BuildContext context) {
     return new Scaffold(
 
-        appBar: getCommonAppBar("我的关注"),
+        appBar: getCommonAppBar(context,"我的关注"),
         body: Column(
 
           children: <Widget>[

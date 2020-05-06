@@ -16,6 +16,7 @@ import 'package:yqy_flutter/ui/home/flfg_content.dart';
 import 'package:yqy_flutter/ui/home/gf_content.dart';
 import 'package:yqy_flutter/ui/home/home_page.dart';
 import 'package:yqy_flutter/ui/home/news_content.dart';
+import 'package:yqy_flutter/ui/home/notice/notice_details_page.dart';
 import 'package:yqy_flutter/ui/home/notice/notice_home_page.dart';
 import 'package:yqy_flutter/ui/home/search/search_home_page.dart';
 import 'package:yqy_flutter/ui/home/special_detail_page.dart';
@@ -483,7 +484,8 @@ var pdfViewPageHandler = Handler(handlerFunc: (BuildContext context, Map<String,
 
 
 var doctorHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return DoctorHomePage();
+  String isShow = params["isShow"]?.first;
+  return DoctorHomePage(isShow);
 });
 
 
@@ -496,6 +498,22 @@ var fansDoctorPageHandler = Handler(handlerFunc: (BuildContext context, Map<Stri
 var myGoodsPageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return MyGoodsPage();
 });
+
+var noticeDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+
+  String id = params["id"]?.first;
+  String title = params["title"]?.first;
+  String content = params["content"]?.first;
+  String date = params["date"]?.first;
+
+  var list = List<int>();
+  jsonDecode(title).forEach(list.add);
+  title = Utf8Decoder().convert(list);
+
+
+  return NoticeDetailsPage(id,title,content,date);
+});
+
 
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {

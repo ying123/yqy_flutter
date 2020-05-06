@@ -90,7 +90,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
 
 
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -196,7 +195,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
     ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: getCommonAppBar("会议录播"),
+      appBar: getCommonAppBar(context,"会议录播"),
       body:  LoadStateLayout(
         state: _layoutState,
         errorRetry: () {
@@ -218,6 +217,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
       )
     );
   }
+
 
   ///
   ///  界面布局
@@ -403,6 +403,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
                       child: InkWell(
                         onTap: () {
                           setState(() {
+
                             _showTipContent
                                 ? _showTipContent = false
                                 : _showTipContent = true;

@@ -180,9 +180,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
     ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("专家视频"),
-      ),
+      appBar: getCommonAppBar(context,"专家视频"),
       body:  LoadStateLayout(
         state: _layoutState,
         errorRetry: () {
@@ -413,9 +411,9 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(_doctorVideoInfoInfo.desc??"", style: TextStyle(
+                        Expanded(child:  Text(_doctorVideoInfoInfo.desc??"", style: TextStyle(
                             color: Color(0xFF999999),
-                            fontSize: ScreenUtil().setSp(35)),),
+                            fontSize: ScreenUtil().setSp(35)),),)
                       ],
                     )
                 )

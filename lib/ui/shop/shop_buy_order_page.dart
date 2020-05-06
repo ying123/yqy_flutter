@@ -91,12 +91,9 @@ class _ShopBuyOrderPageState extends State<ShopBuyOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: getCommonAppBar(context,"提交订单"),
 
-        title: Text("提交订单"),
-      ),
-
-      body: Column(
+        body: Column(
 
         children: <Widget>[
 

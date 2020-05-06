@@ -222,7 +222,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
     return Scaffold(
       backgroundColor: Colors.white,
 
-      appBar: getCommonAppBar("会议直播"),
+      appBar: getCommonAppBar(context,"会议直播"),
       body:  LoadStateLayout(
         state: _layoutState,
         errorRetry: () {
@@ -265,7 +265,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
         ],
       ),
     );
-
   }
 
   buildBottomView(BuildContext context) {
@@ -329,6 +328,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
               onTap: (){
 
+
               },
               child:   new Container(
                   height:  ScreenUtil().setHeight(110),
@@ -375,10 +375,11 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
       ),
 
     );
-
   }
 
-  // 视频view
+  ///
+  ///   视频view
+  ///
   buildContentVideo(BuildContext context) {
 
     return Container(
@@ -392,7 +393,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
       ):wrapImageUrl(imgUrl, double.infinity, double.infinity),
 
     );
-
 
   }
 
@@ -515,9 +515,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
             ),
 
           ),
-
-
-
 
         ],
 

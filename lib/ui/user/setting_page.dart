@@ -12,6 +12,7 @@ import 'package:yqy_flutter/net/network_utils.dart';
 import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/user/bean/about_entity.dart';
+import 'package:yqy_flutter/utils/margin.dart';
 import 'package:yqy_flutter/utils/user_utils.dart';
 
 ///
@@ -71,12 +72,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-        centerTitle: true,
-        title: Text("系统设置"),
-
-      ),
+      appBar: getCommonAppBar(context,"系统设置"),
       body:Column(
 
         children: <Widget>[

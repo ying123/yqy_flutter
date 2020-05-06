@@ -52,9 +52,7 @@ class _AddressListPageState extends State<AddressListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(
-        title: Text("地址管理"),
-      ),
+        appBar: getCommonAppBar(context, "地址管理"),
 
       body:  Column(
 

@@ -59,7 +59,7 @@ class _FansDoctorPageState extends State<FansDoctorPage> {
 
     return  Scaffold(
 
-      appBar: getCommonAppBar("我的粉丝"),
+      appBar: getCommonAppBar(context,"我的粉丝"),
 
       body:  new LoadStateLayout(
         state: _layoutState,

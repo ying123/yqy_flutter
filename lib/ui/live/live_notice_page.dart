@@ -95,7 +95,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
     player.release();
   }
 
-
   void loadData() async{
     Future.wait([
       // 当前页面的数据
@@ -154,7 +153,7 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
     return Scaffold(
         backgroundColor: Colors.white,
 
-        appBar: getCommonAppBar("会议预告"),
+        appBar: getCommonAppBar(context,"会议预告"),
         body:  LoadStateLayout(
           state: _layoutState,
           errorRetry: () {
@@ -323,7 +322,9 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
 
   }
 
-  // 视频信息 简介
+  ///
+  ///  视频信息简介
+  ///
   buildContentInfoView(BuildContext context) {
 
     return Container(
@@ -619,7 +620,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
           ),
 
         ],
-
 
       ),
 

@@ -68,9 +68,12 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
     
     NetUtils.requestNewsIndex()
         .then((res){
+
        if(res.code==200){
 
          setState(() {
+
+
            _newsIndexInfo = TabNewsIndexInfo.fromJson(res.info);
            // 保存筛选数据到本地 用来提供给上级页面实现功能
             LocalStorage.putObject("TabNewsIndexInfoCateList", _newsIndexInfo.toJson());
@@ -80,6 +83,8 @@ class _TabZxPageState extends State<TabZxPage> with AutomaticKeepAliveClientMixi
 
            // 通知上级页面  重置数据 显示全部分类
            eventBus.fire(new EventBusChangeNew(null));
+
+
          });
 
 

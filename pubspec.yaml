@@ -104,4 +104,5 @@ flutter:
       - assets/imgs/live/
       - assets/imgs/shop/
       - assets/imgs/pay/
+      - assets/imgs/notice/
       - data/

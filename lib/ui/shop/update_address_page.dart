@@ -58,10 +58,8 @@ class _UpdateAddressPageState extends State<UpdateAddressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar: AppBar(
-        title: Text("编辑地址"),
-      ),
+
+      appBar: getCommonAppBar(context,"编辑地址 "),
       body: Column(
 
         children: <Widget>[

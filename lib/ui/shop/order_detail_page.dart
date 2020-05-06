@@ -43,13 +43,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   Widget build(BuildContext context) {
     return  new Scaffold(
 
-      appBar: getCommonAppBar("订单详情"),
+      appBar: getCommonAppBar(context,"订单详情"),
 
       body:_detailInfo==null?Container(): Column(
 
         children: <Widget>[
 
-          buildTopView(context),
+          //buildTopView(context),
 
 
           cYM(setH(20)),
@@ -146,7 +146,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                 cXM(setW(40)),
 
-                Column(
+                Expanded(child:   Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
 
@@ -155,7 +155,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
 
                   ],
-                )
+                ))
 
               ],
             ),

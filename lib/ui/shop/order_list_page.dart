@@ -91,13 +91,7 @@ class _OrderListPageState extends State<OrderListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(
-
-        centerTitle: true,
-
-        title: Text("我的订单"),
-
-      ),
+      appBar: getCommonAppBar(context, "我的订单"),
 
       body:  SmartRefresher(
         enablePullDown: true,
@@ -151,17 +145,20 @@ class _OrderListPageState extends State<OrderListPage> {
 
                 cXM(setW(40)),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
+               Expanded(child:   Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: <Widget>[
 
-                    buildText(bean.goods.title),
-                    buildText(bean.points.toString()+"积分"+"x"+bean.nums.toString(),size: 34,color: "#FF999999"),
+                   /* buildText(bean.goods.title),*/
+
+                   buildText(bean.goods.title),
+
+                   buildText(bean.points.toString()+"积分"+"x"+bean.nums.toString(),size: 34,color: "#FF999999"),
 
 
-                  ],
-                )
-
+                 ],
+               )
+               )
               ],
             ),
 

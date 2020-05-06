@@ -14,8 +14,11 @@ class VideoPage extends StatefulWidget {
   _VideoPageState createState() => _VideoPageState();
 }
 
-class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
+class _VideoPageState extends State<VideoPage>  with AutomaticKeepAliveClientMixin,TickerProviderStateMixin{
 
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   TabController _tabController;
 
@@ -54,10 +57,9 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
       body: _videoPageInfo==null?Container(): Column(
 
         children: <Widget>[
-
           Container(
-            height: ScreenUtil().setHeight(80),
-            color: Colors.blue[300],
+            height: ScreenUtil().setHeight(65),
+            color: Colors.white,
           ),
           buildBannerView(context),
         //  cYM(ScreenUtil().setHeight(20)),
@@ -77,7 +79,7 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
   Widget buildBannerView(BuildContext context) {
    return Container(
-     height: setH(420),
+     height: setH(500),
      width: double.infinity,
      child:new Swiper(
        itemBuilder: (BuildContext context,int index){
@@ -553,6 +555,8 @@ class _VideoPageState extends State<VideoPage>  with TickerProviderStateMixin{
 
 
   }
+
+
 }
 
 

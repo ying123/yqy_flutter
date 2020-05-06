@@ -1000,4 +1000,35 @@ class NetUtils {
 
   }
 
+
+
+  ///
+  ///   消息
+  ///
+  static Future<BaseResult> requestUserMsg(int page) async {
+    String url = APPConfig.Server + "users/messages";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    return result;
+
+  }
+
+  ///
+  ///   系统消息全部已读
+  ///
+  static Future<BaseResult> requestUserAllRead() async {
+    String url = APPConfig.Server + "users/read";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    return result;
+
+  }
+
+  ///
+  ///   系统消息单个已读
+  ///
+  static Future<BaseResult> requestUserSingleRead(String id) async {
+    String url = APPConfig.Server + "users/single";
+    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    return result;
+
+  }
 }

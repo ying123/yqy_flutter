@@ -18,7 +18,7 @@ class _ShopCartPageState extends State<ShopCartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: getCommonAppBar("购物车"),
+      appBar: getCommonAppBar(context,"购物车"),
 
       body: Stack(
 

@@ -32,6 +32,7 @@ class _TabNoticePageState extends State<TabNoticePage> {
   }
 
 
+
   getNoticeItemView(BuildContext context) {
 
     return Container(
@@ -47,8 +48,10 @@ class _TabNoticePageState extends State<TabNoticePage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+
           Text("标题",style: TextStyle(fontSize: ScreenUtil().setSp(45),color: Colors.black54),),
           Text("内容"),
+
           Container(
             margin: EdgeInsets.only(right: ScreenUtil().setWidth(25)),
             alignment: Alignment.centerRight,

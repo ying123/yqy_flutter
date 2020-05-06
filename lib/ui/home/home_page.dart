@@ -60,7 +60,7 @@ class HomePage extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin,AutomaticKeepAliveClientMixin {
 
 
 
@@ -689,6 +689,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       });
 
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
 }
 

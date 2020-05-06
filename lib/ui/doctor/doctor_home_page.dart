@@ -12,7 +12,15 @@ import 'package:yqy_flutter/ui/doctor/bean/doctor_home_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
 import 'dart:math' as math;
 
+///
+///   首页  的  专家列表
+///
 class DoctorHomePage extends StatefulWidget {
+
+  String isShow = "0";
+
+  DoctorHomePage(this.isShow); // 是否显示 appbar   0 不显示   1 显示
+
   @override
   _DoctorHomePageState createState() => _DoctorHomePageState();
 }
@@ -52,13 +60,25 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     return Scaffold(
       backgroundColor: Colors.white,
 
-      appBar: getCommonAppBar("专家视频"),
+     /* appBar: getCommonAppBar(context,"专家视频"),*/
+
+        appBar: PreferredSize(
+
+          child: Offstage(
+
+            offstage: widget.isShow=="0"?true:false,
+            child: getCommonAppBar(context,"专家视频"),
+
+          ), preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.07),
+
+        ),
+
 
       endDrawer: buildDrawer(context),
       body:_doctorHomeInfo==null?Container(): Column(
 
         children: <Widget>[
-          Container(height: ScreenUtil().setHeight(30),color: Colors.white,),
+          widget.isShow=="0"? Container(height: ScreenUtil().setHeight(70),color: Colors.white,):Container(),
           buildBanner(context),
           buildBannerTitle(context),
           Expanded(child:  CustomScrollView(
@@ -164,7 +184,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
           return wrapImageUrl( _doctorHomeInfo.topBanner[index].img, double.infinity, double.infinity);
         },
         itemCount: _doctorHomeInfo.topBanner.length,
-        viewportFraction: 0.8,
+        viewportFraction: 0.85,
         scale: 0.9,
         autoplay: true,
         autoplayDelay: 8000,

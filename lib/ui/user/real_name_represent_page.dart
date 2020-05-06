@@ -54,16 +54,15 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     // 判断当前用户是否 之前上传过数据  如果审核过 显示之前填写的数据
     // 成功 和 需要补充资料
     initCurrentPageData();
 
   }
 
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       appBar: AppBar(
@@ -156,6 +155,9 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
   }
 
 
+  ///
+  ///  输入身份证号
+  ///
   buildIDCardInputView(BuildContext context) {
 
     return  new Row(
@@ -260,6 +262,9 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
   }
 
 
+  ///
+  ///  医院名称
+  ///
   buildHosNameInputView(BuildContext context) {
 
     return new Row(
@@ -309,7 +314,9 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
   }
 
 
-
+  ///
+  ///   地址
+  ///
   buildAddressView(BuildContext context) {
     return new Row(
       children: <Widget>[

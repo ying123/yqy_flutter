@@ -29,12 +29,7 @@ class _FeedBackPageState extends State<FeedBackPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: AppBar(
-
-          centerTitle: true,
-          title: Text("意见反馈"),
-
-        ),
+        appBar: getCommonAppBar(context,"意见反馈"),
 
         body: Form(
           key: _formKey,

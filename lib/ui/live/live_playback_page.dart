@@ -68,6 +68,10 @@ class _LivePaybackPageState extends State<LivePaybackPage> {
 
   }
 
+
+  ///
+  ///  底部评论
+  ///
   buildBottomView(BuildContext context) {
 
     return Container(

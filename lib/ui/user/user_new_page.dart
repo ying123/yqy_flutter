@@ -94,7 +94,6 @@ class _NewUserPageState extends State<NewUserPage> {
 
            children: <Widget>[
 
-
              buildBtnView(context,"我的赞"),
              buildBtnView(context,"积分专区"),
              buildBtnView(context,"我的订单"),
@@ -165,8 +164,8 @@ class _NewUserPageState extends State<NewUserPage> {
                   color: Colors.transparent,
                   child:  InkWell(
                       onTap: (){
-                        FLToast.info(text: "暂无消息");
-                      //  RRouter.push(context ,Routes.noticeHomePage,{},transition:TransitionType.cupertino);
+                      //  FLToast.info(text: "暂无消息");
+                       RRouter.push(context ,Routes.noticeHomePage,{},transition:TransitionType.cupertino);
                       },
                       child: Padding(padding: EdgeInsets.all(10),
                         child: Image.asset(wrapAssets("user/msg.png"),width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),),

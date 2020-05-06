@@ -4,6 +4,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:yqy_flutter/common/constant.dart' show AppColors;
 import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/utils/margin.dart';
 
 ///
 ///   webView 页面
@@ -18,6 +19,7 @@ class CommonWebviewPage extends StatefulWidget {
 }
 
 class _CommonWebviewPageState extends State<CommonWebviewPage>  with SingleTickerProviderStateMixin {
+
   final _loadingContainer = Container(
     color: Colors.white,
     constraints: BoxConstraints.expand(),
@@ -52,20 +54,15 @@ String  _html = "";
   Widget build(BuildContext context) {
     return   widget.url.startsWith("http")?WebviewScaffold(
       url: widget.url??"",
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title??"网页"),
-
-      ),
+      appBar: getCommonAppBar(context, widget.title??"网页"),
       withZoom: true,
       withLocalStorage: true,
        hidden: true,
       initialChild: _loadingContainer,
     ): Scaffold(
-      appBar: AppBar(
 
-        title: Text(widget.title??"网页"),
-      ),
+      appBar: getCommonAppBar(context, widget.title??"网页"),
+
       body: ListView(
 
         children: <Widget>[
@@ -80,7 +77,6 @@ String  _html = "";
   }
 
   void initData() {
-
 
     NetUtils.requestAgreements()
         .then((res){
