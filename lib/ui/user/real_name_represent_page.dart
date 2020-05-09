@@ -461,17 +461,31 @@ class _RealNameRepresentPageState extends State<RealNameRepresentPage> {
         _idCardC.text = info.idCard;
 
 
-        StringBuffer stringBuffer = new StringBuffer();
 
-        stringBuffer..write(info.proName.toString())
-                    ..write("-")
-                    ..write(info.cityName.toString())
-                    ..write("-")
-                    ..write(info.areaName.toString());
+        if(info.proName==null){
 
-        address = stringBuffer.toString();
+          StringBuffer stringBuffer = new StringBuffer();
 
+          stringBuffer..write(info.pro.areaName)
+            ..write("-")
+            ..write(info.city.areaName)
+            ..write("-")
+            ..write(info.area.areaName);
 
+          address = stringBuffer.toString();
+
+        }else{
+          StringBuffer stringBuffer = new StringBuffer();
+
+          stringBuffer..write(info.proName.toString())
+            ..write("-")
+            ..write(info.cityName.toString())
+            ..write("-")
+            ..write(info.areaName.toString());
+
+          address = stringBuffer.toString();
+
+        }
 
         _provinceId = info.provinceId.toString();
         _cityId = info.cityId.toString();

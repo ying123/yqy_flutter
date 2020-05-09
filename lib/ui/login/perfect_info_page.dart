@@ -44,6 +44,8 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
   String hospital_id; // 		医院编号
 
+  String com_name; // 	公司名称
+
   GlobalKey _addressKey= new GlobalKey<FormState>();
   String _address = "选择地区",_department = "选择科室";
 
@@ -63,10 +65,11 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _hosController = new TextEditingController();
+  TextEditingController _comController = new TextEditingController();
 
   var tabTitle = [
-    '我是医生',
-    '我是推广经理',
+    '医务人员',
+    '推广经理',
   ];
   
 
@@ -198,6 +201,10 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
 
           Visibility(visible: seleType==1?true:false,child:  // 医院名称输入
           buildHosInputView(context),),
+
+          Visibility(visible: seleType==1?false:true,child:  // 公司名称输入
+          buildComInputView(context),),
+
 
           Visibility(visible: seleType==1?true:false,child:
           buildLine(),),
@@ -572,7 +579,9 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     _hosController.addListener((){
       hospital_name = _hosController.text;
     });
-
+    _comController.addListener((){
+      com_name = _comController.text;
+    });
 
   }
 
@@ -603,24 +612,33 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     map["areaId"] = _areaId;
 
 
-    // 医院
-    if(hospital_name.isEmpty){
-      showToast("请先输入医院名称");
-      return;
+
+    if(seleType==1){
+
+      // 医院
+      if(hospital_name==""){
+        showToast("请先输入医院名称");
+        return;
+      }
+      map["hospital_name"] = hospital_name;
+      map["hospital_id"] = 0;
+
+
+      // 科室
+      if(_department.isEmpty||_department=="选择科室"){
+        showToast("请先选择地区");
+        return;
+      }
+      map["depart_id"] = _department1Id;
+      map["depart_ids"] = _department2Id;
+
+    }else{
+
+      map["company"] = com_name;
+
     }
-    map["hospital_name"] = hospital_name;
-    map["hospital_id"] = 0;
 
 
-
-
-    // 科室
-    if(_department.isEmpty||_department=="选择科室"){
-      showToast("请先选择地区");
-      return;
-    }
-    map["depart_id"] = _department1Id;
-    map["depart_ids"] = _department2Id;
 
     if(!_check){
 
@@ -720,8 +738,52 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
        _agreementsContent =   res.info["content"];
 
        }
-
     });
+  }
+
+  buildComInputView(BuildContext context) {
+    return  new Row(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+          width:   ScreenUtil().setWidth(50),
+          height:   ScreenUtil().setWidth(50),
+          alignment: Alignment.center,
+          child:  Image.asset(wrapAssets("login/ic_hos.png"),width:  ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(46),fit: BoxFit.fill,),
+        ),
+        Expanded(child: TextFormField(
+          controller: _comController,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.start,
+          maxLines: 1,
+          decoration: InputDecoration(
+            hintText: "请输入公司名称",
+            hintStyle: TextStyle(color: Color(0xFF999999),fontSize: ScreenUtil().setSp(40)),
+            border: InputBorder.none, // 去除下划线
+          ),
+          cursorColor: Color(0xFF2CAAEE),  // 光标颜色
+          style: TextStyle(color: Color(0xFF2CAAEE),fontSize: ScreenUtil().setSp(40)),
+        )),
+        InkWell(
+          onTap: (){
+            setState(() {
+              _comController.text = "";
+
+            });
+          },
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(60), 0, ScreenUtil().setWidth(60), 0),
+            width:   ScreenUtil().setWidth(36),
+            height:   ScreenUtil().setWidth(36),
+            child:  Image.asset(wrapAssets("login/ic_close.png"),width:  ScreenUtil().setWidth(30),height: ScreenUtil().setWidth(30),fit: BoxFit.fill,),
+          ),
+        )
+
+      ],
+
+    );
+
   }
 
 }

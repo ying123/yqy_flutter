@@ -841,15 +841,22 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           _idCardC.text = info.idCard;
 
 
-          StringBuffer stringBuffer = new StringBuffer();
 
-          stringBuffer..write(info.proName.toString())
-            ..write("-")
-            ..write(info.cityName.toString())
-            ..write("-")
-            ..write(info.areaName.toString());
+          if(info.pro!=null){
 
-          address = stringBuffer.toString();
+            StringBuffer stringBuffer = new StringBuffer();
+
+            stringBuffer..write(info.pro.areaName)
+              ..write("-")
+              ..write(info.city.areaName)
+              ..write("-")
+              ..write(info.area.areaName);
+
+            address = stringBuffer.toString();
+
+
+          }
+
 
           _provinceId = info.provinceId.toString();
           _cityId = info.cityId.toString();

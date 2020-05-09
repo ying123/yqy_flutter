@@ -11,7 +11,7 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.1+201
+version: 2.0.2+202
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -64,7 +64,7 @@ dependencies:
   package_info: ^0.4.0+3
   permission_handler: ^3.3.0 # 动态权限申请
   flutter_spinkit: ^4.0.0  # 加载进度条动画效果
-  fijkplayer: ^0.6.2
+  fijkplayer: ^0.8.2
   url_launcher: ^5.2.5  # Url跳转 拨打电话
   flutter_custom_dialog: ^1.0.14 # 弹窗
  #  flutter_easyloading: ^1.1.1 # 弹窗
