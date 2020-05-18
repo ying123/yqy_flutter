@@ -70,16 +70,16 @@ class _VideoPageState extends State<VideoPage>  with AutomaticKeepAliveClientMix
 
         ]
       ),
-
       endDrawer: buildDrawer(context),
-
     );
   }
 
 
+
   Widget buildBannerView(BuildContext context) {
    return Container(
-     height: setH(500),
+     margin: EdgeInsets.fromLTRB(setW(20), setH(25), setW(20), 0),
+     height: setH(460),
      width: double.infinity,
      child:new Swiper(
        itemBuilder: (BuildContext context,int index){
@@ -114,7 +114,6 @@ class _VideoPageState extends State<VideoPage>  with AutomaticKeepAliveClientMix
     );
 
   }
-
 
 
   Widget buildScreenView(BuildContext context) {
@@ -453,6 +452,8 @@ class _VideoPageState extends State<VideoPage>  with AutomaticKeepAliveClientMix
 
 
   }
+
+
   ///
   ///   列表item
   ///

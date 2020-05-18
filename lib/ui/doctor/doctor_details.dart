@@ -187,7 +187,7 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> with SingleTicker
                   _doctorInfoInfo==null? Container(): Container(
                     height: double.infinity,
                     child: _doctorInfoInfo.videoList.length==0?Center(child: Text("暂无视频"),): ListView.builder(
-
+                        padding: EdgeInsets.only(top: setH(10)),
                         itemCount:  _doctorInfoInfo.videoList.length,
                         itemBuilder: (context,index){
                           return getVideoTabView(context,  _doctorInfoInfo.videoList[index]);

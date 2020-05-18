@@ -80,7 +80,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
         children: <Widget>[
           widget.isShow=="0"? Container(height: ScreenUtil().setHeight(70),color: Colors.white,):Container(),
           buildBanner(context),
-          buildBannerTitle(context),
+        //  buildBannerTitle(context),
           Expanded(child:  CustomScrollView(
 
             shrinkWrap: true,
@@ -90,7 +90,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
                 child: Column(
                   children: <Widget>[
                     // 横向推荐视频
-                    getHotVideo(_doctorHomeInfo.recomVideo),
+                  //  getHotVideo(_doctorHomeInfo.recomVideo),
                     //buildAdView(context),
                     getRowTextView("特约专家"),//往期会议标题栏
                      Container(
@@ -177,7 +177,8 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
   buildBanner(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(400),
+      margin: EdgeInsets.only(top: setH(20)),
+      height: ScreenUtil().setHeight(460),
       width: double.infinity,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {
@@ -205,6 +206,9 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
   }
 
+
+
+
   buildBannerTitle(BuildContext context) {
     
     return Container(
@@ -216,6 +220,9 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     );
 
   }
+
+
+
 
   buildRowRecommendView(BuildContext context) {
 
@@ -346,7 +353,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(230), ScreenUtil().setHeight(220)),
+            wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(225), ScreenUtil().setHeight(240)),
             cXM(ScreenUtil().setWidth(29)),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,

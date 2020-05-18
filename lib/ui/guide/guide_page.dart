@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
+import 'package:yqy_flutter/route/r_router.dart';
+import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/guide/bean/guide_index_entity.dart';
 import 'package:yqy_flutter/ui/guide/tab_guide.dart';
 import 'package:yqy_flutter/utils/margin.dart';
@@ -73,6 +75,9 @@ class _GuidePageState extends State<GuidePage> with SingleTickerProviderStateMix
            Material(
              color: Colors.white,
              child: InkWell(
+               onTap: (){
+                 RRouter.push(context, Routes.searchHomePage,{});
+               },
                child: Container(
                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
                  padding: EdgeInsets.all(ScreenUtil().setWidth(20)),

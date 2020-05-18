@@ -53,13 +53,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     // TODO: implement initState
     super.initState();
 
-
-
-
     loadData();
-
-
-
 
   }
 
@@ -111,7 +105,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     }*/
     _refreshController.loadNoData();
   }
-
 
 
   @override
@@ -213,10 +206,9 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
 
             onTap: () {
 
-
               BannerRouter.push(buildContext, data[index % data.length].advType, data[index % data.length].artId);
 
-            /*  switch(data[index % data.length].advType){
+              /*  switch(data[index % data.length].advType){
 
                 case 1:  //会议直播
                //   RRouter.push(context ,Routes.liveDetailsPage,{"broadcastId": data[index % data.length].art_id},transition:TransitionType.cupertino);
@@ -226,7 +218,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                   break;
               }
 */
-
             });
       },
     );
@@ -431,6 +422,9 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   }
 
 
+  ///
+  ///  医生布局
+  ///
   Widget getDocView(TabHomeInfoRecomDoctor bean){
     return InkWell(
 
@@ -443,7 +437,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(230), ScreenUtil().setHeight(220)),
+                wrapImageUrl(bean.recomImage, ScreenUtil().setWidth(225), ScreenUtil().setHeight(240)),
                 cXM(ScreenUtil().setWidth(29)),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -453,7 +447,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
                     Text(bean.realName??"",style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(46),fontWeight: FontWeight.w500),),
                     Text(bean.departs==null?"":bean.departs.name,style: TextStyle(color: Color(0xFF333333),fontSize: ScreenUtil().setSp(32)),),
                     Text(bean.job==null?"":bean.job.name,style: TextStyle(color: Color(0xFF7E7E7E),fontSize: ScreenUtil().setSp(35)),)
-
 
                   ],
 

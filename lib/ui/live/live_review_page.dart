@@ -182,7 +182,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
       });
 
     }).then((_){
-      if(_liveDetailsInfo.meetList!=null){
+      if(_liveDetailsInfo!=null&&_liveDetailsInfo.meetList!=null){
         currentHCID = _liveDetailsInfo.meetList[0].id.toString();
         getProgrammeListData();
       }
@@ -529,9 +529,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   }
 
 
-
   buildCruxView(BuildContext context) {
-
     return Container(
       padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(29),setH(29), ScreenUtil().setWidth(29), setH(29)),
       height: ScreenUtil().setHeight(120),
@@ -568,7 +566,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
       ),
 
     );
-
   }
 
   buildScheduleView(BuildContext context) {
@@ -696,9 +693,9 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
   ///
   Widget itemVideoView(LiveReviewInfoInfoRecommandMeeting bean) {
 
-
     return  InkWell(
       onTap: (){
+
 
       },
       child: Container(
@@ -1210,7 +1207,15 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
               ],
             ),
             cYM(ScreenUtil().setHeight(20)),
-            wrapImageUrl(_videoListInfo.lists[pos].users.userPhoto,  ScreenUtil().setWidth(120),  ScreenUtil().setWidth(120)),
+         //   wrapImageUrl(_videoListInfo.lists[pos].users.userPhoto,  ScreenUtil().setWidth(120),  ScreenUtil().setWidth(120)),
+
+            FLAvatar(
+              image: Image.network(_videoListInfo.lists[pos].users.userPhoto,scale: 2,),
+              width: setW(120),
+              height: setW(120),
+              radius: setW(60), // if not specify, will be width / 2
+            ),
+
             cYM(ScreenUtil().setHeight(22)),
             Text(_videoListInfo.lists[pos].users.realName??"",style: TextStyle(color: _idnexVideoList==pos?Colors.blue:Color(0xFF999999),fontSize: ScreenUtil().setSp(29)),)
 

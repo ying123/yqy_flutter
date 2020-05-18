@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flui/flui.dart';
 import 'package:flutter/cupertino.dart';
@@ -117,7 +118,7 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
 
   @override
   Widget build(BuildContext context) {
-    return _detailsEntity == null ? Container() : Scaffold(
+    return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.black,),
@@ -134,8 +135,8 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
             isLiked: isCollect,
             likeBuilder: (bool isLike){
 
-              return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png")):
-              Image.asset(wrapAssets("icon_collect.png"));
+              return  !isLike?Image.asset(wrapAssets("icon_collect_cancel.png"),width: setW(60),height: setW(60)):
+              Image.asset(wrapAssets("icon_collect.png"),width: setW(60),height: setW(60));
             },
             onTap: (bool isLiked)
             {
@@ -144,20 +145,38 @@ class _GuideContentPageState extends State<GuideContentPage> with AutomaticKeepA
 
           ),
           cXM(10),
-        /*  new GestureDetector(
 
-            child: Image.asset(wrapAssets("share.png"),width: setW(75),height: setW(75),),
+          Visibility(
+            visible:  _type==0?true:false ,
+            child:     new GestureDetector(
+
+            child: Image.asset(wrapAssets("guide_download.png"),width: setW(80),height: setW(80),),
 
             onTap: () {
 
-              showShareView(context);
+            //  showShareView(context);
+
+              if(Platform.isAndroid){
+               // downloadPdfFile(context);// 下载pdf文件
+
+              }else{
+
+                FLToast.info(text: "目前仅支持安卓设备下载文件到本地");
+
+              }
+
+
+
+
             },
-          ),*/
+          ),),
+
+
           cXM(10),
 
         ],
       ),
-      body: _type == 1 ? Container(
+      body:_detailsEntity == null ? Container() :  _type == 1 ? Container(
           padding: EdgeInsets.all(setW(20)),
           child: ListView(
             children: <Widget>[

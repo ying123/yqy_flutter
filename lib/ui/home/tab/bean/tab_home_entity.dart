@@ -93,7 +93,7 @@ class TabHomeInfoNewsList {
 
 class TabHomeInfoBannerList {
 	String img;
-	String route;
+	var route;
 	int artId;
 	String name;
 	int advType;

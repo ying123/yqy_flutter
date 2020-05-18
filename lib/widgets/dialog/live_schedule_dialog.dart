@@ -24,11 +24,18 @@ void requestSchedule(BuildContext context,String html) async {
           child: new Column(
             children: <Widget>[
 
-              Expanded(child:  Html(
 
-                data: html,
+              Expanded(child:  ListView(
+                children: <Widget>[
+                  Html(
+
+                    data: html,
+
+                  ),
+                ],
 
               ),),
+
 
               new InkWell(
                 onTap: (){

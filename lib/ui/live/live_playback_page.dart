@@ -43,6 +43,10 @@ class _LivePaybackPageState extends State<LivePaybackPage> {
     );
   }
 
+
+  ///
+  ///  主要布局
+  ///
   buildContextView(BuildContext context) {
 
     return Container(
@@ -67,7 +71,6 @@ class _LivePaybackPageState extends State<LivePaybackPage> {
     );
 
   }
-
 
   ///
   ///  底部评论

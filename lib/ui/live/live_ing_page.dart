@@ -506,7 +506,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
                 Visibility(
                     visible: _showTipContent,
                     child:  Html(
-                      data: _liveDetailsInfo.content,
+                      data: _liveDetailsInfo.introduce,
 
                     ),
                 )
