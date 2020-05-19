@@ -50,6 +50,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
     initData();
+
   }
 
   @override

@@ -110,10 +110,12 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin,Aut
       initUpdateAppVersion();
     }
 
-
     initEventBusListener();
     // 判断当前用户是否需要去实名认证
-    initUserCurrentStatus();
+
+    if(mounted){
+      initUserCurrentStatus();
+    }
 
   }
 
