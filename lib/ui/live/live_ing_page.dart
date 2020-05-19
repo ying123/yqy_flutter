@@ -120,11 +120,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
             statusId = 2;
             imgUrl =  event.image;
             break;
-
         }
-
-
-
       });
     });
   }
@@ -146,8 +142,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
     _scrollC.dispose();
     super.dispose();
 
-
-
   }
 
 
@@ -160,9 +154,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
   }
 
 
-
   void loadData() async{
-
 
     Future.wait([
       // 当前页面的数据
@@ -244,6 +236,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
       )
     );
   }
+
 
   ///
   ///  界面布局
@@ -736,7 +729,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
       separatorBuilder: (context,index){
 
           return Container(
-
             height: setH(1),
             color: Colors.black12,
 
@@ -783,7 +775,6 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
       ),
     );
-
 
   }
 
@@ -876,6 +867,8 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
     );
 
   }
+
+
 
   ///
   ///  横向滑动专家列表
@@ -994,6 +987,8 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
   }
 
+
+
   ///
   ///  评论item
   ///
@@ -1015,11 +1010,11 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
                     new Text.rich(TextSpan(
                         children: [
                           TextSpan(
-                              text: _commentListInfo.lists[index].userName+": ",
+                              text: _commentListInfo.lists[index].userName==null?":": _commentListInfo.lists[index].userName+": ",
                               style: TextStyle(color: Colors.blue,fontSize: ScreenUtil().setSp(35))
                           ),
                           TextSpan(
-                              text: _commentListInfo.lists[index].content,
+                              text: _commentListInfo.lists[index].content??"",
                               style: TextStyle(color:Color(0xff333333),fontSize: ScreenUtil().setSp(35))
                           ),
                         ]

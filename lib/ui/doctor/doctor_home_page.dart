@@ -74,7 +74,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
         ),
 
 
-      endDrawer: buildDrawer(context),
+    //  endDrawer:  buildDrawer(context),  抽屉筛选菜单
       body:_doctorHomeInfo==null?Container(): Column(
 
         children: <Widget>[
@@ -453,7 +453,10 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
             return
               InkWell(
                   onTap: (){
-                    Scaffold.of(context1).openEndDrawer();
+                   // Scaffold.of(context1).openEndDrawer();
+
+                    FLToast.info(text: "暂无当前功能");
+
                   },
                   child: Container(
                     padding: EdgeInsets.all(ScreenUtil().setWidth(20)),

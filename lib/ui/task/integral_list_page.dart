@@ -112,16 +112,16 @@ class _IntegralListPageState extends State<IntegralListPage> {
         ],
 
 
-
       ),
-
-
 
     );
 
   }
 
 
+  ///
+  ///   积分item
+  ///
   buildItemView(BuildContext context,Data bean) {
 
 

@@ -321,7 +321,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin,Aut
           if(buildNumber<versioncode){ // 如果本地 小于  服务器  开始提示更新
 
             // ios 和 android 的更新提示
-            if (Platform.isIOS) {
+            if (Platform.isIOS) {  // 如果是 ios 手机 直接跳转到 appstore更新
 
               final url = "https://itunes.apple.com/cn/app/id1484902664"; // id 后面的数字换成自己的应用 id 就行了
               if (await canLaunch(url)) {
@@ -356,8 +356,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin,Aut
     }else{ // ios 版本检查更新  一般用不到此接口  除非要修复 ios特有的bug
 
     }
-
-
 
 
   }

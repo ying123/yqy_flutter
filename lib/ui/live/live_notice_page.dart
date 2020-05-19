@@ -469,7 +469,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
         buildContentInfoView(context),
         // 观看人数 点赞收藏
        //   buildBtnView(context),
-
         //分割线
         buildLine(),
         // 会议日程
@@ -666,7 +665,6 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
   ///  热门视频 item
   ///
   Widget itemVideoView(LiveInfoRecommandMeeting bean) {
-
 
     return  InkWell(
       onTap: (){
@@ -920,11 +918,11 @@ class _LiveNoticePageState extends State<LiveNoticePage> {
                     new Text.rich(TextSpan(
                         children: [
                           TextSpan(
-                              text: _commentListInfo.lists[index].userName+": ",
+                              text: _commentListInfo.lists[index].userName==null?":": _commentListInfo.lists[index].userName+": ",
                               style: TextStyle(color: Colors.blue,fontSize: ScreenUtil().setSp(35))
                           ),
                           TextSpan(
-                              text: _commentListInfo.lists[index].content,
+                              text: _commentListInfo.lists[index].content??"",
                               style: TextStyle(color:Color(0xff333333),fontSize: ScreenUtil().setSp(35))
                           ),
                         ]

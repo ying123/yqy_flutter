@@ -44,7 +44,8 @@ void requestSchedule(BuildContext context,String html) async {
                 child:   Container(
                     width: setW(400),
                     height: setH(80),
-                    margin: EdgeInsets.only(bottom: setH(20)),
+                    margin: EdgeInsets.symmetric(vertical: setH(20)),
+                  //  margin: EdgeInsets.only(bottom: setH(20)),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
 

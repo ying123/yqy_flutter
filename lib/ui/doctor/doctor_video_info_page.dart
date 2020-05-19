@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:like_button/like_button.dart';
 import 'package:oktoast/oktoast.dart';
@@ -411,9 +412,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(child:  Text(_doctorVideoInfoInfo.desc??"", style: TextStyle(
-                            color: Color(0xFF999999),
-                            fontSize: ScreenUtil().setSp(35)),),)
+                        Expanded(child: Html(data: _doctorVideoInfoInfo.desc??""),)
                       ],
                     )
                 )
@@ -422,9 +421,6 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
             ),
 
           ),
-
-
-
 
         ],
 
@@ -709,9 +705,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
         //  RRouter.push(context, Routes.videoDetailsPage,{"reviewId":listBean.id});
 
      //   RRouter.push(context, Routes.doctorVideoInfoPage,{"id": listBean.id.toString()});
-
         eventBus.fire(listBean);
-
 
       },
 
@@ -953,11 +947,11 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
                     new Text.rich(TextSpan(
                         children: [
                           TextSpan(
-                              text: _commentListInfo.lists[index].userName+": ",
+                              text: _commentListInfo.lists[index].userName==null?": ":_commentListInfo.lists[index].userName+" : ",
                               style: TextStyle(color: Colors.blue,fontSize: ScreenUtil().setSp(35))
                           ),
                           TextSpan(
-                              text: _commentListInfo.lists[index].content,
+                              text: _commentListInfo.lists[index].content??"",
                               style: TextStyle(color:Color(0xff333333),fontSize: ScreenUtil().setSp(35))
                           ),
                         ]

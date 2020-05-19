@@ -961,11 +961,11 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
                     new Text.rich(TextSpan(
                         children: [
                           TextSpan(
-                              text: _commentListInfo.lists[index].userName+": ",
+                              text: _commentListInfo.lists[index].userName==null?":": _commentListInfo.lists[index].userName+": ",
                               style: TextStyle(color: Colors.blue,fontSize: ScreenUtil().setSp(35))
                           ),
                           TextSpan(
-                              text: _commentListInfo.lists[index].content,
+                              text: _commentListInfo.lists[index].content??"",
                               style: TextStyle(color:Color(0xff333333),fontSize: ScreenUtil().setSp(35))
                           ),
                         ]
