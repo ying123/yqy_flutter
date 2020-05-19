@@ -174,11 +174,12 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
   }
 
 
-
   buildBanner(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: setH(20)),
-      height: ScreenUtil().setHeight(460),
+      height: ScreenUtil().setHeight(480),
+      padding: EdgeInsets.only(bottom: setH(20)),
+      color: Colors.white,
       width: double.infinity,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {

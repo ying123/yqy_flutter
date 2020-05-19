@@ -99,9 +99,8 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
 
-
-    return  _detailsEntity==null?Container():WebviewScaffold(
-      url: _detailsEntity.content.startsWith("http")?_detailsEntity.content:new Uri.dataFromString(getHtmlData(htmlStr), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+    return  WebviewScaffold(
+      url: _detailsEntity==null?"":_detailsEntity.content.startsWith("http")?_detailsEntity.content:new Uri.dataFromString(getHtmlData(htmlStr), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
       appBar: AppBar(
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.black,),
