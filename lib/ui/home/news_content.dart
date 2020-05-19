@@ -44,6 +44,9 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
 
   bool isCollect;
 
+  String url;
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -82,15 +85,17 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
              "<\/span> <span style=\"float:right;font-size:12px;color:#999999\">" +
              _detailsEntity.createTime + "<\/span></p> <br/>";
          if (_detailsEntity.content.startsWith("http")) {
-           htmlStr = _detailsEntity.content;
+           url = _detailsEntity.content;
          } else {
            String head = "\<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" /><head><style>* {font-size:15px}{color:#212121;}img{display:block;width:100%;height:auto;}</style></head>";
            String resultStr = "<html>" + head + "<body>" +
                _detailsEntity.content + "<\/body></html>";
            htmlStr = subTitle + soure + resultStr;
+           url =  new Uri.dataFromString(getHtmlData(htmlStr), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString();
          }
 
          setState(() {
+
          });
        }
      });
@@ -99,8 +104,8 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
 
-    return  WebviewScaffold(
-      url: _detailsEntity==null?"":_detailsEntity.content.startsWith("http")?_detailsEntity.content:new Uri.dataFromString(getHtmlData(htmlStr), mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+    return  _detailsEntity==null?Container(): WebviewScaffold(
+      url: url,
       appBar: AppBar(
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.black,),
@@ -153,7 +158,7 @@ class _NewsContentPageState extends State<NewsContentPage> with AutomaticKeepAli
           "    img.style.maxWidth = '100%'; img.style.height = 'auto';  " +
           "}" +
           "})()",
-      initialChild: _loadingContainer,
+     initialChild: _loadingContainer,
     );
   }
 
