@@ -52,12 +52,13 @@ class HttpManager {
     if (method == HttpMethod.GET) {
       _options = Options(
           method: HTTPMethodValues[method.index],
-          contentType: type,
+
+    contentType: Headers.formUrlEncodedContentType,
           headers: header);
     } else {
       _options = Options(
           method: HTTPMethodValues[method.index],
-          contentType: type,
+    contentType: Headers.formUrlEncodedContentType,
           headers: header);
     }
 
@@ -85,14 +86,16 @@ class HttpManager {
           BaseResult(msg: response.statusMessage,code: response.statusCode);
     }
 
-
-    return response.data;
+    return response;
   }
 
   upload(String url, File data,{String path}) async {
-    UploadFileInfo file = UploadFileInfo(data, data.path);
-    FormData formData = FormData.from({'image': file,"token": UserUtils.getToken()??"","path":path??""});
 
+
+   // UploadFileInfo file = UploadFileInfo(data, data.path);
+
+
+    FormData formData = FormData.fromMap({'image': await MultipartFile.fromFile(data.path,filename: "upload.png"),"token": UserUtils.getToken()??"","path":path??""});
 
 
     Map<String, dynamic> header = {
@@ -119,7 +122,7 @@ class HttpManager {
           BaseResult(msg: response.statusMessage,code: response.statusCode);
     }
 
-    return response.data;
+    return response;
   }
 }
 

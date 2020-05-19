@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'package:dio/dio.dart';
@@ -26,7 +27,10 @@ class NetUtils {
   ///
   static Future<BaseResult> requestAppVersionAndroid() async {
     String url = APPConfig.Server + "index/version";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+
+    Response response = await httpManager.request(HttpMethod.POST, url, {});
+
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -37,7 +41,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestAppVersionIos() async {
     String url = APPConfig.Server + "index/ios_version";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    Response response = await httpManager.request(HttpMethod.POST, url, {});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -48,7 +53,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestSmsCode(String phone) async {
     String url = APPConfig.Server + "sms/user_login";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"phone":phone});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
   ///
@@ -65,7 +71,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestSmsLogin(String phone,String code,String status) async {
     String url = APPConfig.Server + "login/sms_login";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone,"code":code,"status":status});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"phone":phone,"code":code,"status":status});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -79,7 +86,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestQuickLogin(String type,String unionid) async {
     String url = APPConfig.Server + "login/quick_login";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"unionid":unionid});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"type":type,"unionid":unionid});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -96,7 +104,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPassLogin(String phone,String pass) async {
     String url = APPConfig.Server + "login/pass_login";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"phone":phone,"passwd":pass});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"phone":phone,"passwd":pass});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -106,7 +115,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestAgreements() async {
     String url = APPConfig.Server + "login/agreements";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, { });
+    Response response = await httpManager.request(HttpMethod.POST, url, { });
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -134,7 +144,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestFinishInfo(Map<String, dynamic> map) async {
     String url = APPConfig.Server + "login/finish_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    Response response = await httpManager.request(HttpMethod.POST, url, map);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -143,7 +154,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestCertificationDoctor(Map<String, dynamic> map) async {
     String url = APPConfig.Server + "users/certification_doctor";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    Response response = await httpManager.request(HttpMethod.POST, url, map);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -152,7 +164,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestCertificationStaff(Map<String, dynamic> map) async {
     String url = APPConfig.Server + "users/certification_staff";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, map);
+    Response response = await httpManager.request(HttpMethod.POST, url, map);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -161,7 +174,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestJobList() async {
     String url = APPConfig.Server + "label/job_list";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    Response response = await httpManager.request(HttpMethod.POST, url, {});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -173,7 +187,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestIndex(int regType) async {
     String url = APPConfig.Server + (regType==1?"users/index_doctor":"users/index_staff");
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    Response response = await httpManager.request(HttpMethod.POST, url, {});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -183,7 +198,9 @@ class NetUtils {
   ///
   static Future<BaseResult> requestUserInfo() async {
     String url = APPConfig.Server + "users/user_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+    Response response = await httpManager.request(HttpMethod.POST, url, {});
+    
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -193,7 +210,10 @@ class NetUtils {
   ///
   static Future<BaseResult> requestGetCertification() async {
     String url = APPConfig.Server + "users/get_certification";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {});
+
+    Response response = await httpManager.request(HttpMethod.POST, url, {});
+
+    BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -202,8 +222,9 @@ class NetUtils {
   ///  上传图片
   ///
   static Future<BaseResult> requestUploadsImages(File data,String path) async {
-    String url = APPConfig.Server + "uploads/image.html";
-    BaseResult result = await httpManager.upload(url, data,path: path);
+  String url = APPConfig.Server + "uploads/image.html";
+    Response response = await httpManager.upload(url, data,path: path);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -217,7 +238,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMeetingAdvance(String id) async {
     String url = APPConfig.Server + "/meeting/advance";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -230,7 +252,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMeetingInfo(String id) async {
     String url = APPConfig.Server + "meeting/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -244,7 +267,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMeetinggGetStatus(String id) async {
     String url = APPConfig.Server + "meeting/get_status";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -258,7 +282,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMeetingGetProgrammeList(String id) async {
     String url = APPConfig.Server + "meeting/programme_list";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -272,7 +297,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMeetingGetMeetingInfo(String id) async {
     String url = APPConfig.Server + "meeting/get_meeting_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -286,7 +312,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestGoodAdd(String type,String other_id) async {
     String url = APPConfig.Server + "good/add";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":other_id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":other_id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -298,7 +325,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestGoodDel(String id) async {
     String url = APPConfig.Server + "good/del";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -312,7 +340,8 @@ class NetUtils {
   /// other_id	否	string	页面内容ID
   static Future<BaseResult> requestGoodCheckStatus(String type,String id) async {
     String url = APPConfig.Server + "good/check_status";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -328,7 +357,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestCollectAdd(String type,String other_id) async {
     String url = APPConfig.Server + "collect/add";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":other_id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"type":type,"other_id":other_id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -340,7 +370,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestCollectDel(String id) async {
     String url = APPConfig.Server + "collect/del";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url, {"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url, {"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -353,7 +384,8 @@ class NetUtils {
   /// other_id	否	string	页面内容ID
   static Future<BaseResult> requestCollectCheckStatus(String type,String id) async {
     String url = APPConfig.Server + "collect/check_status";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -369,7 +401,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestCommentLists(String member_id,String type,String other_id,String page) async {
     String url = APPConfig.Server + "comment/lists";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"member_id":member_id,"other_id":other_id,"page":page});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"type":type,"member_id":member_id,"other_id":other_id,"page":page});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -385,7 +418,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestCommentAdd(String type,String other_id,String content) async {
     String url = APPConfig.Server + "comment/add";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":other_id,"content":content});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":other_id,"content":content});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -398,7 +432,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestCommentDel(String type,String other_id,String content) async {
     String url = APPConfig.Server + "comment/del";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":other_id,"content":content});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"type":type,"other_id":other_id,"content":content});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -407,7 +442,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestNewsIndex() async {
     String url = APPConfig.Server + "news/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -421,7 +457,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestNewsLists({String id,String page}) async {
     String url = APPConfig.Server + "news/lists";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id,"page":page});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id,"page":page});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -431,7 +468,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestNewsInfo(String id) async {
     String url = APPConfig.Server + "news/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -442,7 +480,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestDocumentIndex() async {
     String url = APPConfig.Server + "document/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -457,7 +496,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestDocumentLists(String id,String page) async {
     String url = APPConfig.Server + "document/lists";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id,"page":page});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id,"page":page});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -468,7 +508,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestDocumentInfo(String id) async {
     String url = APPConfig.Server + "document/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -481,7 +522,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestGoodsInfo(String id) async {
     String url = APPConfig.Server + "points/goods_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -493,7 +535,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestOrderInfo(String id) async {
     String url = APPConfig.Server + "points/order_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -504,7 +547,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestAddOrder(Map map) async {
     String url = APPConfig.Server + "points/add_order";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
+    Response response = await httpManager.request(HttpMethod.POST, url,map);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -516,7 +560,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMyOrderLists(String page) async {
     String url = APPConfig.Server + "points/my_order_list";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -526,7 +571,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMyOrderInfo(String id) async {
     String url = APPConfig.Server + "points/my_order_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -537,7 +583,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMyOrderConfirm(String id) async {
     String url = APPConfig.Server + "points/confirm";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -546,7 +593,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestAddressLists() async {
     String url = APPConfig.Server + "points/address_lists";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -564,7 +612,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestAdAddress(Map map) async {
     String url = APPConfig.Server + "points/add_address";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
+    Response response = await httpManager.request(HttpMethod.POST, url,map);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -575,7 +624,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestSetDefaultAddress(String id) async {
     String url = APPConfig.Server + "points/set_default_address";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -594,7 +644,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestEditAddress(Map map) async {
     String url = APPConfig.Server + "points/edit_address";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
+    Response response = await httpManager.request(HttpMethod.POST, url,map);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -608,7 +659,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestGetAddress(String id) async {
     String url = APPConfig.Server + "points/get_address";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -618,7 +670,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestVideosIndex() async {
     String url = APPConfig.Server + "videos/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url, {});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -628,7 +681,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestVideosInfo(String id) async {
     String url = APPConfig.Server + "videos/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -639,7 +693,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestIndexIndex() async {
     String url = APPConfig.Server + "index/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -649,7 +704,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMeetingIndex() async {
     String url = APPConfig.Server + "meeting/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -658,7 +714,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestReviewInfo(String id) async {
     String url = APPConfig.Server + "meeting/review_info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -668,7 +725,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestReviewVideoList(String id) async {
     String url = APPConfig.Server + "meeting/review_video_list";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -678,7 +736,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsIndex() async {
     String url = APPConfig.Server + "points/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -687,7 +746,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsTaskChildList(String id) async {
     String url = APPConfig.Server + "points/task_child_list";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -697,7 +757,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsQuestionTask(String id) async {
     String url = APPConfig.Server + "points/question_task";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -708,7 +769,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsVideoTask(String id) async {
     String url = APPConfig.Server + "points/video_task";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -721,7 +783,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsVideoNode(String tid,String play_time) async {
     String url = APPConfig.Server + "points/video_node";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"tid":tid,"play_time":play_time});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"tid":tid,"play_time":play_time});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -736,7 +799,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsCompleteVideoTask(String tid) async {
     String url = APPConfig.Server + "points/complete_video_task";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"tid":tid});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"tid":tid});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -751,7 +815,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestPointsCompleteQuestionTask(Map<String, dynamic>  map) async {
     String url = APPConfig.Server + "points/complete_question_task";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,map);
+    Response response = await httpManager.request(HttpMethod.POST, url,map);
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -761,7 +826,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestSearchIndex(String kwd) async {
     String url = APPConfig.Server + "search/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"kwd":kwd});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"kwd":kwd});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -771,7 +837,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestSpecialIndex() async {
     String url = APPConfig.Server + "special/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -780,7 +847,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestSpecialInfo(String id) async {
     String url = APPConfig.Server + "special/info";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -791,7 +859,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestSpecialViews(String id) async {
     String url = APPConfig.Server + "special/views";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -801,7 +870,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestFeedbackAdd(String content,String phone) async {
     String url = APPConfig.Server + "feedback/add";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"content":content,"phone":phone});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"content":content,"phone":phone});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -811,7 +881,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestMyCompany() async {
     String url = APPConfig.Server + "users/my_company";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -821,7 +892,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestDoctorIndex() async {
     String url = APPConfig.Server + "doctor/index";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -830,7 +902,8 @@ class NetUtils {
   ///
     static Future<BaseResult> requestDoctorPortal(String id) async {
     String url = APPConfig.Server + "doctor/portal";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -846,7 +919,7 @@ class NetUtils {
 
     FlowDoctorEntity flowDoctorEntity =  FlowDoctorEntity.fromJson(response.data);
 
-  //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+  //   Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return flowDoctorEntity;
   }
 
@@ -858,7 +931,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestUsersFriendsAdd(String passive_id) async {
     String url = APPConfig.Server + "friends/add";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -869,7 +943,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestUsersFriendsDel(String passive_id) async {
     String url = APPConfig.Server + "friends/del";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
   ///
@@ -879,7 +954,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestUsersFriendsCheck(String passive_id) async {
     String url = APPConfig.Server + "friends/check";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"passive_id":passive_id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -897,7 +973,7 @@ class NetUtils {
 
     FlowDoctorEntity flowDoctorEntity =  FlowDoctorEntity.fromJson(response.data);
 
-    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    //   Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return flowDoctorEntity;
   }
 
@@ -917,7 +993,7 @@ class NetUtils {
 
     ClVideoEntity flowDoctorEntity =  ClVideoEntity.fromJson(response.data);
 
-    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    //   Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return flowDoctorEntity;
   }
 
@@ -934,7 +1010,7 @@ class NetUtils {
 
     ClNewsEntity flowDoctorEntity =  ClNewsEntity.fromJson(response.data);
 
-    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    //   Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return flowDoctorEntity;
   }
 
@@ -948,7 +1024,8 @@ class NetUtils {
   static Future<BaseResult> requestUsersUpdateAvatar(String  src) async {
 
     String url = APPConfig.Server + "users/uploadEdit";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"src":src});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"src":src});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
   }
 
@@ -979,7 +1056,7 @@ class NetUtils {
     response = await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
     ClVideoEntity flowDoctorEntity =  ClVideoEntity.fromJson(response.data);
 
-    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    //   Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return flowDoctorEntity;
 
   }
@@ -995,7 +1072,7 @@ class NetUtils {
     response = await dio.post(url,data:{"page":page,"token": UserUtils.getToken()?? ""});
     IntegralListEntity integralListEntity =  IntegralListEntity.fromJson(response.data);
 
-    //   BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    //   Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
     return integralListEntity;
 
   }
@@ -1007,7 +1084,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestUserMsg(int page) async {
     String url = APPConfig.Server + "users/messages";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"page":page});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"page":page});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
 
   }
@@ -1017,7 +1095,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestUserAllRead() async {
     String url = APPConfig.Server + "users/read";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{});
+    Response response = await httpManager.request(HttpMethod.POST, url,{});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
 
   }
@@ -1027,7 +1106,8 @@ class NetUtils {
   ///
   static Future<BaseResult> requestUserSingleRead(String id) async {
     String url = APPConfig.Server + "users/single";
-    BaseResult result = await httpManager.request(HttpMethod.POST, url,{"id":id});
+    Response response = await httpManager.request(HttpMethod.POST, url,{"id":id});
+     BaseResult result = BaseResult.fromJson(response.data);
     return result;
 
   }

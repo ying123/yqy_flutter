@@ -30,7 +30,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
 
     try {
 
-      BaseResult   result = BaseResult.fromJson(jsonDecode(response.data));
+      BaseResult   result =   BaseResult.fromJson(jsonDecode(response.data));
 
       if (response.statusCode!=500) { //http code
 
@@ -48,19 +48,19 @@ class ResponseInterceptor extends InterceptorsWrapper {
         //  MainHomePage.navigatorKey.currentState.pushNamedAndRemoveUntil("/login", (router) => router == null);
         //  MainHomePage.navigatorKey.currentState.pushNamed("/login");
         }
-          return result;
-
+        return super.onResponse(response);
       }else {
         if (APPConfig.DEBUG) {
           print("ResponseInterceptor: $response.statusCode");
         }
+        return super.onResponse(response);
       }
     } catch(e) {
        if (APPConfig.DEBUG) {
           print("ResponseInterceptor: $e.toString() + options.path");
         }
        //token 过期
-         return BaseResult.fromJson(response.data);
+       return super.onResponse(response);
     }
   }
 }
