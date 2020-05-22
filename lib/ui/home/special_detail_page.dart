@@ -20,7 +20,7 @@ class SpecialDetailPage extends StatefulWidget {
   _SpecialDetailPageState createState() => _SpecialDetailPageState();
 }
 
-class _SpecialDetailPageState extends State<SpecialDetailPage> {
+class _SpecialDetailPageState extends State<SpecialDetailPage>  with AutomaticKeepAliveClientMixin{
 
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
@@ -77,7 +77,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
        buildContentView(context),
        buildLineView(),
        getRowTextView("视频"),//热门会议标题栏
-       getHotVideo(_specialDetailsInfo.videoList),//热门会议视频横向列表
+       getHotVideo(context,_specialDetailsInfo.videoList),//热门会议视频横向列表
        buildLineView(),
        getRowTextView("文章"),//热门会议标题栏
        buildNewsListView(),
@@ -110,7 +110,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
   }
 
 
-  Widget getHotVideo(List<SpecialDetailsInfoVideoList>  list){
+  Widget getHotVideo(BuildContext context,List<SpecialDetailsInfoVideoList>  list){
 
     return list==null?Container(): GridView.count(
       controller: _scrollController,
@@ -126,7 +126,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
       crossAxisCount: 2,
       //子Widget宽高比例
       //子Widget列表
-      children: list.getRange(0,list.length).map((item) => itemVideoView(item)).toList(),
+      children: list.getRange(0,list.length).map((item) => itemVideoView(context,item)).toList(),
     );
   }
 
@@ -225,7 +225,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
   ///
   ///  热门视频 item
   ///
-  Widget itemVideoView(SpecialDetailsInfoVideoList bean) {
+  Widget itemVideoView(BuildContext context,SpecialDetailsInfoVideoList bean) {
 
 
     return  InkWell(
@@ -295,7 +295,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
     return  new GestureDetector(
 
       onTap: (){
-        RRouter.push(context, Routes.specialDetailsWebPage, {"id":xlist.id});
+        RRouter.push(context, Routes.specialDetailsWebPage, {"id":xlist.id},transition:TransitionType.cupertino);
       },
       child: new Container(
 
@@ -514,4 +514,8 @@ class _SpecialDetailPageState extends State<SpecialDetailPage> {
     });
 
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

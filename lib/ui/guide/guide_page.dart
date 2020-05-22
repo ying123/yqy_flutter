@@ -32,7 +32,7 @@ class GuidePage extends StatefulWidget {
   _GuidePageState createState() => _GuidePageState();
 }
 
-class _GuidePageState extends State<GuidePage> with SingleTickerProviderStateMixin {
+class _GuidePageState extends State<GuidePage> with TickerProviderStateMixin,AutomaticKeepAliveClientMixin{
 
   GuideIndexInfo _guideIndexInfo; // 选项卡数据
 
@@ -125,4 +125,8 @@ class _GuidePageState extends State<GuidePage> with SingleTickerProviderStateMix
 
 
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

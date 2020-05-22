@@ -23,7 +23,7 @@ class NewUserPage extends StatefulWidget {
   _NewUserPageState createState() => _NewUserPageState();
 }
 
-class _NewUserPageState extends State<NewUserPage> {
+class _NewUserPageState extends State<NewUserPage> with TickerProviderStateMixin,AutomaticKeepAliveClientMixin {
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
 
@@ -698,4 +698,8 @@ class _NewUserPageState extends State<NewUserPage> {
 
 
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

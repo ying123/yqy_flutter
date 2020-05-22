@@ -25,7 +25,7 @@ class DoctorHomePage extends StatefulWidget {
   _DoctorHomePageState createState() => _DoctorHomePageState();
 }
 
-class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderStateMixin {
+class _DoctorHomePageState extends State<DoctorHomePage> with TickerProviderStateMixin,AutomaticKeepAliveClientMixin{
 
   TabController _tabController;
   GlobalKey _globalKey = new GlobalKey();
@@ -348,7 +348,7 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
 
       onTap: (){
       //  FLToast.info(text: "暂无相关信息:"+bean.id.toString());
-        RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id});
+        RRouter.push(context, Routes.doctorDetailsPage,{"userId":bean.id},transition:  TransitionType.cupertino);
       },
       child: new Container(
         color: Colors.white,
@@ -893,6 +893,10 @@ class _DoctorHomePageState extends State<DoctorHomePage>  with TickerProviderSta
     });
 
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
 
 }

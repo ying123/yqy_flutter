@@ -44,9 +44,7 @@ Text buildText(String v,{String color="#FF333333",double size=40,FontWeight font
 
   return  Text(v,style: TextStyle(color: Color(int.parse(color.replaceAll("#", "0x"))),fontSize: ScreenUtil().setSp(size),fontWeight: fontWeight
               ,),);
-
 }
-
 
 
 ///
@@ -91,21 +89,20 @@ Text getContentText(String str){
 
 
 
-
 ///
 ///  网络图片添加
 ///
 Widget wrapImageUrl(String url,double w,double h){
 
 
-
-  return CachedNetworkImage(
+  return    CachedNetworkImage(
     width: w,
     height: h,
     fit: BoxFit.fill,
     imageUrl: url,
-   placeholder: (context, url) => Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
-    errorWidget: (context, url, error) => Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
+    placeholder: (context, url) => new CircularProgressIndicator(),
+  // placeholder: (context, url) => Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
+    errorWidget: (context, url, error) =>   Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
   );
 }
 

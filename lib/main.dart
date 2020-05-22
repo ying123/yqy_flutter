@@ -157,7 +157,7 @@ class HomeMainPage extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
+class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin,AutomaticKeepAliveClientMixin{
 
 
   final _bottomNavigationColor = Colors.black45;
@@ -277,6 +277,10 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin{
     }
     return color;
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
 
 

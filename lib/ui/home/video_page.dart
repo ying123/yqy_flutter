@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
@@ -14,7 +15,7 @@ class VideoPage extends StatefulWidget {
   _VideoPageState createState() => _VideoPageState();
 }
 
-class _VideoPageState extends State<VideoPage>  with AutomaticKeepAliveClientMixin,TickerProviderStateMixin{
+class _VideoPageState extends State<VideoPage> with TickerProviderStateMixin,AutomaticKeepAliveClientMixin{
 
   @override
   // TODO: implement wantKeepAlive
@@ -217,7 +218,7 @@ class _VideoPageState extends State<VideoPage>  with AutomaticKeepAliveClientMix
     return  InkWell(
 
       onTap: (){
-        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()},transition:  TransitionType.cupertino);
 
       },
       child: Container(
@@ -462,7 +463,7 @@ class _VideoPageState extends State<VideoPage>  with AutomaticKeepAliveClientMix
     return  GestureDetector(
 
       onTap: (){
-        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()});
+        RRouter.push(context, Routes.doctorVideoInfoPage,{"id": bean.id.toString()},transition:  TransitionType.cupertino);
       },
 
       child: new Container(

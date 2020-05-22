@@ -150,7 +150,6 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
 
         if(_liveDetailsInfo.videoList.length>0){
           player.setDataSource(_liveDetailsInfo.videoList[0].playUrl??"", autoPlay: true);
-
           }
 
       }
@@ -196,22 +195,31 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: getCommonAppBar(context,"会议录播"),
-      body:  LoadStateLayout(
-        state: _layoutState,
-        errorRetry: () {
-          setState(() {
-            _layoutState = LoadState.State_Loading;
-          });
-          this.loadData();
+      body:  InkWell(
+        onTap: (){
+
+          // 触摸收起键盘
+          FocusScope.of(context).requestFocus(FocusNode());
+
         },
-        successWidget:_liveDetailsInfo==null?Container(): Stack(
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            //主要内容布局
-            buildContextView(context),
-            // 底部点击评论的布局
-            buildBottomView(context)
-          ],
+        child: LoadStateLayout(
+          state: _layoutState,
+          errorRetry: () {
+            setState(() {
+              _layoutState = LoadState.State_Loading;
+            });
+            this.loadData();
+          },
+          successWidget:_liveDetailsInfo==null?Container(): Stack(
+            alignment: Alignment.bottomCenter,
+            children: <Widget>[
+              //主要内容布局
+              buildContextView(context),
+              // 底部点击评论的布局
+              buildBottomView(context)
+            ],
+          ),
+
         ),
 
       )

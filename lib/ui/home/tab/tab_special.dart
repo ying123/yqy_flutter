@@ -17,6 +17,10 @@ class TabSpecialPage extends StatefulWidget {
 
 class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAliveClientMixin {
 
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
 
   Info _tabSpecialInfo;
 
@@ -157,9 +161,7 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
 
     }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+
 
   void initData() {
 

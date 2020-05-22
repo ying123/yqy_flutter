@@ -60,7 +60,7 @@ class HomePage extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin,AutomaticKeepAliveClientMixin {
+class _HomeState extends State<HomePage> with TickerProviderStateMixin,AutomaticKeepAliveClientMixin {
 
 
 
@@ -313,12 +313,19 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin,Aut
 
           _updateVersionInfo = UpdateVersionInfo.fromJson(res.info);
 
+
+
+
+
           //获取当前版本
           PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
           int  buildNumber =  int.parse(packageInfo.buildNumber); // 本地版本
 
           int  versioncode =  int.parse(_updateVersionInfo.versioncode); // 服务器版本
+
+
+
 
           if(buildNumber<versioncode){ // 如果本地 小于  服务器  开始提示更新
 

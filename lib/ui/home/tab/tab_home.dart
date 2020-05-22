@@ -278,7 +278,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             Expanded(
                 child: InkWell(
                   onTap: (){
-                      RRouter.push(context ,Routes.doctorHomePage,{"isShow":"1"});
+                      RRouter.push(context ,Routes.doctorHomePage,{"isShow":"1"},transition:  TransitionType.cupertino);
                   },
                   child: Image.asset(wrapAssets("home/bg_doctor_video.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
                 )
@@ -288,7 +288,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             Expanded(
                 child: InkWell(
                   onTap: (){
-                   RRouter.push(context ,Routes.taskNewPage,{});
+                   RRouter.push(context ,Routes.taskNewPage,{},transition:  TransitionType.cupertino);
                   },
                   child: Image.asset(wrapAssets("home/bg_integral.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
                 )

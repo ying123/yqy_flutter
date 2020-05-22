@@ -130,7 +130,7 @@ class APPConfig {
 
   static const APK_PATH = "/storage/emulated/0/shuiyan.apk";
 
-  static const DEBUG = true;
+  static const DEBUG = false;
 
  //static const Server = "http://api.yaoqiyuan.com/api/";
 
