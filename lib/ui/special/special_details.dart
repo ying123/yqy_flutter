@@ -52,6 +52,13 @@ class _SpecialDetailsPageState extends State<SpecialDetailsPage>  with TickerPro
 
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _tabController.dispose();
+  }
+
 
   void loadData() async{
 

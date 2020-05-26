@@ -43,7 +43,11 @@ class _TabLivePageState extends State<TabLivePage>  with AutomaticKeepAliveClien
     _refreshController  = RefreshController(initialRefresh: false);
   }
 
-
+  @override
+  void dispose() {
+    super.dispose();
+    _refreshController.dispose();
+  }
   void _onRefresh() async{
     // monitor network fetch
     // await Future.delayed(Duration(milliseconds: 1000));

@@ -27,7 +27,9 @@ dependencies:
   path_provider: ^1.1.0
   open_file: ^2.1.1 # 打开文件
   cupertino_icons: ^0.1.2
-  cached_network_image: ^2.0.0
+  cached_network_image: 2.3.0-beta
+  pdf_viewer_jk: 1.1.0   # PDF 查看器
+  flutter_advanced_networkimage: 0.7.0
   dotted_border: 1.0.4 #  虚线边框
   dio: ^3.0.9
   event_bus: ^1.1.0
@@ -70,7 +72,6 @@ dependencies:
  #  flutter_easyloading: ^1.1.1 # 弹窗
   share: 0.6.3+1 # 分享
   flutter_swiper: 1.1.6 # 轮播图
-  flutter_plugin_pdf_viewer: 1.0.7   # PDF 查看器
   flui: 0.8.0  # UI组件库 待完善
   flutter_sticky_header: 0.4.2 # 悬停布局2
   indexed_list_view: 1.0.8  # 列表滚动到指定位置

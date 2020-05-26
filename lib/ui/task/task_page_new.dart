@@ -58,7 +58,6 @@ class _TaskNewPageState extends State<TaskNewPage>  with AutomaticKeepAliveClien
 
   TaskPageInfo _taskPageInfo;
 
-
   @override
   void initState() {
     // TODO: implement initState

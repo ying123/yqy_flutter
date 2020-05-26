@@ -95,6 +95,7 @@ Text getContentText(String str){
 Widget wrapImageUrl(String url,double w,double h){
 
 
+
   return    CachedNetworkImage(
     width: w,
     height: h,
@@ -107,7 +108,22 @@ Widget wrapImageUrl(String url,double w,double h){
 }
 
 
+///
+///  Banner 网络图片添加  不添加 加载效果
+///
+Widget wrapImageBannerUrl(String url,double w,double h){
 
+
+  return    CachedNetworkImage(
+    width: w,
+    height: h,
+    fit: BoxFit.fill,
+    imageUrl: url,
+  //  placeholder: (context, url) => new CircularProgressIndicator(),
+    placeholder: (context, url) => Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
+    errorWidget: (context, url, error) =>   Image.asset(wrapAssets("error_image.png"),width: w,height: h,fit: BoxFit.fill,),
+  );
+}
 
 ///
 ///  本地图片添加

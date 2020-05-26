@@ -37,13 +37,13 @@ class UserInfoInfo {
 	int tIds;
 	int jId;
 	String jobCode;
-	Null jobImg1;
-	Null jobImg2;
+	String jobImg1;
+	String jobImg2;
 	int regType;
 	String hospitalName;
-	Null proName;
-	Null cityName;
-	Null areaName;
+	var proName;
+	var cityName;
+	var areaName;
 	String departName;
 	String departsName;
 	String jobName;

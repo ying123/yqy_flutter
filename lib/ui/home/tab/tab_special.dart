@@ -9,6 +9,7 @@ import 'package:yqy_flutter/route/r_router.dart';
 import 'package:yqy_flutter/route/routes.dart';
 import 'package:yqy_flutter/ui/home/tab/bean/tab_special_entity.dart';
 import 'package:yqy_flutter/utils/margin.dart';
+import 'package:yqy_flutter/widgets/load_state_layout_widget.dart';
 
 class TabSpecialPage extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
+  //页面加载状态，默认为加载中
+  LoadState _layoutState = LoadState.State_Loading;
 
   Info _tabSpecialInfo;
 
@@ -40,17 +43,27 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-
       backgroundColor: Colors.white,
-      body: _tabSpecialInfo==null?Container():ListView.builder(
-        shrinkWrap: true,
-        itemCount: _tabSpecialInfo.typeList.length+1,
-        itemBuilder: (context,index){
+      body: LoadStateLayout(
 
-         return  index==0? buildBanner(context): _tabSpecialInfo.typeList[index-1].lists.length==0?Container():buildItemView(_tabSpecialInfo.typeList[index-1]);
-
+        state: _layoutState,
+        errorRetry: () {
+          setState(() {
+            _layoutState = LoadState.State_Loading;
+          });
+          this.initData();
         },
-      ),
+        successWidget: _tabSpecialInfo==null?Container():ListView.builder(
+          shrinkWrap: true,
+          itemCount: _tabSpecialInfo.typeList.length+1,
+          itemBuilder: (context,index){
+
+            return  index==0? buildBanner(context): _tabSpecialInfo.typeList[index-1].lists.length==0?Container():buildItemView(_tabSpecialInfo.typeList[index-1]);
+
+          },
+        ),
+
+      )
 
     );
   }
@@ -62,7 +75,7 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
         width: double.infinity,
         child:new Swiper(
           itemBuilder: (BuildContext context,int index){
-            return new Image.network(_tabSpecialInfo.bannerList[index].img,fit: BoxFit.fill,);
+            return wrapImageBannerUrl(_tabSpecialInfo.bannerList[index].img,double.infinity,double.infinity);
           },
           itemCount: _tabSpecialInfo.bannerList.length,
           autoplay: true,
@@ -176,7 +189,7 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
 
          setState(() {
             _tabSpecialInfo  =    Info.fromJson(res.info);
-
+            _layoutState = loadStateByCode(res.code);
 
          });
 

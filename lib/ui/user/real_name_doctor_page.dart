@@ -69,7 +69,8 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
   String _urlImage1,_urlImage2;
 
-
+ String  _urlImage1Upload; // 只用于上传图片使用  没有添加域名 相对路径
+  String  _urlImage2Upload; // 只用于上传图片使用  没有添加域名 相对路径
 
   Future getImage(int type) async {
 
@@ -87,12 +88,14 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           if(type==1){
             setState(() {
               _urlImage1 = _uploadImageInfo.cdn+_uploadImageInfo.src;
+              _urlImage1Upload = _uploadImageInfo.src;
             });
 
 
 
           }else{
             _urlImage2 = _uploadImageInfo.cdn+_uploadImageInfo.src;
+            _urlImage2Upload = _uploadImageInfo.src;
           }
 
 
@@ -167,7 +170,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
                 // 职业证书号码
                 buildJobNumberInputView(context),
                 buildLine(),
-                Visibility(visible: UserUtils.getUserInfoX().userInfoStatus==4,child: Column(
+                Visibility(visible: true,child: Column(
                   children: <Widget>[
                     new Container(
                       margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58),  ScreenUtil().setHeight(80), 0, 0),
@@ -770,20 +773,20 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
 
     // 当前表示 之前提交过资料 但是需要补充图片资料
-    if(UserUtils.getUserInfoX().userInfoStatus==4){
+    if(true){
 
-        if(_urlImage1==null){
+        if(_urlImage1==null&&_urlImage1Upload==null){
 
           FLToast.error(text:"请上传执业证书正面");
           return;
 
         }
-      if(_urlImage2==null){
+      if(_urlImage2==null&&_urlImage2Upload==null){
         FLToast.error(text: "请上传执业证书背面");
         return;
       }
-      map["job_img1"] = _urlImage1;
-      map["job_img2"] = _urlImage2;
+      map["job_img1"] = _urlImage1Upload??_urlImage1.substring(_urlImage1.lastIndexOf("/uploads"));
+      map["job_img2"] = _urlImage2Upload??_urlImage2.substring(_urlImage1.lastIndexOf("/uploads"));
     }
 
 
@@ -854,7 +857,6 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
 
             address = stringBuffer.toString();
 
-
           }
 
 
@@ -875,6 +877,11 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
           job_id = info.jId.toString();
 
           _jobCodeC.text = info.jobCode;
+
+          _urlImage1 = info.jobImg1;
+
+          _urlImage2 = info.jobImg2;
+
 
 
 

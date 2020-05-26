@@ -29,7 +29,7 @@ class _SpecialDetailPageState extends State<SpecialDetailPage>  with AutomaticKe
 
   bool _showTipContent  = false;// 是否显示简介
 
-  ScrollController _scrollController =  new ScrollController(); // 解决嵌套滑动冲突  设置统一滑动
+  ScrollController _scrollController ; // 解决嵌套滑动冲突  设置统一滑动
 
   SpecialDetailsInfo _specialDetailsInfo;
 
@@ -39,10 +39,15 @@ class _SpecialDetailPageState extends State<SpecialDetailPage>  with AutomaticKe
     // TODO: implement initState
     super.initState();
     initData();
-
+    _scrollController =  new ScrollController();
   }
 
-
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

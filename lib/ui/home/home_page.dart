@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flui/flui.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_banner_swiper/flutter_banner_swiper.dart';
 import 'package:flutter/material.dart';
@@ -225,7 +226,7 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
       child: Container(
         padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
         alignment: Alignment.centerLeft,
-        width: ScreenUtil().setWidth(517),
+        width: ScreenUtil().setWidth(512),
         height: ScreenUtil().setHeight(84),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(42))),
@@ -244,7 +245,6 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
               child:   Image.asset(wrapAssets("home/search.png"),width: ScreenUtil().setWidth(39),height: ScreenUtil().setWidth(39),),
 
             )
-
 
 
           ],
@@ -462,12 +462,12 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
     return Container(
       padding: EdgeInsets.all(0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           cXM(ScreenUtil().setWidth(27)),
-          Image.asset(wrapAssets("logo3.png"),width: ScreenUtil().setWidth(194),height: ScreenUtil().setHeight(66)),
+          Image.asset(wrapAssets("logo3.png"),width: ScreenUtil().setWidth(180),height: ScreenUtil().setHeight(66)),
           cXM(ScreenUtil().setWidth(33)),
           buildAppbarView(),
-          cXM(ScreenUtil().setWidth(10)),
           InkWell(
             onTap: (){
               RRouter.push(context, Routes.taskNewPage,{}); // 跳转积分首页
@@ -478,7 +478,8 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
 
           InkWell(
             onTap: (){
-              FLToast.info(text: "暂无内容");
+           //   FLToast.info(text: "暂无内容");
+              RRouter.push(context ,Routes.noticeHomePage,{},transition:TransitionType.cupertino);
               //RRouter.push(context, Routes.noticeHomePage,{});
             },
             child: Image.asset(wrapAssets("home/msg_btn.png"),width: ScreenUtil().setWidth(43),height: ScreenUtil().setWidth(58),),
@@ -494,7 +495,8 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
             ),
 
 
-          )
+          ),
+          cXM(setW(10))
 
 
         ],

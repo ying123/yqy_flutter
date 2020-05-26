@@ -196,7 +196,12 @@ class _TaskQuestionNairePageState extends State<TaskQuestionNairePage> {
             child: Text(buildOptionValue(index),style: TextStyle(color:seleValue==index?Colors.white:Colors.black ),)
           ),
           cXM(20),
+
+          Expanded(child:
           Text(_questionInfo.questionList[firstIndex].content[index],style: TextStyle(color:seleValue==index?Colors.blue:Colors.black ,fontSize: 14),)
+          )
+
+
 
 
         ],

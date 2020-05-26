@@ -1,6 +1,7 @@
 import 'package:flui/flui.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -49,7 +50,12 @@ class _DoctorHomePageState extends State<DoctorHomePage> with TickerProviderStat
     // TODO: implement initState
     super.initState();
     _tabController = TabController(vsync: this, length: 3);
-    initData();
+
+    if(mounted){
+      initData();
+    }
+
+
 
   }
 
@@ -184,7 +190,19 @@ class _DoctorHomePageState extends State<DoctorHomePage> with TickerProviderStat
       width: double.infinity,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return wrapImageUrl( _doctorHomeInfo.topBanner[index].img, double.infinity, double.infinity);
+
+          return Image(
+            image: AdvancedNetworkImage(
+              _doctorHomeInfo.topBanner[index].img,
+            //  header: header,
+              useDiskCache: true,
+              cacheRule: CacheRule(maxAge: const Duration(days: 2)),
+            ),
+            fit: BoxFit.cover,
+          );
+
+       // return Image.network( _doctorHomeInfo.topBanner[index].img,fit: BoxFit.fill,);
+      //    return wrapImageBannerUrl( _doctorHomeInfo.topBanner[index].img, double.infinity, double.infinity);
         },
         itemCount: _doctorHomeInfo.topBanner.length,
         viewportFraction: 0.85,

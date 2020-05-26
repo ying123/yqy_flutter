@@ -44,6 +44,7 @@ class _NewUserPageState extends State<NewUserPage> with TickerProviderStateMixin
     initEventBusListener();
   }
 
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -412,9 +413,8 @@ class _NewUserPageState extends State<NewUserPage> with TickerProviderStateMixin
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
 
-
-            wrapImageUrl(bean.video.image, setW(288), setH(215)),
-            Text(bean.video.title,style: TextStyle(color:Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(32)),maxLines: 2,overflow: TextOverflow.ellipsis,),
+            wrapImageUrl(bean.video==null?"":bean.video.image, setW(288), setH(215)),
+            Text(bean.video==null?"":bean.video.title,style: TextStyle(color:Color(0xFF333333),fontWeight: FontWeight.w500,fontSize: ScreenUtil().setSp(32)),maxLines: 2,overflow: TextOverflow.ellipsis,),
 
           ],
 

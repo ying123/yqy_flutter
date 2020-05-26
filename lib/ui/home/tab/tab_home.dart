@@ -39,7 +39,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
   //页面加载状态，默认为加载中
   LoadState _layoutState = LoadState.State_Loading;
 
-  RefreshController    _refreshController  = RefreshController(initialRefresh: false);
+  RefreshController    _refreshController ;
 
   List<String> marqueeList ;
 
@@ -54,7 +54,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
     super.initState();
 
     loadData();
-
+    _refreshController  = RefreshController(initialRefresh: false);
   }
 
 
@@ -131,7 +131,6 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
         header: BezierCircleHeader(),
            child:
             CustomScrollView(
-
               slivers: <Widget>[
 
 
@@ -199,10 +198,13 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
       //轮播的item  widget 必传
       getwidget: (index) {
         return new GestureDetector(
-            child:  Image.network(
+          
+          child: wrapImageBannerUrl(data[index % data.length].img, double.infinity, double.infinity),
+          
+          /*  child:  Image.network(
               data[index % data.length].img,
               fit: BoxFit.fill,
-            ),
+            ),*/
 
             onTap: () {
 
@@ -278,7 +280,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             Expanded(
                 child: InkWell(
                   onTap: (){
-                      RRouter.push(context ,Routes.doctorHomePage,{"isShow":"1"},transition:  TransitionType.cupertino);
+                      RRouter.push(context ,Routes.doctorHomePage,{"isShow":"1"});
                   },
                   child: Image.asset(wrapAssets("home/bg_doctor_video.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
                 )
@@ -288,7 +290,7 @@ class _TabHomePageState extends State<TabHomePage> with AutomaticKeepAliveClient
             Expanded(
                 child: InkWell(
                   onTap: (){
-                   RRouter.push(context ,Routes.taskNewPage,{},transition:  TransitionType.cupertino);
+                   RRouter.push(context ,Routes.taskNewPage,{});
                   },
                   child: Image.asset(wrapAssets("home/bg_integral.png"),width: double.infinity,height: double.infinity,fit: BoxFit.fill,),
                 )

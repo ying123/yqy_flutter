@@ -38,9 +38,9 @@ class _SpecialPageState extends State<SpecialPage> {
   }
 
 
-
   @override
   void dispose() {
+    _refreshController.dispose();
     // TODO: implement dispose
     super.dispose();
   }

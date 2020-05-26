@@ -24,7 +24,6 @@ class _VideoPageState extends State<VideoPage> with TickerProviderStateMixin,Aut
   TabController _tabController;
 
 
-  GlobalKey _globalKey = new GlobalKey();
 
   bool showDrawerType1 = true; // 筛选抽屉菜单是否展开  默认展开
   bool showDrawerType2 = true;
@@ -53,7 +52,6 @@ class _VideoPageState extends State<VideoPage> with TickerProviderStateMixin,Aut
     ScreenUtil.init(context,width: 1080, height: 1920);
     return Scaffold(
 
-    key: _globalKey,
     backgroundColor: Colors.white,
       body: _videoPageInfo==null?Container(): Column(
 
@@ -84,7 +82,9 @@ class _VideoPageState extends State<VideoPage> with TickerProviderStateMixin,Aut
      width: double.infinity,
      child:new Swiper(
        itemBuilder: (BuildContext context,int index){
-         return new Image.network(_videoPageInfo.bannerList[index].img,fit: BoxFit.fill,);
+
+         return wrapImageBannerUrl(_videoPageInfo.bannerList[index].img, double.infinity, double.infinity);
+
        },
        itemCount: _videoPageInfo.bannerList.length,
        autoplay: true,

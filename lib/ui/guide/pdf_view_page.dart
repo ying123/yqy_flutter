@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf_viewer_jk/pdf_viewer_jk.dart';
 import 'package:yqy_flutter/widgets/pdf/MyPDFViewer.dart';
 ///
 ///   查看PDF的页面

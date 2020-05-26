@@ -152,7 +152,7 @@ class MainHomePage extends StatelessWidget {
 
 }
 
-class HomeMainPage extends StatefulWidget {
+class HomeMainPage extends StatefulWidget  {
   @override
   _HomeState createState() => _HomeState();
 }
@@ -179,7 +179,6 @@ class _HomeState extends State<HomeMainPage> with TickerProviderStateMixin,Autom
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
   @override
