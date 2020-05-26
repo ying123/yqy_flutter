@@ -39,6 +39,7 @@ import 'package:yqy_flutter/ui/shop/shop_buy_order_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_details_page.dart';
 import 'package:yqy_flutter/ui/shop/shop_home_page.dart';
 import 'package:yqy_flutter/ui/shop/update_address_page.dart';
+import 'package:yqy_flutter/ui/special/department/department_home_page.dart';
 import 'package:yqy_flutter/ui/special/special_details.dart';
 import 'package:yqy_flutter/ui/special/special_page.dart';
 import 'package:yqy_flutter/ui/special/special_video_details.dart';
@@ -515,6 +516,9 @@ var noticeDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<Strin
 });
 
 
+var departmentHomePageHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return DepartmentHomePage();
+});
 /*
 var rootHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return UserUtils.isLogin() ? ApplicationPage() : LoginPage();

@@ -183,6 +183,8 @@ class Routes {
 
   static String noticeDetails = "/noticeDetails"; //  消息详情
 
+  static String departmentHomePage = "/departmentHomePage"; //  科室专题首页
+
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -258,6 +260,7 @@ class Routes {
     router.define(fansDoctorPage, handler:fansDoctorPageHandler);
     router.define(myGoodsPage, handler:myGoodsPageHandler);
     router.define(noticeDetails, handler:noticeDetailsHandler);
+    router.define(departmentHomePage, handler:departmentHomePageHandler);
 
    /* router.define(rootPage, handler: rootHandler);
     router.define(mainPage, handler: mainHandler);

@@ -94,14 +94,11 @@ class _MyIntegralPageState extends State<MyIntegralPage> {
 
       });
 
-
-
     });
 
-
-
-
   }
+
+
 
 
   @override
@@ -235,7 +232,6 @@ class _MyIntegralPageState extends State<MyIntegralPage> {
                     Text(bean.userMoney,style: TextStyle(color: Colors.black,fontSize: 14,decoration: TextDecoration.none),),
 
                   ],
-
 
                 )
               ],

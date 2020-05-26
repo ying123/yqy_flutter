@@ -118,6 +118,9 @@ class _TabSpecialPageState extends State<TabSpecialPage> with AutomaticKeepAlive
 
         onTap: (){
           RRouter.push(context ,Routes.specialDetailPage,{"id":bean.id});
+
+        //  RRouter.push(context ,Routes.departmentHomePage,{"id":bean.id});
+
         },
 
         child: new Container(
