@@ -92,7 +92,7 @@ class MainHomePage extends StatelessWidget {
             child: FLToastProvider(  // Toast 全局配置
                   defaults: _toastDefaults,
                   child:  MaterialApp(
-                    title: "药企源",
+                    title: "基源医学在线",
                     navigatorKey: TokenRouter.navigatorKey, //设置在这里
                     debugShowCheckedModeBanner: false,//不显示debug
                     localizationsDelegates: [

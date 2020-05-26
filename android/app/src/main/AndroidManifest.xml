@@ -15,8 +15,8 @@
         android:usesCleartextTraffic="true"
         android:name="io.flutter.app.FlutterApplication"
         tools:replace="android:name"
-        android:label="药企源"
-        android:icon="@drawable/logo2">
+        android:label="基源医学在线"
+        android:icon="@drawable/logo4">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

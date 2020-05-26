@@ -464,7 +464,7 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
       child: Row(
         children: <Widget>[
           cXM(ScreenUtil().setWidth(27)),
-          Image.asset(wrapAssets("home/logo.png"),width: ScreenUtil().setWidth(194),height: ScreenUtil().setHeight(66)),
+          Image.asset(wrapAssets("logo3.png"),width: ScreenUtil().setWidth(194),height: ScreenUtil().setHeight(66)),
           cXM(ScreenUtil().setWidth(33)),
           buildAppbarView(),
           cXM(ScreenUtil().setWidth(10)),
