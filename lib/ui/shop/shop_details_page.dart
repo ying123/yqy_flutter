@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yqy_flutter/net/net_utils.dart';
@@ -28,12 +29,16 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
   ShopDetailsInfo _shopDetailsInfo;
 
-
+  YYDialog _yyDialog;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initData();
+
+
+
+
   }
 
 
@@ -89,7 +94,13 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
                   onTap: (){
 
-                    showServiceDialogView(context);
+                  //  showServiceDialogView(context);
+
+                    if(_yyDialog==null){
+                      _yyDialog =  YYAlertDialogBody(context);
+                    }
+
+                    _yyDialog.show();
 
                   },
                   child:   Column(
@@ -194,14 +205,50 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
     );
 
   }
-
+  YYDialog YYAlertDialogBody(BuildContext context) {
+    return YYDialog().build(context)
+      ..width = 220
+      ..borderRadius = 4.0
+      ..text(
+        padding: EdgeInsets.all(25.0),
+        alignment: Alignment.center,
+        text: "确定要拨打客服电话吗?",
+        color: Colors.black,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+      )
+      ..divider()
+      ..doubleButton(
+        padding: EdgeInsets.only(top: 10.0),
+        gravity: Gravity.center,
+        withDivider: true,
+        text1: "取消",
+        color1: Colors.black45,
+        fontSize1: 14.0,
+        fontWeight1: FontWeight.bold,
+        onTap1: () {
+        },
+        text2: "确定",
+        color2: Colors.orange,
+        fontSize2: 14.0,
+        fontWeight2: FontWeight.bold,
+        onTap2: () {
+          _launchPhone();
+        },
+      );
+  }
 
   ///
   ///  客服弹窗
   ///
   void showServiceDialogView(BuildContext context) {
 
-    showDialog(context: context,
+
+
+
+
+
+  /*  showDialog(context: context,
 
       builder: (_)=>Material(
         color: Colors.transparent,
@@ -281,7 +328,7 @@ class _ShopDetailsPageState extends State<ShopDetailsPage> {
 
       )
     );
-
+*/
   }
 
   void initData() {

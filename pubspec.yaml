@@ -68,7 +68,7 @@ dependencies:
   flutter_spinkit: ^4.0.0  # 加载进度条动画效果
   fijkplayer: ^0.8.2
   url_launcher: ^5.4.7  # Url跳转 拨打电话
-  flutter_custom_dialog: ^1.0.14 # 弹窗
+  flutter_custom_dialog: ^1.0.19 # 弹窗
  #  flutter_easyloading: ^1.1.1 # 弹窗
   share: 0.6.3+1 # 分享
   flutter_swiper: 1.1.6 # 轮播图

@@ -253,7 +253,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
 
     return Container(
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
-      height: ScreenUtil().setHeight(130),
+      height: ScreenUtil().setHeight(170),
       color: Colors.white,
       child: Row(
 
@@ -867,7 +867,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
           children: <Widget>[
 
             wrapImageUrl(bean.userPhoto, setW(250), setW(245)),
-            cYM(setH(35)),
+            cYM(setH(15)),
             Text(bean.realName,style: TextStyle(fontWeight: FontWeight.w400,fontSize: ScreenUtil().setSp(35)),),
             //   Text("介绍",style: TextStyle(fontSize: ScreenUtil().setSp(30)),)
 
@@ -1191,7 +1191,7 @@ class _LiveReviewPageState extends State<LiveReviewPage>  with WidgetsBindingObs
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            cYM(ScreenUtil().setHeight(20)),
+            cYM(ScreenUtil().setHeight(10)),
             Container(
               width: ScreenUtil().setWidth(280),
               height: setH(90),

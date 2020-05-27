@@ -182,24 +182,31 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: getCommonAppBar(context,"专家视频"),
-      body:  LoadStateLayout(
-        state: _layoutState,
-        errorRetry: () {
-          setState(() {
-            _layoutState = LoadState.State_Loading;
-          });
-          this.loadData(widget.id);
-        },
-        successWidget:_doctorVideoInfoInfo==null?Container(): Stack(
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            //主要内容布局
-            buildContextView(context),
-            // 底部评论的布局
-            buildBottomView(context)
-          ],
-        ),
+      body:  InkWell(
 
+        onTap: (){
+          // 触摸收起键盘
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: LoadStateLayout(
+          state: _layoutState,
+          errorRetry: () {
+            setState(() {
+              _layoutState = LoadState.State_Loading;
+            });
+            this.loadData(widget.id);
+          },
+          successWidget:_doctorVideoInfoInfo==null?Container(): Stack(
+            alignment: Alignment.bottomCenter,
+            children: <Widget>[
+              //主要内容布局
+              buildContextView(context),
+              // 底部评论的布局
+              buildBottomView(context)
+            ],
+          ),
+
+        ),
       )
     );
   }
@@ -232,7 +239,7 @@ class _DoctorVideoInfoPageState extends State<DoctorVideoInfoPage>   with Widget
 
     return Container(
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
-      height: ScreenUtil().setHeight(130),
+      height: ScreenUtil().setHeight(170),
       color: Colors.white,
       child: Row(
 

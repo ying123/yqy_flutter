@@ -215,24 +215,32 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
       backgroundColor: Colors.white,
 
       appBar: getCommonAppBar(context,"会议直播"),
-      body:  LoadStateLayout(
-        state: _layoutState,
-        errorRetry: () {
-          setState(() {
-            _layoutState = LoadState.State_Loading;
-          });
-          this.loadData();
-        },
-        successWidget:_liveDetailsInfo==null?Container(): Stack(
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            //主要内容布局
-            buildContextView(context),
-            // 底部点击评论的布局
-            buildBottomView(context)
-          ],
-        ),
+      body:  InkWell(
 
+        onTap: (){
+
+          // 触摸收起键盘
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: LoadStateLayout(
+          state: _layoutState,
+          errorRetry: () {
+            setState(() {
+              _layoutState = LoadState.State_Loading;
+            });
+            this.loadData();
+          },
+          successWidget:_liveDetailsInfo==null?Container(): Stack(
+            alignment: Alignment.bottomCenter,
+            children: <Widget>[
+              //主要内容布局
+              buildContextView(context),
+              // 底部点击评论的布局
+              buildBottomView(context)
+            ],
+          ),
+
+        ),
       )
     );
   }
@@ -264,7 +272,7 @@ class _LiveIngPageState extends State<LiveIngPage>  with WidgetsBindingObserver{
 
     return Container(
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
-      height: ScreenUtil().setHeight(130),
+      height: ScreenUtil().setHeight(170),
       color: Colors.white,
       child: Row(
 
