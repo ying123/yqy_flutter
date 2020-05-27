@@ -97,67 +97,74 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
   Widget build(BuildContext context) {
     ScreenUtil.init(context,width: 1080, height: 1920);
     return new  Scaffold(
-
       resizeToAvoidBottomPadding: false,//防止键盘谈起的时候导致背景视图升起*********
-      body: Stack(
+      body: Builder(builder:(context){
+              return InkWell(
+                onTap: (){
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
+                child:  Stack(
 
-        children: <Widget>[
+                  children: <Widget>[
 
-          // 背景图
-          new Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
+                    // 背景图
+                    new Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
 
-                gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)],begin: Alignment.topCenter,end: Alignment.bottomCenter)
-            ),
-          ),
-          //logo
-          new Positioned(
-              top:ScreenUtil().setHeight(300),left: ScreenUtil().setWidth(438),
-              child: Text("完善资料",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(52)),)
-          ),
-          // 选项卡
-          new Positioned(
-              child: Container(
-                height: ScreenUtil().setHeight(80),
-                margin: EdgeInsets.only(top: ScreenUtil().setHeight(450)),
-                alignment: Alignment.center,
-                child: TabBar(
-                  controller: _tabController,
-                  tabs: tabTitle.map((f) => Tab(text: f)).toList(),
-                  indicatorColor:Colors.white, //指示器颜色 如果和标题栏颜色一样会白色
-                  isScrollable: true, //是否可以滑动
-                  labelColor: Colors.white ,
-                  unselectedLabelColor:  Colors.white,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(40)),
-                  labelStyle: TextStyle(fontSize: ScreenUtil().setSp(50),fontWeight: FontWeight.bold),
-                  indicatorPadding: EdgeInsets.only(top: 5),
+                          gradient: LinearGradient(colors: [Color(0xFF68E0CF),Color(0xFF209CFF)],begin: Alignment.topCenter,end: Alignment.bottomCenter)
+                      ),
+                    ),
+                    //logo
+                    new Positioned(
+                        top:ScreenUtil().setHeight(300),left: ScreenUtil().setWidth(438),
+                        child: Text("完善资料",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(52)),)
+                    ),
+                    // 选项卡
+                    new Positioned(
+                        child: Container(
+                          height: ScreenUtil().setHeight(80),
+                          margin: EdgeInsets.only(top: ScreenUtil().setHeight(450)),
+                          alignment: Alignment.center,
+                          child: TabBar(
+                            controller: _tabController,
+                            tabs: tabTitle.map((f) => Tab(text: f)).toList(),
+                            indicatorColor:Colors.white, //指示器颜色 如果和标题栏颜色一样会白色
+                            isScrollable: true, //是否可以滑动
+                            labelColor: Colors.white ,
+                            unselectedLabelColor:  Colors.white,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(40)),
+                            labelStyle: TextStyle(fontSize: ScreenUtil().setSp(50),fontWeight: FontWeight.bold),
+                            indicatorPadding: EdgeInsets.only(top: 5),
+                          ),
+                        )),
+
+                    // 选项内容
+                    new  Positioned(
+                        top: ScreenUtil().setHeight(550),
+                        left: ScreenUtil().setWidth(115),
+                        child:  Container(
+                          width: ScreenUtil().setWidth(861),
+                          child:   buildContainerHosLogin(context),//医生登录
+
+                        )
+                    ),
+                    // logo
+                    new Positioned(
+                      bottom: ScreenUtil().setHeight(100),
+                      left: ScreenUtil().setWidth(440),
+                      child: Image.asset(wrapAssets("logo_login.png"),width:  ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(230),fit: BoxFit.fill,),
+                    )
+
+
+                  ],
                 ),
-              )),
 
-          // 选项内容
-          new  Positioned(
-              top: ScreenUtil().setHeight(550),
-              left: ScreenUtil().setWidth(115),
-              child:  Container(
-                width: ScreenUtil().setWidth(861),
-                height: ScreenUtil().setHeight(900),
-                child:   buildContainerHosLogin(context),//医生登录
+              );
 
-              )
-          ),
-          // logo
-         new Positioned(
-           bottom: ScreenUtil().setHeight(100),
-             left: ScreenUtil().setWidth(440),
-            child: Image.asset(wrapAssets("logo_login.png"),width:  ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(230),fit: BoxFit.fill,),
-         )
-
-
-        ],
-      ),
+      })
     );
   }
 
@@ -173,7 +180,6 @@ class _PerfectInfoPageState extends State<PerfectInfoPage> with SingleTickerProv
     return new Container(
       padding: EdgeInsets.fromLTRB(ScreenUtil().setHeight(30), ScreenUtil().setHeight(50), ScreenUtil().setHeight(30),  ScreenUtil().setHeight(50)),
       width: ScreenUtil().setWidth(861),
-      height: ScreenUtil().setHeight(1277),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setWidth(72))),
           // 生成俩层阴影，一层绿，一层黄， 阴影位置由offset决定,阴影模糊层度由blurRadius大小决定（大就更透明更扩散），阴影模糊大小由spreadRadius决定
