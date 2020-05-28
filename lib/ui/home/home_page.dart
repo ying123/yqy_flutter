@@ -271,40 +271,7 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
 
     // 只有是android 设备 才请求检查
     if(Platform.isAndroid){
-      //获取当前版本
-     /* FlutterXUpdate.init(
-        ///是否输出日志
-          debug: true,
-          ///是否使用post请求
-          isPost: true,
-          ///post请求是否是上传json
-          isPostJson: false,
-          ///是否开启自动模式
-          isWifiOnly: false,
-          ///是否开启自动模式
-          isAutoMode: false,
-          ///需要设置的公共参数
-          supportSilentInstall: false,
-          ///在下载过程中，如果点击了取消的话，是否弹出切换下载方式的重试提示弹窗
-          enableRetry: false
-      ).then((value) {
 
-
-      }).catchError((error) {
-        print(error);
-      });
-
-       FlutterXUpdate.checkUpdate(url: "https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json");
-       NetUtils.requestAppVersionAndroid()
-           .then((res){
-
-         if(res.code==200){
-           UpdateVersionInfo updateVersionInfo =  UpdateVersionInfo.fromJson(res.info);
-
-           FlutterXUpdate.updateByInfo(updateEntity: customParseJson(updateVersionInfo));
-         }
-
-       });*/
 
       NetUtils.requestAppVersionAndroid()
           .then((res) async {
@@ -313,8 +280,40 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
 
           _updateVersionInfo = UpdateVersionInfo.fromJson(res.info);
 
+          //获取当前版本
+          PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+          int  buildNumber =  int.parse(packageInfo.buildNumber); // 本地版本
+
+          int  versioncode =  int.parse(_updateVersionInfo.versioncode); // 服务器版本
 
 
+          if(buildNumber<versioncode){ // 如果本地 小于  服务器  开始提示更新
+
+              //获取权限
+              var per = await checkPermission();
+              if(per != null && !per){
+                return null;
+              }
+
+              _showUpdateDialog(_updateVersionInfo.versionname,_updateVersionInfo.downdress,_updateVersionInfo.status==2?true:false);
+
+          }
+
+        }
+
+
+      });
+
+
+    }else if(Platform.isIOS){ // ios 版本检查更新
+
+      NetUtils.requestAppVersionIos()
+          .then((res) async {
+
+        if(res.code==200){
+
+          _updateVersionInfo = UpdateVersionInfo.fromJson(res.info);
 
 
           //获取当前版本
@@ -325,34 +324,14 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
           int  versioncode =  int.parse(_updateVersionInfo.versioncode); // 服务器版本
 
 
-
-
           if(buildNumber<versioncode){ // 如果本地 小于  服务器  开始提示更新
 
-            // ios 和 android 的更新提示
-            if (Platform.isIOS) {  // 如果是 ios 手机 直接跳转到 appstore更新
-
-              final url = "https://itunes.apple.com/cn/app/id1484902664"; // id 后面的数字换成自己的应用 id 就行了
-              if (await canLaunch(url)) {
-                await launch(url, forceSafariVC: false);
-              } else {
-                throw 'Could not launch $url';
-              }
-
-            }else{
-
-              //获取权限
-              var per = await checkPermission();
-              if(per != null && !per){
-                return null;
-              }
-
-              _showUpdateDialog(_updateVersionInfo.versionname,_updateVersionInfo.downdress,_updateVersionInfo.status==2?true:false);
-
-            }
-
-
-
+               final url = "https://itunes.apple.com/cn/app/id1484902664"; // id 后面的数字换成自己的应用 id 就行了
+               if (await canLaunch(url)) {
+                 await launch(url, forceSafariVC: false);
+               } else {
+                 throw 'Could not launch $url';
+               }
 
           }
 
@@ -362,7 +341,7 @@ class _HomeState extends State<HomePage> with TickerProviderStateMixin,Automatic
       });
 
 
-    }else{ // ios 版本检查更新  一般用不到此接口  除非要修复 ios特有的bug
+
 
     }
 

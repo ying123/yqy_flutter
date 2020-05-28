@@ -34,8 +34,6 @@ class NetUtils {
     return result;
   }
 
-
-
   ///
   ///   检查版本更新（APP） iOS
   ///

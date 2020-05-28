@@ -170,7 +170,7 @@ class _RealNameDoctorPageState extends State<RealNameDoctorPage> {
                 // 职业证书号码
                 buildJobNumberInputView(context),
                 buildLine(),
-                Visibility(visible: true,child: Column(
+                Visibility(visible:  UserUtils.getUserInfoX().userInfoStatus==1&&(_urlImage1==""||_urlImage1==null)?false:true,child: Column(
                   children: <Widget>[
                     new Container(
                       margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(58),  ScreenUtil().setHeight(80), 0, 0),

@@ -57,7 +57,7 @@ class _LoginHomePageState extends State<LoginHomePage> {
     // TODO: implement initState
     super.initState();
     initControllerListener();
-    initWxLoginListener();
+    initWxLoginListener(); //暂时隐藏微信登陆 兼容性问题
     initProtocolDialog();
   }
 
@@ -135,11 +135,11 @@ class _LoginHomePageState extends State<LoginHomePage> {
                   cYM(ScreenUtil().setHeight(10)),
                   buildPwdLoginView(context),
                   cYM(ScreenUtil().setHeight(240)),
-                  buildTipView2(),
+                /*  buildTipView2(),
                   cYM(ScreenUtil().setHeight(30)),
                   // 其他登陆方式
                   buildOtherLoginView(context),
-                  cYM(ScreenUtil().setHeight(60)),
+                  cYM(ScreenUtil().setHeight(60)),*/
                   // 用户协议 和 隐私协议
                   buildProtocolView(context)
                 ],
