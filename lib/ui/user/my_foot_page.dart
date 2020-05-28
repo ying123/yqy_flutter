@@ -89,13 +89,11 @@ class _MyFootPageState extends State<MyFootPage>  with SingleTickerProviderState
           children: tabBarViewList
       ),
 
-
-
-
-
     );
   }
 }
+
+
 
 
 class VideoMeetingPage extends StatefulWidget {
