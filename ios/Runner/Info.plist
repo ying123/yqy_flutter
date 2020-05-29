@@ -104,7 +104,7 @@
     <key>NSCalendarsUsageDescription</key>
     <string>App需要您的同意,才能访问日历</string>
     <key>NSCameraUsageDescription</key>
-    <string>App需要您的同意,才能访问相机</string>
+    <string>需要获取个人照片进行编辑是否允许此App获取相册权限</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>App需要您的同意,才能始终访问位置</string>
     <key>NSLocationUsageDescription</key>
@@ -125,5 +125,8 @@
     <string>App需要您的同意,才能使用语音识别</string>
     <key>NSSpeechRecognitionUsageDescription</key>
     <string>App需要您的同意,才能使用语音识别</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>上传照片信息时需要访问您的相册</string>
+
 </dict>
 </plist>
